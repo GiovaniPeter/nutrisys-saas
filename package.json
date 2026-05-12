@@ -1,0 +1,36 @@
+{
+  "name": "nutrisys-saas",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy",
+    "prisma:studio": "prisma studio",
+    "foods:import": "node scripts/import-foods.js",
+    "prod:env": "node scripts/verify-production-env.js",
+    "prod:health": "node scripts/health-check.js",
+    "prod:smoke": "node scripts/smoke-test.js",
+    "prepublish:check": "node scripts/verify-production-env.js && npm run build"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.8.2",
+    "next": "14.2.28",
+    "prisma": "^6.8.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.17",
+    "@types/react": "^18.3.21",
+    "@types/react-dom": "^18.3.7",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "14.2.28",
+    "typescript": "^5.8.3"
+  }
+}
