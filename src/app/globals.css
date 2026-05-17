@@ -124,7 +124,7 @@ button, input, textarea, select { font: inherit; }
 .np-mini-stat strong { display: block; font-size: 1.12rem; line-height: 1.1; }
 .np-mini-stat span { color: #2a3b35; display: block; font-size: 0.92rem; font-weight: 750; line-height: 1.2; }
 
-.np-product-wrap { min-height: 594px; position: relative; }
+.np-product-wrap { min-height: 500px; position: relative; }
 .np-leaf-bg {
   background:
     radial-gradient(circle at 55% 10%, rgba(22, 132, 50, 0.14), transparent 310px),
@@ -133,7 +133,7 @@ button, input, textarea, select { font: inherit; }
   height: 560px;
   position: absolute;
   right: -104px;
-  top: -82px;
+  top: -208px;
   width: 800px;
 }
 .np-laptop {
@@ -144,7 +144,7 @@ button, input, textarea, select { font: inherit; }
   min-height: 488px;
   position: absolute;
   right: 36px;
-  top: -38px;
+  top: -164px;
   width: min(800px, 100%);
 }
 .np-laptop::after {
@@ -188,7 +188,7 @@ button, input, textarea, select { font: inherit; }
 .np-donut::after { background: #fff; border-radius: 50%; content: ""; inset: 18px; position: absolute; }
 .np-line-chart { height: 72px; position: relative; }
 .np-line-chart::before, .np-line-chart-alt::before { background: linear-gradient(135deg, transparent 8%, transparent 28%, #147b32 29%, #147b32 34%, transparent 35%, transparent 49%, #147b32 50%, #147b32 55%, transparent 56%, transparent 69%, #147b32 70%, #147b32 75%, transparent 76%); content: ""; inset: 8px 0 0; position: absolute; }
-.np-phone { background: #111; border: 8px solid #111; border-radius: 34px; box-shadow: 0 28px 55px rgba(8, 36, 24, 0.24); min-height: 420px; overflow: hidden; position: absolute; right: -18px; top: 132px; width: 178px; }
+.np-phone { background: #111; border: 8px solid #111; border-radius: 34px; box-shadow: 0 28px 55px rgba(8, 36, 24, 0.24); min-height: 420px; overflow: hidden; position: absolute; right: -18px; top: 6px; width: 178px; }
 .np-phone-notch { background: #111; border-radius: 0 0 12px 12px; height: 17px; left: 54px; position: absolute; top: 0; width: 66px; z-index: 2; }
 .np-phone-screen { background: #fbfffb; border-radius: 26px; min-height: 405px; padding: 32px 14px 12px; }
 .np-phone-screen small { color: #e6fff0; display: block; font-weight: 850; }
