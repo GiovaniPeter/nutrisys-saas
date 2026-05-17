@@ -126,9 +126,9 @@ export function ScheduleClient({ organizationName, organizationSlug }: { organiz
     const ics = [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
-      "PRODID:-//NutriSys//PT",
+      "PRODID:-//NutriPlan Pro//PT",
       "BEGIN:VEVENT",
-      `UID:${appointment.id}@nutrisys`,
+      `UID:${appointment.id}@nutriplan-pro`,
       `DTSTAMP:${toIcsDate(new Date())}`,
       `DTSTART:${toIcsDate(startsAt)}`,
       `DTEND:${toIcsDate(endsAt)}`,

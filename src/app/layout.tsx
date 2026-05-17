@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "NutriSys SaaS",
-  description: "Plataforma SaaS para nutricionistas, clínicas e pacientes."
+  title: "NutriPlan Pro",
+  description: "Plataforma para nutricionistas, clínicas e pacientes."
 };
 
 export default function RootLayout({

@@ -484,7 +484,7 @@ export function RecallsClient() {
           </div>
           ${mealRows}
           ${recall.generalNotes ? `<p><strong>Observacoes gerais:</strong> ${escapeHtml(recall.generalNotes)}</p>` : ""}
-          <p style="color:#6b7280;font-size:10px;margin-top:24px">Gerado pelo NutriSys</p>
+          <p style="color:#6b7280;font-size:10px;margin-top:24px">Gerado pelo NutriPlan Pro</p>
         </body>
       </html>`);
     printWindow.document.close();

@@ -9,7 +9,7 @@ export default async function Home() {
       <header className="topbar">
         <Link href="/" className="brand">
           <span className="brand-mark">N</span>
-          <span>NutriSys SaaS</span>
+          <span>NutriPlan Pro</span>
         </Link>
         <nav className="actions">
           {user ? (
@@ -54,15 +54,15 @@ export default async function Home() {
 
       <section className="hero">
         <div>
-          <h1>Base SaaS pronta para migrar o NutriSys com segurança.</h1>
+          <h1>NutriPlan Pro para organizar sua clínica com segurança.</h1>
           <p>
-            Esta é a nova trilha do produto: autenticação real, PostgreSQL,
-            multi-clínica, assinatura, auditoria e APIs para os módulos que
-            hoje vivem no protótipo em localStorage.
+            Plataforma para nutricionistas com pacientes, agenda, planos
+            alimentares, portal do paciente, financeiro, auditoria e assinatura
+            em uma base moderna com PostgreSQL.
           </p>
           <div className="actions">
             <Link href="/api/billing/plans" className="button">
-              Ver planos via API
+              Ver planos
             </Link>
             <Link href="/api/auth/me" className="button secondary">
               Testar sessão
@@ -80,7 +80,7 @@ export default async function Home() {
           <ul className="checklist">
             <li>
               <span className="check">✓</span>
-              <span>Organizações, usuários, papéis e assinatura por tenant.</span>
+              <span>Clínicas, usuários, papéis e assinatura por tenant.</span>
             </li>
             <li>
               <span className="check">✓</span>
@@ -88,7 +88,7 @@ export default async function Home() {
             </li>
             <li>
               <span className="check">✓</span>
-              <span>Pacientes e consultas já isolados por clínica.</span>
+              <span>Pacientes e consultas isolados por clínica.</span>
             </li>
             <li>
               <span className="check">✓</span>
@@ -101,7 +101,7 @@ export default async function Home() {
       <section className="grid">
         <div className="metric">
           <strong>Multi-tenant</strong>
-          <span>Cada clínica com dados isolados por `organizationId`.</span>
+          <span>Cada clínica com dados isolados por organizationId.</span>
         </div>
         <div className="metric">
           <strong>LGPD-ready</strong>

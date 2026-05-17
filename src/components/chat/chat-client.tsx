@@ -58,7 +58,7 @@ export function ChatClient() {
   }, [patients, summaryMessages]);
 
   const selectedPatient = patients.find((patient) => patient.id === selectedPatientId);
-  const jitsiUrl = selectedPatient ? `https://meet.jit.si/nutrisys-${selectedPatient.id.slice(0, 10)}` : "";
+  const jitsiUrl = selectedPatient ? `https://meet.jit.si/nutriplan-pro-${selectedPatient.id.slice(0, 10)}` : "";
 
   useEffect(() => {
     void boot();
