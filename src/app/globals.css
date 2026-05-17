@@ -515,3 +515,143 @@ button, input, textarea, select { font: inherit; }
     transform-origin: top right;
   }
 }
+/* AJUSTE FINAL - PROPORÇÃO DA LANDING NUTRIPLAN */
+@media (min-width: 1024px) {
+  .np-page {
+    padding-left: 56px !important;
+    padding-right: 56px !important;
+  }
+
+  .np-header {
+    max-width: 1320px !important;
+    padding: 22px 0 26px !important;
+  }
+
+  .np-logo strong {
+    font-size: 1.55rem !important;
+    line-height: 1 !important;
+  }
+
+  .np-logo small {
+    font-size: 0.78rem !important;
+  }
+
+  .np-nav {
+    gap: 58px !important;
+  }
+
+  .np-nav a {
+    font-size: 1.05rem !important;
+  }
+
+  .np-header-actions .np-button {
+    min-height: 42px !important;
+    padding: 0 26px !important;
+    font-size: 0.98rem !important;
+  }
+
+  .np-hero {
+    max-width: 1320px !important;
+    min-height: 560px !important;
+    grid-template-columns: 47% 53% !important;
+    align-items: center !important;
+    gap: 32px !important;
+    padding-top: 18px !important;
+    padding-bottom: 70px !important;
+  }
+
+  .np-hero-copy {
+    padding-top: 0 !important;
+  }
+
+  .np-hero-copy h1 {
+    font-size: clamp(3.35rem, 4.15vw, 4.85rem) !important;
+    line-height: 1.03 !important;
+    letter-spacing: -0.055em !important;
+    max-width: 620px !important;
+    margin: 0 !important;
+  }
+
+  .np-hero-copy p {
+    font-size: 1.12rem !important;
+    line-height: 1.7 !important;
+    max-width: 600px !important;
+    margin: 26px 0 26px !important;
+  }
+
+  .np-hero-actions {
+    gap: 14px !important;
+  }
+
+  .np-hero-actions .np-button {
+    min-height: 48px !important;
+    padding: 0 28px !important;
+    font-size: 1rem !important;
+  }
+
+  .np-stat-row {
+    margin-top: 30px !important;
+    gap: 14px !important;
+  }
+
+  .np-mini-stat {
+    min-height: 70px !important;
+    min-width: 140px !important;
+    padding: 12px 14px !important;
+  }
+
+  .np-mini-stat strong {
+    font-size: 0.95rem !important;
+  }
+
+  .np-mini-stat span {
+    font-size: 0.78rem !important;
+  }
+
+  .np-product-wrap {
+    min-height: 500px !important;
+    position: relative !important;
+  }
+
+  .np-leaf-bg {
+    width: 680px !important;
+    height: 420px !important;
+    top: 22px !important;
+    right: -38px !important;
+  }
+
+  .np-laptop {
+    width: 650px !important;
+    min-height: 390px !important;
+    top: 62px !important;
+    right: 42px !important;
+    border-width: 7px !important;
+    transform: none !important;
+  }
+
+  .np-dashboard-preview {
+    grid-template-columns: 130px 1fr !important;
+    min-height: 334px !important;
+  }
+
+  .np-dashboard-preview aside {
+    padding: 18px 14px !important;
+  }
+
+  .np-dashboard-preview section {
+    padding: 20px !important;
+  }
+
+  .np-phone {
+    width: 148px !important;
+    min-height: 340px !important;
+    top: 208px !important;
+    right: -4px !important;
+    border-width: 7px !important;
+    transform: none !important;
+  }
+
+  .np-phone-screen {
+    min-height: 326px !important;
+  }
+}
