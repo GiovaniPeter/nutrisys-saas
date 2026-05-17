@@ -248,6 +248,8 @@ button, input, textarea, select { font: inherit; }
   padding: 22px;
 }
 
+.role-hidden { display: none !important; }
+
 .section-title-row,
 .page-actions,
 .table-actions,

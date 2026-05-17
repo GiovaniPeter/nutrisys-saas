@@ -169,6 +169,7 @@ export default async function DashboardPage() {
   });
 
   const subscription = organization?.subscriptions[0] || null;
+  const isSecretary = user.role === "SECRETARY";
 
   return (
     <main className="shell workspace-shell">
@@ -187,14 +188,25 @@ export default async function DashboardPage() {
       </section>
 
       <section className="dashboard-metrics">
-        <MetricCard label="Pacientes" value={patientCount} href="/patients" detail="base ativa" />
-        <MetricCard label="Consultas" value={appointmentCount} href="/appointments" detail={`${confirmedAppointments} confirmadas na semana`} />
-        <MetricCard label="Planos" value={mealPlanCount} href="/meal-plans" detail={`${publishedMealPlans} publicados`} />
-        <MetricCard label="Evolucoes" value={bodyRecordCount} href="/body-records" detail={`${anamnesisCount} anamneses`} />
-        <MetricCard label="Diario" value={pendingDiaryCount} href="/food-diary" detail="registros pendentes" />
-        <MetricCard label="Chat" value={unreadChatCount} href="/chat" detail="mensagens nao lidas" />
-        <MetricCard label="Metas" value={activeGoalCount} href="/hydration" detail="metas ativas" />
-        <MetricCard label="Materiais" value={materialCount} href="/materials" detail={`${energyCalculationCount} calculos energeticos`} />
+        {isSecretary ? (
+          <>
+            <MetricCard label="Pacientes" value={patientCount} href="/patients" detail="cadastro e contato" />
+            <MetricCard label="Consultas" value={appointmentCount} href="/appointments" detail={`${confirmedAppointments} confirmadas na semana`} />
+            <MetricCard label="Próximos" value={upcomingAppointments.length} href="/schedule" detail="na agenda" />
+            <MetricCard label="Chat" value={unreadChatCount} href="/chat" detail="mensagens nao lidas" />
+          </>
+        ) : (
+          <>
+            <MetricCard label="Pacientes" value={patientCount} href="/patients" detail="base ativa" />
+            <MetricCard label="Consultas" value={appointmentCount} href="/appointments" detail={`${confirmedAppointments} confirmadas na semana`} />
+            <MetricCard label="Planos" value={mealPlanCount} href="/meal-plans" detail={`${publishedMealPlans} publicados`} />
+            <MetricCard label="Evolucoes" value={bodyRecordCount} href="/body-records" detail={`${anamnesisCount} anamneses`} />
+            <MetricCard label="Diario" value={pendingDiaryCount} href="/food-diary" detail="registros pendentes" />
+            <MetricCard label="Chat" value={unreadChatCount} href="/chat" detail="mensagens nao lidas" />
+            <MetricCard label="Metas" value={activeGoalCount} href="/hydration" detail="metas ativas" />
+            <MetricCard label="Materiais" value={materialCount} href="/materials" detail={`${energyCalculationCount} calculos energeticos`} />
+          </>
+        )}
       </section>
 
       <section className="dashboard-grid">
@@ -221,7 +233,7 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        <div className="surface">
+        <div className={isSecretary ? "surface role-hidden" : "surface"}>
           <div className="section-title-row">
             <div>
               <span className="eyebrow">Paciente</span>
@@ -268,7 +280,7 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        <div className="surface">
+        <div className={isSecretary ? "surface role-hidden" : "surface"}>
           <div className="section-title-row">
             <div>
               <span className="eyebrow">Conteudo</span>
@@ -336,7 +348,7 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        <div className="surface">
+        <div className={isSecretary ? "surface role-hidden" : "surface"}>
           <div className="section-title-row">
             <div>
               <span className="eyebrow">Nutricao</span>
@@ -365,7 +377,7 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        <div className="surface">
+        <div className={isSecretary ? "surface role-hidden" : "surface"}>
           <div className="section-title-row">
             <div>
               <span className="eyebrow">Seguranca</span>

@@ -63,7 +63,13 @@ const navItems = [
   { key: "settings", href: "/settings", label: "Config." }
 ] as const;
 
+const secretaryNavKeys = new Set(["dashboard", "patients", "appointments", "schedule", "chat", "whatsapp", "notifications"]);
+
 export function AppNav({ active, user }: AppNavProps) {
+  const visibleNavItems = user.role === "SECRETARY"
+    ? navItems.filter((item) => secretaryNavKeys.has(item.key))
+    : navItems;
+
   return (
     <header className="app-header">
       <Link href="/dashboard" className="brand app-brand">
@@ -72,7 +78,7 @@ export function AppNav({ active, user }: AppNavProps) {
       </Link>
 
       <nav className="app-nav" aria-label="Navegacao principal">
-        {navItems.map((item) => (
+        {visibleNavItems.map((item) => (
           <Link
             key={item.key}
             href={item.href}
