@@ -8,7 +8,8 @@ import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 const loginSchema = z.object({
   email: z.string().email("Informe um e-mail válido.").transform((value) => value.toLowerCase()),
-  password: z.string().min(1, "Informe sua senha.")
+  password: z.string().min(1, "Informe sua senha."),
+  accessMode: z.enum(["nutritionist", "secretary"]).optional()
 });
 
 export async function POST(request: NextRequest) {
@@ -42,6 +43,14 @@ export async function POST(request: NextRequest) {
 
     if (!user || !user.active || !(await verifyPassword(input.password, user.passwordHash))) {
       return error("E-mail ou senha incorretos.", 401);
+    }
+
+    if (input.accessMode === "secretary" && user.role !== "SECRETARY") {
+      return error("Este acesso é exclusivo para secretárias cadastradas.", 403);
+    }
+
+    if (input.accessMode === "nutritionist" && user.role === "SECRETARY") {
+      return error("Use a opção Secretária para entrar com este usuário.", 403);
     }
 
     const response = NextResponse.json({

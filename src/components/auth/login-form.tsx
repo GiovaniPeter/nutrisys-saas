@@ -3,7 +3,12 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
-export function LoginForm() {
+type LoginFormProps = {
+  accessMode?: "nutritionist" | "secretary";
+  buttonLabel?: string;
+};
+
+export function LoginForm({ accessMode = "nutritionist", buttonLabel = "Entrar" }: LoginFormProps) {
   const router = useRouter();
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -19,7 +24,8 @@ export function LoginForm() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email: form.get("email"),
-        password: form.get("password")
+        password: form.get("password"),
+        accessMode
       })
     });
 
@@ -47,7 +53,7 @@ export function LoginForm() {
       </label>
       {message ? <p className="form-message error">{message}</p> : null}
       <button className="button" type="submit" disabled={loading}>
-        {loading ? "Entrando..." : "Entrar"}
+        {loading ? "Entrando..." : buttonLabel}
       </button>
     </form>
   );
