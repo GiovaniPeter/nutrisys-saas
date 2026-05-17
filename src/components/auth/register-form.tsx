@@ -3,7 +3,11 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
-export function RegisterForm() {
+type RegisterFormProps = {
+  initialPlanCode?: string;
+};
+
+export function RegisterForm({ initialPlanCode = "professional" }: RegisterFormProps) {
   const router = useRouter();
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -58,7 +62,7 @@ export function RegisterForm() {
       </label>
       <label>
         Plano inicial
-        <select name="planCode" defaultValue="professional">
+        <select name="planCode" defaultValue={initialPlanCode}>
           <option value="essential">Essencial</option>
           <option value="professional">Profissional</option>
           <option value="clinic">Clínica</option>
