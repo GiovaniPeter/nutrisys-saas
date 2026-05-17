@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { ReactNode } from "react";
 import { getCurrentUser } from "@/lib/session";
 
@@ -229,11 +230,8 @@ export default async function Home() {
       </section>
 
       <section className="np-final-cta">
-        <div className="np-final-photo" aria-hidden="true">
-          <div className="np-doctor-card">
-            <span></span>
-            <strong>Nutricionista</strong>
-          </div>
+        <div className="np-final-photo">
+          <Image src="/nutritionist-laptop.png" alt="Nutricionista usando notebook" width={640} height={380} />
         </div>
         <div className="np-final-copy">
           <h2>Seu próximo passo é validar o uso real</h2>
