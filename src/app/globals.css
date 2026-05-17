@@ -52,10 +52,23 @@ button, input, textarea, select { font: inherit; }
   z-index: 5;
 }
 
-.np-logo { align-items: center; display: inline-flex; gap: 10px; width: max-content; }
-.np-logo-mark { color: var(--np-primary); display: inline-flex; height: 42px; width: 42px; }
-.np-logo strong { display: block; font-size: clamp(1.35rem, 2vw, 2rem); font-weight: 900; letter-spacing: -0.055em; line-height: 1; }
-.np-logo small { color: var(--np-muted); display: block; font-size: 0.82rem; font-weight: 700; margin-top: 3px; }
+.np-logo { align-items: center; display: inline-flex; gap: 12px; width: max-content; }
+.np-logo-mark {
+  align-items: center;
+  background: linear-gradient(145deg, #eef9ef, #ffffff);
+  border: 1px solid rgba(22, 132, 50, 0.18);
+  border-radius: 16px;
+  box-shadow: 0 12px 28px rgba(22, 132, 50, 0.12);
+  color: var(--np-primary);
+  display: inline-flex;
+  height: 52px;
+  justify-content: center;
+  width: 52px;
+}
+.np-logo-mark svg { height: 38px; width: 38px; }
+.np-logo strong { color: #08291e; display: block; font-size: clamp(1.42rem, 2.05vw, 2.08rem); font-weight: 950; letter-spacing: -0.06em; line-height: .92; }
+.np-logo strong em { color: var(--np-primary); font-style: normal; letter-spacing: -0.04em; }
+.np-logo small { color: #5d6d67; display: block; font-size: 0.9rem; font-weight: 800; letter-spacing: -0.015em; margin-top: 6px; }
 .np-nav { align-items: center; display: flex; gap: clamp(24px, 4vw, 60px); justify-content: center; }
 .np-nav a { color: #172c25; font-size: 0.96rem; font-weight: 750; }
 .np-header-actions { align-items: center; display: flex; gap: 16px; justify-content: flex-end; }
@@ -106,7 +119,7 @@ button, input, textarea, select { font: inherit; }
   max-width: 610px;
 }
 .np-hero-actions, .np-stat-row { display: flex; flex-wrap: wrap; gap: 18px; }
-.np-stat-row { margin-top: 42px; }
+.np-stat-row { align-items: stretch; gap: 16px; margin-top: 42px; max-width: 640px; }
 .np-mini-stat {
   align-items: center;
   background: rgba(255, 255, 255, 0.9);
@@ -114,15 +127,16 @@ button, input, textarea, select { font: inherit; }
   border-radius: 12px;
   box-shadow: 0 18px 34px rgba(13, 60, 34, 0.08);
   display: flex;
+  flex: 0 0 196px;
   gap: 16px;
   min-height: 94px;
-  min-width: 188px;
-  padding: 16px 20px;
+  min-width: 0;
+  padding: 16px;
 }
 .np-line-icon { color: var(--np-primary); flex: 0 0 auto; height: 46px; width: 46px; }
 .np-mini-stat .np-line-icon { height: 38px; width: 38px; }
-.np-mini-stat strong { display: block; font-size: 1.12rem; line-height: 1.1; }
-.np-mini-stat span { color: #2a3b35; display: block; font-size: 0.92rem; font-weight: 750; line-height: 1.2; }
+.np-mini-stat strong { display: block; font-size: 1.08rem; line-height: 1.08; }
+.np-mini-stat span { color: #2a3b35; display: block; font-size: 0.86rem; font-weight: 750; line-height: 1.16; }
 
 .np-product-wrap { min-height: 470px; position: relative; }
 .np-leaf-bg {
@@ -145,8 +159,6 @@ button, input, textarea, select { font: inherit; }
   position: absolute;
   right: 36px;
   top: -206px;
-  transform: perspective(1400px) rotateY(-3deg) rotateZ(-0.7deg);
-  transform-origin: center bottom;
   width: min(800px, 100%);
 }
 .np-laptop::after {
@@ -190,7 +202,7 @@ button, input, textarea, select { font: inherit; }
 .np-donut::after { background: #fff; border-radius: 50%; content: ""; inset: 18px; position: absolute; }
 .np-line-chart { height: 72px; position: relative; }
 .np-line-chart::before, .np-line-chart-alt::before { background: linear-gradient(135deg, transparent 8%, transparent 28%, #147b32 29%, #147b32 34%, transparent 35%, transparent 49%, #147b32 50%, #147b32 55%, transparent 56%, transparent 69%, #147b32 70%, #147b32 75%, transparent 76%); content: ""; inset: 8px 0 0; position: absolute; }
-.np-phone { background: #111; border: 8px solid #111; border-radius: 34px; box-shadow: 0 28px 55px rgba(8, 36, 24, 0.24); min-height: 420px; overflow: hidden; position: absolute; right: -18px; top: -36px; transform: rotate(1.4deg); transform-origin: center bottom; width: 178px; }
+.np-phone { background: #111; border: 8px solid #111; border-radius: 34px; box-shadow: 0 28px 55px rgba(8, 36, 24, 0.24); min-height: 420px; overflow: hidden; position: absolute; right: -18px; top: -36px; width: 178px; }
 .np-phone-notch { background: #111; border-radius: 0 0 12px 12px; height: 17px; left: 54px; position: absolute; top: 0; width: 66px; z-index: 2; }
 .np-phone-screen { background: #fbfffb; border-radius: 26px; min-height: 405px; padding: 32px 14px 12px; }
 .np-phone-screen small { color: #e6fff0; display: block; font-weight: 850; }

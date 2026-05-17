@@ -96,7 +96,7 @@ export default async function Home() {
         <Link href="/" className="np-logo" aria-label="NutriPlan Pro">
           <span className="np-logo-mark"><LeafIcon /></span>
           <span>
-            <strong>NutriPlan Pro</strong>
+            <strong>NutriPlan <em>Pro</em></strong>
             <small>Software para nutricionistas</small>
           </span>
         </Link>
@@ -253,7 +253,7 @@ export default async function Home() {
           <Link href="/" className="np-logo" aria-label="NutriPlan Pro">
             <span className="np-logo-mark"><LeafIcon /></span>
             <span>
-              <strong>NutriPlan Pro</strong>
+              <strong>NutriPlan <em>Pro</em></strong>
               <small>Software para nutricionistas</small>
             </span>
           </Link>
@@ -372,10 +372,11 @@ function FooterColumn({ title, links }: { title: string; links: string[] }) {
 
 function LeafIcon() {
   return (
-    <svg viewBox="0 0 40 40" aria-hidden="true">
-      <path d="M8 22C8 12.6 15.4 6 28 5c.8 12.4-5.6 20-15 20-2.1 0-3.8-.5-5-1.4Z" fill="none" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M12 26c4.4-8 9.5-12.3 15.2-15" fill="none" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" />
-      <path d="M16 33V22" fill="none" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" />
+    <svg viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M24 42V27" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" />
+      <path d="M23.8 27.5C15 28 8 22.9 8 15.8 8 8.9 15.2 5.1 30.8 5.3c.4 14.1-5.2 21.7-15.2 21.7-2.4 0-4.5-.5-6.2-1.6Z" fill="rgba(22, 132, 50, 0.12)" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14 25.5C18.8 17.8 24.4 13 31 10.5" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" />
+      <path d="M25 35.5c7.9.4 13.5-4.1 14.6-12.9-7.9.2-13.2 4.4-14.6 12.9Z" fill="rgba(22, 132, 50, 0.12)" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
