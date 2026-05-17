@@ -553,7 +553,7 @@ form button[type="submit"] {
   max-width: 610px;
 }
 .np-hero-actions, .np-stat-row { display: flex; flex-wrap: wrap; gap: 18px; }
-.np-stat-row { align-items: stretch; gap: 14px; margin-top: 42px; max-width: 610px; }
+.np-stat-row { align-items: stretch; flex-wrap: nowrap; gap: 12px; margin-top: 42px; max-width: none; width: max-content; }
 .np-mini-stat {
   align-items: center;
   background: rgba(255, 255, 255, 0.9);
@@ -561,16 +561,16 @@ form button[type="submit"] {
   border-radius: 12px;
   box-shadow: 0 18px 34px rgba(13, 60, 34, 0.08);
   display: flex;
-  flex: 0 0 184px;
+  flex: 0 0 168px;
   gap: 12px;
   min-height: 94px;
   min-width: 0;
-  padding: 15px 14px;
+  padding: 14px 12px;
 }
 .np-line-icon { color: var(--np-primary); flex: 0 0 auto; height: 46px; width: 46px; }
 .np-mini-stat .np-line-icon { height: 38px; width: 38px; }
-.np-mini-stat strong { display: block; font-size: 1.02rem; line-height: 1.06; }
-.np-mini-stat span { color: #2a3b35; display: block; font-size: 0.8rem; font-weight: 750; line-height: 1.13; }
+.np-mini-stat strong { display: block; font-size: 0.98rem; line-height: 1.04; }
+.np-mini-stat span { color: #2a3b35; display: block; font-size: 0.76rem; font-weight: 750; line-height: 1.1; }
 
 .np-product-wrap { min-height: 470px; position: relative; }
 .np-leaf-bg {
@@ -747,7 +747,7 @@ form button[type="submit"] {
   .np-button { min-height: 46px; padding-inline: 18px; }
   .np-hero { min-height: auto; padding-bottom: 28px; }
   .np-hero-copy h1 { font-size: clamp(2.55rem, 12vw, 4rem); }
-  .np-stat-row { display: grid; grid-template-columns: 1fr; }
+  .np-stat-row { display: grid; grid-template-columns: 1fr; width: 100%; }
   .np-mini-stat { min-width: 0; width: 100%; }
   .np-product-wrap { min-height: 500px; transform: scale(.86); transform-origin: top center; }
   .np-laptop { min-width: 620px; }
