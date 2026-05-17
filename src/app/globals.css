@@ -2801,7 +2801,7 @@ a {
   padding: 14px 14px 0;
   position: absolute;
   right: 64px;
-  top: 8px;
+  top: -18px;
   width: min(745px, 100%);
 }
 
@@ -2994,7 +2994,7 @@ a {
   padding: 10px;
   position: absolute;
   right: 0;
-  top: 180px;
+  top: 148px;
   width: 198px;
 }
 
