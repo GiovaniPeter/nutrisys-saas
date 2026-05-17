@@ -88,7 +88,7 @@ const faqs = [
 
 export default async function Home() {
   const user = await getCurrentUser();
-  const primaryHref = user ? "/dashboard" : "/register";
+  const trialHref = "/register";
 
   return (
     <main className="np-page">
@@ -108,11 +108,16 @@ export default async function Home() {
         </nav>
 
         <div className="np-header-actions">
-          <Link href={user ? "/dashboard" : "/login"} className="np-button np-button-outline">
-            {user ? "Dashboard" : "Entrar"}
+          {user ? (
+            <Link href="/dashboard" className="np-button np-button-ghost">
+              Dashboard
+            </Link>
+          ) : null}
+          <Link href="/login" className="np-button np-button-outline">
+            Login
           </Link>
-          <Link href={primaryHref} className="np-button np-button-primary">
-            {user ? "Abrir conta" : "Criar conta"}
+          <Link href="/register" className="np-button np-button-primary">
+            Criar conta
           </Link>
         </div>
       </header>
@@ -128,7 +133,7 @@ export default async function Home() {
           </p>
 
           <div className="np-hero-actions">
-            <Link href={primaryHref} className="np-button np-button-primary np-button-large">
+            <Link href={trialHref} className="np-button np-button-primary np-button-large">
               Começar trial <span aria-hidden="true">→</span>
             </Link>
             <a href="#recursos" className="np-button np-button-outline np-button-large">
@@ -242,7 +247,7 @@ export default async function Home() {
           </p>
         </div>
         <div className="np-final-action">
-          <Link href={primaryHref} className="np-button np-button-light np-button-large">
+          <Link href={trialHref} className="np-button np-button-light np-button-large">
             Criar conta agora <span aria-hidden="true">→</span>
           </Link>
           <small>7 dias de trial grátis</small>

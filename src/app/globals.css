@@ -523,6 +523,7 @@ form button[type="submit"] {
 .np-button:hover { transform: translateY(-2px); }
 .np-button-primary { background: linear-gradient(135deg, #168d38, #0d6e2d); box-shadow: 0 16px 30px rgba(22, 132, 50, 0.2); color: #fff; }
 .np-button-outline { background: #fff; border-color: #0e7e35; color: #0a5f2b; }
+.np-button-ghost { background: transparent; border-color: rgba(14, 126, 53, 0.18); color: #0a5f2b; }
 .np-button-light { background: #fff; color: #0a632c; }
 .np-button-large { min-height: 56px; padding-inline: 32px; }
 
