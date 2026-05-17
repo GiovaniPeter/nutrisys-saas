@@ -2,118 +2,87 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { getCurrentUser } from "@/lib/session";
 
-const heroTrust = [
-  { icon: "shield", title: "1 teste grátis", text: "sem compromisso" },
-  { icon: "credit", title: "Créditos pré-pagos", text: "pague só pelo que usar" },
-  { icon: "wallet", title: "Sem recorrência", text: "pagamento único" },
-  { icon: "checkShield", title: "Conforme ANVISA", text: "em conformidade" }
-];
-
 const features = [
   {
-    icon: "calculator",
-    title: "Cálculo automatizado",
-    text: "Resultados precisos com base em tabelas atualizadas."
+    icon: "patient",
+    title: "Prontuário e pacientes",
+    text: "Prontuário completo, histórico clínico, anamnese, evolução e acompanhamento em um só lugar."
   },
   {
-    icon: "document",
-    title: "Visual profissional",
-    text: "Tabelas e rótulos prontos para uso e impressão com padrão premium."
+    icon: "meal",
+    title: "Planos alimentares",
+    text: "Monte planos personalizados com mais de 1000 alimentos, listas de substituições e objetivos."
   },
   {
-    icon: "checkCircle",
-    title: "Fluxo simples",
-    text: "Em poucos passos você cria, revisa e gera seu rótulo."
+    icon: "calendar",
+    title: "Agenda e relacionamento",
+    text: "Agenda online, lembretes automáticos, chat e portal do paciente para mais adesão."
   },
   {
-    icon: "folder",
-    title: "Dados organizados",
-    text: "Receitas e informações sempre salvas e fáceis de encontrar."
+    icon: "growth",
+    title: "Gestão da clínica",
+    text: "Financeiro, indicadores, KPIs e relatórios para decisões mais estratégicas e lucrativas."
   }
 ];
 
 const steps = [
   {
-    icon: "filePlus",
-    title: "Cadastre a receita",
-    text: "Adicione ingredientes, quantidades e porção."
+    icon: "clinic",
+    title: "Crie sua clínica",
+    text: "Cadastre sua clínica ou consultório e personalize suas preferências."
   },
   {
-    icon: "searchCheck",
-    title: "Revise os dados",
-    text: "O sistema calcula tudo automaticamente."
+    icon: "addPatient",
+    title: "Cadastre pacientes",
+    text: "Adicione pacientes, registre dados clínicos e acompanhe toda a jornada."
   },
   {
-    icon: "label",
-    title: "Gere tabela e rótulo",
-    text: "Visualize, exporte e utilize com total conformidade."
-  }
-];
-
-const audiences = [
-  {
-    icon: "basket",
-    title: "Pequenos produtores",
-    text: "Padronize receitas e apresente rótulos com profissionalismo."
+    icon: "clipboard",
+    title: "Monte planos e metas",
+    text: "Crie planos alimentares personalizados e defina metas realistas."
   },
   {
-    icon: "user",
-    title: "Nutricionistas e consultores",
-    text: "Entregue mais valor aos seus clientes com agilidade e precisão."
-  },
-  {
-    icon: "jar",
-    title: "Marcas artesanais",
-    text: "Rótulos atrativos e conformes que valorizam sua marca."
-  },
-  {
-    icon: "store",
-    title: "Negócios alimentícios",
-    text: "Organize informações, ganhe tempo e facilite a aprovação."
+    icon: "dashboard",
+    title: "Acompanhe agenda, portal, financeiro e indicadores",
+    text: "Tenha controle total da sua clínica em um único painel."
   }
 ];
 
 const plans = [
   {
-    code: "free-test",
-    name: "Teste grátis",
-    price: "R$ 0",
-    badge: "1 crédito gratuito",
-    text: "Experimente a plataforma e gere 1 rótulo sem custo.",
-    features: ["1 teste grátis", "Visualização profissional", "Ideal para conhecer o sistema"],
-    cta: "Começar grátis"
+    code: "essential",
+    name: "Essencial",
+    price: "R$ 79,00",
+    features: ["Pacientes", "Agenda", "Planos alimentares", "PDFs"]
   },
   {
-    code: "pro-semestral",
-    name: "Plano Pro Semestral",
-    price: "R$ 499,00",
-    badge: "pagamento único, sem recorrência",
-    text: "Acesso Pro por 6 meses.",
+    code: "professional",
+    name: "Profissional",
+    price: "R$ 149,00",
     highlighted: true,
-    features: ["Uso contínuo", "Mais economia", "Recursos profissionais", "Suporte prioritário"],
-    cta: "Assinar plano Pro"
+    features: ["Pacientes ilimitados", "Portal do paciente", "Chat", "Financeiro", "KPIs"]
   },
   {
-    code: "professional-pack",
-    name: "Pacote Profissional",
-    price: "R$ 15,00",
-    badge: "por rótulo | mínimo 10+",
-    text: "Ideal para demandas em volume.",
-    features: ["10+ rótulos", "Preço unitário reduzido", "Perfeito para empresas e consultores", "Exportação profissional"],
-    cta: "Solicitar pacote"
+    code: "clinic",
+    name: "Clínica",
+    price: "R$ 249,00",
+    features: ["Multi-profissional", "Secretária", "Permissões", "Relatórios avançados"]
   }
 ];
 
-const nutritionRows = [
-  ["Valor energético", "227 kcal = 952 kJ", "11%"],
-  ["Carboidratos", "28 g", "9%"],
-  ["Açúcares totais", "18 g", "-"],
-  ["Proteínas", "3,6 g", "5%"],
-  ["Gorduras totais", "10 g", "15%"],
-  ["Gorduras saturadas", "4,2 g", "21%"],
-  ["Gorduras trans", "0 g", "0%"],
-  ["Fibra alimentar", "1,6 g", "6%"],
-  ["Sódio", "85 mg", "4%"]
+const faqs = [
+  {
+    question: "Dá para começar grátis?",
+    answer: "Sim! Todos os planos oferecem 7 dias de trial grátis, sem cartão de crédito."
+  },
+  {
+    question: "Funciona com Mercado Pago?",
+    answer: "Sim, integramos com o Mercado Pago para facilitar cobranças e conciliação financeira."
+  },
+  {
+    question: "Os dados ficam separados por clínica?",
+    answer: "Sim. Cada clínica tem seus dados 100% separados e seguros."
+  }
 ];
 
 export default async function Home() {
@@ -121,281 +90,313 @@ export default async function Home() {
   const primaryHref = user ? "/dashboard" : "/register";
 
   return (
-    <main className="rc-page">
-      <section className="rc-hero" id="inicio">
-        <header className="rc-header">
-          <Link href="/" className="rc-brand" aria-label="RótuloConforme">
-            <span className="rc-brand-mark">R</span>
-            <strong>RótuloConforme</strong>
+    <main className="np-page">
+      <header className="np-header">
+        <Link href="/" className="np-logo" aria-label="NutriPlan Pro">
+          <span className="np-logo-mark"><LeafIcon /></span>
+          <span>
+            <strong>NutriPlan Pro</strong>
+            <small>Software para nutricionistas</small>
+          </span>
+        </Link>
+
+        <nav className="np-nav" aria-label="Navegação principal">
+          <a href="#recursos">Recursos</a>
+          <a href="#planos">Planos</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+
+        <div className="np-header-actions">
+          <Link href={user ? "/dashboard" : "/login"} className="np-button np-button-outline">
+            {user ? "Dashboard" : "Entrar"}
           </Link>
-
-          <nav className="rc-nav" aria-label="Navegação principal">
-            <a href="#como-funciona">Como funciona</a>
-            <a href="#publico">Para quem é</a>
-            <a href="#planos">Planos</a>
-          </nav>
-
-          <Link href={user ? "/dashboard" : "/login"} className="rc-menu-button" aria-label={user ? "Abrir dashboard" : "Entrar"}>
-            <span />
-            <span />
-            <span />
+          <Link href={primaryHref} className="np-button np-button-primary">
+            {user ? "Abrir conta" : "Criar conta"}
           </Link>
-        </header>
+        </div>
+      </header>
 
-        <div className="rc-hero-grid">
-          <div className="rc-hero-copy">
-            <span className="rc-badge"><Icon name="shield" /> App de rotulagem nutricional</span>
-            <h1>
-              Rotulagem profissional com <span>visual de app nativo</span>
-            </h1>
-            <p>
-              Crie tabelas nutricionais, organize receitas e gere rótulos com mais agilidade e segurança.
-              <strong> Tudo conforme a ANVISA.</strong>
-            </p>
-            <div className="rc-actions">
-              <Link href={primaryHref} className="rc-button rc-button-primary">
-                Testar grátis <span aria-hidden="true">›</span>
-              </Link>
-              <a href="#planos" className="rc-button rc-button-secondary">Ver planos</a>
-            </div>
+      <section className="np-hero">
+        <div className="np-hero-copy">
+          <h1>
+            Centralize atendimento, planos alimentares e <span>gestão da sua clínica.</span>
+          </h1>
+          <p>
+            NutriPlan Pro é a plataforma completa para nutricionistas e clínicas: prontuário,
+            planos alimentares, portal do paciente, agenda, financeiro e indicadores em um só lugar.
+          </p>
+
+          <div className="np-hero-actions">
+            <Link href={primaryHref} className="np-button np-button-primary np-button-large">
+              Começar trial <span aria-hidden="true">→</span>
+            </Link>
+            <a href="#recursos" className="np-button np-button-outline np-button-large">
+              Ver recursos <span aria-hidden="true">▣</span>
+            </a>
           </div>
 
-          <PhoneMockup />
+          <div className="np-stat-row">
+            <MiniStat icon="leaf" title="1000+" text="alimentos na base inicial" />
+            <MiniStat icon="calendar" title="7 dias" text="de trial" />
+            <MiniStat icon="users" title="Multi-" text="clínica" />
+          </div>
         </div>
 
-        <div className="rc-trust-strip">
-          {heroTrust.map((item) => (
-            <TrustItem key={item.title} {...item} />
-          ))}
-        </div>
+        <ProductMockup />
       </section>
 
-      <section className="rc-section rc-feature-section" id="recursos">
-        <div className="rc-feature-grid">
+      <section className="np-section" id="recursos">
+        <div className="np-section-heading np-center">
+          <span>Recursos que simplificam sua rotina</span>
+          <h2>Tudo que você precisa em uma plataforma completa</h2>
+        </div>
+
+        <div className="np-feature-grid">
           {features.map((feature) => (
-            <article className="rc-feature-card" key={feature.title}>
-              <Icon name={feature.icon} />
-              <h2>{feature.title}</h2>
+            <article className="np-feature-card" key={feature.title}>
+              <LineIcon name={feature.icon} />
+              <h3>{feature.title}</h3>
               <p>{feature.text}</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="rc-section" id="como-funciona">
-        <SectionHeading title="Como funciona" />
-        <div className="rc-step-row">
+      <section className="np-section np-how">
+        <div className="np-section-heading np-center">
+          <span>Como funciona</span>
+          <h2>Comece em minutos e transforme sua rotina</h2>
+        </div>
+
+        <div className="np-step-row">
           {steps.map((step, index) => (
-            <article className="rc-step-card" key={step.title}>
-              <div className="rc-step-icon">
-                <span>{index + 1}</span>
-                <Icon name={step.icon} />
-              </div>
-              <div>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
-              </div>
+            <article className="np-step" key={step.title}>
+              <strong>{index + 1}</strong>
+              <div className="np-step-icon"><LineIcon name={step.icon} /></div>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="rc-section" id="publico">
-        <SectionHeading title="Feito para quem precisa vender mais" />
-        <div className="rc-audience-grid">
-          {audiences.map((audience) => (
-            <article className="rc-audience-card" key={audience.title}>
-              <Icon name={audience.icon} />
-              <h3>{audience.title}</h3>
-              <p>{audience.text}</p>
-            </article>
-          ))}
+      <section className="np-section" id="planos">
+        <div className="np-section-heading np-center">
+          <span>Planos simples e justos</span>
+          <h2>Escolha o plano ideal para sua fase</h2>
         </div>
-      </section>
 
-      <section className="rc-section rc-pricing-section" id="planos">
-        <SectionHeading title="Planos simples, transparentes e sem mensalidade" />
-        <p className="rc-prepaid-note"><Icon name="credit" /> Créditos pré-pagos: pague apenas pelo que usar.</p>
-
-        <div className="rc-pricing-grid">
+        <div className="np-pricing-grid">
           {plans.map((plan) => (
-            <article className={plan.highlighted ? "rc-price-card rc-price-featured" : "rc-price-card"} key={plan.code}>
-              {plan.highlighted ? <span className="rc-popular">Mais vantajoso</span> : null}
+            <article className={plan.highlighted ? "np-price-card np-price-featured" : "np-price-card"} key={plan.code}>
+              {plan.highlighted ? <span className="np-popular">Mais escolhido</span> : null}
               <h3>{plan.name}</h3>
-              <div className="rc-price-value">{plan.price}</div>
-              <span className="rc-plan-badge">{plan.badge}</span>
-              <p>{plan.text}</p>
+              <div className="np-price">
+                <strong>{plan.price}</strong>
+                <span>/mês</span>
+              </div>
               <ul>
-                {plan.features.map((feature) => (
-                  <li key={feature}><Icon name="miniCheck" /> {feature}</li>
-                ))}
+                {plan.features.map((feature) => <li key={feature}>{feature}</li>)}
               </ul>
-              <Link href={`/register?plan=${plan.code}`} className={plan.highlighted ? "rc-button rc-button-primary" : "rc-button rc-button-outline"}>
-                {plan.cta}
+              <Link href={`/register?plan=${plan.code}`} className={plan.highlighted ? "np-button np-button-primary" : "np-button np-button-outline"}>
+                Começar trial
               </Link>
             </article>
           ))}
         </div>
+
+        <p className="np-pricing-note">7 dias de trial grátis em todos os planos. Cancele quando quiser.</p>
       </section>
 
-      <section className="rc-section rc-proof-section" aria-label="Prova social e confiança">
-        <article className="rc-testimonial-card">
-          <span className="rc-quote">“</span>
-          <div className="rc-stars" aria-label="5 estrelas">★★★★★</div>
-          <p>O RótuloConforme mudou nossa rotina. É rápido, intuitivo e os rótulos ficam com um visual incrível.</p>
-          <div className="rc-person">
-            <span>JM</span>
-            <div>
-              <strong>Juliana Mendes</strong>
-              <small>Nutricionista</small>
-            </div>
-          </div>
-        </article>
-
-        <div className="rc-stats-stack">
-          <Stat icon="users" value="+3.500" text="usuários ativos" />
-          <Stat icon="document" value="+12 mil" text="rótulos gerados" />
-          <Stat icon="heart" value="98%" text="satisfação dos usuários" />
+      <section className="np-section" id="faq">
+        <div className="np-section-heading np-center">
+          <span>Dúvidas frequentes</span>
+          <h2>Perguntas rápidas</h2>
         </div>
 
-        <article className="rc-compliance-card">
-          <Icon name="checkShield" />
-          <h3>Compatível com normas ANVISA</h3>
-          <p>Segurança e conformidade para o seu negócio.</p>
-        </article>
+        <div className="np-faq-grid">
+          {faqs.map((faq) => (
+            <article className="np-faq-card" key={faq.question}>
+              <div>
+                <span>?</span>
+                <h3>{faq.question}</h3>
+                <small>⌃</small>
+              </div>
+              <p>{faq.answer}</p>
+            </article>
+          ))}
+        </div>
       </section>
 
-      <section className="rc-final-cta">
-        <div>
-          <h2>Pronto para profissionalizar seus rótulos?</h2>
-          <p>Comece com 1 teste grátis ou escolha o plano ideal para sua demanda.</p>
-          <div className="rc-actions">
-            <Link href={primaryHref} className="rc-button rc-button-primary">Testar grátis <span aria-hidden="true">›</span></Link>
-            <a href="#planos" className="rc-button rc-button-secondary">Ver opções</a>
+      <section className="np-final-cta">
+        <div className="np-final-photo" aria-hidden="true">
+          <div className="np-doctor-card">
+            <span></span>
+            <strong>Nutricionista</strong>
           </div>
         </div>
-        <div className="rc-cta-illustration" aria-hidden="true">
-          <Icon name="label" />
+        <div className="np-final-copy">
+          <h2>Seu próximo passo é validar o uso real</h2>
+          <p>
+            Experimente o NutriPlan Pro por 7 dias e veja como ele pode levar mais organização,
+            tempo e resultados para sua clínica.
+          </p>
+        </div>
+        <div className="np-final-action">
+          <Link href={primaryHref} className="np-button np-button-light np-button-large">
+            Criar conta agora <span aria-hidden="true">→</span>
+          </Link>
+          <small>7 dias de trial grátis</small>
         </div>
       </section>
 
-      <footer className="rc-footer">
-        <Link href="/" className="rc-brand" aria-label="RótuloConforme">
-          <span className="rc-brand-mark">R</span>
-          <strong>RótuloConforme</strong>
-        </Link>
-        <p>Rotulagem nutricional inteligente para negócios alimentícios.</p>
+      <footer className="np-footer">
+        <div className="np-footer-brand">
+          <Link href="/" className="np-logo" aria-label="NutriPlan Pro">
+            <span className="np-logo-mark"><LeafIcon /></span>
+            <span>
+              <strong>NutriPlan Pro</strong>
+              <small>Software para nutricionistas</small>
+            </span>
+          </Link>
+          <p>Plataforma completa para nutricionistas e clínicas de nutrição.</p>
+          <div className="np-socials" aria-label="Redes sociais">
+            <a href="#" aria-label="Instagram">◎</a>
+            <a href="#" aria-label="Facebook">f</a>
+            <a href="#" aria-label="LinkedIn">in</a>
+            <a href="#" aria-label="YouTube">▶</a>
+          </div>
+        </div>
+
+        <FooterColumn title="Produto" links={["Recursos", "Planos", "Integrações"]} />
+        <FooterColumn title="Empresa" links={["Sobre nós", "Blog", "Contato"]} />
+        <FooterColumn title="Suporte" links={["Central de ajuda", "Termos de uso", "Política de privacidade"]} />
+        <div className="np-footer-column">
+          <h3>Fale conosco</h3>
+          <a href="mailto:contato@nutriplanpro.com.br">contato@nutriplanpro.com.br</a>
+          <a href="tel:+5511987654321">(11) 98765-4321</a>
+        </div>
+
+        <p className="np-copyright">© 2026 NutriPlan Pro. Todos os direitos reservados.</p>
       </footer>
     </main>
   );
 }
 
-function PhoneMockup() {
+function ProductMockup() {
   return (
-    <div className="rc-phone-wrap" aria-label="Prévia do aplicativo RótuloConforme">
-      <div className="rc-phone">
-        <div className="rc-phone-notch" />
-        <div className="rc-phone-screen">
-          <div className="rc-app-top">
-            <span><span className="rc-mini-logo">R</span> RótuloConforme</span>
-            <span className="rc-app-menu">☰</span>
-          </div>
-
-          <div className="rc-product-head">
-            <div className="rc-product-image" />
-            <div>
-              <strong>Bolo de Chocolate</strong>
-              <small>Porção: 60 g (1 fatia)</small>
+    <div className="np-product-wrap" aria-label="Prévia do sistema NutriPlan Pro">
+      <div className="np-leaf-bg" aria-hidden="true" />
+      <div className="np-laptop">
+        <div className="np-laptop-top">
+          <span>NutriPlan Pro</span>
+          <div><i /> <i /> <i /></div>
+        </div>
+        <div className="np-dashboard-preview">
+          <aside>
+            <b>Resumo</b>
+            <span>Agenda</span>
+            <span>Pacientes</span>
+            <span>Planos alimentares</span>
+            <span>Financeiro</span>
+            <span>Indicadores</span>
+          </aside>
+          <section>
+            <h3>Resumo</h3>
+            <div className="np-metrics-preview">
+              <MetricPreview label="Agenda hoje" value="8" />
+              <MetricPreview label="Pacientes ativos" value="128" />
+              <MetricPreview label="Faturamento" value="R$ 18.450" />
+              <MetricPreview label="Planos ativos" value="96" />
             </div>
-          </div>
+            <div className="np-charts-grid">
+              <div className="np-chart-card">
+                <span>Consultas da semana</span>
+                <div className="np-bars"><i /><i /><i /><i /><i /><i /></div>
+              </div>
+              <div className="np-chart-card">
+                <span>Distribuição de planos</span>
+                <div className="np-donut" />
+              </div>
+              <div className="np-chart-card"><span>Evolução de pacientes</span><div className="np-line-chart" /></div>
+              <div className="np-chart-card"><span>Faturamento últimos 6 meses</span><div className="np-line-chart np-line-chart-alt" /></div>
+            </div>
+          </section>
+        </div>
+        <div className="np-laptop-base" />
+      </div>
 
-          <div className="rc-nutrition-card">
-            <h3>Informação Nutricional</h3>
-            <small>Porção de 60 g (1 fatia)</small>
-            <table>
-              <thead>
-                <tr>
-                  <th>Quantidade por porção</th>
-                  <th>%VD*</th>
-                </tr>
-              </thead>
-              <tbody>
-                {nutritionRows.map(([name, value, percent]) => (
-                  <tr key={name}>
-                    <td><span>{name}</span><strong>{value}</strong></td>
-                    <td>{percent}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <p>*Percentual de valores diários fornecidos pela porção.</p>
-          </div>
-
-          <button className="rc-generate-button" type="button"><Icon name="label" /> Gerar rótulo</button>
+      <div className="np-phone">
+        <div className="np-phone-notch" />
+        <div className="np-phone-screen">
+          <small>Olá, Ana!</small>
+          <h4>Seu resumo de hoje</h4>
+          <div className="np-phone-card"><span>Próxima consulta</span><b>10:30</b><em>Mariana Silva</em></div>
+          <div className="np-phone-card"><span>Pacientes ativos</span><b>128</b></div>
+          <div className="np-phone-card"><span>Peso médio dos pacientes</span><b>-2,4 kg</b></div>
+          <div className="np-phone-chart" />
+          <nav><span /> <span /> <span /> <span /></nav>
         </div>
       </div>
     </div>
   );
 }
 
-function TrustItem({ icon, title, text }: { icon: string; title: string; text: string }) {
+function MetricPreview({ label, value }: { label: string; value: string }) {
   return (
-    <article className="rc-trust-item">
-      <span><Icon name={icon} /></span>
-      <div>
-        <strong>{title}</strong>
-        <small>{text}</small>
-      </div>
-    </article>
-  );
-}
-
-function SectionHeading({ title }: { title: string }) {
-  return (
-    <div className="rc-section-heading">
-      <h2>{title}</h2>
-      <span />
+    <div>
+      <span>{label}</span>
+      <strong>{value}</strong>
     </div>
   );
 }
 
-function Stat({ icon, value, text }: { icon: string; value: string; text: string }) {
+function MiniStat({ icon, title, text }: { icon: string; title: string; text: string }) {
   return (
-    <article className="rc-stat-card">
-      <Icon name={icon} />
+    <article className="np-mini-stat">
+      <LineIcon name={icon} />
       <div>
-        <strong>{value}</strong>
+        <strong>{title}</strong>
         <span>{text}</span>
       </div>
     </article>
   );
 }
 
-function Icon({ name }: { name: string }) {
-  const paths: Record<string, ReactNode> = {
-    shield: <path d="M12 3 5 6v6c0 4.6 2.9 7.8 7 9 4.1-1.2 7-4.4 7-9V6l-7-3Z" />,
-    checkShield: <><path d="M12 3 5 6v6c0 4.6 2.9 7.8 7 9 4.1-1.2 7-4.4 7-9V6l-7-3Z" /><path d="m8.8 12.4 2 2L15.6 9" /></>,
-    credit: <><rect x="3" y="6" width="18" height="12" rx="3" /><path d="M3 10h18M7 15h4" /></>,
-    wallet: <><path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6.5A2.5 2.5 0 0 1 4 16.5v-9Z" /><path d="M16 12h4" /></>,
-    calculator: <><rect x="5" y="3" width="14" height="18" rx="3" /><path d="M8 7h8M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M16 15h0" /></>,
-    document: <><path d="M7 3h7l4 4v14H7V3Z" /><path d="M14 3v5h5M9 12h6M9 16h6" /></>,
-    checkCircle: <><circle cx="12" cy="12" r="8" /><path d="m8.8 12.4 2 2L15.6 9" /></>,
-    folder: <><path d="M3 7h7l2 2h9v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z" /><path d="M3 7V5a2 2 0 0 1 2-2h5l2 4" /></>,
-    filePlus: <><path d="M7 3h7l4 4v14H7V3Z" /><path d="M14 3v5h5M10 14h5M12.5 11.5v5" /></>,
-    searchCheck: <><circle cx="11" cy="11" r="6" /><path d="m16 16 4 4M8.8 11.5l1.5 1.5 3.2-3.5" /></>,
-    label: <><path d="M5 4h10l4 4v12H5V4Z" /><path d="M9 9h6M9 13h6M9 17h4" /></>,
-    basket: <><path d="m6 10 2-5M18 10l-2-5M4 10h16l-1.5 9h-13L4 10Z" /><path d="M9 14h6" /></>,
-    user: <><circle cx="12" cy="8" r="4" /><path d="M4 21c1-4.5 4-7 8-7s7 2.5 8 7" /></>,
-    jar: <><path d="M8 3h8v4H8V3ZM7 8h10l1 11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L7 8Z" /><path d="M10 14c1.1-1.8 3-1.8 4 0-1 2-3 2-4 0Z" /></>,
-    store: <><path d="M4 10h16l-2-5H6l-2 5Z" /><path d="M6 10v10h12V10M9 20v-6h6v6" /></>,
-    miniCheck: <path d="m5 12 4 4L19 6" />,
-    users: <><circle cx="9" cy="8" r="3" /><path d="M3 20c.7-3 2.7-5 6-5s5.3 2 6 5" /><path d="M16 11a3 3 0 1 0-1-5.8M18 20c-.3-1.7-1.1-3-2.3-3.9" /></>,
-    heart: <path d="M12 20s-7-4.4-9-9.2C1.7 7.7 3.8 5 6.8 5c1.8 0 3.1 1 4.2 2.3C12.1 6 13.4 5 15.2 5c3 0 5.1 2.7 3.8 5.8C19 15.6 12 20 12 20Z" />
-  };
-
+function FooterColumn({ title, links }: { title: string; links: string[] }) {
   return (
-    <svg className="rc-icon" viewBox="0 0 24 24" aria-hidden="true">
-      {paths[name]}
+    <div className="np-footer-column">
+      <h3>{title}</h3>
+      {links.map((link) => <a href="#" key={link}>{link}</a>)}
+    </div>
+  );
+}
+
+function LeafIcon() {
+  return (
+    <svg viewBox="0 0 40 40" aria-hidden="true">
+      <path d="M8 22C8 12.6 15.4 6 28 5c.8 12.4-5.6 20-15 20-2.1 0-3.8-.5-5-1.4Z" fill="none" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M12 26c4.4-8 9.5-12.3 15.2-15" fill="none" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" />
+      <path d="M16 33V22" fill="none" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" />
     </svg>
   );
+}
+
+function LineIcon({ name }: { name: string }) {
+  const common = { fill: "none", stroke: "currentColor", strokeWidth: 2.1, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+
+  const icons: Record<string, ReactNode> = {
+    patient: <><rect x="5" y="4" width="14" height="16" rx="2" {...common} /><path d="M9 20v4h12V8h-2M9 10h6M9 14h4M27 20c0-3-2.3-5-5-5s-5 2-5 5M22 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6" {...common} /></>,
+    meal: <><path d="M7 8v8M11 8v8M9 8v16M20 8c4 3 4 9 0 12v4" {...common} /><path d="M23 8v16M5 24h22" {...common} /></>,
+    calendar: <><rect x="5" y="7" width="22" height="20" rx="3" {...common} /><path d="M10 4v6M22 4v6M5 13h22M11 18h2M16 18h2M21 18h2M11 23h2M16 23h2" {...common} /></>,
+    growth: <><path d="M5 27h22M8 23v-7M15 23V10M22 23V6" {...common} /><path d="M7 11l5-5 5 4 8-7" {...common} /></>,
+    clinic: <><path d="M6 27V10l10-5 10 5v17" {...common} /><path d="M11 27v-8h10v8M16 9v6M13 12h6" {...common} /></>,
+    addPatient: <><path d="M14 17c-4 0-7 2.6-7 6v1h10" {...common} /><circle cx="14" cy="10" r="4" {...common} /><path d="M22 17v10M17 22h10" {...common} /></>,
+    clipboard: <><rect x="7" y="6" width="18" height="22" rx="3" {...common} /><path d="M12 6c0-2 1.4-3 4-3s4 1 4 3M12 13h8M12 18h8M12 23h5" {...common} /></>,
+    dashboard: <><rect x="5" y="7" width="22" height="18" rx="3" {...common} /><path d="M9 21l4-5 4 3 5-7M10 28h12" {...common} /></>,
+    leaf: <><path d="M7 17C7 9 13 5 25 4c0 12-5 18-13 18-2 0-3.6-.5-5-1.5Z" {...common} /><path d="M10 21c4-7 8-11 14-14" {...common} /></>,
+    users: <><circle cx="12" cy="11" r="4" {...common} /><path d="M5 24c0-4 3-7 7-7s7 3 7 7" {...common} /><path d="M22 14a3 3 0 1 0 0-6M21 19c3 .2 5 2.4 5 5" {...common} /></>
+  };
+
+  return <svg className="np-line-icon" viewBox="0 0 32 32" aria-hidden="true">{icons[name] ?? icons.leaf}</svg>;
 }
