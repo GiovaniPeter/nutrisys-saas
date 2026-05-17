@@ -309,3 +309,209 @@ button, input, textarea, select { font: inherit; }
   .np-price-featured { transform: none; }
   .np-footer { text-align: left; }
 }
+/* Ajuste de proporção para deixar a landing mais parecida com a imagem gerada.
+   Cole este bloco NO FINAL do globals.css, depois do CSS que você já adicionou. */
+
+@media (min-width: 1181px) {
+  .np-page {
+    padding: 0 clamp(24px, 4vw, 64px) 32px;
+  }
+
+  .np-header {
+    max-width: 1360px;
+    padding: 24px 0 18px;
+  }
+
+  .np-logo-mark {
+    height: 34px;
+    width: 34px;
+  }
+
+  .np-logo strong {
+    font-size: 1.55rem;
+  }
+
+  .np-logo small {
+    font-size: 0.72rem;
+  }
+
+  .np-button {
+    border-radius: 8px;
+    min-height: 44px;
+    padding: 0 24px;
+  }
+
+  .np-hero {
+    gap: 48px;
+    grid-template-columns: minmax(430px, 0.9fr) minmax(560px, 1.1fr);
+    max-width: 1360px;
+    min-height: 560px;
+    padding: 20px 0 56px;
+  }
+
+  .np-hero-copy h1 {
+    font-size: clamp(3rem, 4.35vw, 5rem);
+    letter-spacing: -0.055em;
+    line-height: 1.05;
+    max-width: 650px;
+  }
+
+  .np-hero-copy p {
+    font-size: 1.08rem;
+    line-height: 1.65;
+    margin: 24px 0 24px;
+    max-width: 650px;
+  }
+
+  .np-hero-actions,
+  .np-stat-row {
+    gap: 14px;
+  }
+
+  .np-stat-row {
+    margin-top: 34px;
+  }
+
+  .np-mini-stat {
+    gap: 12px;
+    min-height: 74px;
+    min-width: 150px;
+    padding: 12px 14px;
+  }
+
+  .np-mini-stat .np-line-icon {
+    height: 30px;
+    width: 30px;
+  }
+
+  .np-mini-stat strong {
+    font-size: 1rem;
+  }
+
+  .np-mini-stat span {
+    font-size: 0.82rem;
+  }
+
+  .np-product-wrap {
+    min-height: 520px;
+  }
+
+  .np-leaf-bg {
+    height: 460px;
+    right: -70px;
+    top: 0;
+    width: 690px;
+  }
+
+  .np-laptop {
+    border-width: 7px;
+    min-height: 400px;
+    right: 52px;
+    top: 34px;
+    width: 680px;
+  }
+
+  .np-laptop::after {
+    bottom: -38px;
+    height: 38px;
+  }
+
+  .np-laptop-top {
+    font-size: 0.82rem;
+    padding: 13px 17px;
+  }
+
+  .np-dashboard-preview {
+    grid-template-columns: 135px minmax(0, 1fr);
+    min-height: 344px;
+  }
+
+  .np-dashboard-preview aside {
+    gap: 10px;
+    padding: 20px 14px;
+  }
+
+  .np-dashboard-preview section {
+    padding: 20px;
+  }
+
+  .np-dashboard-preview h3 {
+    font-size: 1.12rem;
+    margin-bottom: 14px;
+  }
+
+  .np-metrics-preview,
+  .np-charts-grid {
+    gap: 10px;
+  }
+
+  .np-metrics-preview div,
+  .np-chart-card {
+    padding: 12px;
+  }
+
+  .np-chart-card {
+    min-height: 100px;
+  }
+
+  .np-bars {
+    height: 58px;
+  }
+
+  .np-donut {
+    height: 64px;
+    width: 64px;
+  }
+
+  .np-donut::after {
+    inset: 15px;
+  }
+
+  .np-phone {
+    border-width: 7px;
+    border-radius: 30px;
+    min-height: 356px;
+    right: -2px;
+    top: 198px;
+    width: 154px;
+  }
+
+  .np-phone-notch {
+    left: 45px;
+    width: 58px;
+  }
+
+  .np-phone-screen {
+    border-radius: 24px;
+    min-height: 342px;
+    padding: 28px 12px 10px;
+  }
+
+  .np-phone-screen h4 {
+    font-size: 1rem;
+    margin: -28px -12px 12px;
+    padding: 38px 12px 16px;
+  }
+
+  .np-phone-card {
+    padding: 8px;
+  }
+}
+
+/* Ajuste extra para notebook/tela menor, evitando que o hero fique gigante. */
+@media (min-width: 1181px) and (max-width: 1440px) {
+  .np-hero-copy h1 {
+    font-size: clamp(3rem, 4vw, 4.25rem);
+  }
+
+  .np-laptop {
+    right: 24px;
+    transform: scale(0.92);
+    transform-origin: top right;
+  }
+
+  .np-phone {
+    transform: scale(0.92);
+    transform-origin: top right;
+  }
+}
