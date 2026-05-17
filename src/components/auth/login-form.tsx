@@ -1,7 +1,6 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
 
 type LoginFormProps = {
   accessMode?: "nutritionist" | "secretary";
@@ -9,7 +8,6 @@ type LoginFormProps = {
 };
 
 export function LoginForm({ accessMode = "nutritionist", buttonLabel = "Entrar" }: LoginFormProps) {
-  const router = useRouter();
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -19,26 +17,34 @@ export function LoginForm({ accessMode = "nutritionist", buttonLabel = "Entrar" 
     setMessage(null);
 
     const form = new FormData(event.currentTarget);
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: form.get("email"),
-        password: form.get("password"),
-        accessMode
-      })
-    });
+    let response: Response;
 
-    const data = await response.json();
-    setLoading(false);
+    try {
+      response = await fetch("/api/auth/login", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: form.get("email"),
+          password: form.get("password"),
+          accessMode
+        })
+      });
+    } catch {
+      setLoading(false);
+      setMessage("Não foi possível conectar ao servidor.");
+      return;
+    }
+
+    const data = await response.json().catch(() => ({} as { error?: string }));
 
     if (!response.ok) {
+      setLoading(false);
       setMessage(data.error || "Não foi possível entrar.");
       return;
     }
 
-    router.push("/dashboard");
-    router.refresh();
+    window.location.assign("/dashboard");
   }
 
   return (
