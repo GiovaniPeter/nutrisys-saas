@@ -315,6 +315,7 @@ const DB = {
                 { name: 'Açúcar cristal', portion: '5g', householdMeasure: '1 colher de chá', calories: 19, protein: 0, carbs: 5, fat: 0, fiber: 0, category: 'Outros', source: 'TACO' },
                 { name: 'Chocolate amargo 70%', portion: '25g', householdMeasure: '2 quadradinhos', calories: 132, protein: 2.0, carbs: 12.0, fat: 9.0, fiber: 2.8, category: 'Outros', source: 'IBGE' },
                 { name: 'Gelatina diet (pronta)', portion: '100g', householdMeasure: '1 taça', calories: 10, protein: 2.0, carbs: 0.5, fat: 0, fiber: 0, category: 'Outros', source: 'IBGE' },
+                { name: 'Caldo em po sabor carne [Knorr]', portion: '100g', householdMeasure: '21 porcoes de 4,75g', calories: 316, protein: 0, carbs: 29.47, fat: 21.05, fiber: 0, category: 'Temperos', source: 'Rotulo Knorr' },
             ];
             foods.forEach(f => this.addFood(f));
         }

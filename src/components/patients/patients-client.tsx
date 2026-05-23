@@ -48,7 +48,7 @@ export function PatientsClient() {
   useEffect(() => {
     const timeout = window.setTimeout(() => {
       void loadPatients(query);
-    }, 220);
+    }, query.trim() ? 220 : 0);
 
     return () => window.clearTimeout(timeout);
   }, [query]);

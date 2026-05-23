@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { ReactNode } from "react";
-import { getCurrentUser } from "@/lib/session";
+import { DashboardLink } from "@/components/auth/dashboard-link";
 
 const features = [
   {
@@ -86,8 +86,7 @@ const faqs = [
   }
 ];
 
-export default async function Home() {
-  const user = await getCurrentUser();
+export default function Home() {
   const trialHref = "/register";
 
   return (
@@ -108,11 +107,7 @@ export default async function Home() {
         </nav>
 
         <div className="np-header-actions">
-          {user ? (
-            <Link href="/dashboard" className="np-button np-button-ghost">
-              Dashboard
-            </Link>
-          ) : null}
+          <DashboardLink />
           <Link href="/login" className="np-button np-button-outline">
             Login
           </Link>

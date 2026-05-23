@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 type PatientOption = {
@@ -96,6 +96,8 @@ export function MealPlansClient() {
   const [publishingId, setPublishingId] = useState<string | null>(null);
   const [selectedFoodId, setSelectedFoodId] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const skippedInitialFoodsLoad = useRef(false);
+  const skippedInitialMealPlansLoad = useRef(false);
 
   const selectedFood = foods.find((food) => food.id === selectedFoodId) || null;
   const selectedMeal = meals.find((meal) => meal.id === selectedMealId) || meals[0];
@@ -106,14 +108,24 @@ export function MealPlansClient() {
   }, []);
 
   useEffect(() => {
+    if (!skippedInitialFoodsLoad.current) {
+      skippedInitialFoodsLoad.current = true;
+      return;
+    }
+
     const timeout = window.setTimeout(() => {
       void loadFoods(foodSearch);
-    }, 240);
+    }, foodSearch.trim() ? 240 : 0);
 
     return () => window.clearTimeout(timeout);
   }, [foodSearch]);
 
   useEffect(() => {
+    if (!skippedInitialMealPlansLoad.current) {
+      skippedInitialMealPlansLoad.current = true;
+      return;
+    }
+
     void loadMealPlans(selectedPatientId);
   }, [selectedPatientId]);
 

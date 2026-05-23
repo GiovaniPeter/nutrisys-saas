@@ -5,6 +5,22 @@ const prisma = new PrismaClient();
 const TARGET_GLOBAL_FOODS = Number(process.env.FOOD_IMPORT_TARGET || 1000);
 const TACO_URL = "https://raw.githubusercontent.com/machine-learning-mocha/taco/main/formatados/alimentos.csv";
 const OFF_SEARCH_URL = "https://world.openfoodfacts.org/cgi/search.pl";
+const BASE_FOODS = [
+  {
+    id: "base-knorr-caldo-em-po-sabor-carne-144g",
+    organizationId: null,
+    name: "Caldo em po sabor carne [Knorr]",
+    portion: "100 g",
+    householdMeasure: "21 porcoes de 4,75 g",
+    calories: 316,
+    protein: 0,
+    carbs: 29.47,
+    fat: 21.05,
+    fiber: 0,
+    category: "Temperos",
+    source: "base inicial"
+  }
+];
 
 main()
   .catch((error) => {
@@ -25,6 +41,7 @@ async function main() {
 
   const tacoFoods = await fetchTacoFoods();
   await upsertFoods(tacoFoods);
+  await upsertFoods(BASE_FOODS);
 
   let globalCount = await prisma.food.count({
     where: { organizationId: null }

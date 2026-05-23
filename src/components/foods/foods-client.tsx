@@ -38,7 +38,7 @@ export function FoodsClient() {
   useEffect(() => {
     const timeout = window.setTimeout(() => {
       void loadFoods(query);
-    }, 220);
+    }, query.trim() ? 220 : 0);
 
     return () => window.clearTimeout(timeout);
   }, [query]);

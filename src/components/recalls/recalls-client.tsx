@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 type PatientOption = {
@@ -106,6 +106,8 @@ export function RecallsClient() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const skippedInitialFoodsLoad = useRef(false);
+  const skippedInitialRecallsLoad = useRef(false);
 
   const selectedFood = foods.find((food) => food.id === selectedFoodId) || null;
   const selectedMeal = meals.find((meal) => meal.id === selectedMealId) || meals[0];
@@ -123,14 +125,24 @@ export function RecallsClient() {
   }, []);
 
   useEffect(() => {
+    if (!skippedInitialFoodsLoad.current) {
+      skippedInitialFoodsLoad.current = true;
+      return;
+    }
+
     const timeout = window.setTimeout(() => {
       void loadFoods(foodSearch);
-    }, 240);
+    }, foodSearch.trim() ? 240 : 0);
 
     return () => window.clearTimeout(timeout);
   }, [foodSearch]);
 
   useEffect(() => {
+    if (!skippedInitialRecallsLoad.current) {
+      skippedInitialRecallsLoad.current = true;
+      return;
+    }
+
     void loadRecalls(selectedPatientId);
   }, [selectedPatientId]);
 

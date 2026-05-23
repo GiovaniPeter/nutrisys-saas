@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { Sex } from "@prisma/client";
+import { Prisma, Sex } from "@prisma/client";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { audit } from "@/lib/audit";
@@ -27,18 +27,34 @@ export async function GET(request: NextRequest) {
   }
 
   const search = request.nextUrl.searchParams.get("q")?.trim();
+  const where: Prisma.PatientWhereInput = {
+    organizationId: user.organizationId,
+    ...(search
+      ? {
+          name: {
+            contains: search,
+            mode: "insensitive"
+          }
+        }
+      : {})
+  };
 
   const patients = await prisma.patient.findMany({
-    where: {
-      organizationId: user.organizationId,
-      ...(search
-        ? {
-            name: {
-              contains: search,
-              mode: "insensitive"
-            }
-          }
-        : {})
+    where,
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      phone: true,
+      birthDate: true,
+      sex: true,
+      heightCm: true,
+      weightKg: true,
+      goal: true,
+      notes: true,
+      lgpdConsentAt: true,
+      portalAccessCode: true,
+      portalEnabled: true
     },
     orderBy: { name: "asc" }
   });

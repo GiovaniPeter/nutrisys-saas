@@ -1,4 +1,5 @@
 import { NextRequest } from "next/server";
+import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { audit } from "@/lib/audit";
@@ -28,24 +29,20 @@ export async function GET(request: NextRequest) {
   const search = request.nextUrl.searchParams.get("q")?.trim();
   const category = request.nextUrl.searchParams.get("category")?.trim();
   const limit = Math.min(Number(request.nextUrl.searchParams.get("limit") || 200), 1000);
+  const where: Prisma.FoodWhereInput = {
+    OR: [{ organizationId: null }, { organizationId: user.organizationId }],
+    ...(search ? { name: { contains: search, mode: "insensitive" } } : {}),
+    ...(category ? { category } : {})
+  };
 
-  const foods = await prisma.food.findMany({
-    where: {
-      OR: [{ organizationId: null }, { organizationId: user.organizationId }],
-      ...(search ? { name: { contains: search, mode: "insensitive" } } : {}),
-      ...(category ? { category } : {})
-    },
-    orderBy: [{ organizationId: "asc" }, { name: "asc" }],
-    take: limit
-  });
-
-  const total = await prisma.food.count({
-    where: {
-      OR: [{ organizationId: null }, { organizationId: user.organizationId }],
-      ...(search ? { name: { contains: search, mode: "insensitive" } } : {}),
-      ...(category ? { category } : {})
-    }
-  });
+  const [foods, total] = await Promise.all([
+    prisma.food.findMany({
+      where,
+      orderBy: [{ organizationId: "asc" }, { name: "asc" }],
+      take: limit
+    }),
+    prisma.food.count({ where })
+  ]);
 
   return json({ foods, total });
 }

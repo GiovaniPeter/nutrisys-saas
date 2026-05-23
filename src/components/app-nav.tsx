@@ -69,6 +69,7 @@ export function AppNav({ active, user }: AppNavProps) {
   const visibleNavItems = user.role === "SECRETARY"
     ? navItems.filter((item) => secretaryNavKeys.has(item.key))
     : navItems;
+  const profileHref = user.role === "SECRETARY" ? "/dashboard" : "/settings";
 
   return (
     <header className="app-header">
@@ -89,7 +90,7 @@ export function AppNav({ active, user }: AppNavProps) {
         ))}
       </nav>
 
-      <Link href="/api/auth/me" className="user-pill" title={user.email}>
+      <Link href={profileHref} className="user-pill" title={`${user.name} - ${user.email}`}>
         {initials(user.name)}
       </Link>
     </header>
