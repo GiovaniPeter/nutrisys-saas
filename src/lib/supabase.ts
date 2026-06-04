@@ -1,16 +1,19 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+function getSupabaseClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
-// Inicializa o cliente do Supabase. 
-// O ideal é usar a SERVICE_ROLE_KEY no backend para ter permissão de upload ignorando RLS, 
-// ou configurar o RLS do bucket corretamente no painel.
-export const supabase = createClient(supabaseUrl, supabaseKey, {
-  auth: {
-    persistSession: false,
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error('Supabase URL ou Key não estão configuradas no .env');
   }
-});
+
+  return createClient(supabaseUrl, supabaseKey, {
+    auth: {
+      persistSession: false,
+    }
+  });
+}
 
 /**
  * Função utilitária para fazer upload de arquivos no Supabase Storage
@@ -26,9 +29,7 @@ export async function uploadFileToStorage(
   fileBuffer: Buffer,
   contentType: string
 ): Promise<string> {
-  if (!supabaseUrl || !supabaseKey) {
-    throw new Error('Supabase URL ou Key não estão configuradas no .env');
-  }
+  const supabase = getSupabaseClient();
 
   const { data, error } = await supabase.storage
     .from(bucket)

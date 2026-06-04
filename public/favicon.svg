@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="NutriPlan">
+  <defs>
+    <linearGradient id="bg" x1="78" y1="438" x2="434" y2="74" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0f766e"/>
+      <stop offset="0.52" stop-color="#10b981"/>
+      <stop offset="1" stop-color="#22c55e"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#064e3b" flood-opacity="0.26"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <path filter="url(#shadow)" fill="#fff" d="M147 324c0-59 37-103 94-117 25-6 59-6 92-12 34-6 59-18 75-39 7 72-17 126-67 151-34 17-75 13-104 27-28 14-45 40-40 72-32-13-50-40-50-82Zm59 12c38-73 108-89 171-117-82 7-154 42-183 104-20 42-17 86 16 116 15 14 37 19 59 17 34-3 56-25 70-55h-44c-9 15-22 24-39 25-28 2-47-18-50-46-1-15 2-30 10-44Zm143 9 63-37c12-7 25 11 13 19l-70 42a43 43 0 0 1-6-24Zm25 43 65-38c12-7 25 12 12 19l-63 38a43 43 0 0 1-14-19Zm-3 47 74-44c12-7 25 12 12 19l-70 42a43 43 0 0 1-16-17Z"/>
+</svg>

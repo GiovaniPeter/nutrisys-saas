@@ -21,6 +21,10 @@ export type AuthenticatedUser = {
   role: string;
 };
 
+export type RequiredAuthUser = AuthenticatedUser & {
+  userId: string;
+};
+
 export function createSessionCookie(payload: Omit<SessionPayload, "exp">): string {
   const session: SessionPayload = {
     ...payload,
@@ -86,6 +90,16 @@ export async function getCurrentUser(): Promise<AuthenticatedUser | null> {
   });
 
   return user ? { ...user, role: user.role } : null;
+}
+
+export async function requireAuth(_request?: Request): Promise<RequiredAuthUser> {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    throw new Error("Nao autenticado.");
+  }
+
+  return { ...user, userId: user.id };
 }
 
 function verifySessionCookie(cookie: string): SessionPayload | null {
