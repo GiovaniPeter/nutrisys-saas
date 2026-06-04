@@ -1,5 +1,5 @@
 import crypto from "node:crypto";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
@@ -61,7 +61,16 @@ export function clearPortalSessionCookie(response: NextResponse) {
 
 export async function getCurrentPortalPatient(): Promise<PortalPatient | null> {
   const cookie = cookies().get(COOKIE_NAME)?.value;
-  const payload = cookie ? verifyPortalSessionCookie(cookie) : null;
+  let token = cookie;
+
+  if (!token) {
+    const authHeader = headers().get("authorization");
+    if (authHeader?.startsWith("Bearer ")) {
+      token = authHeader.split(" ")[1];
+    }
+  }
+
+  const payload = token ? verifyPortalSessionCookie(token) : null;
 
   if (!payload) {
     return null;

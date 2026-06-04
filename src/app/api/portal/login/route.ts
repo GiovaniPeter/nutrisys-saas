@@ -51,13 +51,15 @@ export async function POST(request: NextRequest) {
       return error("Dados de acesso invalidos.", 401);
     }
 
-    const response = NextResponse.json({ patient: { id: patient.id, name: patient.name } });
+    const token = createPortalSessionCookie({
+      patientId: patient.id,
+      organizationId: patient.organizationId
+    });
+
+    const response = NextResponse.json({ patient: { id: patient.id, name: patient.name }, token });
     setPortalSessionCookie(
       response,
-      createPortalSessionCookie({
-        patientId: patient.id,
-        organizationId: patient.organizationId
-      })
+      token
     );
 
     return response;

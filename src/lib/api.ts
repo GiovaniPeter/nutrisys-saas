@@ -14,7 +14,8 @@ export function validationError(err: unknown) {
     return error(err.errors.map((item) => item.message).join(", "), 422);
   }
 
-  return error("Dados inválidos.", 422);
+  console.error(err);
+  return error("Erro interno do servidor.", 500);
 }
 
 export function slugify(value: string) {

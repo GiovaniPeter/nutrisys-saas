@@ -13,11 +13,13 @@ export async function GET() {
       appUrlConfigured: Boolean(process.env.APP_URL),
       checkedAt: new Date().toISOString()
     });
-  } catch {
+  } catch (err) {
+    console.error(err);
     return NextResponse.json(
       {
         status: "error",
         database: "error",
+        error: process.env.NODE_ENV === "development" && err instanceof Error ? err.message : undefined,
         checkedAt: new Date().toISOString()
       },
       { status: 503 }

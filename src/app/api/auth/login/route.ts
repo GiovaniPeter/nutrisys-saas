@@ -53,6 +53,12 @@ export async function POST(request: NextRequest) {
       return error("Use a opção Secretária para entrar com este usuário.", 403);
     }
 
+    const sessionToken = createSessionCookie({
+      userId: user.id,
+      organizationId: user.organizationId,
+      role: user.role
+    });
+
     const response = NextResponse.json({
       user: {
         id: user.id,
@@ -60,16 +66,13 @@ export async function POST(request: NextRequest) {
         name: user.name,
         email: user.email,
         role: user.role
-      }
+      },
+      token: sessionToken
     });
 
     setSessionCookie(
       response,
-      createSessionCookie({
-        userId: user.id,
-        organizationId: user.organizationId,
-        role: user.role
-      })
+      sessionToken
     );
 
     return response;
