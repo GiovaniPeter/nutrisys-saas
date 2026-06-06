@@ -269,7 +269,16 @@ export default function Home() {
 
         <FooterColumn title="Produto" links={["Recursos", "Planos", "Integrações"]} />
         <FooterColumn title="Empresa" links={["Sobre nós", "Blog", "Contato"]} />
-        <FooterColumn title="Suporte" links={["Central de ajuda", "Termos de uso", "Política de privacidade"]} />
+        <FooterColumn
+          title="Suporte"
+          links={[
+            { label: "Central de ajuda", href: "#" },
+            { label: "Termos de uso", href: "#" },
+            { label: "Politica de privacidade", href: "/politica-de-privacidade" },
+            { label: "Exclusao de conta", href: "/exclusao-de-conta" },
+            { label: "Recuperar senha", href: "/recuperar-senha" }
+          ]}
+        />
         <div className="np-footer-column">
           <h3>Fale conosco</h3>
           <a href="mailto:contato@nutriplanpro.com.br">contato@nutriplanpro.com.br</a>
@@ -362,11 +371,16 @@ function MiniStat({ icon, title, text }: { icon: string; title: string; text: st
   );
 }
 
-function FooterColumn({ title, links }: { title: string; links: string[] }) {
+function FooterColumn({ title, links }: { title: string; links: Array<string | { label: string; href: string }> }) {
   return (
     <div className="np-footer-column">
       <h3>{title}</h3>
-      {links.map((link) => <a href="#" key={link}>{link}</a>)}
+      {links.map((link) => {
+        const label = typeof link === "string" ? link : link.label;
+        const href = typeof link === "string" ? "#" : link.href;
+
+        return <a href={href} key={label}>{label}</a>;
+      })}
     </div>
   );
 }
