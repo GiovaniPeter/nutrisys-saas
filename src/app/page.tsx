@@ -96,7 +96,7 @@ export default function Home() {
           <span className="np-logo-mark"><LeafIcon /></span>
           <span>
             <strong>NutriPlan <em>Pro</em></strong>
-            <small>Software para nutricionistas</small>
+            <small>Software para nutricionistas e clínicas</small>
           </span>
         </Link>
 
@@ -255,7 +255,7 @@ export default function Home() {
             <span className="np-logo-mark"><LeafIcon /></span>
             <span>
               <strong>NutriPlan <em>Pro</em></strong>
-              <small>Software para nutricionistas</small>
+              <small>Software para nutricionistas e clínicas</small>
             </span>
           </Link>
           <p>Plataforma completa para nutricionistas e clínicas de nutrição.</p>
