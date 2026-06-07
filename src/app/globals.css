@@ -1,15 +1,17 @@
 :root {
-  --np-bg: #fbfcf8;
-  --np-card: #ffffff;
-  --np-ink: #09251d;
-  --np-muted: #5d6d67;
-  --np-soft: #edf7ee;
-  --np-soft-2: #f5faf3;
-  --np-primary: #168432;
-  --np-primary-2: #0c6f2a;
-  --np-primary-dark: #064b24;
-  --np-line: #dfe9dd;
-  --np-shadow: 0 24px 70px rgba(13, 60, 34, 0.1);
+  --np-bg: #f7fbf9;
+  --np-card: rgba(255, 255, 255, 0.78);
+  --np-ink: #061d1a;
+  --np-muted: #536864;
+  --np-soft: #eaf8f2;
+  --np-soft-2: #f8fffb;
+  --np-primary: #12874b;
+  --np-primary-2: #087f94;
+  --np-primary-dark: #063b32;
+  --np-accent: #f3bc45;
+  --np-line: rgba(12, 73, 62, 0.14);
+  --np-glass-line: rgba(255, 255, 255, 0.74);
+  --np-shadow: 0 28px 80px rgba(6, 45, 38, 0.12);
   --np-radius: 28px;
 }
 
@@ -633,20 +635,34 @@ form button[type="submit"] {
 
 .np-page {
   background:
-    radial-gradient(circle at 96% 5%, rgba(22, 132, 50, 0.14), transparent 280px),
-    radial-gradient(circle at 8% 12%, rgba(22, 132, 50, 0.08), transparent 270px),
-    linear-gradient(180deg, #ffffff 0%, #fbfcf8 46%, #ffffff 100%);
+    linear-gradient(118deg, rgba(241, 255, 248, 0.98) 0%, rgba(255, 255, 255, 0.96) 36%, rgba(237, 249, 255, 0.92) 72%, rgba(255, 248, 231, 0.86) 100%),
+    #ffffff;
   color: var(--np-ink);
+  isolation: isolate;
   min-height: 100vh;
   overflow: hidden;
   padding: 0 0 34px;
+  position: relative;
+}
+
+.np-page::before {
+  background:
+    linear-gradient(105deg, transparent 0 38%, rgba(255, 255, 255, 0.74) 38% 44%, transparent 44% 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.48), rgba(255, 255, 255, 0));
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
 }
 
 .np-header {
   align-items: center;
-  background: rgba(255, 255, 255, 0.94);
-  border-bottom: 1px solid rgba(9, 37, 29, 0.08);
-  box-shadow: 0 14px 40px rgba(9, 37, 29, 0.06);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+  backdrop-filter: blur(22px) saturate(145%);
+  background: rgba(255, 255, 255, 0.72);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.84);
+  box-shadow: 0 18px 44px rgba(6, 45, 38, 0.08);
   display: grid;
   gap: 22px;
   grid-template-columns: 1fr auto 1fr;
@@ -660,10 +676,10 @@ form button[type="submit"] {
 .np-logo { align-items: center; display: inline-flex; gap: 12px; width: max-content; }
 .np-logo-mark {
   align-items: center;
-  background: linear-gradient(145deg, #eef9ef, #ffffff);
-  border: 1px solid rgba(22, 132, 50, 0.18);
+  background: linear-gradient(145deg, rgba(255,255,255,.96), rgba(232, 250, 241, .84));
+  border: 1px solid rgba(255, 255, 255, 0.9);
   border-radius: 16px;
-  box-shadow: 0 12px 28px rgba(22, 132, 50, 0.12);
+  box-shadow: 0 14px 32px rgba(12, 111, 88, 0.16), inset 0 1px 0 rgba(255,255,255,.95);
   color: var(--np-primary);
   display: inline-flex;
   height: 52px;
@@ -672,7 +688,7 @@ form button[type="submit"] {
 }
 .np-logo-mark svg { height: 38px; width: 38px; }
 .np-logo strong { color: #08291e; display: block; font-size: clamp(1.42rem, 2.05vw, 2.08rem); font-weight: 950; letter-spacing: -0.06em; line-height: .92; }
-.np-logo strong em { color: var(--np-primary); font-style: normal; letter-spacing: -0.04em; }
+.np-logo strong em { color: var(--np-primary-2); font-style: normal; letter-spacing: -0.04em; }
 .np-logo small { color: #5d6d67; display: block; font-size: 0.9rem; font-weight: 800; letter-spacing: -0.015em; margin-top: 6px; }
 .np-nav { align-items: center; display: flex; gap: clamp(24px, 4vw, 60px); justify-content: center; }
 .np-nav a { color: #172c25; font-size: 0.96rem; font-weight: 750; }
@@ -692,9 +708,20 @@ form button[type="submit"] {
   transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
 }
 .np-button:hover { transform: translateY(-2px); }
-.np-button-primary { background: linear-gradient(135deg, #168d38, #0d6e2d); box-shadow: 0 16px 30px rgba(22, 132, 50, 0.2); color: #fff; }
-.np-button-outline { background: #fff; border-color: #0e7e35; color: #0a5f2b; }
-.np-button-ghost { background: transparent; border-color: rgba(14, 126, 53, 0.18); color: #0a5f2b; }
+.np-button-primary {
+  background: linear-gradient(135deg, #12874b 0%, #087f94 100%);
+  box-shadow: 0 18px 34px rgba(8, 127, 148, 0.22), inset 0 1px 0 rgba(255,255,255,.32);
+  color: #fff;
+}
+.np-button-outline {
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  backdrop-filter: blur(16px) saturate(150%);
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(8, 127, 148, 0.26);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.75);
+  color: #075d55;
+}
+.np-button-ghost { background: transparent; border-color: rgba(8, 127, 148, 0.18); color: #075d55; }
 .np-button-light { background: #fff; color: #0a632c; }
 .np-button-large { min-height: 56px; padding-inline: 32px; }
 
@@ -716,9 +743,13 @@ form button[type="submit"] {
   margin: 0;
   max-width: 690px;
 }
-.np-hero-copy h1 span { color: var(--np-primary); display: inline; }
+.np-hero-copy h1 span {
+  color: var(--np-primary-2);
+  display: inline;
+  text-shadow: 0 18px 42px rgba(8, 127, 148, 0.18);
+}
 .np-hero-copy p {
-  color: #31423d;
+  color: #2d4642;
   font-size: clamp(1rem, 1.12vw, 1.12rem);
   line-height: 1.72;
   margin: 26px 0 26px;
@@ -728,60 +759,72 @@ form button[type="submit"] {
 .np-stat-row {
   align-items: stretch;
   display: grid;
-  gap: 12px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin-top: 42px;
-  max-width: 720px;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 34px;
+  max-width: 590px;
   width: 100%;
 }
 .np-mini-stat {
   align-items: center;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid var(--np-line);
-  border-radius: 12px;
-  box-shadow: 0 18px 34px rgba(13, 60, 34, 0.08);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
+  background: linear-gradient(145deg, rgba(255,255,255,.86), rgba(237, 255, 248, .6));
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 14px;
+  box-shadow: 0 22px 42px rgba(6, 45, 38, 0.12), inset 0 1px 0 rgba(255,255,255,.9);
   display: grid;
-  grid-template-columns: 34px minmax(0, 1fr);
-  gap: 10px;
-  min-height: 100px;
+  grid-template-columns: 46px minmax(0, 1fr);
+  gap: 14px;
+  min-height: 92px;
   min-width: 0;
-  padding: 14px 12px;
+  padding: 16px;
 }
 .np-line-icon { color: var(--np-primary); flex: 0 0 auto; height: 46px; width: 46px; }
-.np-mini-stat .np-line-icon { height: 34px; width: 34px; }
+.np-mini-stat .np-line-icon {
+  background: linear-gradient(145deg, rgba(255,255,255,.82), rgba(229, 249, 241, .9));
+  border: 1px solid rgba(18, 135, 75, 0.14);
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9);
+  height: 46px;
+  padding: 8px;
+  width: 46px;
+}
 .np-mini-stat strong {
   display: block;
-  font-size: 0.92rem;
-  line-height: 1.1;
-  overflow-wrap: break-word;
+  font-size: 1.02rem;
+  line-height: 1.08;
+  word-break: normal;
 }
 .np-mini-stat span {
-  color: #2a3b35;
+  color: #37534e;
   display: block;
-  font-size: 0.74rem;
-  font-weight: 750;
-  line-height: 1.18;
-  margin-top: 3px;
-  overflow-wrap: break-word;
+  font-size: 0.82rem;
+  font-weight: 780;
+  line-height: 1.24;
+  margin-top: 5px;
+  word-break: normal;
 }
 
 .np-product-wrap { min-height: 470px; position: relative; }
 .np-leaf-bg {
   background:
-    radial-gradient(circle at 55% 10%, rgba(22, 132, 50, 0.14), transparent 310px),
-    linear-gradient(135deg, rgba(221, 243, 221, 0.82), rgba(255,255,255,0));
-  border-radius: 0 0 0 120px;
+    linear-gradient(135deg, rgba(255,255,255,.74), rgba(214, 250, 239, .52) 48%, rgba(231, 247, 255, .42));
+  border: 1px solid rgba(255,255,255,.78);
+  border-radius: 0 0 0 130px;
+  box-shadow: 0 34px 90px rgba(8, 127, 148, 0.12);
   height: 560px;
   position: absolute;
   right: -104px;
   top: -250px;
+  transform: rotate(-4deg);
   width: 800px;
 }
 .np-laptop {
-  background: #151a18;
-  border: 8px solid #151a18;
+  background: #062923;
+  border: 8px solid #062923;
   border-radius: 24px 24px 14px 14px;
-  box-shadow: 0 36px 80px rgba(8, 36, 24, 0.23);
+  box-shadow: 0 38px 90px rgba(6, 45, 38, 0.26), 0 0 76px rgba(8, 127, 148, 0.16);
   min-height: 488px;
   position: absolute;
   right: 36px;
@@ -800,9 +843,9 @@ form button[type="submit"] {
 }
 .np-laptop-top {
   align-items: center;
-  background: #fbfcfa;
+  background: linear-gradient(180deg, #ffffff, #eef8f5);
   border-radius: 14px 14px 0 0;
-  color: var(--np-primary);
+  color: var(--np-primary-2);
   display: flex;
   font-size: 0.92rem;
   font-weight: 900;
@@ -844,10 +887,32 @@ form button[type="submit"] {
 
 .np-section { margin: 0 auto; max-width: 1320px; padding: 30px max(24px, calc((100vw - 1320px) / 2)) 20px; }
 .np-center { text-align: center; }
-.np-section-heading span { background: #edf7ed; border-radius: 999px; color: var(--np-primary); display: inline-flex; font-size: .86rem; font-weight: 850; margin-bottom: 10px; padding: 8px 14px; }
+.np-section-heading span {
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  backdrop-filter: blur(14px) saturate(150%);
+  background: rgba(255,255,255,.66);
+  border: 1px solid rgba(255,255,255,.74);
+  border-radius: 999px;
+  box-shadow: 0 10px 24px rgba(6, 45, 38, 0.06);
+  color: var(--np-primary-2);
+  display: inline-flex;
+  font-size: .86rem;
+  font-weight: 850;
+  margin-bottom: 10px;
+  padding: 8px 14px;
+}
 .np-section-heading h2 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(2rem, 3vw, 2.85rem); letter-spacing: -0.045em; line-height: 1.1; margin: 0; }
 .np-feature-grid { display: grid; gap: 28px; grid-template-columns: repeat(4, 1fr); margin-top: 34px; }
-.np-feature-card { background: #fff; border: 1px solid var(--np-line); border-radius: 16px; box-shadow: 0 18px 45px rgba(13, 60, 34, 0.06); min-height: 220px; padding: 34px 34px 30px; }
+.np-feature-card {
+  -webkit-backdrop-filter: blur(18px) saturate(145%);
+  backdrop-filter: blur(18px) saturate(145%);
+  background: linear-gradient(145deg, rgba(255,255,255,.84), rgba(241, 252, 248, .68));
+  border: 1px solid rgba(255,255,255,.78);
+  border-radius: 16px;
+  box-shadow: 0 20px 48px rgba(6, 45, 38, 0.08), inset 0 1px 0 rgba(255,255,255,.88);
+  min-height: 220px;
+  padding: 34px 34px 30px;
+}
 .np-feature-card h3, .np-step h3, .np-faq-card h3 { font-size: 1.1rem; margin: 22px 0 12px; }
 .np-feature-card p, .np-step p, .np-faq-card p { color: #4a5a54; font-size: .96rem; line-height: 1.55; margin: 0; }
 
@@ -856,13 +921,38 @@ form button[type="submit"] {
 .np-step-row::before { border-top: 2px dashed #b8c7b5; content: ""; left: 11%; position: absolute; right: 11%; top: 38px; }
 .np-step { padding: 0 18px; position: relative; text-align: center; }
 .np-step > strong { align-items: center; background: var(--np-primary); border-radius: 999px; color: #fff; display: inline-flex; font-size: 1rem; height: 34px; justify-content: center; left: calc(50% - 55px); position: absolute; top: -10px; width: 34px; z-index: 2; }
-.np-step-icon { align-items: center; background: #f3faf2; border: 1px solid var(--np-line); border-radius: 18px; box-shadow: 0 14px 30px rgba(13,60,34,.05); display: inline-flex; height: 82px; justify-content: center; margin-bottom: 12px; position: relative; width: 82px; z-index: 1; }
+.np-step-icon {
+  align-items: center;
+  background: linear-gradient(145deg, rgba(255,255,255,.84), rgba(235, 249, 244, .72));
+  border: 1px solid rgba(255,255,255,.78);
+  border-radius: 18px;
+  box-shadow: 0 16px 34px rgba(6,45,38,.08), inset 0 1px 0 rgba(255,255,255,.9);
+  display: inline-flex;
+  height: 82px;
+  justify-content: center;
+  margin-bottom: 12px;
+  position: relative;
+  width: 82px;
+  z-index: 1;
+}
 .np-step h3 { margin: 12px 0 8px; }
 .np-step p { margin: 0 auto; max-width: 230px; }
 
 .np-pricing-grid { align-items: stretch; display: grid; gap: 20px; grid-template-columns: repeat(3, 1fr); margin: 30px auto 18px; max-width: 1120px; }
-.np-price-card { background: #fff; border: 1px solid var(--np-line); border-radius: 16px; box-shadow: 0 20px 45px rgba(13, 60, 34, 0.08); display: flex; flex-direction: column; min-height: 370px; padding: 40px 34px 30px; position: relative; }
-.np-price-featured { border-color: var(--np-primary); box-shadow: 0 26px 60px rgba(22,132,50,.15); transform: translateY(-8px); }
+.np-price-card {
+  -webkit-backdrop-filter: blur(18px) saturate(145%);
+  backdrop-filter: blur(18px) saturate(145%);
+  background: linear-gradient(145deg, rgba(255,255,255,.86), rgba(241, 252, 248, .7));
+  border: 1px solid rgba(255,255,255,.8);
+  border-radius: 16px;
+  box-shadow: 0 22px 52px rgba(6, 45, 38, 0.09), inset 0 1px 0 rgba(255,255,255,.88);
+  display: flex;
+  flex-direction: column;
+  min-height: 370px;
+  padding: 40px 34px 30px;
+  position: relative;
+}
+.np-price-featured { border-color: rgba(8, 127, 148, 0.34); box-shadow: 0 30px 70px rgba(8,127,148,.16), inset 0 1px 0 rgba(255,255,255,.9); transform: translateY(-8px); }
 .np-popular { background: linear-gradient(135deg, #168d38, #0d6e2d); border-radius: 14px 14px 0 0; color: #fff; font-size: .82rem; font-weight: 900; left: 0; padding: 10px 14px; position: absolute; right: 0; text-align: center; top: 0; }
 .np-price-card h3 { font-size: 1.45rem; margin: 0 0 18px; }
 .np-price-featured h3 { margin-top: 22px; }
@@ -876,7 +966,13 @@ form button[type="submit"] {
 .np-pricing-note::before { content: "♟"; color: var(--np-primary); margin-right: 8px; }
 
 .np-faq-grid { display: grid; gap: 28px; grid-template-columns: repeat(3, 1fr); margin-top: 24px; }
-.np-faq-card { background: #fff; border: 1px solid var(--np-line); border-radius: 14px; padding: 20px 22px; }
+.np-faq-card {
+  background: rgba(255,255,255,.74);
+  border: 1px solid rgba(255,255,255,.76);
+  border-radius: 14px;
+  box-shadow: 0 18px 36px rgba(6, 45, 38, 0.06);
+  padding: 20px 22px;
+}
 .np-faq-card div { align-items: center; display: grid; gap: 10px; grid-template-columns: auto 1fr auto; }
 .np-faq-card div > span { align-items: center; border: 2px solid var(--np-primary); border-radius: 999px; color: var(--np-primary); display: inline-flex; font-weight: 900; height: 28px; justify-content: center; width: 28px; }
 .np-faq-card h3 { font-size: 1rem; margin: 0; }
@@ -886,10 +982,9 @@ form button[type="submit"] {
 .np-final-cta {
   align-items: center;
   background:
-    radial-gradient(circle at 92% 0%, rgba(255,255,255,.18), transparent 260px),
-    linear-gradient(135deg, #06471f, #168436);
+    linear-gradient(135deg, rgba(5, 66, 55, 0.98), rgba(8, 127, 148, 0.94) 64%, rgba(243, 188, 69, 0.78));
   border-radius: 18px;
-  box-shadow: 0 28px 70px rgba(11, 74, 31, 0.25);
+  box-shadow: 0 30px 76px rgba(6, 45, 38, 0.24);
   color: #fff;
   display: grid;
   gap: 28px;
