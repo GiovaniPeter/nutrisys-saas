@@ -1,10 +1,16 @@
 import { NextResponse } from 'next/server';
 import { uploadFileToStorage } from '@/lib/supabase';
-import { requireAuth } from '@/lib/session';
+import { getCurrentUser } from '@/lib/session';
+import { getCurrentPortalPatient } from '@/lib/patient-session';
 
 export async function POST(request: Request) {
   try {
-    const session = await requireAuth(request);
+    const user = await getCurrentUser();
+    const patient = user ? null : await getCurrentPortalPatient();
+
+    if (!user && !patient) {
+      return NextResponse.json({ error: 'Nao autenticado.' }, { status: 401 });
+    }
 
     // Na versão real do Supabase Storage vamos usar um form-data
     const formData = await request.formData();
@@ -23,7 +29,8 @@ export async function POST(request: Request) {
     // Gerando um nome único
     const timestamp = Date.now();
     const extension = file.name.split('.').pop();
-    const safeName = `${session.userId}-${timestamp}.${extension}`;
+    const ownerId = user?.id || patient?.id || 'upload';
+    const safeName = `${ownerId}-${timestamp}.${extension}`;
     const path = `${folder}/${safeName}`;
 
     const publicUrl = await uploadFileToStorage(
