@@ -137,10 +137,10 @@ export default function Home() {
           </div>
 
           <div className="np-stat-row">
-            <MiniStat icon="leaf" title="1000+" text="alimentos na base inicial" />
-            <MiniStat icon="calendar" title="7 dias" text="de trial" />
-            <MiniStat icon="users" title="Multi-" text="clínica" />
-            <MiniStat icon="assistant" title="Acesso secretária" text="modo limitado" />
+            <MiniStat icon="leaf" title="1000+ alimentos" text="base inicial" />
+            <MiniStat icon="calendar" title="7 dias" text="trial grátis" />
+            <MiniStat icon="users" title="Multi-clínica" text="equipes e unidades" />
+            <MiniStat icon="assistant" title="Secretária" text="acesso limitado" />
           </div>
         </div>
 
