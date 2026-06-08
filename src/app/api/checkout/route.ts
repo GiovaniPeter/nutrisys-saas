@@ -1,47 +1,150 @@
-import { NextResponse } from 'next/server';
-import { requireAuth } from '@/lib/session';
-import { mpPreference } from '@/lib/mercadopago';
+import { randomUUID } from "node:crypto";
+import { NextRequest } from "next/server";
+import { SubscriptionStatus } from "@prisma/client";
+import { z } from "zod";
+import { audit } from "@/lib/audit";
+import { error, json, validationError } from "@/lib/api";
+import {
+  assertMercadoPagoConfigured,
+  buildSubscriptionReference,
+  getAppUrl,
+  moneyFromCents,
+  mpPreApproval,
+  parseMercadoPagoDate
+} from "@/lib/mercadopago";
+import { findPlan } from "@/lib/plans";
+import { prisma } from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/session";
 
-export async function POST(request: Request) {
+const checkoutSchema = z.object({
+  planCode: z.string().min(1)
+});
+
+export async function POST(request: NextRequest) {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return error("Nao autenticado.", 401);
+  }
+
+  if (!["OWNER", "ADMIN"].includes(user.role)) {
+    return error("Apenas responsaveis da clinica podem alterar a assinatura.", 403);
+  }
+
   try {
-    const session = await requireAuth(request);
+    assertMercadoPagoConfigured();
 
-    // Na versão real, pegaremos o plano escolhido no body
-    const { planId, title, price } = await request.json();
+    const input = checkoutSchema.parse(await request.json());
+    const plan = findPlan(input.planCode);
 
-    if (!title || !price) {
-      return NextResponse.json({ error: 'Faltam parâmetros do plano' }, { status: 400 });
+    if (!plan) {
+      return error("Plano invalido.", 422);
     }
 
-    // Criar preferência de pagamento no Mercado Pago
-    const preference = await mpPreference.create({
-      body: {
-        items: [
-          {
-            id: planId || 'plano_padrao',
-            title: title,
-            quantity: 1,
-            unit_price: Number(price),
-            currency_id: 'BRL',
+    const existing = await prisma.subscription.findFirst({
+      where: { organizationId: user.organizationId },
+      orderBy: { createdAt: "desc" }
+    });
+
+    if (
+      existing?.provider === "MERCADO_PAGO" &&
+      existing.providerSubId &&
+      existing.status === SubscriptionStatus.ACTIVE
+    ) {
+      const updatedPreApproval = await mpPreApproval.update({
+        id: existing.providerSubId,
+        body: {
+          reason: buildReason(plan.name),
+          external_reference: buildSubscriptionReference({
+            organizationId: user.organizationId,
+            planCode: plan.code
+          }),
+          auto_recurring: {
+            transaction_amount: moneyFromCents(plan.monthlyPriceCents),
+            currency_id: "BRL"
           }
-        ],
-        back_urls: {
-          success: `${process.env.APP_URL}/dashboard?payment=success`,
-          failure: `${process.env.APP_URL}/dashboard?payment=failure`,
-          pending: `${process.env.APP_URL}/dashboard?payment=pending`
         },
-        auto_return: 'approved',
-        external_reference: session.organizationId // Vinculando à organização do profissional
+        requestOptions: { idempotencyKey: randomUUID() }
+      });
+
+      const subscription = await prisma.subscription.update({
+        where: { id: existing.id },
+        data: {
+          planCode: plan.code,
+          provider: "MERCADO_PAGO",
+          providerCustomerId: updatedPreApproval.payer_id ? String(updatedPreApproval.payer_id) : existing.providerCustomerId,
+          providerSubId: updatedPreApproval.id || existing.providerSubId,
+          status: SubscriptionStatus.ACTIVE,
+          currentPeriodEndsAt: parseMercadoPagoDate(updatedPreApproval.next_payment_date) || existing.currentPeriodEndsAt
+        }
+      });
+
+      await audit({
+        organizationId: user.organizationId,
+        userId: user.id,
+        action: "subscription.mercadopago_plan_updated",
+        entity: "Subscription",
+        entityId: subscription.id,
+        metadata: {
+          planCode: plan.code,
+          providerSubId: subscription.providerSubId
+        }
+      });
+
+      return json({ success: true, subscription });
+    }
+
+    const appUrl = getAppUrl();
+    const notificationUrl = `${appUrl}/api/webhooks/mercadopago?source_news=webhooks`;
+    const preApproval = await mpPreApproval.create({
+      body: {
+        reason: buildReason(plan.name),
+        external_reference: buildSubscriptionReference({
+          organizationId: user.organizationId,
+          planCode: plan.code
+        }),
+        payer_email: user.email,
+        auto_recurring: {
+          frequency: 1,
+          frequency_type: "months",
+          transaction_amount: moneyFromCents(plan.monthlyPriceCents),
+          currency_id: "BRL"
+        },
+        back_url: `${appUrl}/billing?checkout=mercadopago`,
+        status: "authorized",
+        notification_url: notificationUrl
+      } as Parameters<typeof mpPreApproval.create>[0]["body"] & { notification_url: string },
+      requestOptions: { idempotencyKey: randomUUID() }
+    });
+
+    if (!preApproval.init_point) {
+      return error("Mercado Pago nao retornou o link de checkout.", 502);
+    }
+
+    await audit({
+      organizationId: user.organizationId,
+      userId: user.id,
+      action: "subscription.mercadopago_checkout_created",
+      entity: "Subscription",
+      entityId: existing?.id,
+      metadata: {
+        planCode: plan.code,
+        providerSubId: preApproval.id,
+        status: preApproval.status
       }
     });
 
-    return NextResponse.json({ 
-      success: true, 
-      checkoutUrl: preference.init_point 
+    return json({
+      success: true,
+      checkoutUrl: preApproval.init_point,
+      providerSubId: preApproval.id,
+      status: preApproval.status
     });
-
-  } catch (error: any) {
-    console.error('Erro ao gerar checkout do Mercado Pago:', error);
-    return NextResponse.json({ error: error.message || 'Erro ao gerar checkout' }, { status: 500 });
+  } catch (err) {
+    return validationError(err);
   }
+}
+
+function buildReason(planName: string) {
+  return `NutriPlan Pro - Plano ${planName}`;
 }

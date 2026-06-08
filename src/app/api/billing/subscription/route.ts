@@ -3,15 +3,17 @@ import { SubscriptionStatus } from "@prisma/client";
 import { z } from "zod";
 import { audit } from "@/lib/audit";
 import { error, json, validationError } from "@/lib/api";
-import { findPlan, PLANS } from "@/lib/plans";
+import {
+  assertMercadoPagoConfigured,
+  mapMercadoPagoSubscriptionStatus,
+  mpPreApproval,
+  parseMercadoPagoDate
+} from "@/lib/mercadopago";
+import { PLANS } from "@/lib/plans";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 
 const subscriptionUpdateSchema = z.discriminatedUnion("action", [
-  z.object({
-    action: z.literal("change_plan"),
-    planCode: z.string().min(1)
-  }),
   z.object({
     action: z.literal("cancel")
   }),
@@ -46,6 +48,10 @@ export async function PATCH(request: NextRequest) {
     return error("Nao autenticado.", 401);
   }
 
+  if (!["OWNER", "ADMIN"].includes(user.role)) {
+    return error("Apenas responsaveis da clinica podem alterar a assinatura.", 403);
+  }
+
   try {
     const input = subscriptionUpdateSchema.parse(await request.json());
     const existing = await getLatestSubscription(user.organizationId);
@@ -54,37 +60,15 @@ export async function PATCH(request: NextRequest) {
       return error("Assinatura nao encontrada.", 404);
     }
 
-    if (input.action === "change_plan") {
-      const plan = findPlan(input.planCode);
-
-      if (!plan) {
-        return error("Plano invalido.", 422);
+    if (input.action === "cancel") {
+      if (existing.provider === "MERCADO_PAGO" && existing.providerSubId) {
+        assertMercadoPagoConfigured();
+        await mpPreApproval.update({
+          id: existing.providerSubId,
+          body: { status: "cancelled" }
+        });
       }
 
-      const subscription = await prisma.subscription.update({
-        where: { id: existing.id },
-        data: {
-          planCode: plan.code,
-          status: existing.status === SubscriptionStatus.CANCELED ? SubscriptionStatus.ACTIVE : existing.status,
-          currentPeriodEndsAt: addDays(new Date(), 30)
-        }
-      });
-
-      await audit({
-        organizationId: user.organizationId,
-        userId: user.id,
-        action: "subscription.plan_changed",
-        entity: "Subscription",
-        entityId: subscription.id,
-        metadata: {
-          planCode: plan.code
-        }
-      });
-
-      return json({ subscription });
-    }
-
-    if (input.action === "cancel") {
       const subscription = await prisma.subscription.update({
         where: { id: existing.id },
         data: {
@@ -99,6 +83,38 @@ export async function PATCH(request: NextRequest) {
         action: "subscription.canceled",
         entity: "Subscription",
         entityId: subscription.id
+      });
+
+      return json({ subscription });
+    }
+
+    if (existing.provider === "MERCADO_PAGO" && existing.providerSubId) {
+      assertMercadoPagoConfigured();
+      const preApproval = await mpPreApproval.update({
+        id: existing.providerSubId,
+        body: { status: "authorized" }
+      });
+
+      const subscription = await prisma.subscription.update({
+        where: { id: existing.id },
+        data: {
+          status: mapMercadoPagoSubscriptionStatus(preApproval.status),
+          currentPeriodEndsAt: parseMercadoPagoDate(preApproval.next_payment_date) || addDays(new Date(), 30),
+          providerCustomerId: preApproval.payer_id ? String(preApproval.payer_id) : existing.providerCustomerId,
+          providerSubId: preApproval.id || existing.providerSubId
+        }
+      });
+
+      await audit({
+        organizationId: user.organizationId,
+        userId: user.id,
+        action: "subscription.reactivated",
+        entity: "Subscription",
+        entityId: subscription.id,
+        metadata: {
+          provider: "MERCADO_PAGO",
+          providerSubId: subscription.providerSubId
+        }
       });
 
       return json({ subscription });

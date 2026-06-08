@@ -14,6 +14,8 @@ type Subscription = {
   id: string;
   planCode: string;
   status: "TRIALING" | "ACTIVE" | "PAST_DUE" | "CANCELED" | "EXPIRED";
+  provider: string | null;
+  providerSubId: string | null;
   trialEndsAt: string | null;
   currentPeriodEndsAt: string | null;
 };
@@ -91,6 +93,42 @@ export function BillingClient() {
     setMessage("Assinatura atualizada com sucesso.");
   }
 
+  async function startCheckout(planCode: string) {
+    const key = `checkout:${planCode}`;
+    setSavingAction(key);
+    setMessage(null);
+
+    const response = await fetch("/api/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ planCode })
+    });
+    const data = (await response.json()) as {
+      checkoutUrl?: string;
+      subscription?: Subscription;
+      error?: string;
+    };
+    setSavingAction(null);
+
+    if (!response.ok) {
+      setMessage(data.error || "Nao foi possivel iniciar checkout.");
+      return;
+    }
+
+    if (data.subscription) {
+      setSubscription(data.subscription);
+      setMessage("Plano atualizado no Mercado Pago.");
+      return;
+    }
+
+    if (!data.checkoutUrl) {
+      setMessage("Mercado Pago nao retornou o link de checkout.");
+      return;
+    }
+
+    window.location.assign(data.checkoutUrl);
+  }
+
   return (
     <section className="billing-layout">
       <div className="surface">
@@ -160,14 +198,14 @@ export function BillingClient() {
         </div>
 
         <p className="billing-note">
-          Este modulo ainda simula a troca de plano no banco. O checkout real entra depois via Mercado Pago ou Stripe.
+          As assinaturas sao processadas pelo Mercado Pago. A ativacao pode levar alguns instantes apos a autorizacao.
         </p>
       </div>
 
       <div className="plans-grid">
         {plans.map((plan) => {
           const active = plan.code === subscription?.planCode;
-          const actionKey = `change_plan:${plan.code}`;
+          const actionKey = `checkout:${plan.code}`;
 
           return (
             <article className={active ? "plan-option active" : "plan-option"} key={plan.code}>
@@ -185,9 +223,9 @@ export function BillingClient() {
                 className={active ? "button secondary" : "button"}
                 type="button"
                 disabled={active || savingAction === actionKey}
-                onClick={() => void updateSubscription("change_plan", plan.code)}
+                onClick={() => void startCheckout(plan.code)}
               >
-                {active ? "Plano atual" : savingAction === actionKey ? "Trocando..." : "Trocar para este"}
+                {active ? "Plano atual" : savingAction === actionKey ? "Abrindo..." : "Assinar este plano"}
               </button>
             </article>
           );
