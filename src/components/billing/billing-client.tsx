@@ -205,7 +205,18 @@ export function BillingClient() {
       <div className="plans-grid">
         {plans.map((plan) => {
           const active = plan.code === subscription?.planCode;
+          const hasMercadoPagoSubscription = Boolean(
+            subscription?.provider === "MERCADO_PAGO" &&
+            subscription.providerSubId &&
+            subscription.status === "ACTIVE"
+          );
+          const currentPlanIsPaid = active && hasMercadoPagoSubscription;
           const actionKey = `checkout:${plan.code}`;
+          const buttonLabel = currentPlanIsPaid
+            ? "Plano atual"
+            : active
+              ? "Ativar assinatura"
+              : "Assinar este plano";
 
           return (
             <article className={active ? "plan-option active" : "plan-option"} key={plan.code}>
@@ -222,10 +233,10 @@ export function BillingClient() {
               <button
                 className={active ? "button secondary" : "button"}
                 type="button"
-                disabled={active || savingAction === actionKey}
+                disabled={currentPlanIsPaid || savingAction === actionKey}
                 onClick={() => void startCheckout(plan.code)}
               >
-                {active ? "Plano atual" : savingAction === actionKey ? "Abrindo..." : "Assinar este plano"}
+                {savingAction === actionKey ? "Abrindo..." : buttonLabel}
               </button>
             </article>
           );
