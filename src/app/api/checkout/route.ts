@@ -95,7 +95,6 @@ export async function POST(request: NextRequest) {
     }
 
     const appUrl = getAppUrl();
-    const notificationUrl = `${appUrl}/api/webhooks/mercadopago?source_news=webhooks`;
     const preApproval = await mpPreApproval.create({
       body: {
         reason: buildReason(plan.name),
@@ -111,9 +110,8 @@ export async function POST(request: NextRequest) {
           currency_id: "BRL"
         },
         back_url: `${appUrl}/billing?checkout=mercadopago`,
-        status: "authorized",
-        notification_url: notificationUrl
-      } as Parameters<typeof mpPreApproval.create>[0]["body"] & { notification_url: string },
+        status: "pending"
+      },
       requestOptions: { idempotencyKey: randomUUID() }
     });
 
@@ -141,10 +139,25 @@ export async function POST(request: NextRequest) {
       status: preApproval.status
     });
   } catch (err) {
+    if (isMercadoPagoError(err)) {
+      console.error(err);
+      return error(`Mercado Pago: ${err.message}`, 502);
+    }
+
     return validationError(err);
   }
 }
 
 function buildReason(planName: string) {
   return `NutriPlan Pro - Plano ${planName}`;
+}
+
+function isMercadoPagoError(err: unknown): err is { message: string; status?: number } {
+  return (
+    typeof err === "object" &&
+    err !== null &&
+    "message" in err &&
+    typeof (err as { message?: unknown }).message === "string" &&
+    "status" in err
+  );
 }
