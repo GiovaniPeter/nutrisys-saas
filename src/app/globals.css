@@ -95,7 +95,11 @@ button, input, textarea, select { font: inherit; }
   gap: 8px;
   overflow-x: auto;
   padding: 4px;
-  scrollbar-width: thin;
+  scrollbar-width: none;
+}
+
+.app-nav::-webkit-scrollbar {
+  display: none;
 }
 
 .nav-link {
@@ -577,6 +581,636 @@ form button[type="submit"] {
   padding: 6px 10px;
 }
 
+/* Schedule */
+.schedule-layout {
+  align-items: start;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 370px);
+  margin: 0 auto;
+  max-width: 1480px;
+}
+
+.schedule-calendar-panel {
+  padding: 0;
+  position: relative;
+}
+
+.schedule-toolbar {
+  align-items: center;
+  border-bottom: 1px solid var(--app-line);
+  display: flex;
+  gap: 18px;
+  justify-content: space-between;
+  padding: 20px 22px;
+}
+
+.schedule-period,
+.schedule-toolbar-actions,
+.schedule-nav-buttons {
+  align-items: center;
+  display: flex;
+}
+
+.schedule-period {
+  gap: 14px;
+  min-width: 0;
+}
+
+.schedule-nav-buttons {
+  gap: 7px;
+}
+
+.schedule-icon-button {
+  align-items: center;
+  background: #f7faf8;
+  border: 1px solid var(--app-line);
+  border-radius: 10px;
+  color: var(--app-primary-dark);
+  cursor: pointer;
+  display: inline-flex;
+  height: 38px;
+  justify-content: center;
+  transition: background .18s ease, border-color .18s ease, transform .18s ease;
+  width: 38px;
+}
+
+.schedule-icon-button:hover {
+  background: var(--app-soft);
+  border-color: rgba(17, 132, 58, .34);
+  transform: translateY(-1px);
+}
+
+.schedule-icon-button svg,
+.schedule-today-button svg,
+.schedule-message svg,
+.booking-icon svg,
+.schedule-copy-button svg,
+.booking-open-link svg,
+.schedule-appointment-time svg,
+.schedule-empty-state svg {
+  fill: none;
+  height: 18px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.9;
+  width: 18px;
+}
+
+.schedule-period-label {
+  color: var(--app-muted);
+  display: block;
+  font-size: .72rem;
+  font-weight: 850;
+  letter-spacing: .07em;
+  margin-bottom: 3px;
+  text-transform: uppercase;
+}
+
+.schedule-period h2 {
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  text-transform: capitalize;
+}
+
+.schedule-toolbar-actions {
+  flex: 0 0 auto;
+  gap: 10px;
+}
+
+.schedule-today-button {
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--app-line);
+  border-radius: 10px;
+  color: var(--app-primary-dark);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: .86rem;
+  font-weight: 900;
+  gap: 7px;
+  min-height: 38px;
+  padding: 7px 12px;
+}
+
+.schedule-today-button:hover {
+  background: #f7faf8;
+  border-color: rgba(17, 132, 58, .34);
+}
+
+.schedule-view-switch {
+  background: #f0f5f1;
+  border: 1px solid #e2ebe4;
+  border-radius: 11px;
+  display: grid;
+  gap: 3px;
+  grid-template-columns: 1fr 1fr;
+  padding: 3px;
+}
+
+.schedule-view-switch button {
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: var(--app-muted);
+  cursor: pointer;
+  font-size: .84rem;
+  font-weight: 850;
+  min-height: 32px;
+  padding: 6px 12px;
+}
+
+.schedule-view-switch button.active {
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(9, 37, 29, .09);
+  color: var(--app-primary-dark);
+}
+
+.schedule-message {
+  align-items: center;
+  border-radius: 0;
+  display: flex;
+  gap: 9px;
+  margin: 0;
+  padding: 12px 22px;
+}
+
+.schedule-message svg {
+  flex: 0 0 auto;
+}
+
+.calendar-scroll {
+  overflow-x: auto;
+  padding: 14px 18px 18px;
+  scrollbar-color: #bdd5c5 transparent;
+  scrollbar-width: thin;
+}
+
+.calendar-grid {
+  display: grid;
+  gap: 7px;
+  grid-template-columns: repeat(7, minmax(94px, 1fr));
+  min-width: 740px;
+}
+
+.calendar-heading {
+  color: var(--app-muted);
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .07em;
+  padding: 5px 9px 7px;
+  text-transform: uppercase;
+}
+
+.calendar-cell {
+  background: #fbfdfb;
+  border: 1px solid #e5ece6;
+  border-radius: 13px;
+  color: var(--app-ink);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-height: 112px;
+  overflow: hidden;
+  padding: 10px;
+  text-align: left;
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+.calendar-cell:hover {
+  border-color: rgba(17, 132, 58, .42);
+  box-shadow: 0 10px 24px rgba(9, 37, 29, .08);
+  transform: translateY(-1px);
+}
+
+.calendar-cell.selected {
+  background: linear-gradient(180deg, #f0faf3, #fbfefc);
+  border-color: var(--app-primary);
+  box-shadow: 0 0 0 2px rgba(17, 132, 58, .1), 0 12px 28px rgba(17, 132, 58, .1);
+}
+
+.calendar-cell.muted {
+  background: #fafbfa;
+  color: #9aa8a1;
+  opacity: .68;
+}
+
+.calendar-cell-top {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.calendar-cell-top strong {
+  align-items: center;
+  border-radius: 9px;
+  display: inline-flex;
+  font-size: .92rem;
+  height: 28px;
+  justify-content: center;
+  width: 28px;
+}
+
+.calendar-cell.today .calendar-cell-top strong {
+  background: var(--app-primary);
+  color: #fff;
+}
+
+.calendar-cell-top small {
+  color: var(--app-primary);
+  font-size: .66rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.calendar-availability {
+  color: #778981;
+  font-size: .72rem;
+  font-weight: 800;
+}
+
+.calendar-availability.busy {
+  color: var(--app-primary-dark);
+}
+
+.calendar-appointment-times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.calendar-appointment-times em,
+.appointment-status {
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: .64rem;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1;
+  padding: 5px 7px;
+}
+
+.status-pending {
+  background: #fff6db;
+  color: #936200;
+}
+
+.status-confirmed {
+  background: #e6f7ec;
+  color: #0b6c31;
+}
+
+.status-completed {
+  background: #e7f2ff;
+  color: #23639b;
+}
+
+.status-canceled,
+.status-no_show {
+  background: #fff0ef;
+  color: #ad3028;
+}
+
+.calendar-more {
+  color: var(--app-muted);
+  font-size: .64rem;
+  font-weight: 800;
+}
+
+.calendar-grid.week .calendar-cell {
+  min-height: 360px;
+}
+
+.schedule-loading {
+  align-items: center;
+  background: rgba(255, 255, 255, .92);
+  border: 1px solid var(--app-line);
+  border-radius: 999px;
+  bottom: 30px;
+  box-shadow: 0 12px 30px rgba(9, 37, 29, .12);
+  color: var(--app-primary-dark);
+  display: flex;
+  font-size: .82rem;
+  font-weight: 850;
+  gap: 9px;
+  left: 50%;
+  padding: 9px 14px;
+  position: absolute;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.schedule-loading span {
+  animation: schedule-spin .8s linear infinite;
+  border: 2px solid #d8eadf;
+  border-radius: 50%;
+  border-top-color: var(--app-primary);
+  height: 15px;
+  width: 15px;
+}
+
+@keyframes schedule-spin {
+  to { transform: rotate(360deg); }
+}
+
+.schedule-sidebar {
+  display: grid;
+  gap: 20px;
+}
+
+.booking-panel {
+  background:
+    radial-gradient(circle at 100% 0, rgba(255, 255, 255, .22), transparent 180px),
+    linear-gradient(145deg, #0a6f35, #075c45);
+  border: 0;
+  color: #fff;
+  overflow: hidden;
+  position: relative;
+}
+
+.booking-panel::after {
+  border: 1px solid rgba(255, 255, 255, .13);
+  border-radius: 50%;
+  content: "";
+  height: 180px;
+  position: absolute;
+  right: -86px;
+  top: -95px;
+  width: 180px;
+}
+
+.booking-panel-heading {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.booking-icon {
+  align-items: center;
+  background: rgba(255, 255, 255, .14);
+  border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: 12px;
+  display: inline-flex;
+  height: 42px;
+  justify-content: center;
+  width: 42px;
+}
+
+.booking-icon svg {
+  height: 21px;
+  width: 21px;
+}
+
+.booking-status {
+  align-items: center;
+  background: rgba(255, 255, 255, .12);
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: .72rem;
+  font-weight: 850;
+  gap: 7px;
+  padding: 7px 10px;
+}
+
+.booking-status i {
+  background: #7df0a8;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(125, 240, 168, .12);
+  height: 7px;
+  width: 7px;
+}
+
+.booking-panel .eyebrow {
+  color: #aef0c5;
+}
+
+.booking-panel h2 {
+  color: #fff;
+  font-size: 1.45rem;
+  margin: 6px 0 9px;
+}
+
+.booking-panel > p {
+  color: rgba(255, 255, 255, .74);
+  font-size: .88rem;
+  line-height: 1.55;
+  margin: 0 0 19px;
+}
+
+.booking-link-box {
+  align-items: center;
+  background: rgba(255, 255, 255, .11);
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 12px;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 8px 8px 8px 12px;
+}
+
+.booking-link-box > span {
+  color: rgba(255, 255, 255, .88);
+  font-size: .76rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.schedule-copy-button {
+  align-items: center;
+  background: #fff;
+  border: 0;
+  border-radius: 8px;
+  color: #075c35;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: .76rem;
+  font-weight: 900;
+  gap: 6px;
+  min-height: 34px;
+  padding: 7px 10px;
+}
+
+.schedule-copy-button:disabled {
+  cursor: wait;
+  opacity: .65;
+}
+
+.schedule-copy-button svg {
+  height: 15px;
+  width: 15px;
+}
+
+.booking-open-link {
+  align-items: center;
+  color: #fff;
+  display: flex;
+  font-size: .8rem;
+  font-weight: 850;
+  gap: 7px;
+  margin-top: 13px;
+  width: max-content;
+}
+
+.booking-open-link svg {
+  height: 15px;
+  transition: transform .18s ease;
+  width: 15px;
+}
+
+.booking-open-link:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.schedule-day-panel {
+  padding: 20px;
+}
+
+.schedule-day-heading {
+  align-items: center;
+  border-bottom: 1px solid var(--app-line);
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+}
+
+.schedule-day-heading h2 {
+  font-size: 1.05rem;
+  margin-top: 5px;
+}
+
+.schedule-count {
+  align-items: center;
+  background: var(--app-soft);
+  border-radius: 12px;
+  color: var(--app-primary-dark);
+  display: inline-flex;
+  font-size: 1.05rem;
+  font-weight: 950;
+  height: 42px;
+  justify-content: center;
+  width: 42px;
+}
+
+.schedule-day-list {
+  display: grid;
+  gap: 10px;
+}
+
+.schedule-appointment-card {
+  background: #f8fbf8;
+  border: 1px solid var(--app-line);
+  border-radius: 14px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: auto minmax(0, 1fr);
+  padding: 13px;
+}
+
+.schedule-appointment-time {
+  align-items: center;
+  color: var(--app-primary-dark);
+  display: flex;
+  flex-direction: column;
+  font-size: .8rem;
+  gap: 5px;
+}
+
+.schedule-appointment-time svg {
+  height: 17px;
+  width: 17px;
+}
+
+.schedule-appointment-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.schedule-appointment-copy > strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.schedule-appointment-copy > span {
+  color: var(--app-muted);
+  font-size: .78rem;
+}
+
+.schedule-appointment-copy .appointment-status {
+  margin-top: 3px;
+  width: max-content;
+}
+
+.schedule-appointment-actions {
+  display: flex;
+  gap: 7px;
+  grid-column: 1 / -1;
+}
+
+.schedule-appointment-actions a,
+.schedule-appointment-actions button {
+  background: #fff;
+  border: 1px solid var(--app-line);
+  border-radius: 8px;
+  color: var(--app-primary-dark);
+  cursor: pointer;
+  flex: 1;
+  font-size: .72rem;
+  font-weight: 850;
+  padding: 7px 8px;
+  text-align: center;
+}
+
+.schedule-appointment-actions a:hover,
+.schedule-appointment-actions button:hover {
+  border-color: rgba(17, 132, 58, .35);
+}
+
+.schedule-empty-state {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 10px 12px;
+  text-align: center;
+}
+
+.schedule-empty-state > span {
+  align-items: center;
+  background: var(--app-soft);
+  border-radius: 16px;
+  color: var(--app-primary);
+  display: inline-flex;
+  height: 52px;
+  justify-content: center;
+  margin-bottom: 12px;
+  width: 52px;
+}
+
+.schedule-empty-state svg {
+  height: 25px;
+  width: 25px;
+}
+
+.schedule-empty-state strong {
+  font-size: .94rem;
+}
+
+.schedule-empty-state p {
+  color: var(--app-muted);
+  font-size: .8rem;
+  line-height: 1.5;
+  margin: 5px 0 0;
+}
+
 @media (max-width: 1100px) {
   .app-header,
   .workspace-heading {
@@ -599,8 +1233,13 @@ form button[type="submit"] {
   .report-grid,
   .kpi-grid,
   .auth-layout,
-  .chat-layout {
+  .chat-layout,
+  .schedule-layout {
     grid-template-columns: 1fr;
+  }
+
+  .schedule-sidebar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .login-role-grid {
@@ -630,6 +1269,28 @@ form button[type="submit"] {
   .auth-panel {
     border-radius: 20px;
     padding: 20px;
+  }
+
+  .schedule-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .schedule-toolbar-actions {
+    justify-content: space-between;
+  }
+
+  .schedule-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-scroll {
+    padding: 10px 10px 14px;
+  }
+
+  .calendar-grid {
+    gap: 5px;
   }
 }
 

@@ -24,8 +24,8 @@ export default async function SchedulePage() {
       <section className="workspace-heading">
         <div>
           <span className="eyebrow">Agenda inteligente</span>
-          <h1>Calendario e agendamento online</h1>
-          <p>Veja consultas por mes ou semana e compartilhe um link publico para solicitacao de horarios.</p>
+          <h1>Calendário e agendamento online</h1>
+          <p>Visualize sua rotina por mês ou semana e compartilhe um link público para novos agendamentos.</p>
         </div>
       </section>
 
