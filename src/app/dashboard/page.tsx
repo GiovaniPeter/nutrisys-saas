@@ -273,7 +273,7 @@ export default async function DashboardPage() {
         <div className={isSecretary ? "surface role-hidden" : "surface"}>
           <div className="section-title-row">
             <div>
-              <span className="eyebrow">Seguranca</span>
+              <span className="eyebrow">Segurança</span>
               <h2>Auditoria</h2>
             </div>
           </div>
@@ -282,7 +282,7 @@ export default async function DashboardPage() {
               <article key={log.id}>
                 <strong>{formatAuditAction(log.action)}</strong>
                 <span>
-                  {log.user?.name || "Sistema"} · {log.entity} · {formatDateTime(log.createdAt)}
+                  {log.user?.name || "Sistema"} · {formatEntity(log.entity)} · {formatDateTime(log.createdAt)}
                 </span>
               </article>
             ))}
@@ -545,5 +545,37 @@ function formatDiaryStatus(value: string) {
 }
 
 function formatAuditAction(value: string) {
-  return value.replaceAll("_", " ").replaceAll(".", " ");
+  const dictionary: Record<string, string> = {
+    "subscription mercadopago checkout created": "Checkout MercadoPago Criado",
+    "subscription.mercadopago.checkout.created": "Checkout MercadoPago Criado",
+    "subscription canceled": "Assinatura Cancelada",
+    "subscription.canceled": "Assinatura Cancelada",
+    "subscription reactivated": "Assinatura Reativada",
+    "subscription.reactivated": "Assinatura Reativada",
+    "subscription.mercadopago_synced": "Assinatura Sincronizada",
+    "appointment.created": "Consulta Agendada",
+    "appointment.updated": "Consulta Atualizada",
+    "appointment.deleted": "Consulta Removida",
+    "anamnesis.created": "Anamnese Criada",
+    "anamnesis.updated": "Anamnese Atualizada",
+    "anamnesis.deleted": "Anamnese Removida",
+  };
+
+  if (dictionary[value]) return dictionary[value];
+
+  const cleaned = value.replaceAll("_", " ").replaceAll(".", " ");
+  return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+}
+
+function formatEntity(value: string) {
+  const dictionary: Record<string, string> = {
+    Subscription: "Assinatura",
+    Appointment: "Consulta",
+    Anamnesis: "Anamnese",
+    Patient: "Paciente",
+    MealPlan: "Plano Alimentar",
+    User: "Usuário",
+    Organization: "Clínica",
+  };
+  return dictionary[value] || value;
 }
