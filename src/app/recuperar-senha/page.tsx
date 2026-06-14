@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Recuperar senha | NutriPlan Pro",
-  description: "Solicite recuperacao de senha ou codigo de acesso do NutriPlan Pro."
+  title: "Recuperar senha | NutreClin",
+  description: "Solicite recuperacao de senha ou codigo de acesso do NutreClin."
 };
 
-const supportEmail = "contato@nutriplanpro.com.br";
-const mailSubject = "Recuperacao de acesso - NutriPlan Pro";
+const supportEmail = "contato@nutreclin.com.br";
+const mailSubject = "Recuperacao de acesso - NutreClin";
 const mailBody = [
-  "Ola, equipe NutriPlan Pro.",
+  "Ola, equipe NutreClin.",
   "",
-  "Preciso recuperar meu acesso ao app NutriPlan Pro.",
+  "Preciso recuperar meu acesso ao app NutreClin.",
   "",
   "Nome completo:",
   "E-mail da conta:",
@@ -27,7 +27,7 @@ export default function PasswordRecoveryPage() {
   return (
     <main className="legal-page">
       <section className="legal-hero">
-        <Link href="/" className="legal-back">NutriPlan Pro</Link>
+        <Link href="/" className="legal-back">NutreClin</Link>
         <span className="eyebrow">Acesso</span>
         <h1>Recuperar senha ou codigo</h1>
         <p>
@@ -43,7 +43,7 @@ export default function PasswordRecoveryPage() {
           <p>
             Envie uma solicitacao informando nome completo, e-mail da conta,
             tipo de acesso (Profissional ou Paciente) e telefone, se cadastrado.
-            A equipe do NutriPlan Pro verificara os dados antes de orientar a
+            A equipe do NutreClin verificara os dados antes de orientar a
             recuperacao do acesso.
           </p>
           <div className="legal-actions">

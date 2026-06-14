@@ -38,7 +38,7 @@ export default function LoginPage({ searchParams }: LoginPageProps) {
         <div className="auth-copy">
           <Link href="/" className="auth-back">← Voltar para a landing</Link>
           <span className="eyebrow">Central de acesso</span>
-          <h1>Entrar no NutriPlan Pro</h1>
+          <h1>Entrar no NutreClin</h1>
           <p>
             Escolha o tipo de login para acessar apenas o que faz sentido para sua rotina:
             clínica, recepção ou portal do paciente.

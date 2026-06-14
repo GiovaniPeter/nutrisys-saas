@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Módulo Principal da Aplicação
+   NutreClin - Módulo Principal da Aplicação
    ============================================ */
 
 const App = {

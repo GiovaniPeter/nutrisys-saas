@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Receitas Inteligentes
+   NutreClin - Receitas Inteligentes
    Banco de receitas vinculado ao cardápio
    ============================================ */
 

@@ -75,7 +75,7 @@ export function AppNav({ active, user }: AppNavProps) {
     <header className="app-header">
       <Link href="/dashboard" className="brand app-brand">
         <span className="brand-mark">N</span>
-        <span>NutriPlan Pro</span>
+        <span>NutreClin</span>
       </Link>
 
       <nav className="app-nav" aria-label="Navegacao principal">

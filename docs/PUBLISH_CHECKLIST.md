@@ -1,4 +1,4 @@
-# Checklist de publicacao do NutriSys
+# Checklist de publicacao do NutreClin
 
 Este checklist deixa a publicacao reproduzivel. Rode em staging antes de apontar o dominio de producao.
 

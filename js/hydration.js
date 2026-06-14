@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Hidratação & Metas
+   NutreClin - Hidratação & Metas
    Controle de água e metas dos pacientes
    ============================================ */
 

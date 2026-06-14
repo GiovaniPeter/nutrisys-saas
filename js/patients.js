@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Módulo de Pacientes
+   NutreClin - Módulo de Pacientes
    ============================================ */
 
 const Patients = {

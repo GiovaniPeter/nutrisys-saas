@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys — Módulo de Notificações In-App
+   NutreClin — Módulo de Notificações In-App
    - Consultas do dia / próximas 24h
    - Pacientes sem retorno há 30+ dias
    - Tarefas pendentes (anamnese, exames)

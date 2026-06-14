@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Diário Alimentar
+   NutreClin - Diário Alimentar
    Tela do nutricionista para revisar e avaliar
    registros alimentares dos pacientes
    ============================================ */

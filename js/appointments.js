@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Módulo de Consultas/Agendamento
+   NutreClin - Módulo de Consultas/Agendamento
    ============================================ */
 
 const Appointments = {

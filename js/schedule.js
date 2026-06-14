@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Agenda Inteligente (Calendário)
+   NutreClin - Agenda Inteligente (Calendário)
    ============================================ */
 
 const Schedule = {
@@ -396,7 +396,7 @@ const Schedule = {
         const et = String(eh).padStart(2, '0') + a.time.split(':')[1] + '00';
 
         const ics = [
-            'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//NutriSys//PT',
+            'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//NutreClin//PT',
             'BEGIN:VEVENT',
             'DTSTART:' + sd + 'T' + st,
             'DTEND:' + sd + 'T' + et,
@@ -487,7 +487,7 @@ const Schedule = {
         const config = DB.getScheduleConfig();
         const settings = DB.getSettings();
         const appointments = DB.getAppointments();
-        const clinicName = App.escapeHtml(settings.clinicName || 'NutriSys');
+        const clinicName = App.escapeHtml(settings.clinicName || 'NutreClin');
         const pc = settings.primaryColor || '#00b894';
 
         // Gerar slots disponíveis para os próximos 30 dias

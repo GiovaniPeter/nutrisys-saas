@@ -2,15 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Politica de Privacidade | NutriPlan Pro",
-  description: "Politica de Privacidade do NutriPlan Pro."
+  title: "Politica de Privacidade | NutreClin",
+  description: "Politica de Privacidade do NutreClin."
 };
 
 const sections = [
   {
     title: "1. Quem somos",
     text: [
-      "O NutriPlan Pro e uma plataforma para nutricionistas, clinicas e pacientes, voltada a organizacao de atendimentos, prontuarios, planos alimentares, receitas, agenda, comunicacao e acompanhamento nutricional.",
+      "O NutreClin e uma plataforma para nutricionistas, clinicas e pacientes, voltada a organizacao de atendimentos, prontuarios, planos alimentares, receitas, agenda, comunicacao e acompanhamento nutricional.",
       "Esta Politica de Privacidade explica quais dados podem ser tratados, para quais finalidades e quais direitos os usuarios possuem."
     ]
   },
@@ -41,7 +41,7 @@ const sections = [
   {
     title: "5. Dados de saude e informacoes sensiveis",
     text: [
-      "O NutriPlan Pro pode tratar dados relacionados a saude, nutricao, composicao corporal, exames e acompanhamento alimentar. Esses dados sao usados para permitir que profissionais e pacientes acompanhem o tratamento nutricional e as informacoes registradas na plataforma.",
+      "O NutreClin pode tratar dados relacionados a saude, nutricao, composicao corporal, exames e acompanhamento alimentar. Esses dados sao usados para permitir que profissionais e pacientes acompanhem o tratamento nutricional e as informacoes registradas na plataforma.",
       "O uso desses dados deve respeitar a legislacao aplicavel, incluindo a Lei Geral de Protecao de Dados Pessoais (LGPD)."
     ]
   },
@@ -74,7 +74,7 @@ const sections = [
   {
     title: "10. Contato",
     text: [
-      "Para duvidas, solicitacoes de privacidade ou pedidos relacionados a dados pessoais, entre em contato pelo e-mail: contato@nutriplanpro.com.br."
+      "Para duvidas, solicitacoes de privacidade ou pedidos relacionados a dados pessoais, entre em contato pelo e-mail: contato@nutreclin.com.br."
     ]
   }
 ];
@@ -83,11 +83,11 @@ export default function PrivacyPolicyPage() {
   return (
     <main className="legal-page">
       <section className="legal-hero">
-        <Link href="/" className="legal-back">NutriPlan Pro</Link>
+        <Link href="/" className="legal-back">NutreClin</Link>
         <span className="eyebrow">Privacidade</span>
         <h1>Politica de Privacidade</h1>
         <p>
-          Esta politica descreve como o NutriPlan Pro trata dados pessoais,
+          Esta politica descreve como o NutreClin trata dados pessoais,
           dados de saude e informacoes usadas para operar a plataforma.
         </p>
         <small>Ultima atualizacao: 5 de junho de 2026</small>

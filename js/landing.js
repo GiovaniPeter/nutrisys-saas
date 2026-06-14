@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys — Landing Page Interações
+   NutreClin — Landing Page Interações
    ============================================ */
 
 (function() {
@@ -415,8 +415,8 @@
         // Garante ao menos os usuários padrão
         if (!users.length) {
             users = [
-                { name: 'Nutricionista', email: 'nutricionista@nutrisys.com', password: '123456' },
-                { name: 'Secretária',    email: 'secretaria@nutrisys.com',    password: '123456' }
+                { name: 'Nutricionista', email: 'nutricionista@nutreclin.com', password: '123456' },
+                { name: 'Secretária',    email: 'secretaria@nutreclin.com',    password: '123456' }
             ];
         }
 
@@ -450,8 +450,8 @@
 
         // Fallback: usuários padrão do sistema
         var defaultUsers = [
-            { name: 'Nutricionista', email: 'nutricionista@nutrisys.com', password: '123456', role: 'nutricionista', crn: '' },
-            { name: 'Secretária',    email: 'secretaria@nutrisys.com',    password: '123456', role: 'secretaria',    crn: '' }
+            { name: 'Nutricionista', email: 'nutricionista@nutreclin.com', password: '123456', role: 'nutricionista', crn: '' },
+            { name: 'Secretária',    email: 'secretaria@nutreclin.com',    password: '123456', role: 'secretaria',    crn: '' }
         ];
         var allUsers = users.length ? users : defaultUsers;
 

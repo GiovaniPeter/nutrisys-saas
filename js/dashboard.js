@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Dashboard
+   NutreClin - Dashboard
    ============================================ */
 
 const Dashboard = {

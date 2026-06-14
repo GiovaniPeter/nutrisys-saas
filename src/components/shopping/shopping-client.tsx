@@ -308,7 +308,7 @@ function toText(plan: MealPlan | null, items: ShoppingItem[], checkedKeys: strin
     "",
     ...items.map((item) => `${checkedKeys.includes(item.key) ? "[x]" : "[ ]"} ${item.name} - ${formatQuantity(item)}`),
     "",
-    "Gerado por NutriPlan Pro"
+    "Gerado por NutreClin"
   ].join("\n");
 }
 

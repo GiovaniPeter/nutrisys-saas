@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Módulo de Gasto Energético
+   NutreClin - Módulo de Gasto Energético
    (TMB / GET) - Harris-Benedict, Mifflin-St Jeor, FAO/OMS
    ============================================ */
 

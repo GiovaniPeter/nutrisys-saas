@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Dashboard de Retenção e KPIs
+   NutreClin - Dashboard de Retenção e KPIs
    Métricas de negócio para nutricionistas
    ============================================ */
 

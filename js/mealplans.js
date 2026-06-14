@@ -1,5 +1,5 @@
-﻿/* ============================================
-   NutriSys - Módulo de Cardápios (Planos Alimentares)
+/* ============================================
+   NutreClin - Módulo de Cardápios (Planos Alimentares)
    Com: Metas de macros, Substituições, PDF white-label, Lista de compras
    ============================================ */
 
@@ -635,7 +635,7 @@ const MealPlans = {
             });
             html += '</table>';
         });
-        html += `<div class="footer">${settings.clinicName || 'NutriSys'} · ${new Date().toLocaleDateString('pt-BR')}</div></body></html>`;
+        html += `<div class="footer">${settings.clinicName || 'NutreClin'} · ${new Date().toLocaleDateString('pt-BR')}</div></body></html>`;
         const w = window.open('', '_blank');
         w.document.write(html); w.document.close(); w.onload = () => w.print();
     },
@@ -686,7 +686,7 @@ const MealPlans = {
             @media print{body{padding:15px;font-size:11px}}
         </style></head><body>
         <div class="header">
-            <div class="header-logo">${settings.logo ? `<img src="${settings.logo}" alt="Logo">` : `<div style="font-size:24px;font-weight:700;color:${brandColor}">${App.escapeHtml(settings.clinicName || 'NutriSys')}</div>`}</div>
+            <div class="header-logo">${settings.logo ? `<img src="${settings.logo}" alt="Logo">` : `<div style="font-size:24px;font-weight:700;color:${brandColor}">${App.escapeHtml(settings.clinicName || 'NutreClin')}</div>`}</div>
             <div class="header-info"><h1>${App.escapeHtml(plan.name)}</h1><p>Data: ${new Date().toLocaleDateString('pt-BR')}</p></div>
         </div>
         <div class="patient-box"><strong>Paciente:</strong> ${patient ? App.escapeHtml(patient.name) : '-'}${patient && patient.goal ? ` · <strong>Objetivo:</strong> ${App.escapeHtml(patient.goal)}` : ''}</div>
@@ -716,7 +716,7 @@ const MealPlans = {
         });
 
         if (plan.observations) html += `<div class="obs"><strong>Observações:</strong> ${App.escapeHtml(plan.observations)}</div>`;
-        html += `<div class="footer">${App.escapeHtml(settings.clinicName || 'NutriSys')} · Gerado em ${new Date().toLocaleDateString('pt-BR')}</div></body></html>`;
+        html += `<div class="footer">${App.escapeHtml(settings.clinicName || 'NutreClin')} · Gerado em ${new Date().toLocaleDateString('pt-BR')}</div></body></html>`;
         const w = window.open('', '_blank');
         w.document.write(html); w.document.close(); w.onload = () => w.print();
     },

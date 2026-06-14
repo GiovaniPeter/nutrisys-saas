@@ -149,7 +149,7 @@ export async function POST(request: NextRequest) {
 }
 
 function buildReason(planName: string) {
-  return `NutriPlan Pro - Plano ${planName}`;
+  return `NutreClin - Plano ${planName}`;
 }
 
 function isMercadoPagoError(err: unknown): err is { message: string; status?: number } {

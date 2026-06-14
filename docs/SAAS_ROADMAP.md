@@ -1,10 +1,10 @@
-# NutriSys - Roadmap para SaaS de assinatura
+# NutreClin - Roadmap para SaaS de assinatura
 
 Data do diagnóstico: 2026-05-09
 
 ## Objetivo
 
-Transformar o protótipo atual do NutriSys em uma plataforma SaaS vendável para nutricionistas, com recursos comparáveis aos principais softwares do mercado, sem copiar marca, identidade visual ou implementação de concorrentes.
+Transformar o protótipo atual do NutreClin em uma plataforma SaaS vendável para nutricionistas, com recursos comparáveis aos principais softwares do mercado, sem copiar marca, identidade visual ou implementação de concorrentes.
 
 Referências públicas consultadas:
 

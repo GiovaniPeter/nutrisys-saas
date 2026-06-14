@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Módulo de Evolução Corporal
+   NutreClin - Módulo de Evolução Corporal
    Acompanhamento de peso, gordura, circunferências e gráficos
    ============================================ */
 

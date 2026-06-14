@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Controle Financeiro
+   NutreClin - Controle Financeiro
    ============================================ */
 
 const Financial = {
@@ -276,7 +276,7 @@ const Financial = {
         if (!t) return;
 
         const s = DB.getSettings();
-        const clinic = s.clinicName || 'NutriSys';
+        const clinic = s.clinicName || 'NutreClin';
         const prof = s.professionalName || 'Nutricionista';
         const phone = s.phone || '';
         const addr = s.address || '';

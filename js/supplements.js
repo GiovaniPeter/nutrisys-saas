@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Módulo de Prescrição de
+   NutreClin - Módulo de Prescrição de
    Suplementos e Fitoterápicos
    ============================================ */
 

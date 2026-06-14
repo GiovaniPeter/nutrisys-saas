@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Lista de Compras Automática
+   NutreClin - Lista de Compras Automática
    Gerada a partir do cardápio
    ============================================ */
 
@@ -224,7 +224,7 @@ const ShoppingList = {
             });
             text += '\n';
         });
-        text += 'Gerado por NutriSys';
+        text += 'Gerado por NutreClin';
         return text;
     },
 
@@ -243,7 +243,7 @@ const ShoppingList = {
     printList() {
         const text = this._toText();
         const w = window.open('', '_blank');
-        w.document.write(`<html><head><title>Lista de Compras - NutriSys</title>
+        w.document.write(`<html><head><title>Lista de Compras - NutreClin</title>
             <style>body{font-family:Arial,sans-serif;padding:32px;line-height:1.8;white-space:pre-wrap;font-size:14px}</style>
             </head><body>${App.escapeHtml(text)}</body></html>`);
         w.document.close();

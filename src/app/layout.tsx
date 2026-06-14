@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.APP_URL || "http://localhost:3000"),
-  title: "NutriPlan Pro",
+  title: "NutreClin",
   description: "Plataforma para nutricionistas, clínicas e pacientes.",
   icons: {
     icon: [
@@ -15,14 +15,14 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }]
   },
   openGraph: {
-    title: "NutriPlan Pro",
+    title: "NutreClin",
     description: "Gestão nutricional para clínicas, nutricionistas e pacientes.",
     images: [
       {
         url: "/social-card.png",
         width: 1200,
         height: 630,
-        alt: "NutriPlan Pro - Gestão nutricional para clínicas, nutricionistas e pacientes."
+        alt: "NutreClin - Gestão nutricional para clínicas, nutricionistas e pacientes."
       }
     ],
     locale: "pt_BR",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "NutriPlan Pro",
+    title: "NutreClin",
     description: "Gestão nutricional para clínicas, nutricionistas e pacientes.",
     images: ["/social-card.png"]
   }

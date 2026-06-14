@@ -92,10 +92,10 @@ export default function Home() {
   return (
     <main className="np-page">
       <header className="np-header">
-        <Link href="/" className="np-logo" aria-label="NutriPlan Pro">
+        <Link href="/" className="np-logo" aria-label="NutreClin">
           <span className="np-logo-mark"><LeafIcon /></span>
           <span>
-            <strong>NutriPlan <em>Pro</em></strong>
+            <strong>Nutre<em>Clin</em></strong>
             <small>Software para nutricionistas e clínicas</small>
           </span>
         </Link>
@@ -123,7 +123,7 @@ export default function Home() {
             Centralize atendimento, planos alimentares e <span>gestão da sua clínica.</span>
           </h1>
           <p>
-            NutriPlan Pro é a plataforma completa para nutricionistas e clínicas: prontuário,
+            NutreClin é a plataforma completa para nutricionistas e clínicas: prontuário,
             planos alimentares, portal do paciente, agenda, financeiro e indicadores em um só lugar.
           </p>
 
@@ -237,7 +237,7 @@ export default function Home() {
         <div className="np-final-copy">
           <h2>Seu próximo passo é validar o uso real</h2>
           <p>
-            Experimente o NutriPlan Pro por 7 dias e veja como ele pode levar mais organização,
+            Experimente o NutreClin por 7 dias e veja como ele pode levar mais organização,
             tempo e resultados para sua clínica.
           </p>
         </div>
@@ -251,10 +251,10 @@ export default function Home() {
 
       <footer className="np-footer">
         <div className="np-footer-brand">
-          <Link href="/" className="np-logo" aria-label="NutriPlan Pro">
+          <Link href="/" className="np-logo" aria-label="NutreClin">
             <span className="np-logo-mark"><LeafIcon /></span>
             <span>
-              <strong>NutriPlan <em>Pro</em></strong>
+              <strong>Nutre<em>Clin</em></strong>
               <small>Software para nutricionistas e clínicas</small>
             </span>
           </Link>
@@ -281,11 +281,11 @@ export default function Home() {
         />
         <div className="np-footer-column">
           <h3>Fale conosco</h3>
-          <a href="mailto:contato@nutriplanpro.com.br">contato@nutriplanpro.com.br</a>
+          <a href="mailto:contato@nutreclin.com.br">contato@nutreclin.com.br</a>
           <a href="tel:+5511987654321">(11) 98765-4321</a>
         </div>
 
-        <p className="np-copyright">© 2026 NutriPlan Pro. Todos os direitos reservados.</p>
+        <p className="np-copyright">© 2026 NutreClin. Todos os direitos reservados.</p>
       </footer>
     </main>
   );
@@ -293,11 +293,11 @@ export default function Home() {
 
 function ProductMockup() {
   return (
-    <div className="np-product-wrap" aria-label="Prévia do sistema NutriPlan Pro">
+    <div className="np-product-wrap" aria-label="Prévia do sistema NutreClin">
       <div className="np-leaf-bg" aria-hidden="true" />
       <div className="np-laptop">
         <div className="np-laptop-top">
-          <span>NutriPlan Pro</span>
+          <span>NutreClin</span>
           <div><i /> <i /> <i /></div>
         </div>
         <div className="np-dashboard-preview">

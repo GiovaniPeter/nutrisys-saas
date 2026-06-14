@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Módulo de Anamnese e Questionários
+   NutreClin - Módulo de Anamnese e Questionários
    ============================================ */
 
 const Anamnesis = {

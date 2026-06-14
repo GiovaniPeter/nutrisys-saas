@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Portal do Paciente
+   NutreClin - Portal do Paciente
    Ambiente onde o paciente visualiza dieta, diário,
    metas, hidratação, chat
    ============================================ */
@@ -479,7 +479,7 @@ const PatientPortal = {
         const p = DB.getPatient(this.selectedPatientId);
         if (!p) return;
         const settings = DB.getSettings();
-        const clinic = App.escapeHtml(settings.clinicName || 'NutriSys');
+        const clinic = App.escapeHtml(settings.clinicName || 'NutreClin');
         const pc = settings.primaryColor || '#00b894';
         const plans = DB.getMealPlans().filter(m => m.patientId === p.id);
         const plan = plans.length ? plans[plans.length - 1] : null;

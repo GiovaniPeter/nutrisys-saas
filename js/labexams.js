@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Módulo de Exames Laboratoriais
+   NutreClin - Módulo de Exames Laboratoriais
    ============================================ */
 
 const LabExams = {

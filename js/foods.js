@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Módulo de Alimentos
+   NutreClin - Módulo de Alimentos
    ============================================ */
 
 const Foods = {

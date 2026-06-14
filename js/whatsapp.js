@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - WhatsApp Integration
+   NutreClin - WhatsApp Integration
    Envio de lembretes e links para pacientes
    ============================================ */
 
@@ -131,7 +131,7 @@ const WhatsApp = {
     },
 
     _getTemplates(p, settings) {
-        const clinic = settings.clinicName || 'NutriSys';
+        const clinic = settings.clinicName || 'NutreClin';
         const nutri = settings.professionalName || 'Nutricionista';
         const name = p ? p.name.split(' ')[0] : '[Nome]';
         return [

@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Módulo de Autenticação
+   NutreClin - Módulo de Autenticação
    Multi-usuário com perfis (nutricionista / secretária)
    ============================================ */
 
@@ -42,7 +42,7 @@ const Auth = {
             }
             DB.setUser({ name: user.name, email: user.email, role: user.role, crn: user.crn || '' });
             App.showApp();
-            App.showToast('Bem-vindo(a) ao NutriSys!', 'success');
+            App.showToast('Bem-vindo(a) ao NutreClin!', 'success');
         } else {
             App.showToast('E-mail ou senha incorretos', 'error');
         }

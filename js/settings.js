@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Módulo de Configurações (White-label)
+   NutreClin - Módulo de Configurações (White-label)
    Logo, cores, nome da clínica
    ============================================ */
 
@@ -91,7 +91,7 @@ const Settings = {
         return `
             <div style="display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid ${color};padding-bottom:12px;font-family:Segoe UI,Arial,sans-serif">
                 <div>
-                    ${s.logo ? `<img src="${s.logo}" style="max-height:50px;border-radius:4px" alt="Logo">` : `<div style="font-size:20px;font-weight:700;color:${color}">${App.escapeHtml(s.clinicName || 'NutriSys')}</div>`}
+                    ${s.logo ? `<img src="${s.logo}" style="max-height:50px;border-radius:4px" alt="Logo">` : `<div style="font-size:20px;font-weight:700;color:${color}">${App.escapeHtml(s.clinicName || 'NutreClin')}</div>`}
                 </div>
                 <div style="text-align:right">
                     <div style="font-size:16px;font-weight:600;color:${color}">Plano Alimentar</div>
@@ -170,7 +170,7 @@ const Settings = {
     },
 
     doReset() {
-        DB.saveSettings({ clinicName: 'NutriSys', primaryColor: '#00b894', secondaryColor: '#6c5ce7', logo: null });
+        DB.saveSettings({ clinicName: 'NutreClin', primaryColor: '#00b894', secondaryColor: '#6c5ce7', logo: null });
         App.closeModal();
         App.renderPage('settings');
         App.showToast('Configurações restauradas', 'info');

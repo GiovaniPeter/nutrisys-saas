@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Módulo de Banco de Dados (localStorage)
+   NutreClin - Módulo de Banco de Dados (localStorage)
    ============================================ */
 
 const DB = {
@@ -358,8 +358,8 @@ const DB = {
 
         // Usuários do sistema
         if (this.getUsers().length === 0) {
-            this.addUser({ name: 'Dr(a). Nutricionista', email: 'nutricionista@nutrisys.com', password: '123456', role: 'nutricionista', crn: 'CRN-3 12345' });
-            this.addUser({ name: 'Secretária', email: 'secretaria@nutrisys.com', password: '123456', role: 'secretaria', crn: '' });
+            this.addUser({ name: 'Dr(a). Nutricionista', email: 'nutricionista@nutreclin.com', password: '123456', role: 'nutricionista', crn: 'CRN-3 12345' });
+            this.addUser({ name: 'Secretária', email: 'secretaria@nutreclin.com', password: '123456', role: 'secretaria', crn: '' });
         }
 
         // Configuração de agenda

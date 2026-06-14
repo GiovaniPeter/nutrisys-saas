@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Exclusao de Conta | NutriPlan Pro",
-  description: "Solicite a exclusao da sua conta e dos dados associados ao NutriPlan Pro."
+  title: "Exclusao de Conta | NutreClin",
+  description: "Solicite a exclusao da sua conta e dos dados associados ao NutreClin."
 };
 
-const requestEmail = "contato@nutriplanpro.com.br";
-const mailSubject = "Solicitacao de exclusao de conta - NutriPlan Pro";
+const requestEmail = "contato@nutreclin.com.br";
+const mailSubject = "Solicitacao de exclusao de conta - NutreClin";
 const mailBody = [
-  "Ola, equipe NutriPlan Pro.",
+  "Ola, equipe NutreClin.",
   "",
-  "Solicito a exclusao da minha conta e dos dados associados ao app NutriPlan Pro.",
+  "Solicito a exclusao da minha conta e dos dados associados ao app NutreClin.",
   "",
   "Nome completo:",
   "E-mail da conta:",
@@ -27,11 +27,11 @@ export default function AccountDeletionPage() {
   return (
     <main className="legal-page">
       <section className="legal-hero">
-        <Link href="/" className="legal-back">NutriPlan Pro</Link>
+        <Link href="/" className="legal-back">NutreClin</Link>
         <span className="eyebrow">Dados e conta</span>
         <h1>Exclusao de conta</h1>
         <p>
-          Use esta pagina para solicitar a exclusao da sua conta do NutriPlan Pro
+          Use esta pagina para solicitar a exclusao da sua conta do NutreClin
           e dos dados associados ao app.
         </p>
         <small>Ultima atualizacao: 5 de junho de 2026</small>

@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Relatório PDF
+   NutreClin - Relatório PDF
    Gera relatório bonito de evolução, cardápio, anamnese
    ============================================ */
 
@@ -108,7 +108,7 @@ const Reports = {
 
     _header(title, subtitle) {
         const settings = DB.getSettings();
-        const clinicName = settings.clinicName || 'NutriSys';
+        const clinicName = settings.clinicName || 'NutreClin';
         return `<div class="pdf-header">
             <h1>${App.escapeHtml(clinicName)}</h1>
             <p>${App.escapeHtml(title)}${subtitle ? ' — ' + App.escapeHtml(subtitle) : ''}</p>
@@ -121,7 +121,7 @@ const Reports = {
         const user = Auth.getCurrentUser();
         return `<div class="pdf-footer">
             ${user ? App.escapeHtml(user.name) + (user.crn ? ' · CRN ' + App.escapeHtml(user.crn) : '') + ' · ' : ''}
-            ${App.escapeHtml(settings.clinicName || 'NutriSys')} · Documento gerado automaticamente pelo NutriSys
+            ${App.escapeHtml(settings.clinicName || 'NutreClin')} · Documento gerado automaticamente pelo NutreClin
         </div>`;
     },
 

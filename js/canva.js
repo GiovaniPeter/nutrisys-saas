@@ -1,12 +1,12 @@
 /* ============================================
-   NutriSys - Canva & Materiais Educativos
+   NutreClin - Canva & Materiais Educativos
    Templates e criação de materiais para pacientes
    ============================================ */
 
 const Canva = {
     render() {
         const settings = DB.getSettings();
-        const clinic = settings.clinicName || 'NutriSys';
+        const clinic = settings.clinicName || 'NutreClin';
 
         return `
             <div class="page-header mb-3">

@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Recordatório 24h (Recall)
+   NutreClin - Recordatório 24h (Recall)
    Formulário padronizado de recordatório alimentar
    ============================================ */
 
@@ -391,7 +391,7 @@ const Recall = {
             .total { font-weight: 700; background: #e8f8f5; }
             @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
         </style></head><body>`;
-        html += `<h1>${App.escapeHtml(settings.clinicName || 'NutriSys')}</h1>
+        html += `<h1>${App.escapeHtml(settings.clinicName || 'NutreClin')}</h1>
             <p>Recordatório Alimentar 24h · Paciente: <strong>${App.escapeHtml(patient?.name || '—')}</strong>
             · Data: ${recall.referenceDate ? new Date(recall.referenceDate + 'T12:00').toLocaleDateString('pt-BR') : '—'}</p>`;
 
@@ -420,7 +420,7 @@ const Recall = {
         const totalCal = this._calcTotalCal(recall);
         html += `<h2>Total do Dia</h2><p><strong>${Math.round(totalCal)} kcal</strong></p>`;
         if (recall.generalNotes) html += `<p><strong>Observações:</strong> ${App.escapeHtml(recall.generalNotes)}</p>`;
-        html += `<p style="margin-top:24px;font-size:10px;color:#999">Gerado por NutriSys</p></body></html>`;
+        html += `<p style="margin-top:24px;font-size:10px;color:#999">Gerado por NutreClin</p></body></html>`;
 
         const w = window.open('', '_blank');
         w.document.write(html);

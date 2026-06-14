@@ -1,5 +1,5 @@
 /* ============================================
-   NutriSys - Chat & Videoconferência
+   NutreClin - Chat & Videoconferência
    Sistema de mensagens + integração Jitsi Meet
    ============================================ */
 
