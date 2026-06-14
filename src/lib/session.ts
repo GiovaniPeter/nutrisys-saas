@@ -1,5 +1,4 @@
 import crypto from "node:crypto";
-import { unstable_cache } from "next/cache";
 import { cookies, headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
@@ -25,27 +24,6 @@ export type AuthenticatedUser = {
 export type RequiredAuthUser = AuthenticatedUser & {
   userId: string;
 };
-
-const getCachedActiveUser = unstable_cache(
-  async (userId: string, organizationId: string) => {
-    return prisma.user.findFirst({
-      where: {
-        id: userId,
-        organizationId,
-        active: true
-      },
-      select: {
-        id: true,
-        organizationId: true,
-        name: true,
-        email: true,
-        role: true
-      }
-    });
-  },
-  ["active-session-user"],
-  { revalidate: 10 }
-);
 
 export function createSessionCookie(payload: Omit<SessionPayload, "exp">): string {
   const session: SessionPayload = {
@@ -96,7 +74,20 @@ export async function getCurrentUser(): Promise<AuthenticatedUser | null> {
     return null;
   }
 
-  const user = await getCachedActiveUser(payload.userId, payload.organizationId);
+  const user = await prisma.user.findFirst({
+    where: {
+      id: payload.userId,
+      organizationId: payload.organizationId,
+      active: true
+    },
+    select: {
+      id: true,
+      organizationId: true,
+      name: true,
+      email: true,
+      role: true
+    }
+  });
 
   return user ? { ...user, role: user.role } : null;
 }

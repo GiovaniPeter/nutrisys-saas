@@ -50,6 +50,66 @@ button, input, textarea, select { font: inherit; }
   padding: 24px clamp(18px, 3vw, 36px) 48px;
 }
 
+.app-error-shell {
+  align-items: center;
+  display: grid;
+  justify-items: center;
+  padding: 32px 20px;
+}
+
+.app-error-card {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid var(--app-line);
+  border-radius: 24px;
+  box-shadow: var(--np-shadow);
+  max-width: 560px;
+  padding: clamp(28px, 5vw, 48px);
+  text-align: center;
+  width: 100%;
+}
+
+.app-error-mark {
+  align-items: center;
+  background: var(--app-soft);
+  border-radius: 18px;
+  color: var(--app-primary-dark);
+  display: inline-flex;
+  font-size: 1.75rem;
+  font-weight: 950;
+  height: 58px;
+  justify-content: center;
+  margin-bottom: 22px;
+  width: 58px;
+}
+
+.app-error-card h1 {
+  font-size: clamp(1.8rem, 5vw, 2.5rem);
+  letter-spacing: -0.045em;
+  line-height: 1.08;
+  margin: 10px 0 14px;
+}
+
+.app-error-card p {
+  color: var(--app-muted);
+  line-height: 1.65;
+  margin: 0 auto;
+  max-width: 460px;
+}
+
+.app-error-card small {
+  color: var(--app-muted);
+  display: block;
+  margin-top: 22px;
+}
+
+.app-error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
 .app-header {
   align-items: center;
   -webkit-backdrop-filter: blur(18px) saturate(150%);
