@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { unstable_cache } from "next/cache";
 import { redirect } from "next/navigation";
 import { AppointmentStatus, SubscriptionStatus } from "@prisma/client";
 import { AppNav } from "@/components/app-nav";
@@ -13,30 +14,10 @@ export default async function DashboardPage() {
   }
 
   const isSecretary = user.role === "SECRETARY";
-  const now = new Date();
-  const nextWeek = new Date(now);
-  nextWeek.setDate(nextWeek.getDate() + 7);
-
-  const organization = await prisma.organization.findUnique({
-    where: { id: user.organizationId },
-    select: {
-      name: true,
-      slug: true,
-      subscriptions: {
-        orderBy: { createdAt: "desc" },
-        take: 1,
-        select: {
-          planCode: true,
-          status: true,
-          trialEndsAt: true
-        }
-      }
-    }
-  });
-  const commonData = await loadCommonDashboardData(user.organizationId, now, nextWeek);
-  const professionalData = isSecretary
-    ? emptyProfessionalDashboardData()
-    : await loadProfessionalDashboardData(user.organizationId);
+  const { organization, commonData, professionalData } = await loadCachedDashboardData(
+    user.organizationId,
+    !isSecretary
+  );
 
   const {
     patientCount,
@@ -109,7 +90,7 @@ export default async function DashboardPage() {
               <span className="eyebrow">Proximos dias</span>
               <h2>Agenda</h2>
             </div>
-            <Link className="text-button" href="/appointments">
+            <Link className="text-button" href="/appointments" prefetch={false}>
               Abrir
             </Link>
           </div>
@@ -132,7 +113,7 @@ export default async function DashboardPage() {
               <span className="eyebrow">Paciente</span>
               <h2>Diario alimentar</h2>
             </div>
-            <Link className="text-button" href="/food-diary">
+            <Link className="text-button" href="/food-diary" prefetch={false}>
               Avaliar
             </Link>
           </div>
@@ -155,7 +136,7 @@ export default async function DashboardPage() {
               <span className="eyebrow">Relacionamento</span>
               <h2>Chat recente</h2>
             </div>
-            <Link className="text-button" href="/chat">
+            <Link className="text-button" href="/chat" prefetch={false}>
               Abrir
             </Link>
           </div>
@@ -179,7 +160,7 @@ export default async function DashboardPage() {
               <span className="eyebrow">Conteudo</span>
               <h2>Materiais educativos</h2>
             </div>
-            <Link className="text-button" href="/materials">
+            <Link className="text-button" href="/materials" prefetch={false}>
               Abrir
             </Link>
           </div>
@@ -203,7 +184,7 @@ export default async function DashboardPage() {
               <h2>Agendamento publico</h2>
             </div>
             {organization?.slug ? (
-              <Link className="text-button" href={`/book/${organization.slug}`} target="_blank">
+              <Link className="text-button" href={`/book/${organization.slug}`} prefetch={false} target="_blank">
                 Abrir
               </Link>
             ) : null}
@@ -226,7 +207,7 @@ export default async function DashboardPage() {
               <span className="eyebrow">Recentes</span>
               <h2>Pacientes</h2>
             </div>
-            <Link className="text-button" href="/patients">
+            <Link className="text-button" href="/patients" prefetch={false}>
               Abrir
             </Link>
           </div>
@@ -247,7 +228,7 @@ export default async function DashboardPage() {
               <span className="eyebrow">Nutricao</span>
               <h2>Planos recentes</h2>
             </div>
-            <Link className="text-button" href="/meal-plans">
+            <Link className="text-button" href="/meal-plans" prefetch={false}>
               Abrir
             </Link>
           </div>
@@ -295,62 +276,72 @@ export default async function DashboardPage() {
 }
 
 async function loadCommonDashboardData(organizationId: string, now: Date, nextWeek: Date) {
-  const patientCount = await prisma.patient.count({ where: { organizationId } });
-  const appointmentCount = await prisma.appointment.count({ where: { organizationId } });
-  const confirmedAppointments = await prisma.appointment.count({
-    where: {
-      organizationId,
-      status: AppointmentStatus.CONFIRMED,
-      startsAt: {
-        gte: now,
-        lte: nextWeek
-      }
-    }
-  });
-  const unreadChatCount = await prisma.chatMessage.count({
-    where: {
-      organizationId,
-      sender: "PATIENT",
-      readByProfessionalAt: null
-    }
-  });
-  const upcomingAppointments = await prisma.appointment.findMany({
-    where: {
-      organizationId,
-      startsAt: { gte: now }
-    },
-    orderBy: { startsAt: "asc" },
-    take: 5,
-    include: {
-      patient: {
-        select: {
-          name: true,
-          phone: true
+  const [
+    patientCount,
+    appointmentCount,
+    confirmedAppointments,
+    unreadChatCount,
+    upcomingAppointments,
+    latestPatients,
+    latestChatMessages
+  ] = await Promise.all([
+    prisma.patient.count({ where: { organizationId } }),
+    prisma.appointment.count({ where: { organizationId } }),
+    prisma.appointment.count({
+      where: {
+        organizationId,
+        status: AppointmentStatus.CONFIRMED,
+        startsAt: {
+          gte: now,
+          lte: nextWeek
         }
       }
-    }
-  });
-  const latestPatients = await prisma.patient.findMany({
-    where: { organizationId },
-    orderBy: { createdAt: "desc" },
-    take: 5,
-    select: {
-      id: true,
-      name: true,
-      goal: true,
-      createdAt: true
-    }
-  });
-  const latestChatMessages = await prisma.chatMessage.findMany({
-    where: { organizationId },
-    orderBy: { createdAt: "desc" },
-    take: 5,
-    include: {
-      patient: {
-        select: { name: true }
+    }),
+    prisma.chatMessage.count({
+      where: {
+        organizationId,
+        sender: "PATIENT",
+        readByProfessionalAt: null
       }
-    }
-  });
+    }),
+    prisma.appointment.findMany({
+      where: {
+        organizationId,
+        startsAt: { gte: now }
+      },
+      orderBy: { startsAt: "asc" },
+      take: 5,
+      include: {
+        patient: {
+          select: {
+            name: true,
+            phone: true
+          }
+        }
+      }
+    }),
+    prisma.patient.findMany({
+      where: { organizationId },
+      orderBy: { createdAt: "desc" },
+      take: 5,
+      select: {
+        id: true,
+        name: true,
+        goal: true,
+        createdAt: true
+      }
+    }),
+    prisma.chatMessage.findMany({
+      where: { organizationId },
+      orderBy: { createdAt: "desc" },
+      take: 5,
+      include: {
+        patient: {
+          select: { name: true }
+        }
+      }
+    })
+  ]);
 
   return {
     patientCount,
@@ -364,85 +355,107 @@ async function loadCommonDashboardData(organizationId: string, now: Date, nextWe
 }
 
 async function loadProfessionalDashboardData(organizationId: string) {
-  const mealPlanCount = await prisma.mealPlan.count({ where: { organizationId } });
-  const publishedMealPlans = await prisma.mealPlan.count({
-    where: {
-      organizationId,
-      publishedAt: { not: null }
-    }
-  });
-  const bodyRecordCount = await prisma.bodyRecord.count({
-    where: {
-      patient: {
-        organizationId
+  const [
+    mealPlanCount,
+    publishedMealPlans,
+    bodyRecordCount,
+    anamnesisCount,
+    pendingDiaryCount,
+    activeGoalCount,
+    energyCalculationCount,
+    materialCount,
+    latestMealPlans,
+    latestDiaryEntries,
+    latestMaterials,
+    auditLogs
+  ] = await Promise.all([
+    prisma.mealPlan.count({ where: { organizationId } }),
+    prisma.mealPlan.count({
+      where: {
+        organizationId,
+        publishedAt: { not: null }
       }
-    }
-  });
-  const anamnesisCount = await prisma.anamnesis.count({
-    where: {
-      patient: {
-        organizationId
-      }
-    }
-  });
-  const pendingDiaryCount = await prisma.foodDiaryEntry.count({
-    where: {
-      organizationId,
-      status: "PENDING"
-    }
-  });
-  const activeGoalCount = await prisma.patientGoal.count({
-    where: {
-      organizationId,
-      completedAt: null
-    }
-  });
-  const energyCalculationCount = await prisma.energyCalculation.count({
-    where: { organizationId }
-  });
-  const materialCount = await prisma.educationalMaterial.count({
-    where: { organizationId }
-  });
-  const latestMealPlans = await prisma.mealPlan.findMany({
-    where: { organizationId },
-    orderBy: { createdAt: "desc" },
-    take: 5,
-    include: {
-      patient: {
-        select: { name: true }
-      },
-      meals: {
-        include: {
-          items: true
+    }),
+    prisma.bodyRecord.count({
+      where: {
+        patient: {
+          organizationId
         }
       }
-    }
-  });
-  const latestDiaryEntries = await prisma.foodDiaryEntry.findMany({
-    where: { organizationId },
-    orderBy: [{ entryDate: "desc" }, { createdAt: "desc" }],
-    take: 5,
-    include: {
-      patient: {
-        select: { name: true }
+    }),
+    prisma.anamnesis.count({
+      where: {
+        patient: {
+          organizationId
+        }
       }
-    }
-  });
-  const latestMaterials = await prisma.educationalMaterial.findMany({
-    where: { organizationId },
-    orderBy: { createdAt: "desc" },
-    take: 5
-  });
-  const auditLogs = await prisma.auditLog.findMany({
-    where: { organizationId },
-    orderBy: { createdAt: "desc" },
-    take: 8,
-    include: {
-      user: {
-        select: { name: true }
+    }),
+    prisma.foodDiaryEntry.count({
+      where: {
+        organizationId,
+        status: "PENDING"
       }
-    }
-  });
+    }),
+    prisma.patientGoal.count({
+      where: {
+        organizationId,
+        completedAt: null
+      }
+    }),
+    prisma.energyCalculation.count({
+      where: { organizationId }
+    }),
+    prisma.educationalMaterial.count({
+      where: { organizationId }
+    }),
+    prisma.mealPlan.findMany({
+      where: { organizationId },
+      orderBy: { createdAt: "desc" },
+      take: 5,
+      select: {
+        id: true,
+        name: true,
+        publishedAt: true,
+        patient: {
+          select: { name: true }
+        },
+        meals: {
+          select: {
+            items: {
+              select: {
+                calories: true
+              }
+            }
+          }
+        }
+      }
+    }),
+    prisma.foodDiaryEntry.findMany({
+      where: { organizationId },
+      orderBy: [{ entryDate: "desc" }, { createdAt: "desc" }],
+      take: 5,
+      include: {
+        patient: {
+          select: { name: true }
+        }
+      }
+    }),
+    prisma.educationalMaterial.findMany({
+      where: { organizationId },
+      orderBy: { createdAt: "desc" },
+      take: 5
+    }),
+    prisma.auditLog.findMany({
+      where: { organizationId },
+      orderBy: { createdAt: "desc" },
+      take: 8,
+      include: {
+        user: {
+          select: { name: true }
+        }
+      }
+    })
+  ]);
 
   return {
     mealPlanCount,
@@ -459,6 +472,45 @@ async function loadProfessionalDashboardData(organizationId: string) {
     auditLogs
   };
 }
+
+const loadCachedDashboardData = unstable_cache(
+  async (organizationId: string, includeProfessionalData: boolean) => {
+    const now = new Date();
+    const nextWeek = new Date(now);
+    nextWeek.setDate(nextWeek.getDate() + 7);
+
+    const [organization, commonData, professionalData] = await Promise.all([
+      prisma.organization.findUnique({
+        where: { id: organizationId },
+        select: {
+          name: true,
+          slug: true,
+          subscriptions: {
+            orderBy: { createdAt: "desc" },
+            take: 1,
+            select: {
+              planCode: true,
+              status: true,
+              trialEndsAt: true
+            }
+          }
+        }
+      }),
+      loadCommonDashboardData(organizationId, now, nextWeek),
+      includeProfessionalData
+        ? loadProfessionalDashboardData(organizationId)
+        : Promise.resolve(emptyProfessionalDashboardData())
+    ]);
+
+    return {
+      organization,
+      commonData,
+      professionalData
+    };
+  },
+  ["dashboard-summary"],
+  { revalidate: 30 }
+);
 
 type ProfessionalDashboardData = Awaited<ReturnType<typeof loadProfessionalDashboardData>>;
 
@@ -481,7 +533,7 @@ function emptyProfessionalDashboardData(): ProfessionalDashboardData {
 
 function MetricCard({ label, value, detail, href }: { label: string; value: number; detail: string; href: string }) {
   return (
-    <Link href={href} className="dashboard-card">
+    <Link href={href} prefetch={false} className="dashboard-card">
       <span>{label}</span>
       <strong>{value}</strong>
       <small>{detail}</small>
@@ -489,15 +541,15 @@ function MetricCard({ label, value, detail, href }: { label: string; value: numb
   );
 }
 
-function formatDate(value: Date) {
-  return new Intl.DateTimeFormat("pt-BR").format(value);
+function formatDate(value: Date | string) {
+  return new Intl.DateTimeFormat("pt-BR").format(new Date(value));
 }
 
-function formatDateTime(value: Date) {
+function formatDateTime(value: Date | string) {
   return new Intl.DateTimeFormat("pt-BR", {
     dateStyle: "short",
     timeStyle: "short"
-  }).format(value);
+  }).format(new Date(value));
 }
 
 function formatPlan(value: string | undefined) {
