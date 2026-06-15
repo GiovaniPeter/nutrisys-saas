@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 type Patient = {
   id: string;
@@ -38,6 +38,8 @@ export function PatientsClient() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [portalPatientId, setPortalPatientId] = useState<string | null>(null);
   const [editingPatient, setEditingPatient] = useState<Patient | null>(null);
+  const formPanelRef = useRef<HTMLElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const totalPatients = patients.length;
   const consentedPatients = useMemo(
@@ -54,6 +56,27 @@ export function PatientsClient() {
   }, [query]);
 
   const editing = Boolean(editingPatient);
+
+  function focusPatientForm() {
+    window.requestAnimationFrame(() => {
+      formPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  function startEditing(patient: Patient) {
+    setEditingPatient(patient);
+    setMessage(null);
+    focusPatientForm();
+  }
+
+  function startNewPatient() {
+    setEditingPatient(null);
+    setMessage(null);
+    window.requestAnimationFrame(() => {
+      formRef.current?.reset();
+      formPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
 
   async function loadPatients(search = "") {
     setLoading(true);
@@ -194,16 +217,121 @@ export function PatientsClient() {
   }
 
   return (
-    <section className="workspace-grid">
-      <div className="surface patient-list">
+    <section className="patients-page-layout">
+      <section ref={formPanelRef} className="surface patient-form-panel patient-form-panel-full">
+        <div className="section-title-row patient-form-heading">
+          <div>
+            <span className="eyebrow">{editing ? "Edicao" : "Novo cadastro"}</span>
+            <h2>{editing ? `Editar ${editingPatient?.name}` : "Adicionar paciente"}</h2>
+            <p>Preencha os dados principais para iniciar o prontuario e o acompanhamento nutricional.</p>
+          </div>
+          {editing ? (
+            <button className="button secondary" type="button" onClick={startNewPatient}>
+              Cancelar edicao
+            </button>
+          ) : null}
+        </div>
+
+        <form
+          ref={formRef}
+          key={editingPatient?.id || "new"}
+          className="patient-form-grid"
+          onSubmit={handleSubmit}
+        >
+          <label className="patient-field-half">
+            Nome
+            <input
+              name="name"
+              required
+              minLength={2}
+              placeholder="Nome completo"
+              defaultValue={editingPatient?.name || ""}
+            />
+          </label>
+          <label className="patient-field-quarter">
+            E-mail
+            <input name="email" type="email" placeholder="paciente@email.com" defaultValue={editingPatient?.email || ""} />
+          </label>
+          <label className="patient-field-quarter">
+            Telefone
+            <input name="phone" placeholder="(00) 00000-0000" defaultValue={editingPatient?.phone || ""} />
+          </label>
+          <label className="patient-field-quarter">
+            Nascimento
+            <input name="birthDate" type="date" defaultValue={formatDateInput(editingPatient?.birthDate)} />
+          </label>
+          <label className="patient-field-quarter">
+            Sexo
+            <select name="sex" defaultValue={editingPatient?.sex || "UNINFORMED"}>
+              <option value="UNINFORMED">Nao informado</option>
+              <option value="FEMALE">Feminino</option>
+              <option value="MALE">Masculino</option>
+              <option value="OTHER">Outro</option>
+            </select>
+          </label>
+          <label className="patient-field-quarter">
+            Altura cm
+            <input
+              name="heightCm"
+              type="number"
+              min="1"
+              step="0.01"
+              placeholder="165"
+              defaultValue={editingPatient?.heightCm?.toString() || ""}
+            />
+          </label>
+          <label className="patient-field-quarter">
+            Peso kg
+            <input
+              name="weightKg"
+              type="number"
+              min="1"
+              step="0.01"
+              placeholder="68.5"
+              defaultValue={editingPatient?.weightKg?.toString() || ""}
+            />
+          </label>
+          <label className="patient-field-half">
+            Objetivo
+            <input name="goal" placeholder="Emagrecimento, hipertrofia..." defaultValue={editingPatient?.goal || ""} />
+          </label>
+          <label className="patient-field-half">
+            Observacoes
+            <textarea name="notes" rows={3} placeholder="Notas iniciais do atendimento" defaultValue={editingPatient?.notes || ""} />
+          </label>
+          <label className="checkbox-label patient-field-full">
+            <input name="lgpdConsent" type="checkbox" defaultChecked={Boolean(editingPatient?.lgpdConsentAt)} />
+            <span>Paciente autorizou o tratamento de dados de saude.</span>
+          </label>
+          <div className="patient-form-actions patient-field-full">
+            <button className="button" type="submit" disabled={saving}>
+              {saving ? "Salvando..." : editing ? "Salvar alteracoes" : "Cadastrar paciente"}
+            </button>
+            {editing ? (
+              <button className="button secondary" type="button" onClick={startNewPatient}>
+                Cancelar edicao
+              </button>
+            ) : null}
+          </div>
+        </form>
+      </section>
+
+      {message ? <p className="form-message neutral patients-feedback">{message}</p> : null}
+
+      <section className="surface patient-list">
         <div className="section-title-row">
           <div>
             <span className="eyebrow">Base da clinica</span>
             <h2>Lista de pacientes</h2>
           </div>
-          <div className="mini-stats" aria-label="Resumo de pacientes">
-            <span>{totalPatients} total</span>
-            <span>{consentedPatients} LGPD</span>
+          <div className="patient-list-header-actions">
+            <div className="mini-stats" aria-label="Resumo de pacientes">
+              <span><strong>{totalPatients}</strong> total</span>
+              <span><strong>{consentedPatients}</strong> LGPD</span>
+            </div>
+            <button className="button" type="button" onClick={startNewPatient}>
+              Adicionar paciente
+            </button>
           </div>
         </div>
 
@@ -215,8 +343,6 @@ export function PatientsClient() {
             placeholder="Nome do paciente"
           />
         </label>
-
-        {message ? <p className="form-message neutral">{message}</p> : null}
 
         <div className="table-wrap">
           <table className="data-table">
@@ -261,10 +387,7 @@ export function PatientsClient() {
                       <button
                         className="text-button"
                         type="button"
-                        onClick={() => {
-                          setEditingPatient(patient);
-                          setMessage(null);
-                        }}
+                        onClick={() => startEditing(patient)}
                       >
                         Editar
                       </button>
@@ -329,91 +452,7 @@ export function PatientsClient() {
             </tbody>
           </table>
         </div>
-      </div>
-
-      <aside className="surface patient-form-panel">
-        <span className="eyebrow">{editing ? "Edicao" : "Novo cadastro"}</span>
-        <h2>{editing ? "Editar paciente" : "Adicionar paciente"}</h2>
-        <form key={editingPatient?.id || "new"} className="form compact-form" onSubmit={handleSubmit}>
-          <label>
-            Nome
-            <input
-              name="name"
-              required
-              minLength={2}
-              placeholder="Nome completo"
-              defaultValue={editingPatient?.name || ""}
-            />
-          </label>
-          <label>
-            E-mail
-            <input name="email" type="email" placeholder="paciente@email.com" defaultValue={editingPatient?.email || ""} />
-          </label>
-          <label>
-            Telefone
-            <input name="phone" placeholder="(00) 00000-0000" defaultValue={editingPatient?.phone || ""} />
-          </label>
-          <div className="form-row">
-            <label>
-              Nascimento
-              <input name="birthDate" type="date" defaultValue={formatDateInput(editingPatient?.birthDate)} />
-            </label>
-            <label>
-              Sexo
-              <select name="sex" defaultValue={editingPatient?.sex || "UNINFORMED"}>
-                <option value="UNINFORMED">Nao informado</option>
-                <option value="FEMALE">Feminino</option>
-                <option value="MALE">Masculino</option>
-                <option value="OTHER">Outro</option>
-              </select>
-            </label>
-          </div>
-          <div className="form-row">
-            <label>
-              Altura cm
-              <input
-                name="heightCm"
-                type="number"
-                min="1"
-                step="0.01"
-                placeholder="165"
-                defaultValue={editingPatient?.heightCm?.toString() || ""}
-              />
-            </label>
-            <label>
-              Peso kg
-              <input
-                name="weightKg"
-                type="number"
-                min="1"
-                step="0.01"
-                placeholder="68.5"
-                defaultValue={editingPatient?.weightKg?.toString() || ""}
-              />
-            </label>
-          </div>
-          <label>
-            Objetivo
-            <input name="goal" placeholder="Emagrecimento, hipertrofia..." defaultValue={editingPatient?.goal || ""} />
-          </label>
-          <label>
-            Observacoes
-            <textarea name="notes" rows={4} placeholder="Notas iniciais do atendimento" defaultValue={editingPatient?.notes || ""} />
-          </label>
-          <label className="checkbox-label">
-            <input name="lgpdConsent" type="checkbox" defaultChecked={Boolean(editingPatient?.lgpdConsentAt)} />
-            <span>Paciente autorizou o tratamento de dados de saude.</span>
-          </label>
-          <button className="button" type="submit" disabled={saving}>
-            {saving ? "Salvando..." : editing ? "Salvar alteracoes" : "Cadastrar paciente"}
-          </button>
-          {editing ? (
-            <button className="button secondary" type="button" onClick={() => setEditingPatient(null)}>
-              Cancelar edicao
-            </button>
-          ) : null}
-        </form>
-      </aside>
+      </section>
     </section>
   );
 }

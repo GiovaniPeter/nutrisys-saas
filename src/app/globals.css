@@ -704,6 +704,182 @@ button, input, textarea, select { font: inherit; }
   gap: 14px;
 }
 
+.patients-page-layout {
+  display: grid;
+  gap: 18px;
+  margin: 0 auto;
+  max-width: 1480px;
+}
+
+.patient-form-panel-full {
+  scroll-margin-top: 104px;
+}
+
+.patient-form-heading {
+  align-items: flex-start;
+  border-bottom: 1px solid var(--app-line);
+  margin-bottom: 20px;
+  padding-bottom: 18px;
+}
+
+.patient-form-heading p {
+  color: var(--app-muted);
+  line-height: 1.55;
+  margin: 7px 0 0;
+  max-width: 720px;
+}
+
+.patient-form-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.patient-form-grid > label {
+  grid-column: span 4;
+}
+
+.patient-form-grid > .patient-field-quarter {
+  grid-column: span 3;
+}
+
+.patient-form-grid > .patient-field-half {
+  grid-column: span 6;
+}
+
+.patient-form-grid > .patient-field-full {
+  grid-column: 1 / -1;
+}
+
+.patient-form-grid textarea {
+  min-height: 94px;
+}
+
+.checkbox-label {
+  align-items: center;
+  background: #f7fbf8;
+  border: 1px solid var(--app-line);
+  border-radius: 14px;
+  display: flex;
+  gap: 10px;
+  min-height: 48px;
+  padding: 12px 14px;
+}
+
+.checkbox-label input {
+  accent-color: var(--app-primary);
+  flex: 0 0 18px;
+  height: 18px;
+  min-height: 18px;
+  padding: 0;
+  width: 18px;
+}
+
+.patient-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+  padding-top: 2px;
+}
+
+.patient-form-actions .button {
+  min-width: 190px;
+}
+
+.patients-feedback {
+  box-shadow: 0 10px 28px rgba(9, 37, 29, .06);
+}
+
+.patient-list-header-actions,
+.mini-stats {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.mini-stats span {
+  background: var(--app-soft);
+  border: 1px solid rgba(17, 132, 58, .12);
+  border-radius: 999px;
+  color: var(--app-primary-dark);
+  font-size: .82rem;
+  font-weight: 800;
+  padding: 8px 11px;
+}
+
+.mini-stats strong {
+  font-size: .95rem;
+}
+
+.search-field {
+  margin-bottom: 16px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.patient-list .data-table {
+  min-width: 1120px;
+}
+
+.patient-list .data-table td:first-child strong,
+.patient-list .data-table td:nth-child(2) strong {
+  display: block;
+}
+
+.patient-list .data-table td:first-child > span,
+.patient-list .data-table td:nth-child(2) > span {
+  color: var(--app-muted);
+  display: block;
+  font-size: .84rem;
+  margin-top: 4px;
+}
+
+.patient-list .status-pill.ok {
+  background: #e5f7ea;
+  color: #09662d;
+}
+
+.code-pill {
+  background: #f1f5f2;
+  border: 1px solid var(--app-line);
+  border-radius: 8px;
+  color: var(--app-muted);
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .74rem;
+  margin-top: 7px;
+  padding: 5px 7px;
+  width: fit-content;
+}
+
+.row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  min-width: 250px;
+}
+
+.row-actions .text-button {
+  font-size: .76rem;
+  min-height: 32px;
+  padding: 6px 10px;
+}
+
+.selected-row td {
+  background: #eef9f1;
+}
+
+.empty-cell {
+  color: var(--app-muted);
+  padding: 30px !important;
+  text-align: center;
+}
+
 label {
   color: var(--app-muted);
   display: grid;
@@ -1612,11 +1788,45 @@ form button[type="submit"] {
   .login-role-grid {
     grid-template-columns: 1fr;
   }
+
+  .patient-form-grid > label,
+  .patient-form-grid > .patient-field-quarter,
+  .patient-form-grid > .patient-field-half {
+    grid-column: span 6;
+  }
+
+  .patient-form-grid > .patient-field-full {
+    grid-column: 1 / -1;
+  }
 }
 
 @media (max-width: 680px) {
   .workspace-shell {
     padding: 14px 12px 34px;
+  }
+
+  .patient-form-grid > label,
+  .patient-form-grid > .patient-field-quarter,
+  .patient-form-grid > .patient-field-half,
+  .patient-form-grid > .patient-field-full {
+    grid-column: 1 / -1;
+  }
+
+  .patient-form-actions {
+    justify-content: stretch;
+  }
+
+  .patient-form-actions .button {
+    width: 100%;
+  }
+
+  .patient-list-header-actions {
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .patient-list-header-actions > .button {
+    width: 100%;
   }
 
   .app-header {
