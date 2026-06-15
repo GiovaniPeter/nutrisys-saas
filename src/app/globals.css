@@ -814,7 +814,19 @@ button, input, textarea, select { font: inherit; }
 }
 
 .search-field {
+  margin: 0;
+}
+
+.patient-search-grid {
+  align-items: end;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(280px, 1fr) minmax(190px, 260px) auto;
   margin-bottom: 16px;
+}
+
+.patient-search-clear {
+  white-space: nowrap;
 }
 
 .table-wrap {
@@ -1798,6 +1810,15 @@ form button[type="submit"] {
   .patient-form-grid > .patient-field-full {
     grid-column: 1 / -1;
   }
+
+  .patient-search-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(190px, 260px);
+  }
+
+  .patient-search-clear {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
 }
 
 @media (max-width: 680px) {
@@ -1826,6 +1847,16 @@ form button[type="submit"] {
   }
 
   .patient-list-header-actions > .button {
+    width: 100%;
+  }
+
+  .patient-search-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .patient-search-clear {
+    grid-column: auto;
+    justify-self: stretch;
     width: 100%;
   }
 

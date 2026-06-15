@@ -32,6 +32,7 @@ const sexLabels: Record<Patient["sex"], string> = {
 export function PatientsClient() {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [query, setQuery] = useState("");
+  const [birthDateQuery, setBirthDateQuery] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -49,11 +50,11 @@ export function PatientsClient() {
 
   useEffect(() => {
     const timeout = window.setTimeout(() => {
-      void loadPatients(query);
-    }, query.trim() ? 220 : 0);
+      void loadPatients(query, birthDateQuery);
+    }, query.trim() || birthDateQuery ? 220 : 0);
 
     return () => window.clearTimeout(timeout);
-  }, [query]);
+  }, [query, birthDateQuery]);
 
   const editing = Boolean(editingPatient);
 
@@ -78,12 +79,16 @@ export function PatientsClient() {
     });
   }
 
-  async function loadPatients(search = "") {
+  async function loadPatients(search = "", birthDate = "") {
     setLoading(true);
     const params = new URLSearchParams();
 
     if (search.trim()) {
       params.set("q", search.trim());
+    }
+
+    if (birthDate) {
+      params.set("birthDate", birthDate);
     }
 
     const response = await fetch(`/api/patients${params.size ? `?${params}` : ""}`);
@@ -128,7 +133,7 @@ export function PatientsClient() {
       setMessage("Paciente cadastrado com sucesso.");
     }
 
-    await loadPatients(query);
+    await loadPatients(query, birthDateQuery);
   }
 
   async function handleDelete(patient: Patient) {
@@ -157,7 +162,7 @@ export function PatientsClient() {
     }
 
     setMessage("Paciente excluido com sucesso.");
-    await loadPatients(query);
+    await loadPatients(query, birthDateQuery);
   }
 
   async function updatePortalAccess(patient: Patient, action: "generate" | "rotate" | "disable") {
@@ -335,20 +340,43 @@ export function PatientsClient() {
           </div>
         </div>
 
-        <label className="search-field">
-          <span>Buscar</span>
-          <input
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            placeholder="Nome do paciente"
-          />
-        </label>
+        <div className="patient-search-grid">
+          <label className="search-field">
+            <span>Buscar por nome</span>
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Digite o nome do paciente"
+            />
+          </label>
+          <label className="search-field">
+            <span>Data de nascimento</span>
+            <input
+              type="date"
+              value={birthDateQuery}
+              onChange={(event) => setBirthDateQuery(event.target.value)}
+            />
+          </label>
+          {query || birthDateQuery ? (
+            <button
+              className="button secondary patient-search-clear"
+              type="button"
+              onClick={() => {
+                setQuery("");
+                setBirthDateQuery("");
+              }}
+            >
+              Limpar filtros
+            </button>
+          ) : null}
+        </div>
 
         <div className="table-wrap">
           <table className="data-table">
             <thead>
               <tr>
                 <th>Nome</th>
+                <th>Nascimento</th>
                 <th>Contato</th>
                 <th>Objetivo</th>
                 <th>LGPD</th>
@@ -363,6 +391,7 @@ export function PatientsClient() {
                     <strong>{patient.name}</strong>
                     <span>{sexLabels[patient.sex]}</span>
                   </td>
+                  <td>{formatDisplayDate(patient.birthDate)}</td>
                   <td>
                     <strong>{patient.phone || "Sem telefone"}</strong>
                     <span>{patient.email || "Sem e-mail"}</span>
@@ -436,7 +465,7 @@ export function PatientsClient() {
 
               {!loading && patients.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="empty-cell">
+                  <td colSpan={7} className="empty-cell">
                     Nenhum paciente encontrado.
                   </td>
                 </tr>
@@ -444,7 +473,7 @@ export function PatientsClient() {
 
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="empty-cell">
+                  <td colSpan={7} className="empty-cell">
                     Carregando pacientes...
                   </td>
                 </tr>
@@ -482,6 +511,14 @@ function formatDateInput(value: string | null | undefined) {
   }
 
   return value.slice(0, 10);
+}
+
+function formatDisplayDate(value: string | null | undefined) {
+  if (!value) {
+    return "Nao informada";
+  }
+
+  return new Intl.DateTimeFormat("pt-BR", { timeZone: "UTC" }).format(new Date(value));
 }
 
 function buildPortalInvite(patient: Patient) {

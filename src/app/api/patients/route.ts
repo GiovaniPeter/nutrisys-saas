@@ -27,6 +27,7 @@ export async function GET(request: NextRequest) {
   }
 
   const search = request.nextUrl.searchParams.get("q")?.trim();
+  const birthDate = parseDateFilter(request.nextUrl.searchParams.get("birthDate"));
   const where: Prisma.PatientWhereInput = {
     organizationId: user.organizationId,
     ...(search
@@ -34,6 +35,14 @@ export async function GET(request: NextRequest) {
           name: {
             contains: search,
             mode: "insensitive"
+          }
+        }
+      : {}),
+    ...(birthDate
+      ? {
+          birthDate: {
+            gte: birthDate.start,
+            lt: birthDate.end
           }
         }
       : {})
@@ -60,6 +69,23 @@ export async function GET(request: NextRequest) {
   });
 
   return json({ patients });
+}
+
+function parseDateFilter(value: string | null) {
+  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return null;
+  }
+
+  const start = new Date(`${value}T00:00:00.000Z`);
+
+  if (Number.isNaN(start.getTime()) || start.toISOString().slice(0, 10) !== value) {
+    return null;
+  }
+
+  const end = new Date(start);
+  end.setUTCDate(end.getUTCDate() + 1);
+
+  return { start, end };
 }
 
 export async function POST(request: NextRequest) {
