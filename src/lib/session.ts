@@ -10,6 +10,7 @@ type SessionPayload = {
   userId: string;
   organizationId: string;
   role: string;
+  specialty?: string;
   exp: number;
 };
 
@@ -19,6 +20,7 @@ export type AuthenticatedUser = {
   name: string;
   email: string;
   role: string;
+  specialty?: string;
 };
 
 export type RequiredAuthUser = AuthenticatedUser & {
@@ -85,11 +87,12 @@ export async function getCurrentUser(): Promise<AuthenticatedUser | null> {
       organizationId: true,
       name: true,
       email: true,
-      role: true
+      role: true,
+      specialty: true
     }
   });
 
-  return user ? { ...user, role: user.role } : null;
+  return user ? { ...user, role: user.role, specialty: user.specialty || undefined } : null;
 }
 
 export async function requireAuth(_request?: Request): Promise<RequiredAuthUser> {

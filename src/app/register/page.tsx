@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { RegisterForm } from "@/components/auth/register-form";
+import { RegisterProfessionalForm } from "@/components/auth/register-professional-form";
 
 type RegisterPageProps = {
   searchParams?: {
@@ -16,6 +17,12 @@ const registerOptions = [
     title: "Nutricionista",
     text: "Crie o trial da clínica, gerencie pacientes, equipe, planos, agenda e indicadores.",
     href: "/register?perfil=nutricionista"
+  },
+  {
+    key: "profissional",
+    title: "Profissional de Saúde",
+    text: "Clínica para médicos, psicólogos, fisioterapeutas, dentistas e demais especialidades.",
+    href: "/register?perfil=profissional"
   },
   {
     key: "secretaria",
@@ -72,6 +79,16 @@ export default function RegisterPage({ searchParams }: RegisterPageProps) {
               </p>
               <RegisterForm initialPlanCode={initialPlanCode} />
             </>
+          ) : selectedProfile === "profissional" ? (
+            <>
+              <span className="eyebrow">Trial da clínica</span>
+              <h2>Cadastro do profissional de saúde</h2>
+              <p>
+                Crie a clínica escolhendo sua especialidade. O sistema será adaptado
+                para sua área de atuação, sem funcionalidades exclusivas de nutrição.
+              </p>
+              <RegisterProfessionalForm initialPlanCode={initialPlanCode} />
+            </>
           ) : selectedProfile === "secretaria" ? (
             <>
               <span className="eyebrow">Acesso da equipe</span>
@@ -97,14 +114,14 @@ export default function RegisterPage({ searchParams }: RegisterPageProps) {
               <p>
                 Pacientes entram pelo portal usando e-mail ou telefone e o
                 código de acesso enviado pela clínica. Se ainda não recebeu o
-                código, solicite ao seu nutricionista.
+                código, solicite ao seu profissional de saúde.
               </p>
               <div className="form">
                 <Link href="/login?perfil=paciente" className="button">
                   Entrar no portal do paciente
                 </Link>
                 <Link href="/register?perfil=nutricionista" className="button secondary">
-                  Sou nutricionista
+                  Sou profissional de saúde
                 </Link>
               </div>
             </>
@@ -120,7 +137,7 @@ export default function RegisterPage({ searchParams }: RegisterPageProps) {
 }
 
 function normalizeProfile(profile?: string) {
-  if (profile === "paciente" || profile === "secretaria" || profile === "nutricionista") {
+  if (profile === "paciente" || profile === "secretaria" || profile === "nutricionista" || profile === "profissional") {
     return profile;
   }
 

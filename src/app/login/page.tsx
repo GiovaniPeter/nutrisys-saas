@@ -16,6 +16,12 @@ const accessOptions = [
     href: "/login?perfil=nutricionista"
   },
   {
+    key: "profissional",
+    title: "Profissional de Saúde",
+    text: "Acesso para médicos, psicólogos, fisioterapeutas, dentistas e demais especialidades da clínica.",
+    href: "/login?perfil=profissional"
+  },
+  {
     key: "secretaria",
     title: "Secretária",
     text: "Modo limitado para recepção: agenda, cadastro básico, lembretes e suporte operacional da clínica.",
@@ -66,6 +72,19 @@ export default function LoginPage({ searchParams }: LoginPageProps) {
               <p>Use o e-mail ou telefone cadastrado e o código de acesso enviado pela clínica.</p>
               <PortalLoginForm />
             </>
+          ) : selectedProfile === "profissional" ? (
+            <>
+              <span className="eyebrow">Área profissional</span>
+              <h2>Login do profissional de saúde</h2>
+              <p>
+                Use seu acesso profissional para gerenciar a clínica, pacientes, agenda e indicadores
+                adaptados à sua especialidade.
+              </p>
+              <LoginForm
+                accessMode="professional"
+                buttonLabel="Entrar como profissional"
+              />
+            </>
           ) : (
             <>
               <span className="eyebrow">{selectedProfile === "secretaria" ? "Modo limitado" : "Área profissional"}</span>
@@ -92,7 +111,7 @@ export default function LoginPage({ searchParams }: LoginPageProps) {
 }
 
 function normalizeProfile(profile?: string) {
-  if (profile === "paciente" || profile === "secretaria" || profile === "nutricionista") {
+  if (profile === "paciente" || profile === "secretaria" || profile === "nutricionista" || profile === "profissional") {
     return profile;
   }
 

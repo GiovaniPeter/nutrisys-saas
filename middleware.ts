@@ -23,15 +23,56 @@ const secretaryAllowedApis = [
   "/api/portal"
 ];
 
-export function middleware(request: NextRequest) {
-  const role = readRole(request.cookies.get(SESSION_COOKIE)?.value);
+const professionalBlockedPages = [
+  "/meal-plans",
+  "/recipes",
+  "/shopping",
+  "/foods",
+  "/supplements",
+  "/food-diary",
+  "/hydration",
+  "/energy",
+  "/recalls"
+];
 
-  if (role !== "SECRETARY") {
+const professionalBlockedApis = [
+  "/api/meal-plans",
+  "/api/recipes",
+  "/api/shopping",
+  "/api/foods",
+  "/api/supplements",
+  "/api/food-diary",
+  "/api/hydration",
+  "/api/energy",
+  "/api/recalls"
+];
+
+export function middleware(request: NextRequest) {
+  const { role } = readSession(request.cookies.get(SESSION_COOKIE)?.value);
+
+  if (!role || (role !== "SECRETARY" && role !== "PROFESSIONAL")) {
     return NextResponse.next();
   }
 
   const { pathname } = request.nextUrl;
 
+  if (role === "PROFESSIONAL") {
+    if (pathname.startsWith("/api/")) {
+      if (professionalBlockedApis.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
+        return NextResponse.json({ error: "Funcionalidade exclusiva para nutricionistas." }, { status: 403 });
+      }
+
+      return NextResponse.next();
+    }
+
+    if (professionalBlockedPages.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
+
+    return NextResponse.next();
+  }
+
+  // SECRETARY restrictions
   if (pathname.startsWith("/api/")) {
     if (secretaryAllowedApis.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
       return NextResponse.next();
@@ -53,24 +94,24 @@ export function middleware(request: NextRequest) {
   return NextResponse.redirect(new URL("/dashboard", request.url));
 }
 
-function readRole(cookie?: string) {
+function readSession(cookie?: string): { role: string | null; specialty: string | null } {
   if (!cookie) {
-    return null;
+    return { role: null, specialty: null };
   }
 
   const [encoded] = cookie.split(".");
 
   if (!encoded) {
-    return null;
+    return { role: null, specialty: null };
   }
 
   try {
     const base64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
     const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), "=");
-    const payload = JSON.parse(atob(padded)) as { role?: string };
-    return payload.role || null;
+    const payload = JSON.parse(atob(padded)) as { role?: string; specialty?: string };
+    return { role: payload.role || null, specialty: payload.specialty || null };
   } catch {
-    return null;
+    return { role: null, specialty: null };
   }
 }
 

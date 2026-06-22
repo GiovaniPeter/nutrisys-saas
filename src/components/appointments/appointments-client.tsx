@@ -47,6 +47,7 @@ export function AppointmentsClient() {
   const [patients, setPatients] = useState<PatientOption[]>([]);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [selectedPatientId, setSelectedPatientId] = useState(() => searchParams.get("patientId") || "");
+  const [screen, setScreen] = useState<"list" | "form">("list");
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -144,6 +145,7 @@ export function AppointmentsClient() {
     }
 
     await loadAppointments();
+    setScreen("list");
   }
 
   async function updateStatus(appointment: Appointment, status: AppointmentStatus) {
@@ -203,17 +205,132 @@ export function AppointmentsClient() {
     }
   }
 
+  function openCreateForm() {
+    setEditingAppointment(null);
+    setMessage(null);
+    setScreen("form");
+  }
+
+  function openEditForm(appointment: Appointment) {
+    setEditingAppointment(appointment);
+    setMessage(null);
+    setScreen("form");
+  }
+
+  function closeForm() {
+    setEditingAppointment(null);
+    setMessage(null);
+    setScreen("list");
+  }
+
+  if (screen === "form") {
+    return (
+      <section className="appointment-form-screen">
+        <div className="surface appointment-form-panel">
+          <div className="appointment-form-hero">
+            <div>
+              <span className="eyebrow">{editing ? "Edicao" : "Nova consulta"}</span>
+              <h2>{editing ? "Editar consulta" : "Agendar consulta"}</h2>
+              <p>
+                Preencha os dados da consulta com mais espaco e menos distracao. Depois de salvar, voce volta
+                automaticamente para a lista da agenda.
+              </p>
+            </div>
+            <button className="text-button" type="button" onClick={closeForm}>
+              Voltar para consultas
+            </button>
+          </div>
+
+          {message ? <p className="form-message neutral">{message}</p> : null}
+
+          <form key={editingAppointment?.id || "new"} className="form appointment-form-grid" onSubmit={handleSubmit}>
+            <label className="appointment-field-wide">
+              Paciente
+              <select name="patientId" required defaultValue={editingAppointment?.patientId || selectedPatientId}>
+                <option value="">Selecione</option>
+                {patients.map((patient) => (
+                  <option key={patient.id} value={patient.id}>
+                    {patient.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="appointment-field-half">
+              Inicio
+              <input
+                name="startsAt"
+                type="datetime-local"
+                required
+                defaultValue={formatDateTimeInput(editingAppointment?.startsAt)}
+              />
+            </label>
+            <label className="appointment-field-half">
+              Fim
+              <input name="endsAt" type="datetime-local" defaultValue={formatDateTimeInput(editingAppointment?.endsAt)} />
+            </label>
+            <label>
+              Tipo
+              <select name="type" defaultValue={editingAppointment?.type || "Consulta inicial"}>
+                <option>Consulta inicial</option>
+                <option>Retorno</option>
+                <option>Avaliacao corporal</option>
+                <option>Teleconsulta</option>
+              </select>
+            </label>
+            <label>
+              Status
+              <select name="status" defaultValue={editingAppointment?.status || "PENDING"}>
+                {Object.entries(statusLabels).map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="appointment-field-full">
+              Observacoes
+              <textarea
+                name="notes"
+                rows={5}
+                placeholder="Notas internas da consulta"
+                defaultValue={editingAppointment?.notes || ""}
+              />
+            </label>
+
+            {patients.length === 0 ? (
+              <p className="form-message error appointment-field-full">Cadastre um paciente antes de agendar.</p>
+            ) : null}
+
+            <div className="appointment-form-actions">
+              <button className="button secondary" type="button" onClick={closeForm}>
+                Cancelar
+              </button>
+              <button className="button" type="submit" disabled={saving || patients.length === 0}>
+                {saving ? "Salvando..." : editing ? "Salvar alteracoes" : "Agendar consulta"}
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="workspace-grid">
-      <div className="surface appointment-list">
+    <section className="appointments-page-layout">
+      <div className="surface appointment-list appointment-list-full">
         <div className="section-title-row">
           <div>
             <span className="eyebrow">Periodo</span>
             <h2>Consultas</h2>
           </div>
-          <div className="mini-stats" aria-label="Resumo da agenda">
-            <span>{totalAppointments} total</span>
-            <span>{confirmedAppointments} confirmadas</span>
+          <div className="appointment-list-header-actions">
+            <div className="mini-stats" aria-label="Resumo da agenda">
+              <span>{totalAppointments} total</span>
+              <span>{confirmedAppointments} confirmadas</span>
+            </div>
+            <button className="button" type="button" onClick={openCreateForm}>
+              Nova consulta
+            </button>
           </div>
         </div>
 
@@ -285,10 +402,7 @@ export function AppointmentsClient() {
                       <button
                         className="text-button"
                         type="button"
-                        onClick={() => {
-                          setEditingAppointment(appointment);
-                          setMessage(null);
-                        }}
+                        onClick={() => openEditForm(appointment)}
                       >
                         Editar
                       </button>
@@ -332,73 +446,6 @@ export function AppointmentsClient() {
           </table>
         </div>
       </div>
-
-      <aside className="surface patient-form-panel">
-        <span className="eyebrow">{editing ? "Edicao" : "Nova consulta"}</span>
-        <h2>{editing ? "Editar consulta" : "Agendar consulta"}</h2>
-        <form key={editingAppointment?.id || "new"} className="form compact-form" onSubmit={handleSubmit}>
-          <label>
-            Paciente
-            <select
-              name="patientId"
-              required
-              defaultValue={editingAppointment?.patientId || selectedPatientId}
-            >
-              <option value="">Selecione</option>
-              {patients.map((patient) => (
-                <option key={patient.id} value={patient.id}>
-                  {patient.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Inicio
-            <input
-              name="startsAt"
-              type="datetime-local"
-              required
-              defaultValue={formatDateTimeInput(editingAppointment?.startsAt)}
-            />
-          </label>
-          <label>
-            Fim
-            <input name="endsAt" type="datetime-local" defaultValue={formatDateTimeInput(editingAppointment?.endsAt)} />
-          </label>
-          <label>
-            Tipo
-            <select name="type" defaultValue={editingAppointment?.type || "Consulta inicial"}>
-              <option>Consulta inicial</option>
-              <option>Retorno</option>
-              <option>Avaliacao corporal</option>
-              <option>Teleconsulta</option>
-            </select>
-          </label>
-          <label>
-            Status
-            <select name="status" defaultValue={editingAppointment?.status || "PENDING"}>
-              {Object.entries(statusLabels).map(([value, label]) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Observacoes
-            <textarea name="notes" rows={4} placeholder="Notas internas da consulta" defaultValue={editingAppointment?.notes || ""} />
-          </label>
-          <button className="button" type="submit" disabled={saving || patients.length === 0}>
-            {saving ? "Salvando..." : editing ? "Salvar alteracoes" : "Agendar consulta"}
-          </button>
-          {patients.length === 0 ? <p className="form-message error">Cadastre um paciente antes de agendar.</p> : null}
-          {editing ? (
-            <button className="button secondary" type="button" onClick={() => setEditingAppointment(null)}>
-              Cancelar edicao
-            </button>
-          ) : null}
-        </form>
-      </aside>
     </section>
   );
 }

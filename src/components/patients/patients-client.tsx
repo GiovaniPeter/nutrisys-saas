@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 
 type Patient = {
   id: string;
@@ -39,8 +39,7 @@ export function PatientsClient() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [portalPatientId, setPortalPatientId] = useState<string | null>(null);
   const [editingPatient, setEditingPatient] = useState<Patient | null>(null);
-  const formPanelRef = useRef<HTMLElement>(null);
-  const formRef = useRef<HTMLFormElement>(null);
+  const [screen, setScreen] = useState<"list" | "form">("list");
 
   const totalPatients = patients.length;
   const consentedPatients = useMemo(
@@ -58,25 +57,22 @@ export function PatientsClient() {
 
   const editing = Boolean(editingPatient);
 
-  function focusPatientForm() {
-    window.requestAnimationFrame(() => {
-      formPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-  }
-
   function startEditing(patient: Patient) {
     setEditingPatient(patient);
     setMessage(null);
-    focusPatientForm();
+    setScreen("form");
   }
 
   function startNewPatient() {
     setEditingPatient(null);
     setMessage(null);
-    window.requestAnimationFrame(() => {
-      formRef.current?.reset();
-      formPanelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+    setScreen("form");
+  }
+
+  function closePatientForm() {
+    setEditingPatient(null);
+    setMessage(null);
+    setScreen("list");
   }
 
   async function loadPatients(search = "", birthDate = "") {
@@ -134,6 +130,7 @@ export function PatientsClient() {
     }
 
     await loadPatients(query, birthDateQuery);
+    setScreen("list");
   }
 
   async function handleDelete(patient: Patient) {
@@ -221,24 +218,24 @@ export function PatientsClient() {
     }
   }
 
-  return (
-    <section className="patients-page-layout">
-      <section ref={formPanelRef} className="surface patient-form-panel patient-form-panel-full">
+  if (screen === "form") {
+    return (
+      <section className="patient-form-screen">
+        <section className="surface patient-form-panel patient-form-panel-full">
         <div className="section-title-row patient-form-heading">
           <div>
             <span className="eyebrow">{editing ? "Edicao" : "Novo cadastro"}</span>
             <h2>{editing ? `Editar ${editingPatient?.name}` : "Adicionar paciente"}</h2>
             <p>Preencha os dados principais para iniciar o prontuario e o acompanhamento nutricional.</p>
           </div>
-          {editing ? (
-            <button className="button secondary" type="button" onClick={startNewPatient}>
-              Cancelar edicao
-            </button>
-          ) : null}
+          <button className="text-button" type="button" onClick={closePatientForm}>
+            Voltar para pacientes
+          </button>
         </div>
 
+        {message ? <p className="form-message neutral patients-feedback">{message}</p> : null}
+
         <form
-          ref={formRef}
           key={editingPatient?.id || "new"}
           className="patient-form-grid"
           onSubmit={handleSubmit}
@@ -312,15 +309,18 @@ export function PatientsClient() {
             <button className="button" type="submit" disabled={saving}>
               {saving ? "Salvando..." : editing ? "Salvar alteracoes" : "Cadastrar paciente"}
             </button>
-            {editing ? (
-              <button className="button secondary" type="button" onClick={startNewPatient}>
-                Cancelar edicao
-              </button>
-            ) : null}
+            <button className="button secondary" type="button" onClick={closePatientForm}>
+              Cancelar
+            </button>
           </div>
         </form>
       </section>
+    </section>
+    );
+  }
 
+  return (
+    <section className="patients-page-layout">
       {message ? <p className="form-message neutral patients-feedback">{message}</p> : null}
 
       <section className="surface patient-list">
@@ -392,7 +392,7 @@ export function PatientsClient() {
                     <span>{sexLabels[patient.sex]}</span>
                   </td>
                   <td>{formatDisplayDate(patient.birthDate)}</td>
-                  <td>
+                  <td className="patient-contact-cell">
                     <strong>{patient.phone || "Sem telefone"}</strong>
                     <span>{patient.email || "Sem e-mail"}</span>
                   </td>
@@ -408,7 +408,7 @@ export function PatientsClient() {
                     </span>
                       {patient.portalAccessCode ? <span className="code-pill">{patient.portalAccessCode}</span> : null}
                   </td>
-                  <td>
+                  <td className="patient-actions-cell">
                     <div className="row-actions">
                       <a className="text-button" href={`/patients/${patient.id}`}>
                         Prontuario

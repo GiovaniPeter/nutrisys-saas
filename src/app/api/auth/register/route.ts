@@ -13,7 +13,9 @@ const registerSchema = z.object({
   email: z.string().email("Informe um e-mail válido.").transform((value) => value.toLowerCase()),
   password: z.string().min(8, "A senha deve ter pelo menos 8 caracteres."),
   organizationName: z.string().min(2, "Informe o nome da clínica."),
-  planCode: z.string().default("professional")
+  planCode: z.string().default("professional"),
+  specialty: z.string().optional(),
+  councilRegistration: z.string().optional()
 });
 
 export async function POST(request: NextRequest) {
@@ -47,6 +49,7 @@ export async function POST(request: NextRequest) {
       return error("Este e-mail já está cadastrado.", 409);
     }
 
+    const isProfessional = Boolean(input.specialty);
     const organizationSlug = await buildUniqueSlug(input.organizationName);
     const passwordHash = await hashPassword(input.password);
     const trialEndsAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
@@ -65,14 +68,17 @@ export async function POST(request: NextRequest) {
           name: input.name,
           email: input.email,
           passwordHash,
-          role: UserRole.OWNER
+          role: isProfessional ? UserRole.PROFESSIONAL : UserRole.OWNER,
+          crn: input.councilRegistration || null,
+          specialty: input.specialty || null
         },
         select: {
           id: true,
           organizationId: true,
           name: true,
           email: true,
-          role: true
+          role: true,
+          specialty: true
         }
       });
 
@@ -92,7 +98,10 @@ export async function POST(request: NextRequest) {
           action: "organization.registered",
           entity: "Organization",
           entityId: organization.id,
-          metadata: { planCode: plan.code }
+          metadata: {
+            planCode: plan.code,
+            ...(isProfessional ? { specialty: input.specialty } : {})
+          }
         }
       });
 
@@ -117,7 +126,8 @@ export async function POST(request: NextRequest) {
       createSessionCookie({
         userId: result.user.id,
         organizationId: result.user.organizationId,
-        role: result.user.role
+        role: result.user.role,
+        specialty: result.user.specialty || undefined
       })
     );
 

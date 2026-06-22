@@ -14,9 +14,11 @@ export default async function DashboardPage() {
   }
 
   const isSecretary = user.role === "SECRETARY";
+  const isProfessional = user.role === "PROFESSIONAL";
+  const includeNutritionData = !isSecretary && !isProfessional;
   const { organization, commonData, professionalData } = await loadCachedDashboardData(
     user.organizationId,
-    !isSecretary
+    includeNutritionData
   );
 
   const {
@@ -69,6 +71,14 @@ export default async function DashboardPage() {
             <MetricCard label="Próximos" value={upcomingAppointments.length} href="/schedule" detail="na agenda" />
             <MetricCard label="Chat" value={unreadChatCount} href="/chat" detail="mensagens nao lidas" />
           </>
+        ) : isProfessional ? (
+          <>
+            <MetricCard label="Pacientes" value={patientCount} href="/patients" detail="base ativa" />
+            <MetricCard label="Consultas" value={appointmentCount} href="/appointments" detail={`${confirmedAppointments} confirmadas na semana`} />
+            <MetricCard label="Evolucoes" value={bodyRecordCount} href="/body-records" detail={`${anamnesisCount} anamneses`} />
+            <MetricCard label="Chat" value={unreadChatCount} href="/chat" detail="mensagens nao lidas" />
+            <MetricCard label="Materiais" value={materialCount} href="/materials" detail="conteudos disponíveis" />
+          </>
         ) : (
           <>
             <MetricCard label="Pacientes" value={patientCount} href="/patients" detail="base ativa" />
@@ -107,7 +117,7 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        <div className={isSecretary ? "surface role-hidden" : "surface"}>
+        <div className={isSecretary || isProfessional ? "surface role-hidden" : "surface"}>
           <div className="section-title-row">
             <div>
               <span className="eyebrow">Paciente</span>
@@ -222,7 +232,7 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        <div className={isSecretary ? "surface role-hidden" : "surface"}>
+        <div className={isSecretary || isProfessional ? "surface role-hidden" : "surface"}>
           <div className="section-title-row">
             <div>
               <span className="eyebrow">Nutricao</span>

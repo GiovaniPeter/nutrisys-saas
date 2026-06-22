@@ -12,7 +12,8 @@ const userSchema = z.object({
   email: z.string().email("Informe um e-mail valido."),
   password: z.string().min(8, "A senha deve ter pelo menos 8 caracteres."),
   role: z.nativeEnum(UserRole).default(UserRole.NUTRITIONIST),
-  crn: z.string().optional()
+  crn: z.string().optional(),
+  specialty: z.string().optional()
 });
 
 export async function GET() {
@@ -31,6 +32,7 @@ export async function GET() {
       email: true,
       role: true,
       crn: true,
+      specialty: true,
       active: true,
       createdAt: true,
       updatedAt: true
@@ -69,7 +71,8 @@ export async function POST(request: NextRequest) {
         email: input.email.toLowerCase(),
         passwordHash: await hashPassword(input.password),
         role: input.role,
-        crn: input.crn || null
+        crn: input.crn || null,
+        specialty: input.specialty || null
       },
       select: {
         id: true,
@@ -77,6 +80,7 @@ export async function POST(request: NextRequest) {
         email: true,
         role: true,
         crn: true,
+        specialty: true,
         active: true,
         createdAt: true,
         updatedAt: true

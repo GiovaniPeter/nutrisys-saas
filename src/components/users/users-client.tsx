@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
 
-type UserRole = "OWNER" | "NUTRITIONIST" | "SECRETARY" | "ADMIN";
+type UserRole = "OWNER" | "NUTRITIONIST" | "SECRETARY" | "ADMIN" | "PROFESSIONAL";
 
 type TeamUser = {
   id: string;
@@ -10,6 +10,7 @@ type TeamUser = {
   email: string;
   role: UserRole;
   crn: string | null;
+  specialty: string | null;
   active: boolean;
   createdAt: string;
   updatedAt: string;
@@ -27,7 +28,21 @@ const roleLabels: Record<UserRole, string> = {
   OWNER: "Owner",
   ADMIN: "Admin",
   NUTRITIONIST: "Nutricionista",
-  SECRETARY: "Secretaria"
+  SECRETARY: "Secretaria",
+  PROFESSIONAL: "Profissional"
+};
+
+const specialtyLabels: Record<string, string> = {
+  "medico": "Médico(a)",
+  "psicologo": "Psicólogo(a)",
+  "fisioterapeuta": "Fisioterapeuta",
+  "fonoaudiologo": "Fonoaudiólogo(a)",
+  "dentista": "Dentista",
+  "educador-fisico": "Ed. Físico(a)",
+  "enfermeiro": "Enfermeiro(a)",
+  "terapeuta-ocupacional": "Terapeuta Ocup.",
+  "farmaceutico": "Farmacêutico(a)",
+  "biomedico": "Biomédico(a)"
 };
 
 export function UsersClient({ currentUserRole }: UsersClientProps) {
@@ -177,7 +192,7 @@ export function UsersClient({ currentUserRole }: UsersClientProps) {
                   </td>
                   <td>
                     <strong>{roleLabels[user.role]}</strong>
-                    <span>{user.crn || "CRN nao informado"}</span>
+                    <span>{user.role === "PROFESSIONAL" && user.specialty ? specialtyLabels[user.specialty] || user.specialty : (user.crn || "Registro não informado")}</span>
                   </td>
                   <td>
                     <span className={user.active ? "status-pill ok" : "status-pill"}>{user.active ? "Ativo" : "Inativo"}</span>
@@ -252,6 +267,7 @@ export function UsersClient({ currentUserRole }: UsersClientProps) {
                 <option value="ADMIN">Admin</option>
                 <option value="NUTRITIONIST">Nutricionista</option>
                 <option value="SECRETARY">Secretaria</option>
+                <option value="PROFESSIONAL">Profissional de Saúde</option>
               </select>
             </label>
             <label>
@@ -289,6 +305,7 @@ export function UsersClient({ currentUserRole }: UsersClientProps) {
                 <option value="ADMIN">Admin</option>
                 <option value="NUTRITIONIST">Nutricionista</option>
                 <option value="SECRETARY">Secretaria</option>
+                <option value="PROFESSIONAL">Profissional de Saúde</option>
               </select>
             </label>
             <label>

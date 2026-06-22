@@ -99,6 +99,14 @@ const primaryNavKeys = new Set<AppNavKey>([
   "financial"
 ]);
 
+const primaryNavKeysProfessional = new Set<AppNavKey>([
+  "dashboard",
+  "patients",
+  "appointments",
+  "schedule",
+  "financial"
+]);
+
 const menuGroups: Array<{ label: string; keys: AppNavKey[] }> = [
   {
     label: "Nutrição e atendimento",
@@ -126,6 +134,25 @@ const menuGroups: Array<{ label: string; keys: AppNavKey[] }> = [
   }
 ];
 
+const menuGroupsProfessional: Array<{ label: string; keys: AppNavKey[] }> = [
+  {
+    label: "Atendimento clínico",
+    keys: [
+      "body-records",
+      "anamneses",
+      "lab-exams"
+    ]
+  },
+  {
+    label: "Relacionamento",
+    keys: ["chat", "whatsapp", "notifications", "portal"]
+  },
+  {
+    label: "Gestão da clínica",
+    keys: ["kpis", "reports", "materials", "billing", "users", "settings"]
+  }
+];
+
 const secretaryNavKeys = new Set<AppNavKey>([
   "dashboard",
   "patients",
@@ -136,6 +163,40 @@ const secretaryNavKeys = new Set<AppNavKey>([
   "notifications"
 ]);
 
+const professionalNavKeys = new Set<AppNavKey>([
+  "dashboard",
+  "patients",
+  "appointments",
+  "schedule",
+  "financial",
+  "body-records",
+  "anamneses",
+  "lab-exams",
+  "chat",
+  "whatsapp",
+  "notifications",
+  "kpis",
+  "reports",
+  "materials",
+  "portal",
+  "billing",
+  "users",
+  "settings"
+]);
+
+const specialtyLabels: Record<string, string> = {
+  "medico": "Médico(a)",
+  "psicologo": "Psicólogo(a)",
+  "fisioterapeuta": "Fisioterapeuta",
+  "fonoaudiologo": "Fonoaudiólogo(a)",
+  "dentista": "Dentista",
+  "educador-fisico": "Ed. Físico(a)",
+  "enfermeiro": "Enfermeiro(a)",
+  "terapeuta-ocupacional": "Terapeuta Ocup.",
+  "farmaceutico": "Farmacêutico(a)",
+  "biomedico": "Biomédico(a)"
+};
+
 export function AppNav({ active, user }: AppNavProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -143,16 +204,25 @@ export function AppNav({ active, user }: AppNavProps) {
   const menuRef = useRef<HTMLDetailsElement>(null);
   const prefetchedRoutes = useRef(new Set<string>());
 
+  const isProfessional = user.role === "PROFESSIONAL";
+  const isSecretary = user.role === "SECRETARY";
+
   const visibleNavItems = useMemo(
-    () => (user.role === "SECRETARY" ? navItems.filter((item) => secretaryNavKeys.has(item.key)) : navItems),
-    [user.role]
+    () => {
+      if (isSecretary) return navItems.filter((item) => secretaryNavKeys.has(item.key));
+      if (isProfessional) return navItems.filter((item) => professionalNavKeys.has(item.key));
+      return navItems;
+    },
+    [user.role, isSecretary, isProfessional]
   );
   const itemByKey = useMemo(
     () => new Map(visibleNavItems.map((item) => [item.key, item])),
     [visibleNavItems]
   );
-  const primaryItems = visibleNavItems.filter((item) => primaryNavKeys.has(item.key));
-  const groupedItems = menuGroups
+  const activePrimaryKeys = isProfessional ? primaryNavKeysProfessional : primaryNavKeys;
+  const primaryItems = visibleNavItems.filter((item) => activePrimaryKeys.has(item.key));
+  const activeMenuGroups = isProfessional ? menuGroupsProfessional : menuGroups;
+  const groupedItems = activeMenuGroups
     .map((group) => ({
       ...group,
       items: group.keys.map((key) => itemByKey.get(key)).filter((item): item is NavItem => Boolean(item))
@@ -160,8 +230,8 @@ export function AppNav({ active, user }: AppNavProps) {
     .filter((group) => group.items.length > 0);
   const mobileShortcuts = primaryItems.filter((item) => item.mobileOptional);
   const activeItem = itemByKey.get(active);
-  const activeInMore = !primaryNavKeys.has(active);
-  const profileHref = user.role === "SECRETARY" ? "/dashboard" : "/settings";
+  const activeInMore = !activePrimaryKeys.has(active);
+  const profileHref = isSecretary ? "/dashboard" : "/settings";
 
   useEffect(() => {
     setPendingHref(null);
@@ -251,7 +321,7 @@ export function AppNav({ active, user }: AppNavProps) {
         <span className="brand-mark"><BrandLeafIcon /></span>
         <span className="app-brand-copy">
           <strong>NutreClin</strong>
-          <small>Gestão nutricional</small>
+          <small>{isProfessional ? "Gestão clínica" : "Gestão nutricional"}</small>
         </span>
       </Link>
 
@@ -304,7 +374,7 @@ export function AppNav({ active, user }: AppNavProps) {
         <span className="user-pill">{initials(user.name)}</span>
         <span className="user-profile-copy">
           <strong>{firstName(user.name)}</strong>
-          <small>{formatRole(user.role)}</small>
+          <small>{formatRole(user.role, user.specialty)}</small>
         </span>
       </Link>
     </header>
@@ -324,12 +394,17 @@ function firstName(name: string) {
   return name.split(" ").filter(Boolean)[0] || "Perfil";
 }
 
-function formatRole(role: string) {
+function formatRole(role: string, specialty?: string) {
+  if (role === "PROFESSIONAL" && specialty) {
+    return specialtyLabels[specialty] || "Profissional";
+  }
+
   const roles: Record<string, string> = {
     OWNER: "Responsável",
     ADMIN: "Administrador",
     NUTRITIONIST: "Nutricionista",
-    SECRETARY: "Secretária"
+    SECRETARY: "Secretária",
+    PROFESSIONAL: "Profissional"
   };
 
   return roles[role] || "Profissional";

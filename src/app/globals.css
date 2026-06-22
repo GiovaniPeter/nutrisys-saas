@@ -569,7 +569,14 @@ button, input, textarea, select { font: inherit; }
   max-width: 1480px;
 }
 
-.workspace-grid,
+.workspace-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1fr;
+  margin: 0 auto;
+  max-width: 1480px;
+}
+
 .patient-workspace,
 .chat-layout {
   display: grid;
@@ -704,11 +711,247 @@ button, input, textarea, select { font: inherit; }
   gap: 14px;
 }
 
+.workspace-grid > .patient-form-panel {
+  justify-self: center;
+  max-width: 1180px;
+  scroll-margin-top: 104px;
+  width: 100%;
+}
+
+.workspace-grid > .patient-form-panel .compact-form {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.workspace-grid > .patient-form-panel .compact-form > label {
+  grid-column: span 6;
+}
+
+.workspace-grid > .patient-form-panel .compact-form > label:has(textarea),
+.workspace-grid > .patient-form-panel .compact-form > .form-message,
+.workspace-grid > .patient-form-panel .compact-form > .empty-card,
+.workspace-grid > .patient-form-panel .compact-form > button {
+  grid-column: 1 / -1;
+}
+
+.workspace-grid > .patient-form-panel .compact-form > button {
+  justify-self: end;
+  min-width: 190px;
+}
+
+.form-row {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.workspace-grid > .patient-form-panel .compact-form > .form-row {
+  grid-column: span 6;
+}
+
+.workspace-grid > .patient-form-panel .compact-form > .form-row label {
+  min-width: 0;
+}
+
+.settings-layout {
+  align-items: start;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+  margin: 0 auto;
+  max-width: 1280px;
+}
+
+.settings-layout .compact-form {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.settings-layout .compact-form > label,
+.settings-layout .compact-form > .form-row,
+.settings-layout .compact-form > button {
+  grid-column: 1 / -1;
+}
+
+.settings-layout .compact-form > button {
+  justify-self: end;
+  min-width: 210px;
+}
+
+.brand-preview {
+  overflow: hidden;
+  position: sticky;
+  top: 108px;
+}
+
+.preview-card {
+  background: linear-gradient(180deg, #ffffff, #f4faf6);
+  border: 1px solid var(--app-line);
+  border-radius: 18px;
+  display: grid;
+  gap: 16px;
+  margin-top: 14px;
+  overflow: hidden;
+  padding: 18px;
+}
+
+.preview-mark {
+  align-items: center;
+  border-radius: 16px;
+  color: #fff;
+  display: inline-flex;
+  font-size: 1.2rem;
+  font-weight: 950;
+  height: 58px;
+  justify-content: center;
+  overflow: hidden;
+  width: 58px;
+}
+
+.preview-mark img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.preview-card h3 {
+  font-size: 1.28rem;
+  letter-spacing: -0.035em;
+  margin: 0 0 6px;
+}
+
+.preview-card p {
+  color: var(--app-muted);
+  font-size: .9rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.preview-band {
+  border-radius: 999px;
+  height: 10px;
+}
+
+.billing-note {
+  color: var(--app-muted);
+  font-size: .9rem;
+  font-weight: 750;
+  line-height: 1.55;
+  margin: 14px 0 0;
+}
+
 .patients-page-layout {
   display: grid;
   gap: 18px;
   margin: 0 auto;
   max-width: 1480px;
+}
+
+.patient-form-screen {
+  display: grid;
+  gap: 18px;
+  margin: 0 auto;
+  max-width: 1180px;
+}
+
+.appointments-page-layout,
+.appointment-form-screen {
+  display: grid;
+  gap: 18px;
+  margin: 0 auto;
+  max-width: 1480px;
+}
+
+.appointment-form-screen {
+  max-width: 1180px;
+}
+
+.appointment-list-header-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.appointment-list-header-actions .button {
+  min-width: 160px;
+}
+
+.appointment-list .data-table {
+  min-width: 980px;
+}
+
+.appointment-list .data-table td:first-child strong,
+.appointment-list .data-table td:nth-child(2) strong {
+  display: block;
+}
+
+.appointment-list .data-table td:first-child > span,
+.appointment-list .data-table td:nth-child(2) > span {
+  color: var(--app-muted);
+  display: block;
+  font-size: .84rem;
+  margin-top: 4px;
+}
+
+.appointment-form-panel {
+  padding: clamp(22px, 3vw, 34px);
+}
+
+.appointment-form-hero {
+  align-items: flex-start;
+  border-bottom: 1px solid var(--app-line);
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  padding-bottom: 20px;
+}
+
+.appointment-form-hero p {
+  color: var(--app-muted);
+  line-height: 1.55;
+  margin: 8px 0 0;
+  max-width: 740px;
+}
+
+.appointment-form-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.appointment-form-grid > label {
+  grid-column: span 4;
+}
+
+.appointment-form-grid > .appointment-field-wide,
+.appointment-form-grid > .appointment-field-half {
+  grid-column: span 6;
+}
+
+.appointment-form-grid > .appointment-field-full {
+  grid-column: 1 / -1;
+}
+
+.appointment-form-grid textarea {
+  min-height: 126px;
+}
+
+.appointment-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  grid-column: 1 / -1;
+  justify-content: flex-end;
+  padding-top: 4px;
+}
+
+.appointment-form-actions .button {
+  min-width: 190px;
 }
 
 .patient-form-panel-full {
@@ -835,20 +1078,32 @@ button, input, textarea, select { font: inherit; }
 }
 
 .patient-list .data-table {
-  min-width: 1120px;
+  min-width: 1240px;
+  table-layout: fixed;
 }
 
 .patient-list .data-table td:first-child strong,
-.patient-list .data-table td:nth-child(2) strong {
+.patient-list .data-table td:nth-child(2) strong,
+.patient-list .patient-contact-cell strong {
   display: block;
 }
 
 .patient-list .data-table td:first-child > span,
-.patient-list .data-table td:nth-child(2) > span {
+.patient-list .data-table td:nth-child(2) > span,
+.patient-list .patient-contact-cell > span {
   color: var(--app-muted);
   display: block;
   font-size: .84rem;
   margin-top: 4px;
+}
+
+.patient-list .patient-contact-cell strong,
+.patient-list .patient-contact-cell span {
+  overflow-wrap: anywhere;
+}
+
+.patient-list .patient-actions-cell {
+  width: 360px;
 }
 
 .patient-list .status-pill.ok {
@@ -1029,7 +1284,7 @@ form button[type="submit"] {
 .login-role-grid {
   display: grid;
   gap: 14px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   margin-top: 34px;
 }
 
@@ -1783,6 +2038,7 @@ form button[type="submit"] {
 
   .dashboard-grid,
   .workspace-grid,
+  .settings-layout,
   .patient-workspace,
   .patient-detail-grid,
   .report-grid,
@@ -1801,13 +2057,27 @@ form button[type="submit"] {
     grid-template-columns: 1fr;
   }
 
+  .brand-preview {
+    position: static;
+  }
+
   .patient-form-grid > label,
   .patient-form-grid > .patient-field-quarter,
   .patient-form-grid > .patient-field-half {
     grid-column: span 6;
   }
 
+  .appointment-form-grid > label,
+  .appointment-form-grid > .appointment-field-wide,
+  .appointment-form-grid > .appointment-field-half {
+    grid-column: span 6;
+  }
+
   .patient-form-grid > .patient-field-full {
+    grid-column: 1 / -1;
+  }
+
+  .appointment-form-grid > .appointment-field-full {
     grid-column: 1 / -1;
   }
 
@@ -1831,6 +2101,52 @@ form button[type="submit"] {
   .patient-form-grid > .patient-field-half,
   .patient-form-grid > .patient-field-full {
     grid-column: 1 / -1;
+  }
+
+  .appointment-form-grid > label,
+  .appointment-form-grid > .appointment-field-wide,
+  .appointment-form-grid > .appointment-field-half,
+  .appointment-form-grid > .appointment-field-full {
+    grid-column: 1 / -1;
+  }
+
+  .workspace-grid > .patient-form-panel .compact-form > label,
+  .workspace-grid > .patient-form-panel .compact-form > .form-row,
+  .workspace-grid > .patient-form-panel .compact-form > .form-message,
+  .workspace-grid > .patient-form-panel .compact-form > .empty-card,
+  .workspace-grid > .patient-form-panel .compact-form > button {
+    grid-column: 1 / -1;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .workspace-grid > .patient-form-panel .compact-form > button {
+    justify-self: stretch;
+    width: 100%;
+  }
+
+  .settings-layout .compact-form > button {
+    justify-self: stretch;
+    width: 100%;
+  }
+
+  .appointment-form-hero {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .appointment-list-header-actions,
+  .appointment-form-actions {
+    justify-content: stretch;
+    width: 100%;
+  }
+
+  .appointment-list-header-actions .button,
+  .appointment-form-actions .button,
+  .appointment-form-hero .text-button {
+    width: 100%;
   }
 
   .patient-form-actions {

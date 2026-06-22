@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 
 type LoginFormProps = {
-  accessMode?: "nutritionist" | "secretary";
+  accessMode?: "nutritionist" | "secretary" | "professional";
   buttonLabel?: string;
 };
 

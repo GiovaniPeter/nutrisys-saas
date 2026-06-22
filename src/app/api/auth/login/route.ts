@@ -9,7 +9,7 @@ import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 const loginSchema = z.object({
   email: z.string().email("Informe um e-mail válido.").transform((value) => value.toLowerCase()),
   password: z.string().min(1, "Informe sua senha."),
-  accessMode: z.enum(["nutritionist", "secretary"]).optional()
+  accessMode: z.enum(["nutritionist", "secretary", "professional"]).optional()
 });
 
 export async function POST(request: NextRequest) {
@@ -37,6 +37,7 @@ export async function POST(request: NextRequest) {
         email: true,
         passwordHash: true,
         role: true,
+        specialty: true,
         active: true
       }
     });
@@ -49,14 +50,23 @@ export async function POST(request: NextRequest) {
       return error("Este acesso é exclusivo para secretárias cadastradas.", 403);
     }
 
+    if (input.accessMode === "professional" && user.role !== "PROFESSIONAL") {
+      return error("Este acesso é exclusivo para profissionais de saúde. Se você é nutricionista, use a opção Nutricionista.", 403);
+    }
+
     if (input.accessMode === "nutritionist" && user.role === "SECRETARY") {
       return error("Use a opção Secretária para entrar com este usuário.", 403);
+    }
+
+    if (input.accessMode === "nutritionist" && user.role === "PROFESSIONAL") {
+      return error("Use a opção Profissional de Saúde para entrar com este usuário.", 403);
     }
 
     const sessionToken = createSessionCookie({
       userId: user.id,
       organizationId: user.organizationId,
-      role: user.role
+      role: user.role,
+      specialty: user.specialty || undefined
     });
 
     const response = NextResponse.json({
@@ -65,7 +75,8 @@ export async function POST(request: NextRequest) {
         organizationId: user.organizationId,
         name: user.name,
         email: user.email,
-        role: user.role
+        role: user.role,
+        specialty: user.specialty
       },
       token: sessionToken
     });
