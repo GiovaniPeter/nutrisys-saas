@@ -8,19 +8,21 @@ export default async function MaterialsPage() {
 
   if (!user) redirect("/login");
 
+  const isProfessional = user.role === "PROFESSIONAL";
+
   return (
     <main className="shell workspace-shell">
       <AppNav active="materials" user={user} />
 
       <section className="workspace-heading">
         <div>
-          <span className="eyebrow">Educacao nutricional</span>
+          <span className="eyebrow">{isProfessional ? "Materiais de Apoio" : "Educacao nutricional"}</span>
           <h1>Materiais educativos</h1>
           <p>Organize materiais, abra modelos no Canva e compartilhe conteudos com pacientes.</p>
         </div>
       </section>
 
-      <MaterialsClient />
+      <MaterialsClient isProfessional={isProfessional} />
     </main>
   );
 }

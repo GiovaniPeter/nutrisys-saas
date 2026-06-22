@@ -40,7 +40,7 @@ type Template = {
 
 const categories = ["Postagem", "Material para paciente", "Consultorio", "Lista", "Guia", "Outro"];
 
-const templates: Template[] = [
+const nutritionTemplates: Template[] = [
   {
     title: "Guia de substituicoes",
     description: "Tabela simples para trocar alimentos mantendo o plano.",
@@ -91,7 +91,52 @@ const templates: Template[] = [
   }
 ];
 
-export function MaterialsClient() {
+const clinicalTemplates: Template[] = [
+  {
+    title: "Orientações pós-consulta",
+    description: "Recomendações gerais e próximos passos.",
+    category: "Guia",
+    search: "medical post consultation guide template",
+    tags: ["orientacoes", "educativo"],
+    content: "Siga o tratamento prescrito, observe os horários das medicações e retorne na data agendada ou caso os sintomas persistam."
+  },
+  {
+    title: "Checklist de exames",
+    description: "Lista de exames solicitados e preparos.",
+    category: "Lista",
+    search: "medical test checklist template",
+    tags: ["exames", "organizacao"],
+    content: "Lembre-se de realizar o jejum recomendado e não suspender as medicações de uso contínuo, salvo orientação contrária."
+  },
+  {
+    title: "Diário de sintomas",
+    description: "Template para paciente registrar a evolução.",
+    category: "Material para paciente",
+    search: "symptom tracker diary template",
+    tags: ["diario", "adesao"],
+    content: "Anote a data, intensidade da dor ou sintoma (de 0 a 10), possíveis gatilhos e a duração. Traga este registro no retorno."
+  },
+  {
+    title: "Prontuário e evolução",
+    description: "Folha padrão para acompanhamento clínico.",
+    category: "Consultorio",
+    search: "medical evolution form template",
+    tags: ["prontuario", "clinica"],
+    content: "Template para registro objetivo da evolução clínica do paciente a cada encontro."
+  },
+  {
+    title: "Cartão de visita",
+    description: "Modelo profissional para consultório.",
+    category: "Consultorio",
+    search: "doctor business card template",
+    tags: ["marca", "consultorio"],
+    content: "Inclua nome, especialidade, registro no conselho, telefone, endereço, redes sociais e um convite para agendamento."
+  }
+];
+
+export function MaterialsClient({ isProfessional }: { isProfessional?: boolean }) {
+  const activeTemplates = isProfessional ? clinicalTemplates : nutritionTemplates;
+
   const [materials, setMaterials] = useState<Material[]>([]);
   const [patients, setPatients] = useState<Patient[]>([]);
   const [query, setQuery] = useState("");
@@ -346,7 +391,7 @@ export function MaterialsClient() {
         <div className="materials-template-section">
           <div className="section-title-row">
             <div>
-              <span className="eyebrow">Canva</span>
+              <span className="eyebrow">CANVA</span>
               <h2>Templates sugeridos</h2>
             </div>
             <a className="text-button" href="https://www.canva.com" target="_blank" rel="noreferrer">
@@ -354,7 +399,7 @@ export function MaterialsClient() {
             </a>
           </div>
           <div className="template-grid">
-            {templates.map((template) => (
+            {activeTemplates.map((template) => (
               <article key={template.title}>
                 <strong>{template.title}</strong>
                 <span>{template.description}</span>
