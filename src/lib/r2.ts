@@ -1,32 +1,36 @@
-import { S3Client } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
+// Instância global para cache em tempo de execução
+let r2ClientInstance: S3Client | null = null;
 
 function getRequiredEnv(name: string): string {
   const value = process.env[name];
-
   if (!value) {
-    throw new Error(`Variável de ambiente não configurada: ${name}`);
+    throw new Error(`Variável de ambiente não configurada: ${name}. Configure-a na Vercel.`);
   }
-
   return value;
 }
 
-const accountId = getRequiredEnv("R2_ACCOUNT_ID");
-const accessKeyId = getRequiredEnv("R2_ACCESS_KEY_ID");
-const secretAccessKey = getRequiredEnv("R2_SECRET_ACCESS_KEY");
+function getR2Client(): { client: S3Client, accountId: string, defaultBucket: string } {
+  const accountId = getRequiredEnv("R2_ACCOUNT_ID");
+  const accessKeyId = getRequiredEnv("R2_ACCESS_KEY_ID");
+  const secretAccessKey = getRequiredEnv("R2_SECRET_ACCESS_KEY");
+  const defaultBucket = getRequiredEnv("R2_BUCKET_NAME");
 
-export const R2_BUCKET_NAME = getRequiredEnv("R2_BUCKET_NAME");
+  if (!r2ClientInstance) {
+    r2ClientInstance = new S3Client({
+      region: "auto",
+      endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
+      credentials: {
+        accessKeyId,
+        secretAccessKey,
+      },
+    });
+  }
 
-export const r2Client = new S3Client({
-  region: "auto",
-  endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
-  credentials: {
-    accessKeyId,
-    secretAccessKey,
-  },
-});
-
-import { PutObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+  return { client: r2ClientInstance, accountId, defaultBucket };
+}
 
 /**
  * Gera uma URL pré-assinada para upload direto do navegador para o Cloudflare R2
@@ -40,7 +44,10 @@ export async function generatePresignedUrl(
   path: string,
   contentType: string
 ): Promise<{ presignedUrl: string; publicUrl: string }> {
-  const targetBucket = R2_BUCKET_NAME || bucket;
+  // Isso garante que o erro de variável de ambiente só aconteça na hora do upload,
+  // e não durante o build (compilação) da Vercel.
+  const { client, accountId, defaultBucket } = getR2Client();
+  const targetBucket = defaultBucket || bucket;
   
   const command = new PutObjectCommand({
     Bucket: targetBucket,
@@ -50,7 +57,7 @@ export async function generatePresignedUrl(
 
   try {
     // A URL pré-assinada expira em 1 hora (3600 segundos)
-    const presignedUrl = await getSignedUrl(r2Client, command, { expiresIn: 3600 });
+    const presignedUrl = await getSignedUrl(client, command, { expiresIn: 3600 });
     
     // Calcula a URL pública para o frontend já saber como o arquivo se chamará
     const publicBaseUrl = process.env.R2_PUBLIC_URL;
