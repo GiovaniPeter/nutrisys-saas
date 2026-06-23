@@ -11,8 +11,8 @@ const features = [
   },
   {
     icon: "meal",
-    title: "Planos alimentares",
-    text: "Monte planos personalizados com mais de 1000 alimentos, listas de substituições e objetivos."
+    title: "Planos de cuidado e receituários",
+    text: "Monte planos personalizados, condutas clínicas e objetivos específicos para cada caso."
   },
   {
     icon: "calendar",
@@ -39,8 +39,8 @@ const steps = [
   },
   {
     icon: "clipboard",
-    title: "Monte planos e metas",
-    text: "Crie planos alimentares personalizados e defina metas realistas."
+    title: "Prescreva condutas e metas",
+    text: "Crie planos de cuidado personalizados e defina metas realistas."
   },
   {
     icon: "dashboard",
@@ -54,7 +54,7 @@ const plans = [
     code: "essential",
     name: "Essencial",
     price: "R$ 79,00",
-    features: ["Pacientes", "Agenda", "Planos alimentares", "PDFs"]
+    features: ["Pacientes", "Agenda", "Prontuários e Planos", "PDFs"]
   },
   {
     code: "professional",
@@ -96,7 +96,7 @@ export default function Home() {
           <span className="np-logo-mark"><LeafIcon /></span>
           <span>
             <strong>Nutre<em>Clin</em></strong>
-            <small>Software para nutricionistas e clínicas</small>
+            <small>Plataforma para profissionais de saúde e clínicas</small>
           </span>
         </Link>
 
@@ -120,11 +120,11 @@ export default function Home() {
       <section className="np-hero">
         <div className="np-hero-copy">
           <h1>
-            Centralize atendimento, planos alimentares e <span>gestão da sua clínica.</span>
+            Centralize atendimento, condutas clínicas e <span>gestão da sua clínica.</span>
           </h1>
           <p>
-            NutreClin é a plataforma completa para nutricionistas e clínicas: prontuário,
-            planos alimentares, portal do paciente, agenda, financeiro e indicadores em um só lugar.
+            NutreClin é a plataforma completa para clínicas e consultórios: prontuário,
+            planos de cuidado, portal do paciente, agenda, financeiro e indicadores em um só lugar.
           </p>
 
           <div className="np-hero-actions">
@@ -232,7 +232,7 @@ export default function Home() {
 
       <section className="np-final-cta">
         <div className="np-final-photo">
-          <Image src="/nutritionist-laptop.png" alt="Nutricionista usando notebook" width={640} height={380} />
+          <Image src="/nutritionist-laptop.png" alt="Profissional de saúde usando notebook" width={640} height={380} />
         </div>
         <div className="np-final-copy">
           <h2>Seu próximo passo é validar o uso real</h2>
@@ -255,10 +255,10 @@ export default function Home() {
             <span className="np-logo-mark"><LeafIcon /></span>
             <span>
               <strong>Nutre<em>Clin</em></strong>
-              <small>Software para nutricionistas e clínicas</small>
+              <small>Plataforma para profissionais de saúde e clínicas</small>
             </span>
           </Link>
-          <p>Plataforma completa para nutricionistas e clínicas de nutrição.</p>
+          <p>Solução completa de gestão para consultórios e clínicas multiprofissionais.</p>
           <div className="np-socials" aria-label="Redes sociais">
             <a href="#" aria-label="Instagram">◎</a>
             <a href="#" aria-label="Facebook">f</a>
@@ -305,7 +305,7 @@ function ProductMockup() {
             <b>Resumo</b>
             <span>Agenda</span>
             <span>Pacientes</span>
-            <span>Planos alimentares</span>
+            <span>Condutas Clínicas</span>
             <span>Financeiro</span>
             <span>Indicadores</span>
           </aside>
