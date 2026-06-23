@@ -362,6 +362,18 @@ export function AppNav({ active, user }: AppNavProps) {
         </details>
       </nav>
 
+      <button
+        onClick={() => window.location.reload()}
+        className="nav-link user-profile-link"
+        title="Atualizar para versão mais recente"
+        style={{ background: 'transparent', border: '1px solid var(--border)', marginRight: '1rem', cursor: 'pointer' }}
+      >
+        <span className="user-profile-copy" style={{ padding: '0 8px' }}>
+          <strong>v0.2.0</strong>
+          <small>Atualizar App</small>
+        </span>
+      </button>
+
       <Link
         href={profileHref}
         prefetch={false}
