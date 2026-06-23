@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { uploadFileToR2 } from '@/lib/r2';
+import { generatePresignedUrl } from '@/lib/r2';
 import { getCurrentUser } from '@/lib/session';
 import { getCurrentPortalPatient } from '@/lib/patient-session';
 
@@ -12,39 +12,39 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Nao autenticado.' }, { status: 401 });
     }
 
-    const formData = await request.formData();
-    const file = formData.get('file') as File;
-    const bucket = formData.get('bucket') as string || 'nutriplan-uploads';
-    const folder = formData.get('folder') as string || 'misc';
+    // Recebemos um JSON com os dados do arquivo para gerar a URL
+    const body = await request.json();
+    const { fileName, fileType, bucket, folder } = body;
 
-    if (!file) {
-      return NextResponse.json({ error: 'Nenhum arquivo enviado' }, { status: 400 });
+    if (!fileName || !fileType) {
+      return NextResponse.json({ error: 'fileName e fileType são obrigatórios' }, { status: 400 });
     }
 
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    const targetBucket = bucket || 'nutriplan-uploads';
+    const targetFolder = folder || 'misc';
 
     const timestamp = Date.now();
-    const extension = file.name.split('.').pop();
+    const extension = fileName.split('.').pop() || '';
     const ownerId = user?.id || patient?.id || 'upload';
     const safeName = `${ownerId}-${timestamp}.${extension}`;
-    const path = `${folder}/${safeName}`;
+    const path = `${targetFolder}/${safeName}`;
 
-    const publicUrl = await uploadFileToR2(
-      bucket,
+    // Gera a URL pré-assinada
+    const { presignedUrl, publicUrl } = await generatePresignedUrl(
+      targetBucket,
       path,
-      buffer,
-      file.type || 'application/octet-stream'
+      fileType
     );
 
     return NextResponse.json({ 
       success: true, 
-      url: publicUrl,
+      presignedUrl,
+      publicUrl,
       path: path
     });
 
   } catch (error: any) {
-    console.error('Erro no upload de arquivo:', error);
+    console.error('Erro ao gerar URL de upload:', error);
     return NextResponse.json({ error: error.message || 'Erro interno no servidor' }, { status: 500 });
   }
 }

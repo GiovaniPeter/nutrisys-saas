@@ -26,48 +26,46 @@ export const r2Client = new S3Client({
 });
 
 import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 /**
- * Função utilitária para fazer upload de arquivos no Cloudflare R2
+ * Gera uma URL pré-assinada para upload direto do navegador para o Cloudflare R2
  * @param bucket Nome do bucket (geralmente ignorado se usar R2_BUCKET_NAME)
  * @param path Caminho do arquivo (ex: 'misc/arquivo.png')
- * @param fileBuffer Buffer do arquivo
  * @param contentType Tipo MIME do arquivo
- * @returns A URL pública (se configurada) ou a URL de acesso
+ * @returns Um objeto contendo a presignedUrl (para o PUT) e a publicUrl (para salvar no banco)
  */
-export async function uploadFileToR2(
+export async function generatePresignedUrl(
   bucket: string,
   path: string,
-  fileBuffer: Buffer,
   contentType: string
-): Promise<string> {
+): Promise<{ presignedUrl: string; publicUrl: string }> {
   const targetBucket = R2_BUCKET_NAME || bucket;
   
   const command = new PutObjectCommand({
     Bucket: targetBucket,
     Key: path,
-    Body: fileBuffer,
     ContentType: contentType,
   });
 
   try {
-    await r2Client.send(command);
+    // A URL pré-assinada expira em 1 hora (3600 segundos)
+    const presignedUrl = await getSignedUrl(r2Client, command, { expiresIn: 3600 });
     
-    // O R2 permite configurar uma URL pública (ex: https://pub-xxxx.r2.dev)
-    // Se você tiver uma configurada no Cloudflare, coloque no .env como R2_PUBLIC_URL
+    // Calcula a URL pública para o frontend já saber como o arquivo se chamará
     const publicBaseUrl = process.env.R2_PUBLIC_URL;
+    let publicUrl = "";
     
     if (publicBaseUrl) {
-      // Remove barra final se existir e concatena
       const base = publicBaseUrl.endsWith('/') ? publicBaseUrl.slice(0, -1) : publicBaseUrl;
-      return `${base}/${path}`;
+      publicUrl = `${base}/${path}`;
+    } else {
+      publicUrl = `https://${targetBucket}.${accountId}.r2.cloudflarestorage.com/${path}`;
     }
 
-    // Se não tiver R2_PUBLIC_URL, retorna um aviso de que não está acessível publicamente,
-    // ou uma URL provisória. O ideal é o cliente configurar R2_PUBLIC_URL.
-    return `https://${targetBucket}.${accountId}.r2.cloudflarestorage.com/${path}`;
+    return { presignedUrl, publicUrl };
   } catch (error: any) {
-    console.error("Erro no upload para o R2:", error);
-    throw new Error(`Erro no upload para o R2: ${error.message}`);
+    console.error("Erro ao gerar URL pré-assinada no R2:", error);
+    throw new Error(`Erro ao gerar URL pré-assinada: ${error.message}`);
   }
 }
