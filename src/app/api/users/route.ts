@@ -49,8 +49,9 @@ export async function POST(request: NextRequest) {
     return error("Nao autenticado.", 401);
   }
 
-  if (!["OWNER", "ADMIN"].includes(currentUser.role)) {
-    return error("Apenas owner/admin podem criar usuarios.", 403);
+  const managementRoles = ["OWNER", "ADMIN", "NUTRITIONIST", "PROFESSIONAL"];
+  if (!managementRoles.includes(currentUser.role)) {
+    return error("Sem permissao para criar usuarios.", 403);
   }
 
   try {

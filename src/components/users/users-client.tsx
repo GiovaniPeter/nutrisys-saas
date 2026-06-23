@@ -51,12 +51,23 @@ export function UsersClient({ currentUserRole }: UsersClientProps) {
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const canManage = currentUserRole === "OWNER" || currentUserRole === "ADMIN";
+  const managementRoles = ["OWNER", "ADMIN", "NUTRITIONIST", "PROFESSIONAL"];
+  const canManage = managementRoles.includes(currentUserRole);
   const activeUsers = useMemo(() => users.filter((user) => user.active).length, [users]);
+
+  // Form states for dynamic fields
+  const [createRole, setCreateRole] = useState<UserRole>("NUTRITIONIST");
+  const [editRole, setEditRole] = useState<UserRole>("NUTRITIONIST");
 
   useEffect(() => {
     void loadUsers();
   }, []);
+
+  useEffect(() => {
+    if (editingUser) {
+      setEditRole(editingUser.role);
+    }
+  }, [editingUser]);
 
   async function loadUsers() {
     setLoading(true);
@@ -88,7 +99,8 @@ export function UsersClient({ currentUserRole }: UsersClientProps) {
         email: form.get("email"),
         password: form.get("password"),
         role: form.get("role"),
-        crn: form.get("crn")
+        crn: form.get("crn"),
+        specialty: form.get("specialty")
       })
     });
     const data = (await response.json()) as { error?: string };
@@ -100,6 +112,7 @@ export function UsersClient({ currentUserRole }: UsersClientProps) {
     }
 
     formElement.reset();
+    setCreateRole("NUTRITIONIST"); // reset back
     setMessage("Usuario criado com sucesso.");
     await loadUsers();
   }
@@ -262,7 +275,12 @@ export function UsersClient({ currentUserRole }: UsersClientProps) {
             </label>
             <label>
               Papel
-              <select name="role" defaultValue={editingUser.role} disabled={!canManage || editingUser.role === "OWNER"}>
+              <select 
+                 name="role" 
+                 value={editRole} 
+                 onChange={(e) => setEditRole(e.target.value as UserRole)}
+                 disabled={!canManage || editingUser.role === "OWNER"}
+              >
                 <option value="OWNER">Owner</option>
                 <option value="ADMIN">Admin</option>
                 <option value="NUTRITIONIST">Nutricionista</option>
@@ -270,10 +288,12 @@ export function UsersClient({ currentUserRole }: UsersClientProps) {
                 <option value="PROFESSIONAL">Profissional de Saúde</option>
               </select>
             </label>
-            <label>
-              CRN
-              <input name="crn" defaultValue={editingUser.crn || ""} disabled={!canManage} />
-            </label>
+            {editRole !== "SECRETARY" && editRole !== "PROFESSIONAL" && (
+                <label>
+                  CRN
+                  <input name="crn" defaultValue={editingUser.crn || ""} disabled={!canManage} />
+                </label>
+            )}
             <label className="checkbox-label">
               <input name="active" type="checkbox" defaultChecked={editingUser.active} disabled={!canManage} />
               <span>Usuario ativo.</span>
@@ -301,17 +321,34 @@ export function UsersClient({ currentUserRole }: UsersClientProps) {
             </label>
             <label>
               Papel
-              <select name="role" defaultValue="NUTRITIONIST" disabled={!canManage}>
+              <select 
+                 name="role" 
+                 value={createRole} 
+                 onChange={(e) => setCreateRole(e.target.value as UserRole)}
+                 disabled={!canManage}
+              >
                 <option value="ADMIN">Admin</option>
                 <option value="NUTRITIONIST">Nutricionista</option>
                 <option value="SECRETARY">Secretaria</option>
                 <option value="PROFESSIONAL">Profissional de Saúde</option>
               </select>
             </label>
-            <label>
-              CRN
-              <input name="crn" placeholder="CRN do profissional" disabled={!canManage} />
-            </label>
+            {createRole === "PROFESSIONAL" && (
+                <label>
+                  Especialidade
+                  <select name="specialty" defaultValue="medico" disabled={!canManage}>
+                    {Object.entries(specialtyLabels).map(([key, label]) => (
+                        <option key={key} value={key}>{label}</option>
+                    ))}
+                  </select>
+                </label>
+            )}
+            {createRole !== "SECRETARY" && createRole !== "PROFESSIONAL" && (
+                <label>
+                  CRN
+                  <input name="crn" placeholder="CRN do profissional" disabled={!canManage} />
+                </label>
+            )}
             <button className="button" type="submit" disabled={saving || !canManage}>
               {saving ? "Criando..." : "Criar usuario"}
             </button>

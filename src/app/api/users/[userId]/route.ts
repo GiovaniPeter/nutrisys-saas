@@ -57,8 +57,9 @@ export async function PATCH(request: NextRequest, { params }: Params) {
     return error("Nao autenticado.", 401);
   }
 
-  if (!["OWNER", "ADMIN"].includes(currentUser.role)) {
-    return error("Apenas owner/admin podem alterar usuarios.", 403);
+  const managementRoles = ["OWNER", "ADMIN", "NUTRITIONIST", "PROFESSIONAL"];
+  if (!managementRoles.includes(currentUser.role)) {
+    return error("Sem permissao para alterar usuarios.", 403);
   }
 
   try {
