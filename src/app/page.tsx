@@ -301,32 +301,75 @@ function ProductMockup() {
         </div>
         <div className="np-dashboard-preview">
           <aside>
-            <b>Resumo</b>
-            <span>Agenda</span>
-            <span>Pacientes</span>
-            <span>Condutas Clínicas</span>
-            <span>Financeiro</span>
-            <span>Indicadores</span>
+            <div className="np-mock-logo">
+              <ClinOSLogo />
+              <span>ClinOS</span>
+            </div>
+            <b><LineIcon name="dashboard" /> Resumo</b>
+            <span><LineIcon name="calendar" /> Agenda</span>
+            <span><LineIcon name="users" /> Pacientes</span>
+            <span><LineIcon name="clipboard" /> Prontuário</span>
+            <span><LineIcon name="growth" /> Financeiro</span>
+            <span><LineIcon name="growth" /> Relatórios</span>
+            <span><LineIcon name="assistant" /> Mensagens</span>
+            <span><LineIcon name="settings" /> Configurações</span>
           </aside>
           <section>
-            <h3>Resumo</h3>
+            <h3>Resumo da clínica</h3>
             <div className="np-metrics-preview">
-              <MetricPreview label="Agenda hoje" value="8" />
-              <MetricPreview label="Pacientes ativos" value="128" />
-              <MetricPreview label="Faturamento" value="R$ 18.450" />
-              <MetricPreview label="Planos ativos" value="96" />
+              <div className="np-mock-card">
+                <span><LineIcon name="calendar" /> Hoje</span>
+                <strong>12</strong>
+                <small>agendamentos</small>
+              </div>
+              <div className="np-mock-card">
+                <span><LineIcon name="users" /> Pacientes ativos</span>
+                <strong>842</strong>
+              </div>
+              <div className="np-mock-card">
+                <span><LineIcon name="growth" /> Receitas (mês)</span>
+                <strong>R$ 48.750,00</strong>
+                <small className="np-trend-up">↑ 18% vs mês anterior</small>
+              </div>
+              <div className="np-mock-card">
+                <span><LineIcon name="patient" /> Consultas (mês)</span>
+                <strong>156</strong>
+                <small className="np-trend-up">↑ 12% vs mês anterior</small>
+              </div>
             </div>
             <div className="np-charts-grid">
-              <div className="np-chart-card">
-                <span>Consultas da semana</span>
-                <div className="np-bars"><i /><i /><i /><i /><i /><i /></div>
+              <div className="np-chart-card np-agenda-mock">
+                <div className="np-chart-header">
+                  <span>Agenda de hoje</span>
+                </div>
+                <div className="np-agenda-list">
+                  <div className="np-agenda-item"><b>08:00</b> <i className="np-avatar a1" /> <div><strong>Ana Paula Silva</strong><small>Consulta</small></div> <span className="np-status conf">Confirmado</span></div>
+                  <div className="np-agenda-item"><b>09:00</b> <i className="np-avatar a2" /> <div><strong>Carlos Mendes</strong><small>Retorno</small></div> <span className="np-status conf">Confirmado</span></div>
+                  <div className="np-agenda-item"><b>10:00</b> <i className="np-avatar a3" /> <div><strong>Juliana Castro</strong><small>Consulta</small></div> <span className="np-status andamento">Em andamento</span></div>
+                  <div className="np-agenda-item"><b>11:00</b> <i className="np-avatar a4" /> <div><strong>Marcos Vinicius</strong><small>Avaliação</small></div> <span className="np-status conf">Confirmado</span></div>
+                  <div className="np-agenda-item"><b>14:00</b> <i className="np-avatar a5" /> <div><strong>Fernanda Lima</strong><small>Consulta</small></div> <span className="np-status conf">Confirmado</span></div>
+                </div>
+                <div className="np-agenda-link">Ver agenda completa →</div>
               </div>
-              <div className="np-chart-card">
-                <span>Distribuição de planos</span>
-                <div className="np-donut" />
+              
+              <div className="np-right-mock-col">
+                <div className="np-chart-card np-receitas-mock">
+                  <div className="np-chart-header">
+                    <span>Receitas</span>
+                    <small>Este mês v</small>
+                  </div>
+                  <div className="np-line-chart" />
+                </div>
+                <div className="np-chart-card np-activities-mock">
+                  <div className="np-chart-header">
+                    <span>Atividades recentes</span>
+                  </div>
+                  <div className="np-activity-list">
+                    <div className="np-activity-item"><i className="np-act-icon user"><LineIcon name="users" /></i> <div><strong>Novo paciente cadastrado</strong><small>há 15 min</small></div></div>
+                    <div className="np-activity-item"><i className="np-act-icon money"><LineIcon name="growth" /></i> <div><strong>Pagamento recebido</strong><small>há 1 h</small></div></div>
+                  </div>
+                </div>
               </div>
-              <div className="np-chart-card"><span>Evolução de pacientes</span><div className="np-line-chart" /></div>
-              <div className="np-chart-card"><span>Faturamento últimos 6 meses</span><div className="np-line-chart np-line-chart-alt" /></div>
             </div>
           </section>
         </div>
@@ -336,27 +379,45 @@ function ProductMockup() {
       <div className="np-phone">
         <div className="np-phone-notch" />
         <div className="np-phone-screen">
-          <small>Olá, Ana!</small>
-          <h4>Seu resumo de hoje</h4>
-          <div className="np-phone-card"><span>Próxima consulta</span><b>10:30</b><em>Mariana Silva</em></div>
-          <div className="np-phone-card"><span>Pacientes ativos</span><b>128</b></div>
-          <div className="np-phone-card"><span>Peso médio dos pacientes</span><b>-2,4 kg</b></div>
-          <div className="np-phone-chart" />
-          <nav><span /> <span /> <span /> <span /></nav>
+          <div className="np-phone-header">
+            <small>Olá, Ana!</small>
+            <p>Bem-vinda ao seu<br/>portal do paciente.</p>
+          </div>
+          <div className="np-phone-cards">
+            <div className="np-phone-card">
+              <i className="np-pc-icon"><LineIcon name="calendar" /></i>
+              <div><b>Agendamentos</b><em>Veja e gerencie seus horários</em></div>
+              <small>&gt;</small>
+            </div>
+            <div className="np-phone-card">
+              <i className="np-pc-icon"><LineIcon name="clipboard" /></i>
+              <div><b>Prontuário</b><em>Acesse seus registros</em></div>
+              <small>&gt;</small>
+            </div>
+            <div className="np-phone-card">
+              <i className="np-pc-icon"><LineIcon name="assistant" /></i>
+              <div><b>Mensagens</b><em>Fale com a clínica</em></div>
+              <small>&gt;</small>
+            </div>
+            <div className="np-phone-card">
+              <i className="np-pc-icon"><LineIcon name="growth" /></i>
+              <div><b>Financeiro</b><em>Boletos e pagamentos</em></div>
+              <small>&gt;</small>
+            </div>
+          </div>
+          <nav className="np-phone-nav">
+            <div className="active"><LineIcon name="dashboard" /><span>Início</span></div>
+            <div><LineIcon name="calendar" /><span>Agenda</span></div>
+            <div><LineIcon name="assistant" /><span>Mensagens</span></div>
+            <div><LineIcon name="users" /><span>Perfil</span></div>
+          </nav>
         </div>
       </div>
     </div>
   );
 }
 
-function MetricPreview({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <span>{label}</span>
-      <strong>{value}</strong>
-    </div>
-  );
-}
+
 
 function MiniStat({ icon, title, text }: { icon: string; title: string; text: string }) {
   return (
@@ -407,7 +468,8 @@ function LineIcon({ name }: { name: string }) {
     dashboard: <><rect x="5" y="7" width="22" height="18" rx="3" {...common} /><path d="M9 21l4-5 4 3 5-7M10 28h12" {...common} /></>,
     leaf: <><path d="M7 17C7 9 13 5 25 4c0 12-5 18-13 18-2 0-3.6-.5-5-1.5Z" {...common} /><path d="M10 21c4-7 8-11 14-14" {...common} /></>,
     users: <><circle cx="12" cy="11" r="4" {...common} /><path d="M5 24c0-4 3-7 7-7s7 3 7 7" {...common} /><path d="M22 14a3 3 0 1 0 0-6M21 19c3 .2 5 2.4 5 5" {...common} /></>,
-    assistant: <><path d="M8 25v-7a8 8 0 0 1 16 0v7" {...common} /><path d="M8 20H6a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2M24 20h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2" {...common} /><path d="M12 18h8M12 23h5M19 27c0 2-1.5 3-4 3h-2" {...common} /></>
+    assistant: <><path d="M8 25v-7a8 8 0 0 1 16 0v7" {...common} /><path d="M8 20H6a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2M24 20h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2" {...common} /><path d="M12 18h8M12 23h5M19 27c0 2-1.5 3-4 3h-2" {...common} /></>,
+    settings: <><circle cx="16" cy="16" r="3" {...common} /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" {...common} /></>
   };
 
   return <svg className="np-line-icon" viewBox="0 0 32 32" aria-hidden="true">{icons[name] ?? icons.leaf}</svg>;
