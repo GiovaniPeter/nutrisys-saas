@@ -11,8 +11,8 @@ const features = [
   },
   {
     icon: "meal",
-    title: "Planos de cuidado e receituários",
-    text: "Monte planos personalizados, condutas clínicas e objetivos específicos para cada caso."
+    title: "Segurança de dados",
+    text: "Conformidade LGPD e segurança ponta a ponta para proteger os dados da sua clínica."
   },
   {
     icon: "calendar",
@@ -92,11 +92,11 @@ export default function Home() {
   return (
     <main className="np-page">
       <header className="np-header">
-        <Link href="/" className="np-logo" aria-label="NutreClin">
-          <span className="np-logo-mark"><LeafIcon /></span>
+        <Link href="/" className="np-logo" aria-label="ClinOS">
+          <span className="np-logo-mark"><ClinOSLogo /></span>
           <span>
-            <strong>Nutre<em>Clin</em></strong>
-            <small>Plataforma para profissionais de saúde e clínicas</small>
+            <strong>ClinOS</strong>
+            <small>O sistema operacional da sua clínica</small>
           </span>
         </Link>
 
@@ -120,11 +120,10 @@ export default function Home() {
       <section className="np-hero">
         <div className="np-hero-copy">
           <h1>
-            Centralize atendimento, condutas clínicas e <span>gestão da sua clínica.</span>
+            O sistema operacional da <span>sua clínica</span>
           </h1>
           <p>
-            NutreClin é a plataforma completa para clínicas e consultórios: prontuário,
-            planos de cuidado, portal do paciente, agenda, financeiro e indicadores em um só lugar.
+            Agenda, prontuário, pacientes, financeiro e acompanhamento em uma única plataforma.
           </p>
 
           <div className="np-hero-actions">
@@ -137,8 +136,8 @@ export default function Home() {
           </div>
 
           <div className="np-stat-row">
-            <MiniStat icon="leaf" title="1000+ alimentos" text="base inicial" />
-            <MiniStat icon="calendar" title="7 dias" text="trial grátis" />
+            <MiniStat icon="leaf" title="Seguro" text="Conformidade LGPD" />
+            <MiniStat icon="calendar" title="Completo" text="Tudo em um só lugar" />
             <MiniStat icon="users" title="Multi-clínica" text="equipes e unidades" />
             <MiniStat icon="assistant" title="Secretária" text="acesso limitado" />
           </div>
@@ -237,7 +236,7 @@ export default function Home() {
         <div className="np-final-copy">
           <h2>Seu próximo passo é validar o uso real</h2>
           <p>
-            Experimente o NutreClin por 7 dias e veja como ele pode levar mais organização,
+            Experimente o ClinOS por 7 dias e veja como ele pode levar mais organização,
             tempo e resultados para sua clínica.
           </p>
         </div>
@@ -251,11 +250,11 @@ export default function Home() {
 
       <footer className="np-footer">
         <div className="np-footer-brand">
-          <Link href="/" className="np-logo" aria-label="NutreClin">
-            <span className="np-logo-mark"><LeafIcon /></span>
+          <Link href="/" className="np-logo" aria-label="ClinOS">
+            <span className="np-logo-mark"><ClinOSLogo /></span>
             <span>
-              <strong>Nutre<em>Clin</em></strong>
-              <small>Plataforma para profissionais de saúde e clínicas</small>
+              <strong>ClinOS</strong>
+              <small>O sistema operacional da sua clínica</small>
             </span>
           </Link>
           <p>Solução completa de gestão para consultórios e clínicas multiprofissionais.</p>
@@ -281,11 +280,11 @@ export default function Home() {
         />
         <div className="np-footer-column">
           <h3>Fale conosco</h3>
-          <a href="mailto:contato@nutreclin.com.br">contato@nutreclin.com.br</a>
+          <a href="mailto:contato@clinos.com.br">contato@clinos.com.br</a>
           <a href="tel:+5511987654321">(11) 98765-4321</a>
         </div>
 
-        <p className="np-copyright">© 2026 NutreClin. Todos os direitos reservados.</p>
+        <p className="np-copyright">© 2026 ClinOS. Todos os direitos reservados.</p>
       </footer>
     </main>
   );
@@ -293,11 +292,11 @@ export default function Home() {
 
 function ProductMockup() {
   return (
-    <div className="np-product-wrap" aria-label="Prévia do sistema NutreClin">
+    <div className="np-product-wrap" aria-label="Prévia do sistema ClinOS">
       <div className="np-leaf-bg" aria-hidden="true" />
       <div className="np-laptop">
         <div className="np-laptop-top">
-          <span>NutreClin</span>
+          <span>ClinOS</span>
           <div><i /> <i /> <i /></div>
         </div>
         <div className="np-dashboard-preview">
@@ -385,13 +384,11 @@ function FooterColumn({ title, links }: { title: string; links: Array<string | {
   );
 }
 
-function LeafIcon() {
+function ClinOSLogo() {
   return (
-    <svg viewBox="0 0 48 48" aria-hidden="true">
-      <path d="M24 42V27" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" />
-      <path d="M23.8 27.5C15 28 8 22.9 8 15.8 8 8.9 15.2 5.1 30.8 5.3c.4 14.1-5.2 21.7-15.2 21.7-2.4 0-4.5-.5-6.2-1.6Z" fill="rgba(22, 132, 50, 0.12)" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M14 25.5C18.8 17.8 24.4 13 31 10.5" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" />
-      <path d="M25 35.5c7.9.4 13.5-4.1 14.6-12.9-7.9.2-13.2 4.4-14.6 12.9Z" fill="rgba(22, 132, 50, 0.12)" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <path d="M11.5 5.5v21a3 3 0 003 3h3a3 3 0 003-3v-21a3 3 0 00-3-3h-3a3 3 0 00-3 3z" fill="#115cc7" />
+      <path d="M5.5 20.5h21a3 3 0 003-3v-3a3 3 0 00-3-3h-21a3 3 0 00-3 3v3a3 3 0 003 3z" fill="#009981" />
     </svg>
   );
 }

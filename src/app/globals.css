@@ -1,17 +1,17 @@
 :root {
-  --np-bg: #f7fbf9;
+  --np-bg: #f8faff;
   --np-card: rgba(255, 255, 255, 0.78);
-  --np-ink: #061d1a;
-  --np-muted: #536864;
-  --np-soft: #eaf8f2;
-  --np-soft-2: #f8fffb;
-  --np-primary: #12874b;
-  --np-primary-2: #087f94;
-  --np-primary-dark: #063b32;
+  --np-ink: #091729;
+  --np-muted: #516275;
+  --np-soft: #e5f3fa;
+  --np-soft-2: #f4f8fe;
+  --np-primary: #009981;
+  --np-primary-2: #115cc7;
+  --np-primary-dark: #00705e;
   --np-accent: #f3bc45;
-  --np-line: rgba(12, 73, 62, 0.14);
+  --np-line: rgba(9, 23, 41, 0.14);
   --np-glass-line: rgba(255, 255, 255, 0.74);
-  --np-shadow: 0 28px 80px rgba(6, 45, 38, 0.12);
+  --np-shadow: 0 28px 80px rgba(9, 23, 41, 0.08);
   --np-radius: 28px;
 }
 
@@ -30,17 +30,17 @@ button, input, textarea, select { font: inherit; }
 
 /* App workspace */
 .shell {
-  --app-bg: #f4f8f5;
+  --app-bg: #f4f7fb;
   --app-card: #ffffff;
-  --app-ink: #0a2a20;
-  --app-muted: #60736b;
-  --app-line: #dfe9e1;
-  --app-primary: #11843a;
-  --app-primary-dark: #0a5f2b;
-  --app-soft: #eaf7ee;
+  --app-ink: #0b1a2b;
+  --app-muted: #5e6f82;
+  --app-line: #dee7f0;
+  --app-primary: #009981;
+  --app-primary-dark: #00705e;
+  --app-soft: #e3f1fb;
   --app-danger: #c9342e;
   background:
-    radial-gradient(circle at top left, rgba(22, 132, 50, 0.08), transparent 360px),
+    radial-gradient(circle at top left, rgba(0, 153, 129, 0.08), transparent 360px),
     var(--app-bg);
   color: var(--app-ink);
   min-height: 100vh;

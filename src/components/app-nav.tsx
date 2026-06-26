@@ -61,95 +61,88 @@ type AppNavProps = {
 };
 
 const navItems: NavItem[] = [
-  { key: "dashboard", href: "/dashboard", label: "Dashboard", icon: "home" },
-  { key: "patients", href: "/patients", label: "Pacientes", icon: "people" },
+  { key: "dashboard", href: "/dashboard", label: "Resumo", icon: "home" },
   { key: "appointments", href: "/appointments", label: "Agenda", icon: "calendar" },
+  { key: "patients", href: "/patients", label: "Pacientes", icon: "people" },
+  { key: "anamneses", href: "/anamneses", label: "Prontuário", icon: "clinical" },
+  { key: "financial", href: "/financial", label: "Financeiro", icon: "wallet", mobileOptional: true },
+  { key: "reports", href: "/reports", label: "Relatórios", icon: "analytics" },
+  { key: "chat", href: "/chat", label: "Mensagens", icon: "communication" },
+  { key: "settings", href: "/settings", label: "Configurações", icon: "settings" },
+  { key: "portal", href: "/portal/login", label: "Portal do Paciente", icon: "people" },
   { key: "schedule", href: "/schedule", label: "Calendário", icon: "clock", mobileOptional: true },
   { key: "meal-plans", href: "/meal-plans", label: "Planos", icon: "plan", mobileOptional: true },
-  { key: "financial", href: "/financial", label: "Financeiro", icon: "wallet", mobileOptional: true },
   { key: "recipes", href: "/recipes", label: "Receitas", icon: "nutrition" },
   { key: "shopping", href: "/shopping", label: "Compras", icon: "nutrition" },
   { key: "foods", href: "/foods", label: "Alimentos", icon: "nutrition" },
   { key: "body-records", href: "/body-records", label: "Evolução", icon: "clinical" },
-  { key: "anamneses", href: "/anamneses", label: "Anamnese", icon: "clinical" },
   { key: "recalls", href: "/recalls", label: "Recordatório", icon: "clinical" },
   { key: "lab-exams", href: "/lab-exams", label: "Exames", icon: "clinical" },
   { key: "supplements", href: "/supplements", label: "Suplementos", icon: "nutrition" },
   { key: "food-diary", href: "/food-diary", label: "Diário alimentar", icon: "nutrition" },
   { key: "hydration", href: "/hydration", label: "Metas e hidratação", icon: "clinical" },
   { key: "energy", href: "/energy", label: "Cálculo energético", icon: "clinical" },
-  { key: "chat", href: "/chat", label: "Chat", icon: "communication" },
   { key: "whatsapp", href: "/whatsapp", label: "WhatsApp", icon: "communication" },
   { key: "notifications", href: "/notifications", label: "Alertas", icon: "communication" },
   { key: "kpis", href: "/kpis", label: "KPIs", icon: "analytics" },
-  { key: "reports", href: "/reports", label: "Relatórios", icon: "analytics" },
   { key: "materials", href: "/materials", label: "Materiais", icon: "analytics" },
-  { key: "portal", href: "/portal/login", label: "Portal do paciente", icon: "people" },
   { key: "billing", href: "/billing", label: "Assinatura", icon: "wallet" },
-  { key: "users", href: "/users", label: "Equipe", icon: "people" },
-  { key: "settings", href: "/settings", label: "Configurações", icon: "settings" }
+  { key: "users", href: "/users", label: "Equipe", icon: "people" }
 ];
 
 const primaryNavKeys = new Set<AppNavKey>([
   "dashboard",
-  "patients",
   "appointments",
-  "schedule",
-  "meal-plans",
-  "financial"
+  "patients",
+  "anamneses",
+  "financial",
+  "reports",
+  "chat",
+  "settings"
 ]);
 
 const primaryNavKeysProfessional = new Set<AppNavKey>([
   "dashboard",
-  "patients",
   "appointments",
-  "schedule",
-  "financial"
+  "patients",
+  "anamneses",
+  "financial",
+  "reports",
+  "chat",
+  "settings"
 ]);
 
 const menuGroups: Array<{ label: string; keys: AppNavKey[] }> = [
   {
-    label: "Nutrição e atendimento",
+    label: "Nutrição (Opcional)",
     keys: [
+      "meal-plans",
       "recipes",
       "shopping",
       "foods",
-      "body-records",
-      "anamneses",
       "recalls",
-      "lab-exams",
       "supplements",
-      "food-diary",
-      "hydration",
-      "energy"
+      "food-diary"
     ]
   },
   {
-    label: "Relacionamento",
-    keys: ["chat", "whatsapp", "notifications", "portal"]
+    label: "Atendimento Clínico",
+    keys: ["body-records", "lab-exams", "hydration", "energy"]
   },
   {
-    label: "Gestão da clínica",
-    keys: ["kpis", "reports", "materials", "billing", "users", "settings"]
+    label: "Relacionamento e Gestão",
+    keys: ["portal", "whatsapp", "notifications", "kpis", "materials", "billing", "users", "schedule"]
   }
 ];
 
 const menuGroupsProfessional: Array<{ label: string; keys: AppNavKey[] }> = [
   {
-    label: "Atendimento clínico",
-    keys: [
-      "body-records",
-      "anamneses",
-      "lab-exams"
-    ]
+    label: "Atendimento Clínico",
+    keys: ["body-records", "lab-exams"]
   },
   {
-    label: "Relacionamento",
-    keys: ["chat", "whatsapp", "notifications", "portal"]
-  },
-  {
-    label: "Gestão da clínica",
-    keys: ["kpis", "reports", "materials", "billing", "users", "settings"]
+    label: "Relacionamento e Gestão",
+    keys: ["portal", "whatsapp", "notifications", "kpis", "materials", "billing", "users", "schedule"]
   }
 ];
 
@@ -318,10 +311,10 @@ export function AppNav({ active, user }: AppNavProps) {
         onFocus={() => warmRoute("/dashboard")}
         onClick={() => beginNavigation("/dashboard")}
       >
-        <span className="brand-mark"><BrandLeafIcon /></span>
+        <span className="brand-mark"><ClinOSLogo /></span>
         <span className="app-brand-copy">
-          <strong>NutreClin</strong>
-          <small>{isProfessional ? "Gestão clínica" : "Gestão nutricional"}</small>
+          <strong>ClinOS</strong>
+          <small>O sistema operacional da sua clínica</small>
         </span>
       </Link>
 
@@ -422,11 +415,11 @@ function formatRole(role: string, specialty?: string) {
   return roles[role] || "Profissional";
 }
 
-function BrandLeafIcon() {
+function ClinOSLogo() {
   return (
-    <svg aria-hidden="true" viewBox="0 0 32 32">
-      <path d="M7 19C7 11 13 6 25 6c0 11-5 17-13 17-2 0-3.8-.5-5-1.5Z" />
-      <path d="M9 22c4-7 9-11 16-14M16 22v5" />
+    <svg viewBox="0 0 32 32" aria-hidden="true" style={{ width: '100%', height: '100%', padding: '4px' }}>
+      <path d="M11.5 5.5v21a3 3 0 003 3h3a3 3 0 003-3v-21a3 3 0 00-3-3h-3a3 3 0 00-3 3z" fill="#115cc7" />
+      <path d="M5.5 20.5h21a3 3 0 003-3v-3a3 3 0 00-3-3h-21a3 3 0 00-3 3v3a3 3 0 003 3z" fill="#009981" />
     </svg>
   );
 }

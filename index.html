@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>NutreClin - Sistema para Nutricionistas</title>
+    <title>ClinOS - O sistema operacional da sua clínica</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -15,9 +15,12 @@
     <div id="login-screen" class="login-screen">
         <div class="login-container">
             <div class="login-brand">
-                <span class="material-icons-outlined brand-icon">nutrition</span>
-                <h1>NutreClin</h1>
-                <p>Sistema completo para nutricionistas</p>
+                <svg viewBox="0 0 32 32" aria-hidden="true" style="width:52px;height:52px;margin:0 auto 8px;">
+                    <path d="M11.5 5.5v21a3 3 0 003 3h3a3 3 0 003-3v-21a3 3 0 00-3-3h-3a3 3 0 00-3 3z" fill="#115cc7" />
+                    <path d="M5.5 20.5h21a3 3 0 003-3v-3a3 3 0 00-3-3h-21a3 3 0 00-3 3v3a3 3 0 003 3z" fill="#009981" />
+                </svg>
+                <h1>ClinOS</h1>
+                <p>O sistema operacional da sua clínica</p>
             </div>
             <form id="login-form" class="login-form">
                 <div class="form-group">
@@ -52,9 +55,9 @@
                     Entrar com Google
                 </button>
 
-                <p class="login-hint">Nutricionista: nutricionista@nutreclin.com / 123456</p>
-                <p class="login-hint">Secretária: secretaria@nutreclin.com / 123456</p>
-                <a href="landing.html" class="login-landing-link">← Conheça o NutreClin</a>
+                <p class="login-hint">Profissional: medico@clinos.com / 123456</p>
+                <p class="login-hint">Secretária: secretaria@clinos.com / 123456</p>
+                <a href="landing.html" class="login-landing-link">← Conheça o ClinOS</a>
             </form>
         </div>
     </div>
@@ -64,106 +67,53 @@
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-brand">
-                <span class="material-icons-outlined">nutrition</span>
-                <span class="brand-name">NutreClin</span>
+                <svg viewBox="0 0 32 32" aria-hidden="true" style="width:26px;height:26px;">
+                    <path d="M11.5 5.5v21a3 3 0 003 3h3a3 3 0 003-3v-21a3 3 0 00-3-3h-3a3 3 0 00-3 3z" fill="#115cc7" />
+                    <path d="M5.5 20.5h21a3 3 0 003-3v-3a3 3 0 00-3-3h-21a3 3 0 00-3 3v3a3 3 0 003 3z" fill="#009981" />
+                </svg>
+                <span class="brand-name">ClinOS</span>
             </div>
             <nav class="sidebar-nav">
                 <a href="#" class="nav-item active" data-page="dashboard">
                     <span class="material-icons-outlined">dashboard</span>
-                    <span>Dashboard</span>
+                    <span>Resumo</span>
+                </a>
+                <a href="#" class="nav-item" data-page="appointments">
+                    <span class="material-icons-outlined">calendar_today</span>
+                    <span>Agenda</span>
                 </a>
                 <a href="#" class="nav-item" data-page="patients">
                     <span class="material-icons-outlined">people</span>
                     <span>Pacientes</span>
                 </a>
-                <a href="#" class="nav-item" data-page="mealplans">
-                    <span class="material-icons-outlined">restaurant_menu</span>
-                    <span>Cardápios</span>
-                </a>
-                <a href="#" class="nav-item" data-page="appointments">
-                    <span class="material-icons-outlined">calendar_today</span>
-                    <span>Consultas</span>
-                </a>
-                <a href="#" class="nav-item" data-page="schedule">
-                    <span class="material-icons-outlined">event_note</span>
-                    <span>Agenda</span>
+                <a href="#" class="nav-item" data-page="anamnesis">
+                    <span class="material-icons-outlined">assignment</span>
+                    <span>Prontuário</span>
                 </a>
                 <a href="#" class="nav-item" data-page="financial">
                     <span class="material-icons-outlined">account_balance_wallet</span>
                     <span>Financeiro</span>
                 </a>
-                <a href="#" class="nav-item" data-page="kpis">
-                    <span class="material-icons-outlined">insights</span>
-                    <span>Retenção & KPIs</span>
-                </a>
-                <a href="#" class="nav-item" data-page="recipes">
-                    <span class="material-icons-outlined">menu_book</span>
-                    <span>Receitas</span>
-                </a>
-                <a href="#" class="nav-item" data-page="shopping">
-                    <span class="material-icons-outlined">shopping_cart</span>
-                    <span>Lista de Compras</span>
-                </a>
-                <a href="#" class="nav-item" data-page="foods">
-                    <span class="material-icons-outlined">egg</span>
-                    <span>Alimentos</span>
-                </a>
-                <a href="#" class="nav-item" data-page="energy">
-                    <span class="material-icons-outlined">local_fire_department</span>
-                    <span>Gasto Energético</span>
-                </a>
-                <a href="#" class="nav-item" data-page="recall">
-                    <span class="material-icons-outlined">history</span>
-                    <span>Recordatório 24h</span>
-                </a>
-                <a href="#" class="nav-item" data-page="anamnesis">
-                    <span class="material-icons-outlined">assignment</span>
-                    <span>Anamnese</span>
-                </a>
-                <a href="#" class="nav-item" data-page="labexams">
-                    <span class="material-icons-outlined">biotech</span>
-                    <span>Exames Lab.</span>
-                </a>
-                <a href="#" class="nav-item" data-page="supplements">
-                    <span class="material-icons-outlined">medication</span>
-                    <span>Suplementos</span>
-                </a>
-                <a href="#" class="nav-item" data-page="evolution">
-                    <span class="material-icons-outlined">trending_up</span>
-                    <span>Evolução Corporal</span>
-                </a>
                 <a href="#" class="nav-item" data-page="reports">
                     <span class="material-icons-outlined">picture_as_pdf</span>
-                    <span>Relatórios PDF</span>
-                </a>
-                <div class="nav-divider"><span>Paciente & Comunicação</span></div>
-                <a href="#" class="nav-item" data-page="portal">
-                    <span class="material-icons-outlined">phone_iphone</span>
-                    <span>Portal do Paciente</span>
-                </a>
-                <a href="#" class="nav-item" data-page="diario">
-                    <span class="material-icons-outlined">edit_note</span>
-                    <span>Diário Alimentar</span>
-                </a>
-                <a href="#" class="nav-item" data-page="hidratacao">
-                    <span class="material-icons-outlined">water_drop</span>
-                    <span>Hidratação & Metas</span>
+                    <span>Relatórios</span>
                 </a>
                 <a href="#" class="nav-item" data-page="chat">
                     <span class="material-icons-outlined">chat</span>
-                    <span>Chat</span>
-                </a>
-                <a href="#" class="nav-item" data-page="whatsapp">
-                    <span class="material-icons-outlined">smartphone</span>
-                    <span>WhatsApp</span>
-                </a>
-                <a href="#" class="nav-item" data-page="canva">
-                    <span class="material-icons-outlined">palette</span>
-                    <span>Materiais</span>
+                    <span>Mensagens</span>
                 </a>
                 <a href="#" class="nav-item" data-page="settings">
                     <span class="material-icons-outlined">settings</span>
                     <span>Configurações</span>
+                </a>
+                <div class="nav-divider"><span>Mais</span></div>
+                <a href="#" class="nav-item" data-page="portal">
+                    <span class="material-icons-outlined">phone_iphone</span>
+                    <span>Portal do Paciente</span>
+                </a>
+                <a href="#" class="nav-item" data-page="mealplans">
+                    <span class="material-icons-outlined">restaurant_menu</span>
+                    <span>Planos Nutricionais</span>
                 </a>
             </nav>
             <div class="sidebar-footer">

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.APP_URL || "http://localhost:3000"),
-  title: "NutreClin — Sistema para Nutricionistas e Gestão de Clínicas",
-  description: "Sistema completo para nutricionistas e clínicas: agendamento online, cardápios personalizados, lembretes via WhatsApp, controle financeiro, função secretária e portal do paciente.",
+  title: "ClinOS — O sistema operacional da sua clínica",
+  description: "Agenda, prontuário, pacientes, financeiro e acompanhamento em uma única plataforma.",
   robots: {
     index: false,
     follow: false
@@ -19,14 +19,14 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }]
   },
   openGraph: {
-    title: "NutreClin — Sistema para Nutricionistas e Gestão de Clínicas",
-    description: "Agendamento online, cardápios personalizados, lembretes via WhatsApp, controle financeiro e portal do paciente. Teste grátis por 7 dias.",
+    title: "ClinOS — O sistema operacional da sua clínica",
+    description: "Agenda, prontuário, pacientes, financeiro e acompanhamento em uma única plataforma.",
     images: [
       {
         url: "/social-card.png",
         width: 1200,
         height: 630,
-        alt: "NutreClin - Gestão nutricional para clínicas, nutricionistas e pacientes."
+        alt: "ClinOS - O sistema operacional da sua clínica."
       }
     ],
     locale: "pt_BR",
@@ -34,8 +34,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "NutreClin — Sistema para Nutricionistas e Gestão de Clínicas",
-    description: "Agendamento online, cardápios personalizados, lembretes via WhatsApp, controle financeiro e portal do paciente.",
+    title: "ClinOS — O sistema operacional da sua clínica",
+    description: "Agenda, prontuário, pacientes, financeiro e acompanhamento em uma única plataforma.",
     images: ["/social-card.png"]
   }
 };
