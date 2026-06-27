@@ -324,7 +324,6 @@ export function PatientsClient() {
       {message ? <p className="form-message neutral patients-feedback">{message}</p> : null}
 
       <section className="surface patient-list">
-      <section className="surface patient-list">
         <div className="section-title-row">
           <div className="patient-search-grid" style={{ marginBottom: 0, gap: '12px' }}>
             <label className="search-field" style={{ margin: 0 }}>
