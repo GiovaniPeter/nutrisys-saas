@@ -119,31 +119,50 @@ export default function Home() {
 
       <section className="np-hero">
         <div className="np-hero-copy">
+          <div className="np-hero-brand">
+            <ClinOSLogo />
+            <span>ClinOS</span>
+          </div>
           <h1>
-            O sistema operacional da <span>sua clínica</span>
+            O sistema operacional da <span className="np-hero-highlight">sua clínica</span>
           </h1>
           <p>
-            Agenda, prontuário, pacientes, financeiro e acompanhamento em uma única plataforma.
+            Agenda, prontuário, pacientes, financeiro<br/>e acompanhamento em uma <strong>única plataforma</strong>.
           </p>
 
-          <div className="np-hero-actions">
-            <Link href={trialHref} className="np-button np-button-primary np-button-large">
-              Começar trial <span aria-hidden="true">→</span>
-            </Link>
-            <a href="#recursos" className="np-button np-button-outline np-button-large">
-              Ver recursos <span aria-hidden="true">▣</span>
-            </a>
+          <div className="np-hero-features">
+            <div className="np-hero-feature">
+              <div className="np-feature-icon icon-blue"><LineIcon name="calendar" /></div>
+              <span>Agenda</span>
+            </div>
+            <div className="np-hero-feature">
+              <div className="np-feature-icon icon-green"><LineIcon name="clipboard" /></div>
+              <span>Prontuário</span>
+            </div>
+            <div className="np-hero-feature">
+              <div className="np-feature-icon icon-blue"><LineIcon name="users" /></div>
+              <span>Pacientes</span>
+            </div>
+            <div className="np-hero-feature">
+              <div className="np-feature-icon icon-green"><LineIcon name="clinic" /></div>
+              <span>Financeiro</span>
+            </div>
+            <div className="np-hero-feature">
+              <div className="np-feature-icon icon-purple"><LineIcon name="message" /></div>
+              <span>Portal do<br/>paciente</span>
+            </div>
           </div>
 
-          <div className="np-stat-row">
-            <MiniStat icon="leaf" title="Seguro" text="Conformidade LGPD" />
-            <MiniStat icon="calendar" title="Completo" text="Tudo em um só lugar" />
-            <MiniStat icon="users" title="Multi-clínica" text="equipes e unidades" />
-            <MiniStat icon="assistant" title="Secretária" text="acesso limitado" />
-          </div>
         </div>
-
+        
         <ProductMockup />
+
+        <div className="np-hero-badges">
+          <div className="np-hero-badge"><LineIcon name="assistant" /><span>Segurança<br/>de dados</span></div>
+          <div className="np-hero-badge"><LineIcon name="dashboard" /><span>Acesso<br/>web e mobile</span></div>
+          <div className="np-hero-badge"><LineIcon name="addPatient" /><span>Integração<br/>completa</span></div>
+          <div className="np-hero-badge"><LineIcon name="growth" /><span>Gestão<br/>inteligente</span></div>
+        </div>
       </section>
 
       <section className="np-section" id="recursos">
@@ -293,7 +312,7 @@ export default function Home() {
 function ProductMockup() {
   return (
     <div className="np-product-wrap" aria-label="Prévia do sistema ClinOS">
-      <div className="np-leaf-bg" aria-hidden="true" />
+      <div className="np-tech-bg" aria-hidden="true" />
       <div className="np-laptop">
         <div className="np-laptop-top">
           <span>ClinOS</span>
@@ -477,6 +496,7 @@ function LineIcon({ name }: { name: string }) {
     addPatient: <><path d="M14 17c-4 0-7 2.6-7 6v1h10" {...common} /><circle cx="14" cy="10" r="4" {...common} /><path d="M22 17v10M17 22h10" {...common} /></>,
     clipboard: <><rect x="7" y="6" width="18" height="22" rx="3" {...common} /><path d="M12 6c0-2 1.4-3 4-3s4 1 4 3M12 13h8M12 18h8M12 23h5" {...common} /></>,
     dashboard: <><rect x="5" y="7" width="22" height="18" rx="3" {...common} /><path d="M9 21l4-5 4 3 5-7M10 28h12" {...common} /></>,
+    message: <><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" {...common} /><path d="M8 14h6M8 18h12M8 10h12" {...common} /></>,
     leaf: <><path d="M7 17C7 9 13 5 25 4c0 12-5 18-13 18-2 0-3.6-.5-5-1.5Z" {...common} /><path d="M10 21c4-7 8-11 14-14" {...common} /></>,
     users: <><circle cx="12" cy="11" r="4" {...common} /><path d="M5 24c0-4 3-7 7-7s7 3 7 7" {...common} /><path d="M22 14a3 3 0 1 0 0-6M21 19c3 .2 5 2.4 5 5" {...common} /></>,
     assistant: <><path d="M8 25v-7a8 8 0 0 1 16 0v7" {...common} /><path d="M8 20H6a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2M24 20h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2" {...common} /><path d="M12 18h8M12 23h5M19 27c0 2-1.5 3-4 3h-2" {...common} /></>,
