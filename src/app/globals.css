@@ -2541,11 +2541,10 @@ form button[type="submit"] {
   box-shadow: 0 38px 90px rgba(6, 45, 38, 0.26), 0 0 76px rgba(8, 127, 148, 0.16);
   min-height: 488px;
   position: absolute;
-  left: 10px;
-  top: -186px;
+  left: -20px;
+  top: -206px;
   width: 800px;
   max-width: none;
-  transform: rotate(5deg);
 }
 .np-laptop::after {
   background: linear-gradient(180deg, #cfd2d0, #8c908d);
@@ -2621,7 +2620,7 @@ form button[type="submit"] {
 
 .np-line-chart { height: 60px; position: relative; margin-top: 8px; background: linear-gradient(180deg, rgba(0,153,129,0.08) 0%, transparent 100%); border-bottom: 1px solid #f1f5f9; }
 .np-line-chart::after { content: ""; position: absolute; left: 0; right: 0; top: 20px; bottom: 0; border-top: 2px solid #009981; border-radius: 50% 50% 0 0; }
-.np-phone { background: #111; border: 8px solid #111; border-radius: 34px; box-shadow: 0 28px 55px rgba(15,23,42,0.24); min-height: 440px; overflow: hidden; position: absolute; left: 510px; top: 70px; width: 220px; transform: rotate(5deg); }
+.np-phone { background: #111; border: 8px solid #111; border-radius: 34px; box-shadow: 0 28px 55px rgba(15,23,42,0.24); min-height: 440px; overflow: hidden; position: absolute; left: 490px; top: 40px; width: 220px; }
 .np-phone-notch { background: #111; border-radius: 0 0 12px 12px; height: 17px; left: 74px; position: absolute; top: 0; width: 60px; z-index: 2; }
 .np-phone-screen { background: #f8fafc; border-radius: 26px; min-height: 424px; padding: 0; display: flex; flex-direction: column; position: relative; }
 .np-phone-header { background: #1a232b; padding: 38px 16px 16px; color: #fff; border-radius: 26px 26px 0 0; }
