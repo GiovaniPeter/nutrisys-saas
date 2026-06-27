@@ -4,9 +4,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.APP_URL || "http://localhost:3000"),
   title: "ClinOS — O sistema operacional da sua clínica",
   description: "Agenda, prontuário, pacientes, financeiro e acompanhamento em uma única plataforma.",
+  keywords: ["sistema para clínicas", "software médico", "prontuário eletrônico", "gestão de clínicas", "agendamento médico", "sistema operacional clínico"],
   robots: {
-    index: false,
-    follow: false
+    index: true,
+    follow: true
   },
   icons: {
     icon: [

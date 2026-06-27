@@ -417,9 +417,20 @@ function formatRole(role: string, specialty?: string) {
 
 function ClinOSLogo() {
   return (
-    <svg viewBox="0 0 32 32" aria-hidden="true" style={{ width: '100%', height: '100%', padding: '4px' }}>
-      <path d="M11.5 5.5v21a3 3 0 003 3h3a3 3 0 003-3v-21a3 3 0 00-3-3h-3a3 3 0 00-3 3z" fill="#115cc7" />
-      <path d="M5.5 20.5h21a3 3 0 003-3v-3a3 3 0 00-3-3h-21a3 3 0 00-3 3v3a3 3 0 003 3z" fill="#009981" />
+    <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="clinosLogoGradNav1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#0284c7" />
+          <stop offset="1" stopColor="#38bdf8" />
+        </linearGradient>
+        <linearGradient id="clinosLogoGradNav2" x1="32" y1="0" x2="0" y2="32" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#059669" />
+          <stop offset="1" stopColor="#34d399" />
+        </linearGradient>
+      </defs>
+      <path d="M12.5 4C12.5 2.89543 13.3954 2 14.5 2H17.5C18.6046 2 19.5 2.89543 19.5 4V28C19.5 29.1046 18.6046 30 17.5 30H14.5C13.3954 30 12.5 29.1046 12.5 28V4Z" fill="url(#clinosLogoGradNav1)"/>
+      <path d="M4 12.5C2.89543 12.5 2 13.3954 2 14.5V17.5C2 18.6046 2.89543 19.5 4 19.5H28C29.1046 19.5 30 18.6046 30 17.5V14.5C30 13.3954 29.1046 12.5 28 12.5H4Z" fill="url(#clinosLogoGradNav2)" fillOpacity="0.9"/>
+      <circle cx="16" cy="16" r="3.5" fill="#ffffff" opacity="0.95" />
     </svg>
   );
 }

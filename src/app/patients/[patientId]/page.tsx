@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { AppNav } from "@/components/app-nav";
 import { getCurrentUser } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
+import { PrintPatientButton } from "@/components/patients/print-patient-button";
 
 type Params = {
   params: {
@@ -136,6 +137,7 @@ export default async function PatientRecordPage({ params }: Params) {
           <Link className="text-button" href="/patients">
             Voltar
           </Link>
+          <PrintPatientButton patient={patient} />
           <Link className="text-button" href={`/appointments?patientId=${patient.id}`}>
             Agendar
           </Link>
