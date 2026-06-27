@@ -16,9 +16,7 @@ export default async function PatientsPage() {
 
       <section className="workspace-heading">
         <div>
-          <span className="eyebrow">Atendimento</span>
           <h1>Pacientes</h1>
-          <p>Cadastro real no Supabase, isolado pela clinica da sessao atual.</p>
         </div>
       </section>
 

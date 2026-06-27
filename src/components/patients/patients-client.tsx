@@ -324,10 +324,36 @@ export function PatientsClient() {
       {message ? <p className="form-message neutral patients-feedback">{message}</p> : null}
 
       <section className="surface patient-list">
+      <section className="surface patient-list">
         <div className="section-title-row">
-          <div>
-            <span className="eyebrow">Base da clinica</span>
-            <h2>Lista de pacientes</h2>
+          <div className="patient-search-grid" style={{ marginBottom: 0, gap: '12px' }}>
+            <label className="search-field" style={{ margin: 0 }}>
+              <input
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder="Buscar por nome..."
+                style={{ minWidth: '240px' }}
+              />
+            </label>
+            <label className="search-field" style={{ margin: 0 }}>
+              <input
+                type="date"
+                value={birthDateQuery}
+                onChange={(event) => setBirthDateQuery(event.target.value)}
+              />
+            </label>
+            {query || birthDateQuery ? (
+              <button
+                className="button secondary"
+                type="button"
+                onClick={() => {
+                  setQuery("");
+                  setBirthDateQuery("");
+                }}
+              >
+                Limpar
+              </button>
+            ) : null}
           </div>
           <div className="patient-list-header-actions">
             <div className="mini-stats" aria-label="Resumo de pacientes">
@@ -338,37 +364,6 @@ export function PatientsClient() {
               Adicionar paciente
             </button>
           </div>
-        </div>
-
-        <div className="patient-search-grid">
-          <label className="search-field">
-            <span>Buscar por nome</span>
-            <input
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Digite o nome do paciente"
-            />
-          </label>
-          <label className="search-field">
-            <span>Data de nascimento</span>
-            <input
-              type="date"
-              value={birthDateQuery}
-              onChange={(event) => setBirthDateQuery(event.target.value)}
-            />
-          </label>
-          {query || birthDateQuery ? (
-            <button
-              className="button secondary patient-search-clear"
-              type="button"
-              onClick={() => {
-                setQuery("");
-                setBirthDateQuery("");
-              }}
-            >
-              Limpar filtros
-            </button>
-          ) : null}
         </div>
 
         <div className="table-wrap">
@@ -393,70 +388,74 @@ export function PatientsClient() {
                   </td>
                   <td>{formatDisplayDate(patient.birthDate)}</td>
                   <td className="patient-contact-cell">
-                    <strong>{patient.phone || "Sem telefone"}</strong>
-                    <span>{patient.email || "Sem e-mail"}</span>
+                    <strong>{formatPhone(patient.phone)}</strong>
+                    <span className="truncate" title={patient.email || ""}>{patient.email || "Sem e-mail"}</span>
                   </td>
                   <td>{patient.goal || "Nao informado"}</td>
                   <td>
-                    <span className={patient.lgpdConsentAt ? "status-pill ok" : "status-pill"}>
+                    <span className={patient.lgpdConsentAt ? "status-dot ok" : "status-dot"} title={patient.lgpdConsentAt ? "Consentido" : "Pendente"}>
                       {patient.lgpdConsentAt ? "Consentido" : "Pendente"}
                     </span>
                   </td>
                   <td>
-                    <span className={patient.portalEnabled ? "status-pill ok" : "status-pill"}>
+                    <span className={patient.portalEnabled ? "status-dot ok" : "status-dot"} title={patient.portalEnabled ? "Ativo" : "Inativo"}>
                       {patient.portalEnabled ? "Ativo" : "Inativo"}
                     </span>
-                      {patient.portalAccessCode ? <span className="code-pill">{patient.portalAccessCode}</span> : null}
+                      {patient.portalAccessCode ? <span className="code-pill code-pill-small" title="Código de Acesso">{patient.portalAccessCode}</span> : null}
                   </td>
                   <td className="patient-actions-cell">
                     <div className="row-actions">
-                      <a className="text-button" href={`/patients/${patient.id}`}>
-                        Prontuario
+                      <a className="button" href={`/patients/${patient.id}`}>
+                        Prontuário
                       </a>
                       <button
-                        className="text-button"
+                        className="icon-button"
                         type="button"
+                        title="Editar"
                         onClick={() => startEditing(patient)}
                       >
-                        Editar
+                        <Icon name="edit" />
                       </button>
                       <button
-                        className="text-button"
+                        className="icon-button"
                         type="button"
+                        title={portalPatientId === patient.id ? "Aguarde..." : patient.portalAccessCode ? "Novo código" : "Gerar portal"}
                         disabled={portalPatientId === patient.id}
                         onClick={() => void updatePortalAccess(patient, patient.portalAccessCode ? "rotate" : "generate")}
                       >
-                        {portalPatientId === patient.id ? "Aguarde..." : patient.portalAccessCode ? "Novo codigo" : "Gerar portal"}
+                        <Icon name="key" />
                       </button>
                       {patient.portalAccessCode ? (
                         <>
-                          <button className="text-button" type="button" onClick={() => void copyPortalInvite(patient)}>
-                            Copiar convite
+                          <button className="icon-button" type="button" title="Copiar convite" onClick={() => void copyPortalInvite(patient)}>
+                            <Icon name="copy" />
                           </button>
                           {patient.phone ? (
-                            <a className="text-button" href={buildWhatsappUrl(patient)} target="_blank" rel="noreferrer">
-                              WhatsApp
+                            <a className="icon-button whatsapp-color" title="WhatsApp" href={buildWhatsappUrl(patient)} target="_blank" rel="noreferrer">
+                              <Icon name="message" />
                             </a>
                           ) : null}
                         </>
                       ) : null}
                       {patient.portalEnabled ? (
                         <button
-                          className="text-button danger"
+                          className="icon-button text-danger"
                           type="button"
+                          title="Desativar portal"
                           disabled={portalPatientId === patient.id}
                           onClick={() => void updatePortalAccess(patient, "disable")}
                         >
-                          Desativar
+                          <Icon name="off" />
                         </button>
                       ) : null}
                       <button
-                        className="text-button danger"
+                        className="icon-button text-danger"
                         type="button"
+                        title="Excluir paciente"
                         disabled={deletingId === patient.id}
                         onClick={() => void handleDelete(patient)}
                       >
-                        {deletingId === patient.id ? "Excluindo..." : "Excluir"}
+                        <Icon name="trash" />
                       </button>
                     </div>
                   </td>
@@ -541,4 +540,25 @@ function buildWhatsappUrl(patient: Patient) {
   const text = encodeURIComponent(buildPortalInvite(patient));
 
   return `https://wa.me/${phoneWithCountry}?text=${text}`;
+}
+
+function formatPhone(phone: string | null) {
+  if (!phone) return "Sem telefone";
+  const digits = phone.replace(/\D/g, "");
+  if (digits.length === 11) return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+  if (digits.length === 10) return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+  return phone;
+}
+
+function Icon({ name }: { name: string }) {
+  const common = { fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+  const icons: Record<string, React.ReactNode> = {
+    edit: <><path d="M12 20h9" {...common} /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" {...common} /></>,
+    key: <><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" {...common} /></>,
+    trash: <><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6" {...common} /></>,
+    message: <><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" {...common} /></>,
+    copy: <><rect width="14" height="14" x="8" y="8" rx="2" ry="2" {...common} /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" {...common} /></>,
+    off: <><path d="M18.36 6.64A9 9 0 0 1 20.77 15M12 2v10M3 3l18 18" {...common} /><path d="M15.536 21A8.99 8.99 0 0 1 3 13c0-2.3.8-4.4 2.1-6" {...common} /></>
+  };
+  return <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">{icons[name]}</svg>;
 }

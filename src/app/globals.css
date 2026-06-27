@@ -2948,3 +2948,15 @@ form button[type="submit"] {
   .np-price-featured { transform: none; }
   .np-footer { text-align: left; }
 }
+
+/* PATIENTS UI IMPROVEMENTS */
+.icon-button { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; border: 1px solid #e2e8f0; background: #fff; color: #64748b; cursor: pointer; transition: all 0.2s; }
+.icon-button:hover { background: #f8fafc; color: #0f172a; border-color: #cbd5e1; }
+.icon-button.whatsapp-color { color: #16a34a; border-color: #bbf7d0; background: #f0fdf4; }
+.icon-button.text-danger { color: #ef4444; }
+.icon-button.text-danger:hover { background: #fef2f2; border-color: #fca5a5; }
+.truncate { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; display: inline-block; vertical-align: bottom; }
+.status-dot { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 12px; background: #f1f5f9; color: #64748b; font-size: 0; position: relative; }
+.status-dot::after { content: ""; width: 8px; height: 8px; border-radius: 4px; background: currentColor; }
+.status-dot.ok { background: #dcfce7; color: #16a34a; }
+.code-pill-small { padding: 2px 6px; font-size: 0.65rem; margin-left: 6px; }
