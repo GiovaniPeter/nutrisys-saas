@@ -144,11 +144,15 @@ export default function Home() {
               <span>Pacientes</span>
             </div>
             <div className="np-hero-feature">
-              <div className="np-feature-icon icon-green"><LineIcon name="clinic" /></div>
+              <div className="np-feature-icon icon-green"><LineIcon name="meal" /></div>
+              <span>Planos<br/>alimentares</span>
+            </div>
+            <div className="np-hero-feature">
+              <div className="np-feature-icon icon-purple"><LineIcon name="clinic" /></div>
               <span>Financeiro</span>
             </div>
             <div className="np-hero-feature">
-              <div className="np-feature-icon icon-purple"><LineIcon name="message" /></div>
+              <div className="np-feature-icon icon-blue"><LineIcon name="message" /></div>
               <span>Portal do<br/>paciente</span>
             </div>
           </div>
