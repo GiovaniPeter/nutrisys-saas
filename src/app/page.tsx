@@ -165,6 +165,37 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="np-section" id="sobre">
+        <div className="np-section-heading np-center">
+          <span>Sobre nós</span>
+          <h2>Nosso propósito e valores</h2>
+        </div>
+
+        <div className="np-feature-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
+          <article className="np-feature-card">
+            <div className="np-feature-icon icon-blue" style={{ marginBottom: '16px' }}><LineIcon name="growth" /></div>
+            <h3>Missão</h3>
+            <p>Empoderar profissionais de saúde com tecnologia intuitiva e inteligente, simplificando a gestão de clínicas para que possam focar no que realmente importa: o cuidado e a evolução dos pacientes.</p>
+          </article>
+          
+          <article className="np-feature-card">
+            <div className="np-feature-icon icon-purple" style={{ marginBottom: '16px' }}><LineIcon name="dashboard" /></div>
+            <h3>Visão</h3>
+            <p>Ser o sistema operacional padrão e mais amado pelas clínicas multiprofissionais do Brasil, reconhecido pela excelência em usabilidade, segurança de dados e inovação contínua do mercado.</p>
+          </article>
+          
+          <article className="np-feature-card">
+            <div className="np-feature-icon icon-green" style={{ marginBottom: '16px' }}><LineIcon name="users" /></div>
+            <h3>Valores</h3>
+            <p>
+              <strong>Cuidado:</strong> Pessoas sempre em primeiro lugar.<br/>
+              <strong>Simplicidade:</strong> Menos cliques, mais eficiência.<br/>
+              <strong>Transparência:</strong> Ética e segurança em cada dado processado.
+            </p>
+          </article>
+        </div>
+      </section>
+
       <section className="np-section" id="recursos">
         <div className="np-section-heading np-center">
           <span>Recursos que simplificam sua rotina</span>
