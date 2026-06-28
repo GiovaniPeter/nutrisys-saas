@@ -359,6 +359,7 @@ export function AppointmentsClient() {
         {message ? <p className="form-message neutral">{message}</p> : null}
 
         <div className="table-wrap">
+        <div className="table-responsive">
           <table className="data-table">
             <thead>
               <tr>
@@ -444,6 +445,7 @@ export function AppointmentsClient() {
               ) : null}
             </tbody>
           </table>
+        </div>
         </div>
       </div>
     </section>

@@ -365,120 +365,120 @@ export function PatientsClient() {
           </div>
         </div>
 
-        <div className="table-wrap">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Nascimento</th>
-                <th>Contato</th>
-                <th>Objetivo</th>
-                <th>LGPD</th>
-                <th>Portal</th>
-                <th>Acoes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {patients.map((patient) => (
-                <tr key={patient.id} className={editingPatient?.id === patient.id ? "selected-row" : undefined}>
-                  <td>
-                    <strong>{patient.name}</strong>
-                    <span>{sexLabels[patient.sex]}</span>
-                  </td>
-                  <td>{formatDisplayDate(patient.birthDate)}</td>
-                  <td className="patient-contact-cell">
-                    <strong>{formatPhone(patient.phone)}</strong>
-                    <span className="truncate" title={patient.email || ""}>{patient.email || "Sem e-mail"}</span>
-                  </td>
-                  <td>{patient.goal || "Nao informado"}</td>
-                  <td>
-                    <span className={patient.lgpdConsentAt ? "status-dot ok" : "status-dot"} title={patient.lgpdConsentAt ? "Consentido" : "Pendente"}>
-                      {patient.lgpdConsentAt ? "Consentido" : "Pendente"}
-                    </span>
-                  </td>
-                  <td>
-                    <span className={patient.portalEnabled ? "status-dot ok" : "status-dot"} title={patient.portalEnabled ? "Ativo" : "Inativo"}>
-                      {patient.portalEnabled ? "Ativo" : "Inativo"}
-                    </span>
-                      {patient.portalAccessCode ? <span className="code-pill code-pill-small" title="Código de Acesso">{patient.portalAccessCode}</span> : null}
-                  </td>
-                  <td className="patient-actions-cell">
-                    <div className="row-actions">
-                      <a className="button" href={`/patients/${patient.id}`}>
-                        Prontuário
-                      </a>
-                      <button
-                        className="icon-button"
-                        type="button"
-                        title="Editar"
-                        onClick={() => startEditing(patient)}
-                      >
-                        <Icon name="edit" />
-                      </button>
-                      <button
-                        className="icon-button"
-                        type="button"
-                        title={portalPatientId === patient.id ? "Aguarde..." : patient.portalAccessCode ? "Novo código" : "Gerar portal"}
-                        disabled={portalPatientId === patient.id}
-                        onClick={() => void updatePortalAccess(patient, patient.portalAccessCode ? "rotate" : "generate")}
-                      >
-                        <Icon name="key" />
-                      </button>
-                      {patient.portalAccessCode ? (
-                        <>
-                          <button className="icon-button" type="button" title="Copiar convite" onClick={() => void copyPortalInvite(patient)}>
-                            <Icon name="copy" />
+        {patients.length > 0 ? (
+          <div className="table-responsive">
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Paciente</th>
+                  <th>Idade</th>
+                  <th>Contato</th>
+                  <th>Status LGPD</th>
+                  <th>Portal</th>
+                  <th style={{ width: "220px" }}>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {patients.map((patient) => (
+                  <tr key={patient.id} className={editingPatient?.id === patient.id ? "selected-row" : undefined}>
+                    <td>
+                      <strong>{patient.name}</strong>
+                      <span>{sexLabels[patient.sex]}</span>
+                    </td>
+                    <td>{formatDisplayDate(patient.birthDate)}</td>
+                    <td className="patient-contact-cell">
+                      <strong>{formatPhone(patient.phone)}</strong>
+                      <span className="truncate" title={patient.email || ""}>{patient.email || "Sem e-mail"}</span>
+                    </td>
+                    <td>
+                      <span className={patient.lgpdConsentAt ? "status-dot ok" : "status-dot"} title={patient.lgpdConsentAt ? "Consentido" : "Pendente"}>
+                        {patient.lgpdConsentAt ? "Consentido" : "Pendente"}
+                      </span>
+                    </td>
+                    <td>
+                      <span className={patient.portalEnabled ? "status-dot ok" : "status-dot"} title={patient.portalEnabled ? "Ativo" : "Inativo"}>
+                        {patient.portalEnabled ? "Ativo" : "Inativo"}
+                      </span>
+                        {patient.portalAccessCode ? <span className="code-pill code-pill-small" title="Código de Acesso">{patient.portalAccessCode}</span> : null}
+                    </td>
+                    <td className="patient-actions-cell">
+                      <div className="row-actions">
+                        <a className="button" href={`/patients/${patient.id}`}>
+                          Prontuário
+                        </a>
+                        <button
+                          className="icon-button"
+                          type="button"
+                          title="Editar"
+                          onClick={() => startEditing(patient)}
+                        >
+                          <Icon name="edit" />
+                        </button>
+                        <button
+                          className="icon-button"
+                          type="button"
+                          title={portalPatientId === patient.id ? "Aguarde..." : patient.portalAccessCode ? "Novo código" : "Gerar portal"}
+                          disabled={portalPatientId === patient.id}
+                          onClick={() => void updatePortalAccess(patient, patient.portalAccessCode ? "rotate" : "generate")}
+                        >
+                          <Icon name="key" />
+                        </button>
+                        {patient.portalAccessCode ? (
+                          <>
+                            <button className="icon-button" type="button" title="Copiar convite" onClick={() => void copyPortalInvite(patient)}>
+                              <Icon name="copy" />
+                            </button>
+                            {patient.phone ? (
+                              <a className="icon-button whatsapp-color" title="WhatsApp" href={buildWhatsappUrl(patient)} target="_blank" rel="noreferrer">
+                                <Icon name="message" />
+                              </a>
+                            ) : null}
+                          </>
+                        ) : null}
+                        {patient.portalEnabled ? (
+                          <button
+                            className="icon-button text-danger"
+                            type="button"
+                            title="Desativar portal"
+                            disabled={portalPatientId === patient.id}
+                            onClick={() => void updatePortalAccess(patient, "disable")}
+                          >
+                            <Icon name="off" />
                           </button>
-                          {patient.phone ? (
-                            <a className="icon-button whatsapp-color" title="WhatsApp" href={buildWhatsappUrl(patient)} target="_blank" rel="noreferrer">
-                              <Icon name="message" />
-                            </a>
-                          ) : null}
-                        </>
-                      ) : null}
-                      {patient.portalEnabled ? (
+                        ) : null}
                         <button
                           className="icon-button text-danger"
                           type="button"
-                          title="Desativar portal"
-                          disabled={portalPatientId === patient.id}
-                          onClick={() => void updatePortalAccess(patient, "disable")}
+                          title="Excluir paciente"
+                          disabled={deletingId === patient.id}
+                          onClick={() => void handleDelete(patient)}
                         >
-                          <Icon name="off" />
+                          <Icon name="trash" />
                         </button>
-                      ) : null}
-                      <button
-                        className="icon-button text-danger"
-                        type="button"
-                        title="Excluir paciente"
-                        disabled={deletingId === patient.id}
-                        onClick={() => void handleDelete(patient)}
-                      >
-                        <Icon name="trash" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : null}
 
-              {!loading && patients.length === 0 ? (
-                <tr>
-                  <td colSpan={7} className="empty-cell">
-                    Nenhum paciente encontrado.
-                  </td>
-                </tr>
-              ) : null}
-
-              {loading ? (
+        {loading ? (
+          <div className="table-responsive">
+            <table className="data-table">
+              <tbody>
                 <tr>
                   <td colSpan={7} className="empty-cell">
                     Carregando pacientes...
                   </td>
                 </tr>
-              ) : null}
-            </tbody>
-          </table>
-        </div>
+              </tbody>
+            </table>
+          </div>
+        ) : !loading && patients.length === 0 ? (
+          <p className="empty-state">Nenhum paciente encontrado.</p>
+        ) : null}
       </section>
     </section>
   );

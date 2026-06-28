@@ -74,22 +74,34 @@ export default async function PortalPage() {
 
       <section className="dashboard-metrics">
         <div className="dashboard-card">
-          <span>Planos</span>
+          <div className="dashboard-card-header">
+            <span>Planos</span>
+            <div className="dashboard-card-icon">🥑</div>
+          </div>
           <strong>{mealPlans.length}</strong>
           <small>publicados</small>
         </div>
         <div className="dashboard-card">
-          <span>Consultas</span>
+          <div className="dashboard-card-header">
+            <span>Consultas</span>
+            <div className="dashboard-card-icon">📅</div>
+          </div>
           <strong>{appointments.length}</strong>
           <small>proximas</small>
         </div>
         <div className="dashboard-card">
-          <span>Evolucao</span>
+          <div className="dashboard-card-header">
+            <span>Evolucao</span>
+            <div className="dashboard-card-icon">📈</div>
+          </div>
           <strong>{bodyRecords.length}</strong>
           <small>registros</small>
         </div>
         <div className="dashboard-card">
-          <span>Objetivo</span>
+          <div className="dashboard-card-header">
+            <span>Objetivo</span>
+            <div className="dashboard-card-icon">🎯</div>
+          </div>
           <strong>{patient.goal ? "OK" : "--"}</strong>
           <small>{patient.goal || "a definir"}</small>
         </div>

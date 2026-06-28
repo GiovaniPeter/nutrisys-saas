@@ -541,9 +541,24 @@ function emptyProfessionalDashboardData(): ProfessionalDashboardData {
 }
 
 function MetricCard({ label, value, detail, href }: { label: string; value: number; detail: string; href: string }) {
+  // Select icon based on label
+  let icon = "📊";
+  if (label === "Pacientes") icon = "👥";
+  else if (label === "Consultas") icon = "📅";
+  else if (label === "Próximos") icon = "⏰";
+  else if (label === "Chat") icon = "💬";
+  else if (label === "Evolucoes") icon = "📈";
+  else if (label === "Materiais") icon = "📚";
+  else if (label === "Planos") icon = "🥑";
+  else if (label === "Diario") icon = "📝";
+  else if (label === "Metas") icon = "🎯";
+
   return (
     <Link href={href} prefetch={false} className="dashboard-card">
-      <span>{label}</span>
+      <div className="dashboard-card-header">
+        <span>{label}</span>
+        <div className="dashboard-card-icon">{icon}</div>
+      </div>
       <strong>{value}</strong>
       <small>{detail}</small>
     </Link>

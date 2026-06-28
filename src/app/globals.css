@@ -2973,3 +2973,31 @@ form button[type="submit"] {
   .cookie-banner-content { flex-direction: column; text-align: center; gap: 16px; }
   .cookie-banner-content .button { width: 100%; }
 }
+
+/* BILLING UI POLISH */
+.billing-layout { display: flex; flex-direction: column; gap: 24px; }
+.billing-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 24px 0; padding: 24px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; }
+.billing-summary > div { display: flex; flex-direction: column; gap: 4px; }
+.billing-summary > div strong { font-size: 1.5rem; color: #0f172a; }
+.billing-summary > div span { font-size: 0.85rem; color: #64748b; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+.billing-actions { margin-top: 24px; border-top: 1px solid #e2e8f0; padding-top: 24px; }
+.plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 16px; }
+.plan-option { background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px; transition: all 0.2s; position: relative; overflow: hidden; }
+.plan-option:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+.plan-option.active { border-color: #0ea5e9; box-shadow: 0 0 0 1px #0ea5e9; }
+.plan-option.active::before { content: "Plano Atual"; position: absolute; top: 12px; right: 12px; background: #e0f2fe; color: #0284c7; font-size: 0.7rem; font-weight: 700; padding: 4px 8px; border-radius: 12px; text-transform: uppercase; }
+.plan-option h3 { margin: 0; font-size: 1.25rem; color: #0f172a; }
+.plan-option strong { font-size: 2rem; color: #0f172a; display: block; margin-top: 8px; }
+.plan-option ul { list-style: none; padding: 0; margin: 0 0 24px 0; flex-grow: 1; display: flex; flex-direction: column; gap: 12px; }
+.plan-option ul li { font-size: 0.95rem; color: #475569; display: flex; align-items: flex-start; gap: 8px; }
+.plan-option ul li::before { content: "✓"; color: #10b981; font-weight: bold; }
+.expiration-warning { background: #fffbeb; border: 1px solid #fef3c7; color: #92400e; padding: 12px 16px; border-radius: 8px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; font-size: 0.95rem; }
+
+/* DASHBOARD METRIC CARD POLISH */
+.dashboard-card-header { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 8px; }
+.dashboard-card-icon { font-size: 1.25rem; opacity: 0.8; background: #f1f5f9; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+
+/* RESPONSIVE TABLES */
+.table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table-responsive table { min-width: 800px; }
+

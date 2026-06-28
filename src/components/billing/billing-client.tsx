@@ -144,6 +144,16 @@ export function BillingClient() {
 
         {message ? <p className="form-message neutral">{message}</p> : null}
 
+        {subscription?.status === "PAST_DUE" || subscription?.status === "CANCELED" ? (
+          <div className="expiration-warning">
+            <strong>Atenção:</strong> Sua assinatura está pendente ou cancelada. Regularize para evitar o bloqueio de acesso dos seus pacientes.
+          </div>
+        ) : subscription?.status === "TRIALING" ? (
+          <div className="expiration-warning" style={{ background: '#e0f2fe', borderColor: '#bae6fd', color: '#0369a1' }}>
+            <strong>Trial Ativo:</strong> Você está no período de testes. Assine um plano para continuar aproveitando todos os recursos.
+          </div>
+        ) : null}
+
         <div className="billing-summary">
           <div>
             <strong>{currentPlan ? formatMoney(currentPlan.monthlyPriceCents) : "-"}</strong>
