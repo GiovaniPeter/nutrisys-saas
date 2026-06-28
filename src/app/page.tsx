@@ -322,7 +322,7 @@ export default function Home() {
           title="Suporte"
           links={[
             { label: "Central de ajuda", href: "#" },
-            { label: "Termos de uso", href: "#" },
+            { label: "Termos de uso", href: "/termos-de-uso" },
             { label: "Politica de privacidade", href: "/politica-de-privacidade" },
             { label: "Exclusao de conta", href: "/exclusao-de-conta" },
             { label: "Recuperar senha", href: "/recuperar-senha" }

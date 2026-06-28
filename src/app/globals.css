@@ -2960,3 +2960,16 @@ form button[type="submit"] {
 .status-dot::after { content: ""; width: 8px; height: 8px; border-radius: 4px; background: currentColor; }
 .status-dot.ok { background: #dcfce7; color: #16a34a; }
 .code-pill-small { padding: 2px 6px; font-size: 0.65rem; margin-left: 6px; }
+
+/* COOKIE BANNER */
+.cookie-banner { position: fixed; bottom: 20px; left: 20px; right: 20px; z-index: 9999; display: flex; justify-content: center; pointer-events: none; }
+.cookie-banner-content { background: #1e293b; color: #f8fafc; border-radius: 12px; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); max-width: 900px; width: 100%; pointer-events: auto; }
+.cookie-banner-content p { margin: 0; font-size: 0.9rem; line-height: 1.5; }
+.cookie-banner-content a { color: #38bdf8; text-decoration: underline; }
+.cookie-banner-content .button { background: #f8fafc; color: #0f172a; white-space: nowrap; padding: 8px 20px; min-height: auto; }
+.cookie-banner-content .button:hover { background: #e2e8f0; }
+
+@media (max-width: 600px) {
+  .cookie-banner-content { flex-direction: column; text-align: center; gap: 16px; }
+  .cookie-banner-content .button { width: 100%; }
+}
