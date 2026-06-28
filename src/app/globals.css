@@ -2498,7 +2498,7 @@ form button[type="submit"] {
 }
 .np-hero-features {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   margin-bottom: 40px;
   flex-wrap: wrap;
 }
@@ -2510,8 +2510,8 @@ form button[type="submit"] {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 96px;
-  height: 100px;
+  width: 88px;
+  height: 94px;
   text-align: center;
   border: 1px solid #f1f5f9;
 }
@@ -2537,17 +2537,17 @@ form button[type="submit"] {
 
 .np-hero-badges {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 .np-hero-badge {
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  padding: 10px 16px;
+  padding: 8px 12px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.03);
 }
 .np-hero-badge svg {
