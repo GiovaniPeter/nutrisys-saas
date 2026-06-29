@@ -132,7 +132,7 @@ export default function Home() {
             <span>Clin<span style={{ color: '#00d8ff' }}>OS</span></span>
           </div>
           <h1>
-            O software completo para <span className="np-hero-highlight">nutricionistas</span> e clínicas
+            O software completo para <span className="np-hero-highlight">nutricionistas</span> e clínicas multiprofissionais
           </h1>
           <p>
             Planos alimentares, prontuário, agenda, financeiro<br/>e portal do paciente em uma <strong>única plataforma</strong>.
