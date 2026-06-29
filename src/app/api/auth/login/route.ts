@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (input.accessMode === "nutritionist" && user.role === "PROFESSIONAL") {
-      return error("Use a opção Profissional de Saúde para entrar com este usuário.", 403);
+      return error("Use a opção Outras Especialidades para entrar com este usuário.", 403);
     }
 
     const sessionToken = createSessionCookie({

@@ -20,7 +20,7 @@ const registerOptions = [
   },
   {
     key: "profissional",
-    title: "Profissional de Saúde",
+    title: "Outras Especialidades",
     text: "Clínica para médicos, psicólogos, fisioterapeutas, dentistas e demais especialidades.",
     href: "/register?perfil=profissional"
   },
@@ -82,7 +82,7 @@ export default function RegisterPage({ searchParams }: RegisterPageProps) {
           ) : selectedProfile === "profissional" ? (
             <>
               <span className="eyebrow">Trial da clínica</span>
-              <h2>Cadastro do profissional de saúde</h2>
+              <h2>Cadastro para outras especialidades</h2>
               <p>
                 Crie a clínica escolhendo sua especialidade. O sistema será adaptado
                 para sua área de atuação, sem funcionalidades exclusivas de nutrição.

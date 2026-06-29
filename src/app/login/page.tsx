@@ -17,7 +17,7 @@ const accessOptions = [
   },
   {
     key: "profissional",
-    title: "Profissional de Saúde",
+    title: "Outras Especialidades",
     text: "Acesso para médicos, psicólogos, fisioterapeutas, dentistas e demais especialidades da clínica.",
     href: "/login?perfil=profissional"
   },
