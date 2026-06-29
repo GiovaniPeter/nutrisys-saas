@@ -47,12 +47,13 @@ export function AppointmentsClient() {
   const [patients, setPatients] = useState<PatientOption[]>([]);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [selectedPatientId, setSelectedPatientId] = useState(() => searchParams.get("patientId") || "");
-  const [screen, setScreen] = useState<"list" | "form">("list");
+  const [screen, setScreen] = useState<"list" | "form" | "payment">("list");
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [editingAppointment, setEditingAppointment] = useState<Appointment | null>(null);
+  const [payingAppointment, setPayingAppointment] = useState<Appointment | null>(null);
   const [fromDate, setFromDate] = useState(() => formatDateInput(startOfToday()));
   const [toDate, setToDate] = useState(() => formatDateInput(addDays(startOfToday(), 7)));
 
@@ -219,8 +220,102 @@ export function AppointmentsClient() {
 
   function closeForm() {
     setEditingAppointment(null);
+    setPayingAppointment(null);
     setMessage(null);
     setScreen("list");
+  }
+
+  async function handlePaymentSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSaving(true);
+    setMessage(null);
+
+    const formData = new FormData(event.currentTarget);
+    const amountStr = formData.get("amount") as string;
+    const amountCents = Math.round(parseFloat(amountStr.replace(",", ".")) * 100);
+    const paidAtStr = formData.get("paidAt") as string;
+    
+    const dueDate = new Date(payingAppointment!.startsAt).toISOString();
+    const paidAt = new Date(`${paidAtStr}T12:00:00Z`).toISOString();
+
+    const data = {
+      patientId: payingAppointment!.patientId,
+      type: "INCOME",
+      status: "PAID",
+      description: formData.get("description"),
+      amountCents,
+      dueDate,
+      paidAt,
+      paymentMethod: formData.get("paymentMethod")
+    };
+
+    const response = await fetch("/api/financial/transactions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      const result = await response.json();
+      setMessage(result.error || "Nao foi possivel registrar o pagamento.");
+      setSaving(false);
+      return;
+    }
+    
+    setScreen("list");
+    setPayingAppointment(null);
+    setSaving(false);
+    alert("Pagamento registrado com sucesso no Financeiro!");
+  }
+
+  if (screen === "payment" && payingAppointment) {
+    return (
+      <section className="appointment-form-screen">
+        <div className="surface appointment-form-panel">
+          <div className="appointment-form-hero">
+            <div>
+              <span className="eyebrow">Recebimento</span>
+              <h2>Registrar Pagamento</h2>
+              <p>Registre o pagamento da consulta de {payingAppointment.patient.name}. O valor ira automaticamente para o seu painel financeiro.</p>
+            </div>
+            <button className="text-button" type="button" onClick={closeForm}>
+              Voltar
+            </button>
+          </div>
+
+          {message ? <p className="form-message neutral">{message}</p> : null}
+
+          <form className="form appointment-form-grid" onSubmit={handlePaymentSubmit}>
+            <label className="appointment-field-half">
+              Valor Recebido (R$)
+              <input name="amount" type="number" step="0.01" min="0" required placeholder="0.00" />
+            </label>
+            <label className="appointment-field-half">
+              Forma de Pagamento
+              <select name="paymentMethod">
+                <option value="Pix">Pix</option>
+                <option value="Cartao de Credito">Cartão de Crédito</option>
+                <option value="Cartao de Debito">Cartão de Débito</option>
+                <option value="Dinheiro">Dinheiro</option>
+                <option value="Transferencia">Transferência</option>
+              </select>
+            </label>
+            <label className="appointment-field-full">
+              Descricao
+              <input name="description" required defaultValue={`Consulta: ${payingAppointment.type}`} />
+            </label>
+            <label className="appointment-field-full">
+              Data de Pagamento
+              <input name="paidAt" type="date" required defaultValue={new Date().toISOString().split('T')[0]} />
+            </label>
+
+            <button className="primary-button appointment-field-full" type="submit" disabled={saving}>
+              {saving ? "Registrando..." : "Registrar Pagamento"}
+            </button>
+          </form>
+        </div>
+      </section>
+    );
   }
 
   if (screen === "form") {
@@ -407,8 +502,15 @@ export function AppointmentsClient() {
                       >
                         Editar
                       </button>
+                      <button 
+                        className="text-button success" 
+                        type="button" 
+                        onClick={() => { setPayingAppointment(appointment); setScreen("payment"); }}
+                      >
+                        Receber
+                      </button>
                       <button className="text-button" type="button" onClick={() => void copyAppointmentReminder(appointment)}>
-                        Copiar lembrete
+                        Lembrete
                       </button>
                       {appointment.patient.phone ? (
                         <a className="text-button" href={buildWhatsappUrl(appointment)} target="_blank" rel="noreferrer">
