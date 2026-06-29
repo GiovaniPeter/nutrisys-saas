@@ -2836,7 +2836,7 @@ form button[type="submit"] {
   margin: 0 auto;
   max-width: 1430px;
   min-height: 690px;
-  padding: 34px max(24px, calc((100vw - 1430px) / 2)) 58px;
+  padding: 34px max(5vw, calc((100vw - 1430px) / 2)) 58px;
 }
 .np-hero-brand {
   display: flex;
@@ -3321,7 +3321,7 @@ form button[type="submit"] {
 }
 
 @media (max-width: 760px) {
-  .np-page { padding-inline: 16px; }
+  .np-page { padding-inline: 5vw; }
   .np-nav { display: none; }
   .np-header-actions { width: 100%; }
   .np-button { min-height: 46px; padding-inline: 18px; }
