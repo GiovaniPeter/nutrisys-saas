@@ -102,9 +102,6 @@ export default function RegisterPage({ searchParams }: RegisterPageProps) {
                 <Link href="/login?perfil=secretaria" className="button">
                   Entrar como secretária
                 </Link>
-                <Link href="/register?perfil=nutricionista" className="button secondary">
-                  Criar trial da clínica
-                </Link>
               </div>
             </>
           ) : (
