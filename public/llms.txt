@@ -1,0 +1,34 @@
+# ClinOS
+
+> O software completo para nutricionistas e clínicas multiprofissionais.
+
+ClinOS é uma plataforma all-in-one projetada para facilitar a gestão e o atendimento de nutricionistas, psicólogos, fisioterapeutas, médicos e outras especialidades da área da saúde.
+
+## O que o ClinOS oferece?
+
+- **Prontuário Eletrônico Completo:** Histórico clínico, evolução, anamnese e ferramentas especializadas (como avaliação antropométrica e recordatório 24h para nutricionistas).
+- **Planos Alimentares e Receitas:** Cálculo automático de macronutrientes, tabela TACO/IBGE e envio direto para o paciente.
+- **Agenda Inteligente:** Agendamento online, lembretes automáticos e gestão de consultas presenciais e online.
+- **Portal do Paciente:** Um ambiente exclusivo onde o paciente acessa seus planos de cuidado, metas, diário alimentar, chat com o profissional e evolução de hidratação.
+- **Gestão Financeira:** Controle de fluxo de caixa, pagamentos integrados com Mercado Pago, relatórios avançados e KPIs da clínica.
+- **Segurança e Privacidade:** Conformidade com a LGPD e criptografia de ponta a ponta. Cada clínica tem seus dados 100% isolados.
+
+## Para quem é?
+- Nutricionistas
+- Psicólogos
+- Fisioterapeutas
+- Médicos
+- Clínicas Multiprofissionais
+
+## Preços
+O ClinOS oferece 7 dias de teste grátis em todos os planos, sem necessidade de cartão de crédito.
+- **Essencial (R$ 79,00/mês):** Ideal para quem está começando (Pacientes, Agenda, Prontuários e Planos, PDFs).
+- **Profissional (R$ 149,00/mês):** O mais escolhido (Pacientes ilimitados, Portal do paciente, Chat, Financeiro, KPIs).
+- **Clínica (R$ 249,00/mês):** Para gestão completa (Multi-profissional, Secretária, Permissões, Relatórios avançados).
+
+## Links Oficiais
+- **Site Oficial:** https://clinos.tec.br
+- **Login:** https://clinos.tec.br/login
+- **Criar Conta:** https://clinos.tec.br/register
+- **Termos de Uso:** https://clinos.tec.br/termos-de-uso
+- **Política de Privacidade:** https://clinos.tec.br/politica-de-privacidade
