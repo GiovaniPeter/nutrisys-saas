@@ -313,7 +313,7 @@ export function AppNav({ active, user }: AppNavProps) {
       >
         <span className="brand-mark"><ClinOSLogo /></span>
         <span className="app-brand-copy">
-          <strong>Clin<span style={{ color: '#0ea5e9' }}>OS</span></strong>
+          <strong>Clin<span style={{ color: '#00d8ff' }}>OS</span></strong>
           <small>O sistema operacional da sua clínica</small>
         </span>
       </Link>

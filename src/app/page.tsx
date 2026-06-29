@@ -95,7 +95,7 @@ export default function Home() {
         <Link href="/" className="np-logo" aria-label="ClinOS">
           <span className="np-logo-mark"><ClinOSLogo /></span>
           <span>
-            <strong>Clin<span style={{ color: '#0ea5e9' }}>OS</span></strong>
+            <strong>Clin<span style={{ color: '#00d8ff' }}>OS</span></strong>
             <small>O sistema operacional da sua clínica</small>
           </span>
         </Link>
@@ -121,7 +121,7 @@ export default function Home() {
         <div className="np-hero-copy">
           <div className="np-hero-brand">
             <ClinOSLogo />
-            <span>Clin<span style={{ color: '#0ea5e9' }}>OS</span></span>
+            <span>Clin<span style={{ color: '#00d8ff' }}>OS</span></span>
           </div>
           <h1>
             O sistema operacional da <span className="np-hero-highlight">sua clínica</span>
@@ -307,7 +307,7 @@ export default function Home() {
           <Link href="/" className="np-logo" aria-label="ClinOS">
             <span className="np-logo-mark"><ClinOSLogo /></span>
             <span>
-              <strong>Clin<span style={{ color: '#0ea5e9' }}>OS</span></strong>
+              <strong>Clin<span style={{ color: '#00d8ff' }}>OS</span></strong>
               <small>O sistema operacional da sua clínica</small>
             </span>
           </Link>
@@ -350,14 +350,14 @@ function ProductMockup() {
       <div className="np-tech-bg" aria-hidden="true" />
       <div className="np-laptop">
         <div className="np-laptop-top">
-          <span>Clin<span style={{ color: '#0ea5e9' }}>OS</span></span>
+          <span>Clin<span style={{ color: '#00d8ff' }}>OS</span></span>
           <div><i /> <i /> <i /></div>
         </div>
         <div className="np-dashboard-preview">
           <aside>
             <div className="np-mock-logo">
               <ClinOSLogo />
-              <span>Clin<span style={{ color: '#0ea5e9' }}>OS</span></span>
+              <span>Clin<span style={{ color: '#00d8ff' }}>OS</span></span>
             </div>
             <b><LineIcon name="dashboard" /> Resumo</b>
             <span><LineIcon name="calendar" /> Agenda</span>
