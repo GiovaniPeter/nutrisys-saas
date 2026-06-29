@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.APP_URL || "https://clinos.tec.br"),
   title: "ClinOS — Software para nutricionistas e clínicas multiprofissionais",
   description: "Prontuário, agenda, financeiro, planos alimentares e portal do paciente — tudo em uma única plataforma para nutricionistas e profissionais de saúde.",
-  keywords: ["software para nutricionistas", "sistema para clínicas", "prontuário eletrônico", "plano alimentar", "gestão de clínicas", "agenda online nutricionista", "recordatório 24h", "tabela TACO", "portal do paciente", "sistema multiprofissional", "software clínica nutrição"],
+  keywords: ["software para nutricionistas", "sistema para clínicas", "prontuário eletrônico", "plano alimentar", "gestão de clínicas", "agenda online nutricionista", "recordatório 24h", "tabela TACO", "portal do paciente", "sistema multiprofissional", "software clínica nutrição", "software para profissionais de saúde", "sistema de gestão clínica online", "agenda de pacientes online", "prontuário digital"],
   robots: {
     index: true,
     follow: true
