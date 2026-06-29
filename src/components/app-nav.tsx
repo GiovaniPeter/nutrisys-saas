@@ -131,7 +131,7 @@ const menuGroups: Array<{ label: string; keys: AppNavKey[] }> = [
   },
   {
     label: "Relacionamento e Gestão",
-    keys: ["portal", "whatsapp", "notifications", "kpis", "materials", "billing", "users", "schedule"]
+    keys: ["portal", "whatsapp", "notifications", "kpis", "materials", "billing", "schedule"]
   }
 ];
 

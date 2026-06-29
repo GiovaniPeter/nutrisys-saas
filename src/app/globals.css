@@ -200,7 +200,6 @@ button, input, textarea, select { font: inherit; }
   min-width: 0;
   width: 100%;
   padding: 3px;
-  overflow-y: auto;
 }
 
 .nav-link {
