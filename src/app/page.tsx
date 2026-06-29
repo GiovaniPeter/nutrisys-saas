@@ -53,20 +53,20 @@ const plans = [
   {
     code: "essential",
     name: "Essencial",
-    price: "R$ 79,00",
+    price: "R$ 39,50",
     features: ["Pacientes", "Agenda", "Prontuários e Planos", "PDFs"]
   },
   {
     code: "professional",
     name: "Profissional",
-    price: "R$ 149,00",
+    price: "R$ 74,50",
     highlighted: true,
     features: ["Pacientes ilimitados", "Portal do paciente", "Chat", "Financeiro", "KPIs"]
   },
   {
     code: "clinic",
     name: "Clínica",
-    price: "R$ 249,00",
+    price: "R$ 124,50",
     features: ["Multi-profissional", "Secretária", "Permissões", "Relatórios avançados"]
   }
 ];

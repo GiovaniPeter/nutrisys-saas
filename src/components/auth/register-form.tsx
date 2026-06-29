@@ -38,6 +38,11 @@ export function RegisterForm({ initialPlanCode = "professional" }: RegisterFormP
       return;
     }
 
+    if (data.checkoutUrl) {
+      window.location.href = data.checkoutUrl;
+      return;
+    }
+
     router.push("/dashboard");
     router.refresh();
   }
@@ -70,7 +75,7 @@ export function RegisterForm({ initialPlanCode = "professional" }: RegisterFormP
       </label>
       {message ? <p className="form-message error">{message}</p> : null}
       <button className="button" type="submit" disabled={loading}>
-        {loading ? "Criando..." : "Criar conta e iniciar trial"}
+        {loading ? "Processando..." : "Ir para pagamento"}
       </button>
     </form>
   );

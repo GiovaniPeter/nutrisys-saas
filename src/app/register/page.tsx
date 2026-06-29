@@ -27,7 +27,7 @@ const registerOptions = [
   {
     key: "secretaria",
     title: "Secretária",
-    text: "Acesso operacional para recepção, agenda e cadastro básico, liberado pela clínica.",
+    text: "Acesso operacional para recepção (exclusivo para contas no Plano Clínica), liberado pelo responsável.",
     href: "/register?perfil=secretaria"
   },
   {

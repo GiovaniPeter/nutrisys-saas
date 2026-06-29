@@ -22,9 +22,9 @@ ClinOS é uma plataforma all-in-one projetada para facilitar a gestão e o atend
 
 ## Preços
 O ClinOS oferece 7 dias de teste grátis em todos os planos, sem necessidade de cartão de crédito.
-- **Essencial (R$ 79,00/mês):** Ideal para quem está começando (Pacientes, Agenda, Prontuários e Planos, PDFs).
-- **Profissional (R$ 149,00/mês):** O mais escolhido (Pacientes ilimitados, Portal do paciente, Chat, Financeiro, KPIs).
-- **Clínica (R$ 249,00/mês):** Para gestão completa (Multi-profissional, Secretária, Permissões, Relatórios avançados).
+- **Essencial (R$ 39,50/mês):** Ideal para quem está começando (Pacientes, Agenda, Prontuários e Planos, PDFs).
+- **Profissional (R$ 74,50/mês):** O mais escolhido (Pacientes ilimitados, Portal do paciente, Chat, Financeiro, KPIs).
+- **Clínica (R$ 124,50/mês):** Para gestão completa (Multi-profissional, Secretária, Permissões, Relatórios avançados).
 
 ## Links Oficiais
 - **Site Oficial:** https://clinos.tec.br

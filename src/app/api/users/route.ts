@@ -65,6 +65,20 @@ export async function POST(request: NextRequest) {
       return error("Ja existe um usuario com este e-mail.", 409);
     }
 
+    if (input.role === "SECRETARY") {
+      const activeSubscription = await prisma.subscription.findFirst({
+        where: {
+          organizationId: currentUser.organizationId,
+          status: { in: ["ACTIVE", "TRIALING"] }
+        },
+        orderBy: { createdAt: "desc" }
+      });
+
+      if (activeSubscription?.planCode !== "clinic") {
+        return error("O perfil de Secretária está disponível apenas no plano Clínica. Faça upgrade para utilizar este recurso.", 403);
+      }
+    }
+
     const user = await prisma.user.create({
       data: {
         organizationId: currentUser.organizationId,

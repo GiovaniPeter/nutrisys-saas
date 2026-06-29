@@ -2,21 +2,21 @@ export const PLANS = [
   {
     code: "essential",
     name: "Essencial",
-    monthlyPriceCents: 7900,
+    monthlyPriceCents: 3950,
     patientLimit: 50,
     features: ["Pacientes", "Agenda", "Planos alimentares", "PDFs"]
   },
   {
     code: "professional",
     name: "Profissional",
-    monthlyPriceCents: 14900,
+    monthlyPriceCents: 7450,
     patientLimit: null,
     features: ["Pacientes ilimitados", "Portal do paciente", "Chat", "Financeiro", "KPIs"]
   },
   {
     code: "clinic",
     name: "Clínica",
-    monthlyPriceCents: 24900,
+    monthlyPriceCents: 12450,
     patientLimit: null,
     features: ["Multi-profissional", "Secretária", "Permissões", "Relatórios avançados"]
   }
