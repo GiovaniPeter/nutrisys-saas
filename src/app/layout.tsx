@@ -2,23 +2,23 @@ import type { Metadata } from "next";
 import { CookieBanner } from "@/components/cookie-banner";
 import "./globals.css";
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.APP_URL || "http://localhost:3000"),
-  title: "ClinOS — O sistema operacional da sua clínica",
-  description: "Agenda, prontuário, pacientes, financeiro e acompanhamento em uma única plataforma.",
-  keywords: ["sistema para clínicas", "software médico", "prontuário eletrônico", "gestão de clínicas", "agendamento médico", "sistema operacional clínico"],
+  metadataBase: new URL(process.env.APP_URL || "https://clinos.tec.br"),
+  title: "ClinOS — Software para nutricionistas e clínicas multiprofissionais",
+  description: "Prontuário, agenda, financeiro, planos alimentares e portal do paciente — tudo em uma única plataforma para nutricionistas e profissionais de saúde.",
+  keywords: ["software para nutricionistas", "sistema para clínicas", "prontuário eletrônico", "plano alimentar", "gestão de clínicas", "agenda online nutricionista", "recordatório 24h", "tabela TACO", "portal do paciente", "sistema multiprofissional", "software clínica nutrição"],
   robots: {
     index: true,
     follow: true
   },
   openGraph: {
-    title: "ClinOS — O sistema operacional da sua clínica",
-    description: "Agenda, prontuário, pacientes, financeiro e acompanhamento em uma única plataforma.",
+    title: "ClinOS — Software para nutricionistas e clínicas multiprofissionais",
+    description: "Prontuário, agenda, financeiro, planos alimentares e portal do paciente — tudo em uma única plataforma para nutricionistas e profissionais de saúde.",
     images: [
       {
         url: "/social-card.png",
         width: 1200,
         height: 630,
-        alt: "ClinOS - O sistema operacional da sua clínica."
+        alt: "ClinOS - Software completo para nutricionistas e clínicas multiprofissionais."
       }
     ],
     locale: "pt_BR",
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "ClinOS — O sistema operacional da sua clínica",
-    description: "Agenda, prontuário, pacientes, financeiro e acompanhamento em uma única plataforma.",
+    title: "ClinOS — Software para nutricionistas e clínicas multiprofissionais",
+    description: "Prontuário, agenda, financeiro, planos alimentares e portal do paciente — tudo em uma única plataforma.",
     images: ["/social-card.png"]
   }
 };
