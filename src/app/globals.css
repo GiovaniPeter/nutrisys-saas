@@ -747,6 +747,12 @@ button, input, textarea, select { font: inherit; }
 .workspace-grid > .patient-form-panel .compact-form > label:has(textarea),
 .workspace-grid > .patient-form-panel .compact-form > .form-message,
 .workspace-grid > .patient-form-panel .compact-form > .empty-card,
+.workspace-grid > .patient-form-panel .compact-form > .meal-builder,
+.workspace-grid > .patient-form-panel .compact-form > .item-builder,
+.workspace-grid > .patient-form-panel .compact-form > .selected-items,
+.workspace-grid > .patient-form-panel .compact-form > .macro-grid,
+.workspace-grid > .patient-form-panel .compact-form > .form-hint,
+.workspace-grid > .patient-form-panel .compact-form > .checkbox-label,
 .workspace-grid > .patient-form-panel .compact-form > button {
   grid-column: 1 / -1;
 }
