@@ -811,7 +811,7 @@ button, input, textarea, select { font: inherit; }
 /* ─── Meal Plans ─── */
 .workspace-grid.meal-plans-layout {
   align-items: start;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr);
+  grid-template-columns: minmax(260px, .55fr) minmax(0, 1.8fr);
 }
 
 .meal-plan-list {
