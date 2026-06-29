@@ -328,7 +328,7 @@ export function MealPlansClient() {
   }
 
   return (
-    <section className="workspace-grid">
+    <section className="workspace-grid meal-plans-layout">
       <div className="surface meal-plan-list">
         <div className="section-title-row">
           <div>
