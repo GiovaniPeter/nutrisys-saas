@@ -962,9 +962,134 @@ button, input, textarea, select { font: inherit; }
   background: #fff;
   border: 1px solid var(--app-line);
   border-radius: 16px;
-  display: grid;
-  gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   padding: 14px;
+}
+
+.food-results-list {
+  border: 1px solid var(--app-line);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.food-result-card {
+  align-items: flex-start;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--app-line);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+  text-align: left;
+  transition: background .12s;
+  width: 100%;
+}
+
+.food-result-card:last-child { border-bottom: none; }
+
+.food-result-card:hover {
+  background: #f0faf4;
+}
+
+.food-result-card.active {
+  background: var(--app-primary);
+}
+
+.food-result-card.active strong,
+.food-result-card.active .food-result-portion {
+  color: #fff;
+}
+
+.food-result-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  width: 100%;
+}
+
+.food-result-info strong {
+  font-size: .85rem;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.food-result-portion {
+  color: var(--app-muted);
+  font-size: .75rem;
+}
+
+.food-result-macros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.macro-pill {
+  border-radius: 999px;
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .01em;
+  padding: 2px 7px;
+}
+
+.macro-pill.kcal {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.macro-pill.prot {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.macro-pill.carb {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.macro-pill.fat {
+  background: #fce4ec;
+  color: #c62828;
+}
+
+.food-result-card.active .macro-pill {
+  opacity: .85;
+}
+
+.food-results-empty {
+  color: var(--app-muted);
+  font-size: .85rem;
+  padding: 18px;
+  text-align: center;
+}
+
+.food-add-row {
+  align-items: flex-end;
+  display: flex;
+  gap: 10px;
+}
+
+.food-add-row .food-qty-label {
+  flex: 0 0 72px;
+}
+
+.food-add-row .button {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .selected-items {

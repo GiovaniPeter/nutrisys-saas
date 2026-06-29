@@ -526,34 +526,56 @@ export function MealPlansClient() {
                 value={foodSearch}
                 onChange={(event) => setFoodSearch(event.target.value)}
                 placeholder="Digite arroz, banana, frango..."
+                autoComplete="off"
               />
-            </label>
-            <label>
-              Alimento para {selectedMeal.label || "refeicao"}
-              <select value={selectedFoodId} onChange={(event) => setSelectedFoodId(event.target.value)}>
-                {foods.map((food) => (
-                  <option key={food.id} value={food.id}>
-                    {food.name} - {food.portion} - {Math.round(toNumber(food.calories))} kcal
-                  </option>
-                ))}
-              </select>
             </label>
             <span className="form-hint">
-              {foods.length === 0 ? "Nenhum alimento encontrado" : `${foods.length} exibidos de ${foodsTotal}`}
+              {foods.length === 0 ? "Nenhum alimento encontrado" : `${foods.length} resultados de ${foodsTotal}`}
             </span>
-            <label>
-              Quantidade
-              <input
-                type="number"
-                min="0.1"
-                step="0.1"
-                value={quantity}
-                onChange={(event) => setQuantity(Number(event.target.value))}
-              />
-            </label>
-            <button className="button secondary" type="button" onClick={addItem}>
-              Adicionar alimento
-            </button>
+
+            <div className="food-results-list">
+              {foods.map((food) => {
+                const isActive = food.id === selectedFoodId;
+                return (
+                  <button
+                    key={food.id}
+                    type="button"
+                    className={isActive ? "food-result-card active" : "food-result-card"}
+                    onClick={() => setSelectedFoodId(food.id)}
+                  >
+                    <div className="food-result-info">
+                      <strong>{food.name}</strong>
+                      <span className="food-result-portion">{food.portion}</span>
+                    </div>
+                    <div className="food-result-macros">
+                      <span className="macro-pill kcal">{Math.round(toNumber(food.calories))} kcal</span>
+                      <span className="macro-pill prot">{toNumber(food.protein).toFixed(1)}g P</span>
+                      <span className="macro-pill carb">{toNumber(food.carbs).toFixed(1)}g C</span>
+                      <span className="macro-pill fat">{toNumber(food.fat).toFixed(1)}g G</span>
+                    </div>
+                  </button>
+                );
+              })}
+              {foods.length === 0 ? (
+                <p className="food-results-empty">Nenhum alimento encontrado. Tente outro termo de busca.</p>
+              ) : null}
+            </div>
+
+            <div className="food-add-row">
+              <label className="food-qty-label">
+                Qtd
+                <input
+                  type="number"
+                  min="0.1"
+                  step="0.1"
+                  value={quantity}
+                  onChange={(event) => setQuantity(Number(event.target.value))}
+                />
+              </label>
+              <button className="button secondary" type="button" onClick={addItem}>
+                + Adicionar{selectedFood ? `: ${selectedFood.name.substring(0, 25)}` : ""}
+              </button>
+            </div>
           </div>
 
           <div className="selected-items">
