@@ -6,46 +6,46 @@ import { DashboardLink } from "@/components/auth/dashboard-link";
 const features = [
   {
     icon: "patient",
-    title: "Prontuário e pacientes",
-    text: "Prontuário completo, histórico clínico, anamnese, evolução e acompanhamento em um só lugar."
+    title: "Prontuário completo",
+    text: "Anamnese, evolução nutricional, avaliação antropométrica, recordatório 24h e histórico clínico em um só lugar."
   },
   {
     icon: "meal",
-    title: "Segurança de dados",
-    text: "Conformidade LGPD e segurança ponta a ponta para proteger os dados da sua clínica."
+    title: "Planos alimentares e receitas",
+    text: "Monte planos alimentares personalizados com tabela TACO/IBGE, calcule macros automaticamente e envie pelo portal do paciente."
   },
   {
     icon: "calendar",
-    title: "Agenda e relacionamento",
-    text: "Agenda online, lembretes automáticos, chat e portal do paciente para mais adesão."
+    title: "Agenda e portal do paciente",
+    text: "Agenda online com lembretes automáticos, chat, diário alimentar, hidratação e portal exclusivo do paciente."
   },
   {
     icon: "growth",
-    title: "Gestão da clínica",
-    text: "Financeiro, indicadores, KPIs e relatórios para decisões mais estratégicas e lucrativas."
+    title: "Gestão e financeiro",
+    text: "Controle financeiro, KPIs, relatórios de atendimento e indicadores para crescer seu consultório ou clínica."
   }
 ];
 
 const steps = [
   {
     icon: "clinic",
-    title: "Crie sua clínica",
-    text: "Cadastre sua clínica ou consultório e personalize suas preferências."
+    title: "Crie sua conta",
+    text: "Cadastre seu consultório ou clínica em menos de 2 minutos. É grátis por 7 dias."
   },
   {
     icon: "addPatient",
-    title: "Cadastre pacientes",
-    text: "Adicione pacientes, registre dados clínicos e acompanhe toda a jornada."
+    title: "Cadastre seus pacientes",
+    text: "Importe ou adicione pacientes, registre dados clínicos, medidas e exames laboratoriais."
   },
   {
     icon: "clipboard",
-    title: "Prescreva condutas e metas",
-    text: "Crie planos de cuidado personalizados e defina metas realistas."
+    title: "Prescreva e acompanhe",
+    text: "Crie planos alimentares, receitas, suplementação e defina metas com seus pacientes."
   },
   {
     icon: "dashboard",
-    title: "Acompanhe agenda, portal, financeiro e indicadores",
-    text: "Tenha controle total da sua clínica em um único painel."
+    title: "Gerencie tudo em um painel",
+    text: "Agenda, financeiro, portal do paciente e indicadores: controle total da sua rotina."
   }
 ];
 
@@ -73,6 +73,14 @@ const plans = [
 
 const faqs = [
   {
+    question: "Serve para nutricionistas?",
+    answer: "Sim! O ClinOS foi pensado especialmente para nutricionistas: planos alimentares, recordatório 24h, tabela TACO/IBGE, diário alimentar, cálculo de GEB/GET e muito mais."
+  },
+  {
+    question: "E para outros profissionais de saúde?",
+    answer: "Também! Psicólogos, fisioterapeutas, médicos e outros profissionais podem usar o prontuário, agenda, financeiro e portal do paciente."
+  },
+  {
     question: "Dá para começar grátis?",
     answer: "Sim! Todos os planos oferecem 7 dias de trial grátis, sem cartão de crédito."
   },
@@ -82,7 +90,7 @@ const faqs = [
   },
   {
     question: "Os dados ficam separados por clínica?",
-    answer: "Sim. Cada clínica tem seus dados 100% separados e seguros."
+    answer: "Sim. Cada clínica tem seus dados 100% separados e seguros, em conformidade com a LGPD."
   }
 ];
 
@@ -124,28 +132,28 @@ export default function Home() {
             <span>Clin<span style={{ color: '#00d8ff' }}>OS</span></span>
           </div>
           <h1>
-            O sistema operacional da <span className="np-hero-highlight">sua clínica</span>
+            O software completo para <span className="np-hero-highlight">nutricionistas</span> e clínicas
           </h1>
           <p>
-            Agenda, prontuário, pacientes, financeiro<br/>e acompanhamento em uma <strong>única plataforma</strong>.
+            Planos alimentares, prontuário, agenda, financeiro<br/>e portal do paciente em uma <strong>única plataforma</strong>.
           </p>
 
           <div className="np-hero-features">
             <div className="np-hero-feature">
-              <div className="np-feature-icon icon-blue"><LineIcon name="calendar" /></div>
-              <span>Agenda</span>
+              <div className="np-feature-icon icon-green"><LineIcon name="meal" /></div>
+              <span>Planos<br/>alimentares</span>
             </div>
             <div className="np-hero-feature">
-              <div className="np-feature-icon icon-green"><LineIcon name="clipboard" /></div>
+              <div className="np-feature-icon icon-blue"><LineIcon name="clipboard" /></div>
               <span>Prontuário</span>
+            </div>
+            <div className="np-hero-feature">
+              <div className="np-feature-icon icon-green"><LineIcon name="calendar" /></div>
+              <span>Agenda</span>
             </div>
             <div className="np-hero-feature">
               <div className="np-feature-icon icon-blue"><LineIcon name="users" /></div>
               <span>Pacientes</span>
-            </div>
-            <div className="np-hero-feature">
-              <div className="np-feature-icon icon-green"><LineIcon name="meal" /></div>
-              <span>Planos<br/>alimentares</span>
             </div>
             <div className="np-hero-feature">
               <div className="np-feature-icon icon-purple"><LineIcon name="clinic" /></div>
@@ -288,10 +296,10 @@ export default function Home() {
           <Image src="/nutritionist-laptop.png" alt="Profissional de saúde usando notebook" width={640} height={380} />
         </div>
         <div className="np-final-copy">
-          <h2>Seu próximo passo é validar o uso real</h2>
+          <h2>Comece a transformar seus atendimentos</h2>
           <p>
-            Experimente o ClinOS por 7 dias e veja como ele pode levar mais organização,
-            tempo e resultados para sua clínica.
+            Experimente o ClinOS por 7 dias grátis. Planos alimentares, prontuário, agenda e
+            financeiro para nutricionistas e profissionais de saúde.
           </p>
         </div>
         <div className="np-final-action">
