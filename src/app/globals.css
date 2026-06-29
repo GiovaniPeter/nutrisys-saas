@@ -193,9 +193,11 @@ button, input, textarea, select { font: inherit; }
   font-size: .65rem;
   font-weight: 750;
   letter-spacing: .01em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .app-nav {
