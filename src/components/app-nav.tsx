@@ -367,21 +367,40 @@ export function AppNav({ active, user }: AppNavProps) {
         </span>
       </button>
 
-      <Link
-        href={profileHref}
-        prefetch={false}
-        className="user-profile-link"
-        title={`${user.name} - ${user.email}`}
-        onMouseEnter={() => warmRoute(profileHref)}
-        onFocus={() => warmRoute(profileHref)}
-        onClick={() => beginNavigation(profileHref)}
-      >
-        <span className="user-pill">{initials(user.name)}</span>
-        <span className="user-profile-copy">
-          <strong>{firstName(user.name)}</strong>
-          <small>{formatRole(user.role, user.specialty)}</small>
-        </span>
-      </Link>
+      <div style={{ display: "flex", gap: "6px" }}>
+        <Link
+          href={profileHref}
+          prefetch={false}
+          className="user-profile-link"
+          title={`${user.name} - ${user.email}`}
+          onMouseEnter={() => warmRoute(profileHref)}
+          onFocus={() => warmRoute(profileHref)}
+          onClick={() => beginNavigation(profileHref)}
+          style={{ flex: 1, minWidth: 0 }}
+        >
+          <span className="user-pill">{initials(user.name)}</span>
+          <span className="user-profile-copy">
+            <strong>{firstName(user.name)}</strong>
+            <small>{formatRole(user.role, user.specialty)}</small>
+          </span>
+        </Link>
+        <button
+          type="button"
+          className="user-profile-link"
+          title="Sair do sistema"
+          onClick={async () => {
+            await fetch("/api/auth/logout", { method: "POST" });
+            window.location.href = "/login";
+          }}
+          style={{ flex: "0 0 44px", justifyContent: "center", padding: 0, cursor: "pointer" }}
+        >
+          <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </button>
+      </div>
     </header>
   );
 }
