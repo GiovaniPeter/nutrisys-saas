@@ -55,7 +55,7 @@ export default async function DashboardPage() {
         <div>
           <span className="eyebrow">{organization?.name || "Clinica"}</span>
           <h1>Dashboard</h1>
-          <p>Resumo operacional da clinica, alimentado pelo Supabase em tempo real.</p>
+          <p>Acompanhe os principais indicadores e atividades recentes da sua clínica.</p>
         </div>
         <div className="subscription-badge">
           <span>{formatPlan(subscription?.planCode)}</span>
