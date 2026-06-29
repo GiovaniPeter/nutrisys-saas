@@ -131,7 +131,7 @@ export async function POST(request: NextRequest) {
               frequency: 7,
               frequency_type: "days"
             }
-          },
+          } as any,
           back_url: `${appUrl}/billing?checkout=mercadopago`,
           status: "pending"
         },
