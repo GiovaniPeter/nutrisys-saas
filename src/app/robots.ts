@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 
-const BASE_URL = process.env.APP_URL || "https://clinos.tec.br";
+const BASE_URL = "https://clinos.tec.br";
 
 export default function robots(): MetadataRoute.Robots {
   return {
