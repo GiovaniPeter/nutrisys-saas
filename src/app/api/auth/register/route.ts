@@ -151,16 +151,15 @@ async function buildUniqueSlug(name: string) {
 }
 export async function GET() {
   const t0 = Date.now();
-  let db_ok = false;
+  let db_err = "";
   let env_secret = process.env.SESSION_SECRET ? process.env.SESSION_SECRET.length : 0;
   
   try {
     await prisma.user.findFirst();
-    db_ok = true;
-  } catch (e) {
-    db_ok = false;
+  } catch (e: any) {
+    db_err = String(e.message || e);
   }
   
   const t1 = Date.now();
-  return NextResponse.json({ db_ok, db_time: t1 - t0, env_secret });
+  return NextResponse.json({ db_err, db_time: t1 - t0, env_secret, db_url_len: process.env.DATABASE_URL ? process.env.DATABASE_URL.length : 0 });
 }
