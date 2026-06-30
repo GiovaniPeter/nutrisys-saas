@@ -58,6 +58,9 @@ export function RegisterProfessionalForm({ initialPlanCode = "professional" }: R
 
     if (!response.ok) {
       setMessage(data.error || "Não foi possível criar a conta.");
+      return;
+    }
+
     router.push("/dashboard");
     router.refresh();
   }
