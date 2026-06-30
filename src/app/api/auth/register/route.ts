@@ -132,8 +132,9 @@ export async function POST(request: NextRequest) {
     );
 
     return response;
-  } catch (err) {
-    return validationError(err);
+  } catch (err: any) {
+    if (err instanceof z.ZodError) return validationError(err);
+    return NextResponse.json({ error: String(err.message || err) }, { status: 500 });
   }
 }
 
