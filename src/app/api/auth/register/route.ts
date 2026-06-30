@@ -149,3 +149,18 @@ async function buildUniqueSlug(name: string) {
 
   return slug;
 }
+export async function GET() {
+  const t0 = Date.now();
+  let db_ok = false;
+  let env_secret = process.env.SESSION_SECRET ? process.env.SESSION_SECRET.length : 0;
+  
+  try {
+    await prisma.user.findFirst();
+    db_ok = true;
+  } catch (e) {
+    db_ok = false;
+  }
+  
+  const t1 = Date.now();
+  return NextResponse.json({ db_ok, db_time: t1 - t0, env_secret });
+}
