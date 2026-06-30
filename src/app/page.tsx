@@ -345,7 +345,7 @@ export default function Home() {
         <div className="np-footer-column">
           <h3>Fale conosco</h3>
           <a href="mailto:contato@clinos.com.br">contato@clinos.com.br</a>
-          <a href="tel:+5511987654321">(11) 98765-4321</a>
+          <a href="tel:+5569999258988">(69) 99925-8988</a>
         </div>
 
         <p className="np-copyright">© 2026 ClinOS. Todos os direitos reservados.</p>
