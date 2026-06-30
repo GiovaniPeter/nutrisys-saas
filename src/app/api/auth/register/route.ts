@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { randomUUID } from "node:crypto";
 import { UserRole } from "@prisma/client";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
@@ -8,7 +7,6 @@ import { createSessionCookie, setSessionCookie } from "@/lib/session";
 import { error, slugify, validationError } from "@/lib/api";
 import { findPlan } from "@/lib/plans";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
-import { mpPreApproval, buildSubscriptionReference, moneyFromCents, getAppUrl } from "@/lib/mercadopago";
 
 const registerSchema = z.object({
   name: z.string().min(3, "Informe seu nome completo."),
@@ -107,52 +105,8 @@ export async function POST(request: NextRequest) {
         }
       });
 
-      return { organization, user, subscription: await tx.subscription.findFirst({ where: { organizationId: organization.id } }) };
+      return { organization, user };
     });
-
-    let checkoutUrl: string | undefined;
-
-    try {
-      const appUrl = getAppUrl();
-      const preApproval = await mpPreApproval.create({
-        body: {
-          reason: `NutreClin - Plano ${plan.name}`,
-          external_reference: buildSubscriptionReference({
-            organizationId: result.organization.id,
-            planCode: plan.code
-          }),
-          payer_email: result.user.email,
-          auto_recurring: {
-            frequency: 1,
-            frequency_type: "months",
-            transaction_amount: moneyFromCents(plan.monthlyPriceCents),
-            currency_id: "BRL",
-            free_trial: {
-              frequency: 7,
-              frequency_type: "days"
-            }
-          } as any,
-          back_url: `${appUrl}/billing?checkout=mercadopago`,
-          status: "pending"
-        },
-        requestOptions: { idempotencyKey: randomUUID() }
-      });
-
-      checkoutUrl = preApproval.init_point;
-      
-      if (preApproval.id && result.subscription) {
-        await prisma.subscription.update({
-          where: { id: result.subscription.id },
-          data: {
-            provider: "MERCADO_PAGO",
-            providerSubId: preApproval.id
-          }
-        });
-      }
-    } catch (mpError) {
-      console.error("Falha ao gerar link do Mercado Pago no cadastro:", mpError);
-      // Fallback: let the user in, they will be prompted to pay in the dashboard later
-    }
 
     const response = NextResponse.json(
       {
@@ -162,8 +116,7 @@ export async function POST(request: NextRequest) {
           slug: result.organization.slug
         },
         user: result.user,
-        trialEndsAt,
-        checkoutUrl
+        trialEndsAt
       },
       { status: 201 }
     );

@@ -35,14 +35,6 @@ export function RegisterForm({ initialPlanCode = "professional" }: RegisterFormP
 
     if (!response.ok) {
       setMessage(data.error || "Não foi possível criar a conta.");
-      return;
-    }
-
-    if (data.checkoutUrl) {
-      window.location.href = data.checkoutUrl;
-      return;
-    }
-
     router.push("/dashboard");
     router.refresh();
   }
@@ -75,7 +67,7 @@ export function RegisterForm({ initialPlanCode = "professional" }: RegisterFormP
       </label>
       {message ? <p className="form-message error">{message}</p> : null}
       <button className="button" type="submit" disabled={loading}>
-        {loading ? "Processando..." : "Ir para pagamento"}
+        {loading ? "Criando..." : "Criar conta e iniciar trial"}
       </button>
     </form>
   );

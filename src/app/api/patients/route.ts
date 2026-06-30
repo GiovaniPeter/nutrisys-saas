@@ -96,6 +96,15 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    const activeSubscription = await prisma.subscription.findFirst({
+      where: { organizationId: user.organizationId },
+      orderBy: { createdAt: "desc" }
+    });
+
+    if (!activeSubscription || activeSubscription.provider !== "MERCADO_PAGO") {
+      return error("Para cadastrar pacientes, você precisa iniciar seu trial de 7 dias grátis. Acesse o menu Assinatura.", 403);
+    }
+
     const input = patientSchema.parse(await request.json());
 
     const patient = await prisma.patient.create({
