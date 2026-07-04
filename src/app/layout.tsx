@@ -10,6 +10,12 @@ export const metadata: Metadata = {
     index: true,
     follow: true
   },
+  alternates: {
+    canonical: "/"
+  },
+  verification: {
+    google: "google-site-verification-code-here"
+  },
   openGraph: {
     title: "ClinOS — Software para nutricionistas e clínicas multiprofissionais",
     description: "Prontuário, agenda, financeiro, planos alimentares e portal do paciente — tudo em uma única plataforma para nutricionistas e profissionais de saúde.",

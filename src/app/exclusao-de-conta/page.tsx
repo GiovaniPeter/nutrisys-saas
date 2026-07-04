@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Exclusao de Conta | NutreClin",
-  description: "Solicite a exclusao da sua conta e dos dados associados ao NutreClin."
+  title: "Exclusão de Conta | ClinOS",
+  description: "Solicite a exclusão da sua conta e dos dados associados ao ClinOS.",
+  alternates: {
+    canonical: "/exclusao-de-conta"
+  }
 };
 
-const requestEmail = "contato@nutreclin.com.br";
-const mailSubject = "Solicitacao de exclusao de conta - NutreClin";
+const requestEmail = "contato@clinos.com.br";
+const mailSubject = "Solicitacao de exclusao de conta - ClinOS";
 const mailBody = [
   "Ola, equipe NutreClin.",
   "",

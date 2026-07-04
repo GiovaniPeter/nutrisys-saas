@@ -1,4 +1,11 @@
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Entrar | ClinOS",
+  description: "Faça login na plataforma ClinOS para profissionais de saúde e gestão de clínicas.",
+  robots: { index: false, follow: false }
+};
 import { LoginForm } from "@/components/auth/login-form";
 import { PortalLoginForm } from "@/components/portal/portal-login-form";
 

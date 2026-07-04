@@ -1,7 +1,16 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { Metadata } from "next";
 import { DashboardLink } from "@/components/auth/dashboard-link";
+
+export const metadata: Metadata = {
+  title: "ClinOS — O sistema operacional da sua clínica",
+  description: "ClinOS é o sistema operacional da sua clínica. Agendamento online, lembretes via WhatsApp, controle financeiro, prontuários e portal do paciente.",
+  alternates: {
+    canonical: "/"
+  }
+};
 
 const features = [
   {
@@ -99,6 +108,27 @@ export default function Home() {
 
   return (
     <main className="np-page">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "ClinOS",
+            "description": "Sistema completo para profissionais de saúde e gestão de clínicas. Agendamento online, prontuários, controle financeiro, portal do paciente e lembretes via WhatsApp.",
+            "url": "https://clinos.tec.br/",
+            "applicationCategory": "HealthApplication",
+            "operatingSystem": "Web",
+            "offers": {
+              "@type": "AggregateOffer",
+              "lowPrice": "39",
+              "highPrice": "124",
+              "priceCurrency": "BRL",
+              "offerCount": "3"
+            }
+          })
+        }}
+      />
       <header className="np-header">
         <Link href="/" className="np-logo" aria-label="ClinOS">
           <span className="np-logo-mark"><ClinOSLogo /></span>

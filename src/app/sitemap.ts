@@ -11,18 +11,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1
     },
     {
-      url: `${BASE_URL}/login`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8
-    },
-    {
-      url: `${BASE_URL}/register`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9
-    },
-    {
       url: `${BASE_URL}/termos-de-uso`,
       lastModified: new Date(),
       changeFrequency: "yearly",
@@ -39,12 +27,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "yearly",
       priority: 0.2
-    },
-    {
-      url: `${BASE_URL}/recuperar-senha`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.3
     }
   ];
 }

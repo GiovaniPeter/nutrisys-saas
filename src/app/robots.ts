@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/dashboard", "/patients", "/appointments", "/foods", "/meal-plans/", "/recipes", "/recalls", "/supplements", "/lab-exams", "/energy", "/body-records", "/food-diary", "/hydration", "/financial", "/chat", "/kpis", "/reports", "/settings", "/users", "/notifications", "/materials", "/schedule", "/shopping", "/whatsapp", "/billing", "/portal"]
+        disallow: ["/api/", "/dashboard", "/patients", "/appointments", "/foods", "/meal-plans/", "/recipes", "/recalls", "/supplements", "/lab-exams", "/energy", "/body-records", "/food-diary", "/hydration", "/financial", "/chat", "/kpis", "/reports", "/settings", "/users", "/notifications", "/materials", "/schedule", "/shopping", "/whatsapp", "/billing", "/portal", "/login", "/register"]
       }
     ],
     sitemap: `${BASE_URL}/sitemap.xml`

@@ -3,7 +3,10 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Termos de Uso | ClinOS",
-  description: "Termos de Uso da plataforma ClinOS."
+  description: "Termos de Uso da plataforma ClinOS.",
+  alternates: {
+    canonical: "/termos-de-uso"
+  }
 };
 
 const sections = [

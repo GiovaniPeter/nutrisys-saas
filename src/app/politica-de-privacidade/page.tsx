@@ -2,8 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Politica de Privacidade | NutreClin",
-  description: "Politica de Privacidade do NutreClin."
+  title: "Política de Privacidade | ClinOS",
+  description: "Política de Privacidade do ClinOS.",
+  alternates: {
+    canonical: "/politica-de-privacidade"
+  }
 };
 
 const sections = [
