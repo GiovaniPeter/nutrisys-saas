@@ -38,6 +38,8 @@ export const metadata: Metadata = {
   }
 };
 
+import { GoogleAnalytics } from "@next/third-parties/google";
+
 export default function RootLayout({
   children
 }: Readonly<{
@@ -48,6 +50,9 @@ export default function RootLayout({
       <body>
         {children}
         <CookieBanner />
+        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+        ) : null}
       </body>
     </html>
   );

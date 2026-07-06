@@ -7,6 +7,9 @@ import { createSessionCookie, setSessionCookie } from "@/lib/session";
 import { error, slugify, validationError } from "@/lib/api";
 import { findPlan } from "@/lib/plans";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const registerSchema = z.object({
   name: z.string().min(3, "Informe seu nome completo."),
@@ -120,6 +123,37 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 }
     );
+
+    // Send Welcome Email
+    if (process.env.RESEND_API_KEY) {
+      try {
+        await resend.emails.send({
+          from: process.env.RESEND_FROM_EMAIL || "onboarding@clinos.tec.br",
+          to: input.email,
+          subject: "Bem-vindo(a) ao ClinOS! Seu teste de 7 dias começou \uD83C\uDF89",
+          html: `
+            <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; line-height: 1.6;">
+              <h1 style="color: #009981;">Bem-vindo(a) ao ClinOS!</h1>
+              <p>Olá <strong>${input.name}</strong>,</p>
+              <p>Sua conta foi criada com sucesso e seu período de teste grátis de 7 dias acaba de começar.</p>
+              <p>O ClinOS é o sistema operacional completo para o seu consultório, com agenda online, controle financeiro, anamnese e planos alimentares.</p>
+              <p>
+                <a href="${process.env.APP_URL || 'https://clinos.tec.br'}/dashboard" style="display: inline-block; background-color: #009981; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; margin-top: 10px;">
+                  Acessar meu Dashboard
+                </a>
+              </p>
+              <p style="margin-top: 30px; font-size: 14px; color: #666;">
+                Se precisar de qualquer ajuda, basta responder a este e-mail.<br>
+                Um abraço,<br>
+                <strong>Equipe ClinOS</strong>
+              </p>
+            </div>
+          `,
+        });
+      } catch (emailErr) {
+        console.error("Falha ao enviar e-mail de boas-vindas:", emailErr);
+      }
+    }
 
     setSessionCookie(
       response,
