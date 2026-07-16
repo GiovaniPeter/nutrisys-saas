@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { NextRequest } from "next/server";
 import { SubscriptionStatus } from "@prisma/client";
+import type { AutoRecurringWithFreeTrial } from "mercadopago/dist/clients/preApproval/commonTypes";
 import { z } from "zod";
 import { audit } from "@/lib/audit";
 import { error, json, validationError } from "@/lib/api";
@@ -107,8 +108,12 @@ export async function POST(request: NextRequest) {
           frequency: 1,
           frequency_type: "months",
           transaction_amount: moneyFromCents(plan.monthlyPriceCents),
-          currency_id: "BRL"
-        },
+          currency_id: "BRL",
+          free_trial: {
+            frequency: 7,
+            frequency_type: "days"
+          }
+        } as AutoRecurringWithFreeTrial,
         back_url: `${appUrl}/billing?checkout=mercadopago`,
         status: "pending"
       },
