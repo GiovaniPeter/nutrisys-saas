@@ -1,4 +1,4 @@
-import { MercadoPagoConfig, PreApproval, Preference } from "mercadopago";
+import { MercadoPagoConfig, PreApproval, PreApprovalPlan, Preference } from "mercadopago";
 import { SubscriptionStatus } from "@prisma/client";
 import { findPlan } from "@/lib/plans";
 
@@ -8,6 +8,7 @@ export const mpClient = new MercadoPagoConfig({ accessToken, options: { timeout:
 
 export const mpPreference = new Preference(mpClient);
 export const mpPreApproval = new PreApproval(mpClient);
+export const mpPreApprovalPlan = new PreApprovalPlan(mpClient);
 
 const EXTERNAL_REFERENCE_PREFIX = "nutriplan_subscription";
 

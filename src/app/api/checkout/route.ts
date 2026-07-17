@@ -10,6 +10,7 @@ import {
   getAppUrl,
   moneyFromCents,
   mpPreApproval,
+  mpPreApprovalPlan,
   parseMercadoPagoDate
 } from "@/lib/mercadopago";
 import { findPlan } from "@/lib/plans";
@@ -95,21 +96,49 @@ export async function POST(request: NextRequest) {
     }
 
     const appUrl = getAppUrl();
+    const planReason = buildReason(plan.name);
+
+    // Encontra ou cria o plano no Mercado Pago para evitar o bug de trial em assinaturas diretas
+    const planSearch = await mpPreApprovalPlan.search({
+      options: { status: "active", q: planReason }
+    });
+
+    let mpPlanId = planSearch.results?.find((p) => p.reason === planReason)?.id;
+
+    if (!mpPlanId) {
+      const newPlan = await mpPreApprovalPlan.create({
+        body: {
+          reason: planReason,
+          auto_recurring: {
+            frequency: 1,
+            frequency_type: "months",
+            transaction_amount: moneyFromCents(plan.monthlyPriceCents),
+            currency_id: "BRL",
+            free_trial: {
+              frequency: 7,
+              frequency_type: "days"
+            }
+          },
+          back_url: `${appUrl}/billing?checkout=mercadopago`
+        },
+        requestOptions: { idempotencyKey: randomUUID() }
+      });
+      mpPlanId = newPlan.id;
+    }
+
+    if (!mpPlanId) {
+      return error("Erro ao configurar plano de assinatura no provedor.", 502);
+    }
+
     const preApproval = await mpPreApproval.create({
       body: {
-        reason: buildReason(plan.name),
+        reason: planReason,
         external_reference: buildSubscriptionReference({
           organizationId: user.organizationId,
           planCode: plan.code
         }),
         payer_email: user.email,
-        auto_recurring: {
-          frequency: 1,
-          frequency_type: "months",
-          transaction_amount: moneyFromCents(plan.monthlyPriceCents),
-          currency_id: "BRL",
-          start_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
-        },
+        preapproval_plan_id: mpPlanId,
         back_url: `${appUrl}/billing?checkout=mercadopago`,
         status: "pending"
       },
