@@ -104,9 +104,10 @@ export async function POST(request: NextRequest) {
     });
 
     let mpPlanId = planSearch.results?.find((p) => p.reason === planReason)?.id;
+    let newPlan: any = null;
 
     if (!mpPlanId) {
-      const newPlan = await mpPreApprovalPlan.create({
+      newPlan = await mpPreApprovalPlan.create({
         body: {
           reason: planReason,
           auto_recurring: {
@@ -130,23 +131,10 @@ export async function POST(request: NextRequest) {
       return error("Erro ao configurar plano de assinatura no provedor.", 502);
     }
 
-    const preApproval = await mpPreApproval.create({
-      body: {
-        reason: planReason,
-        external_reference: buildSubscriptionReference({
-          organizationId: user.organizationId,
-          planCode: plan.code
-        }),
-        payer_email: user.email,
-        preapproval_plan_id: mpPlanId,
-        back_url: `${appUrl}/billing?checkout=mercadopago`,
-        status: "pending"
-      },
-      requestOptions: { idempotencyKey: randomUUID() }
-    });
+    const planInitPoint = newPlan ? newPlan.init_point : planSearch.results?.find((p) => p.reason === planReason)?.init_point;
 
-    if (!preApproval.init_point) {
-      return error("Mercado Pago nao retornou o link de checkout.", 502);
+    if (!planInitPoint) {
+      return error("Erro ao obter link de checkout do plano.", 502);
     }
 
     await audit({
@@ -157,16 +145,16 @@ export async function POST(request: NextRequest) {
       entityId: existing?.id,
       metadata: {
         planCode: plan.code,
-        providerSubId: preApproval.id,
-        status: preApproval.status
+        providerSubId: mpPlanId,
+        status: "pending"
       }
     });
 
     return json({
       success: true,
-      checkoutUrl: preApproval.init_point,
-      providerSubId: preApproval.id,
-      status: preApproval.status
+      checkoutUrl: planInitPoint,
+      providerSubId: mpPlanId,
+      status: "pending"
     });
   } catch (err) {
     if (isMercadoPagoError(err)) {
