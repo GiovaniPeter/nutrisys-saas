@@ -27,7 +27,7 @@ export function getAppUrl() {
   const appUrl = process.env.APP_URL?.replace(/\/$/, "");
 
   if (appUrl) {
-    return appUrl;
+    return appUrl.startsWith("http") ? appUrl : `https://${appUrl}`;
   }
 
   const vercelUrl = process.env.VERCEL_URL?.replace(/\/$/, "");
