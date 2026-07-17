@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { AppNav } from "@/components/app-nav";
 import { SettingsClient } from "@/components/settings/settings-client";
 import { UsersClient } from "@/components/users/users-client";
+import { BillingClient } from "@/components/billing/billing-client";
 import { getCurrentUser } from "@/lib/session";
 
 export default async function SettingsPage({ searchParams }: { searchParams: { tab?: string } }) {
@@ -19,9 +20,9 @@ export default async function SettingsPage({ searchParams }: { searchParams: { t
 
       <section className="workspace-heading" style={{ flexWrap: "wrap", gap: "20px" }}>
         <div style={{ flex: "1 1 auto" }}>
-          <span className="eyebrow">Administracao</span>
-          <h1>Configuracoes</h1>
-          <p>Atualize identidade da clinica e gerencie os acessos da sua equipe.</p>
+          <span className="eyebrow">Administração</span>
+          <h1>Perfil</h1>
+          <p>Atualize a identidade da clínica, gerencie os acessos da sua equipe e sua assinatura.</p>
         </div>
         
         <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
@@ -39,11 +40,20 @@ export default async function SettingsPage({ searchParams }: { searchParams: { t
           >
             Equipe
           </a>
+          <a 
+            href="/settings?tab=billing" 
+            className={tab === "billing" ? "primary-button" : "secondary-button"}
+            style={{ textDecoration: "none" }}
+          >
+            Assinatura
+          </a>
         </div>
       </section>
 
       {tab === "identity" ? (
         <SettingsClient />
+      ) : tab === "billing" ? (
+        <BillingClient />
       ) : (
         <UsersClient currentUserRole={user.role} />
       )}

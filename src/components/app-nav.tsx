@@ -68,7 +68,7 @@ const navItems: NavItem[] = [
   { key: "financial", href: "/financial", label: "Financeiro", icon: "wallet", mobileOptional: true },
   { key: "reports", href: "/reports", label: "Relatórios", icon: "analytics" },
   { key: "chat", href: "/chat", label: "Mensagens", icon: "communication" },
-  { key: "settings", href: "/settings", label: "Configurações", icon: "settings" },
+  { key: "settings", href: "/settings", label: "Perfil", icon: "settings" },
   { key: "portal", href: "/portal/login", label: "Portal do Paciente", icon: "people" },
   { key: "schedule", href: "/schedule", label: "Calendário", icon: "clock", mobileOptional: true },
   { key: "meal-plans", href: "/meal-plans", label: "Planos", icon: "plan", mobileOptional: true },
@@ -86,7 +86,6 @@ const navItems: NavItem[] = [
   { key: "notifications", href: "/notifications", label: "Alertas", icon: "communication" },
   { key: "kpis", href: "/kpis", label: "KPIs", icon: "analytics" },
   { key: "materials", href: "/materials", label: "Materiais", icon: "analytics" },
-  { key: "billing", href: "/billing", label: "Assinatura", icon: "wallet" },
   { key: "users", href: "/users", label: "Equipe", icon: "people" }
 ];
 
