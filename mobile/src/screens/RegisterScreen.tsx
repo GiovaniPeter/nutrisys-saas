@@ -130,7 +130,7 @@ export default function RegisterScreen({ navigation }: any) {
         </TouchableOpacity>
 
         <Text style={styles.title}>Criar conta</Text>
-        <Text style={styles.subtitle}>Cadastre sua clínica e comece o trial do NutreClin.</Text>
+        <Text style={styles.subtitle}>Cadastre sua clínica e comece o trial do ClinOS.</Text>
 
         <TextInput
           autoCapitalize="words"

@@ -3,6 +3,7 @@ import { CookieBanner } from "@/components/cookie-banner";
 import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://clinos.tec.br"),
+  applicationName: "ClinOS",
   title: "ClinOS — Software para nutricionistas e clínicas multiprofissionais",
   description: "Prontuário, agenda, financeiro, planos alimentares e portal do paciente — tudo em uma única plataforma para nutricionistas e profissionais de saúde.",
   keywords: ["software para nutricionistas", "sistema para clínicas", "prontuário eletrônico", "plano alimentar", "gestão de clínicas", "agenda online nutricionista", "recordatório 24h", "tabela TACO", "portal do paciente", "sistema multiprofissional", "software clínica nutrição", "software para profissionais de saúde", "sistema de gestão clínica online", "agenda de pacientes online", "prontuário digital"],
@@ -13,12 +14,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/"
   },
-  verification: {
-    google: "google-site-verification-code-here"
-  },
   openGraph: {
     title: "ClinOS — Software para nutricionistas e clínicas multiprofissionais",
     description: "Prontuário, agenda, financeiro, planos alimentares e portal do paciente — tudo em uma única plataforma para nutricionistas e profissionais de saúde.",
+    url: "/",
+    siteName: "ClinOS",
     images: [
       {
         url: "/social-card.png",

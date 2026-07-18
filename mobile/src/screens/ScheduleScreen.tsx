@@ -44,7 +44,7 @@ export default function ScheduleScreen() {
     const startStr = formatDate(startsAt);
     const endStr = formatDate(endsAt);
     const title = encodeURIComponent(`Consulta Nutricional: ${appointment.patient?.name || 'Paciente'}`);
-    const details = encodeURIComponent(appointment.notes || 'Consulta marcada pelo NutreClin.');
+    const details = encodeURIComponent(appointment.notes || 'Consulta marcada pelo ClinOS.');
 
     const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startStr}/${endStr}&details=${details}`;
 

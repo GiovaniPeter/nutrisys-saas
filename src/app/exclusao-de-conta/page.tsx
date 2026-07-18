@@ -9,12 +9,12 @@ export const metadata: Metadata = {
   }
 };
 
-const requestEmail = "contato@clinos.com.br";
+const requestEmail = "contato@clinos.tec.br";
 const mailSubject = "Solicitacao de exclusao de conta - ClinOS";
 const mailBody = [
-  "Ola, equipe NutreClin.",
+  "Olá, equipe ClinOS.",
   "",
-  "Solicito a exclusao da minha conta e dos dados associados ao app NutreClin.",
+  "Solicito a exclusão da minha conta e dos dados associados ao ClinOS.",
   "",
   "Nome completo:",
   "E-mail da conta:",
@@ -30,14 +30,14 @@ export default function AccountDeletionPage() {
   return (
     <main className="legal-page">
       <section className="legal-hero">
-        <Link href="/" className="legal-back">NutreClin</Link>
+        <Link href="/" className="legal-back">ClinOS</Link>
         <span className="eyebrow">Dados e conta</span>
         <h1>Exclusao de conta</h1>
         <p>
-          Use esta pagina para solicitar a exclusao da sua conta do NutreClin
+          Use esta página para solicitar a exclusão da sua conta do ClinOS
           e dos dados associados ao app.
         </p>
-        <small>Ultima atualizacao: 5 de junho de 2026</small>
+        <small>Última atualização: 18 de julho de 2026</small>
       </section>
 
       <section className="legal-content">

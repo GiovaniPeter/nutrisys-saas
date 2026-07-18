@@ -41,7 +41,7 @@ export default function PortalAppointmentsScreen() {
 
     const startStr = formatDate(startsAt);
     const endStr = formatDate(endsAt);
-    const title = encodeURIComponent('Consulta Nutricional - Clínica NutreClin');
+    const title = encodeURIComponent('Consulta Nutricional - Clínica ClinOS');
     const details = encodeURIComponent(appointment.notes || 'Consulta nutricional.');
 
     const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startStr}/${endStr}&details=${details}`;

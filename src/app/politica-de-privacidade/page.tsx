@@ -13,14 +13,14 @@ const sections = [
   {
     title: "1. Quem somos",
     text: [
-      "O NutreClin e uma plataforma para nutricionistas, clinicas e pacientes, voltada a organizacao de atendimentos, prontuarios, planos alimentares, receitas, agenda, comunicacao e acompanhamento nutricional.",
+      "O ClinOS é uma plataforma para nutricionistas, clínicas e pacientes, voltada à organização de atendimentos, prontuários, planos alimentares, receitas, agenda, comunicação e acompanhamento nutricional.",
       "Esta Politica de Privacidade explica quais dados podem ser tratados, para quais finalidades e quais direitos os usuarios possuem."
     ]
   },
   {
     title: "2. Dados que podemos coletar",
     text: [
-      "Dados de conta: nome, e-mail, telefone, senha criptografada, perfil de acesso, organizacao ou clinica vinculada.",
+      "Dados de conta: nome, e-mail, telefone, hash da senha, perfil de acesso, organização ou clínica vinculada.",
       "Dados profissionais e de atendimento: dados de pacientes cadastrados, anamneses, medidas corporais, exames, recordatorios, planos alimentares, receitas, metas, hidratacao, suplementos, agenda, mensagens e materiais enviados.",
       "Dados de uso e seguranca: registros de acesso, identificadores tecnicos, data e horario de uso, informacoes necessarias para autenticar sessoes, prevenir fraude e manter o funcionamento do app.",
       "Dados de pagamento e assinatura podem ser tratados por provedores de pagamento, quando usados para contratar planos ou gerenciar cobrancas."
@@ -44,14 +44,14 @@ const sections = [
   {
     title: "5. Dados de saude e informacoes sensiveis",
     text: [
-      "O NutreClin pode tratar dados relacionados a saude, nutricao, composicao corporal, exames e acompanhamento alimentar. Esses dados sao usados para permitir que profissionais e pacientes acompanhem o tratamento nutricional e as informacoes registradas na plataforma.",
+      "O ClinOS pode tratar dados relacionados à saúde, nutrição, composição corporal, exames e acompanhamento alimentar. Esses dados são usados para permitir que profissionais e pacientes acompanhem o tratamento nutricional e as informações registradas na plataforma.",
       "O uso desses dados deve respeitar a legislacao aplicavel, incluindo a Lei Geral de Protecao de Dados Pessoais (LGPD)."
     ]
   },
   {
     title: "6. Seguranca",
     text: [
-      "Adotamos medidas tecnicas e organizacionais para proteger os dados, incluindo controle de acesso, autenticacao, criptografia de senhas e separacao de dados por organizacao.",
+      "Adotamos medidas técnicas e organizacionais para proteger os dados, incluindo controle de acesso, autenticação, armazenamento de senhas com hash e separação de dados por organização.",
       "Apesar dos esforcos de seguranca, nenhum sistema e totalmente imune a riscos. Por isso, os usuarios devem proteger suas credenciais e evitar compartilhar senhas."
     ]
   },
@@ -77,7 +77,7 @@ const sections = [
   {
     title: "10. Contato",
     text: [
-      "Para duvidas, solicitacoes de privacidade ou pedidos relacionados a dados pessoais, entre em contato pelo e-mail: contato@nutreclin.com.br."
+      "Para dúvidas, solicitações de privacidade ou pedidos relacionados a dados pessoais, entre em contato pelo e-mail: contato@clinos.tec.br."
     ]
   }
 ];
@@ -86,14 +86,14 @@ export default function PrivacyPolicyPage() {
   return (
     <main className="legal-page">
       <section className="legal-hero">
-        <Link href="/" className="legal-back">NutreClin</Link>
+        <Link href="/" className="legal-back">ClinOS</Link>
         <span className="eyebrow">Privacidade</span>
         <h1>Politica de Privacidade</h1>
         <p>
-          Esta politica descreve como o NutreClin trata dados pessoais,
-          dados de saude e informacoes usadas para operar a plataforma.
+          Esta política descreve como o ClinOS trata dados pessoais,
+          dados de saúde e informações usadas para operar a plataforma.
         </p>
-        <small>Ultima atualizacao: 5 de junho de 2026</small>
+        <small>Última atualização: 18 de julho de 2026</small>
       </section>
 
       <section className="legal-content">

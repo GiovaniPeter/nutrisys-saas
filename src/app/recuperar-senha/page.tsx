@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Recuperar senha | NutreClin",
-  description: "Solicite recuperacao de senha ou codigo de acesso do NutreClin."
+  title: "Recuperar senha | ClinOS",
+  description: "Solicite recuperação de senha ou código de acesso do ClinOS."
 };
 
-const supportEmail = "contato@nutreclin.com.br";
-const mailSubject = "Recuperacao de acesso - NutreClin";
+const supportEmail = "contato@clinos.tec.br";
+const mailSubject = "Recuperação de acesso - ClinOS";
 const mailBody = [
-  "Ola, equipe NutreClin.",
+  "Olá, equipe ClinOS.",
   "",
-  "Preciso recuperar meu acesso ao app NutreClin.",
+  "Preciso recuperar meu acesso ao ClinOS.",
   "",
   "Nome completo:",
   "E-mail da conta:",
@@ -27,7 +27,7 @@ export default function PasswordRecoveryPage() {
   return (
     <main className="legal-page">
       <section className="legal-hero">
-        <Link href="/" className="legal-back">NutreClin</Link>
+        <Link href="/" className="legal-back">ClinOS</Link>
         <span className="eyebrow">Acesso</span>
         <h1>Recuperar senha ou codigo</h1>
         <p>
@@ -43,7 +43,7 @@ export default function PasswordRecoveryPage() {
           <p>
             Envie uma solicitacao informando nome completo, e-mail da conta,
             tipo de acesso (Profissional ou Paciente) e telefone, se cadastrado.
-            A equipe do NutreClin verificara os dados antes de orientar a
+            A equipe do ClinOS verificará os dados antes de orientar a
             recuperacao do acesso.
           </p>
           <div className="legal-actions">

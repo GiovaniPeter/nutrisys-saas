@@ -29,7 +29,7 @@ export default async function SchedulePage() {
         </div>
       </section>
 
-      <ScheduleClient organizationName={organization?.name || "NutreClin"} organizationSlug={organization?.slug || ""} />
+      <ScheduleClient organizationName={organization?.name || "ClinOS"} organizationSlug={organization?.slug || ""} />
     </main>
   );
 }

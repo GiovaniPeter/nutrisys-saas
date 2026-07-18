@@ -84,7 +84,7 @@ export default function PortalHomeScreen({ navigation }: any) {
 
       <View style={styles.card}>
         <Text style={styles.sectionTitle}>Seu Nutricionista / Clínica</Text>
-        <Text style={styles.infoText}>{patient?.organization?.name || 'Clínica NutreClin'}</Text>
+        <Text style={styles.infoText}>{patient?.organization?.name || 'Clínica ClinOS'}</Text>
       </View>
 
       {patient?.goal && (

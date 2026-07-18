@@ -7,10 +7,11 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: "/",
-        disallow: ["/api/", "/dashboard", "/patients", "/appointments", "/foods", "/meal-plans/", "/recipes", "/recalls", "/supplements", "/lab-exams", "/energy", "/body-records", "/food-diary", "/hydration", "/financial", "/chat", "/kpis", "/reports", "/settings", "/users", "/notifications", "/materials", "/schedule", "/shopping", "/whatsapp", "/billing", "/portal", "/login", "/register"]
+        allow: ["/", "/llms.txt", "/llms-full.txt"],
+        disallow: ["/api/", "/dashboard", "/patients", "/appointments", "/foods", "/meal-plans", "/recipes", "/recalls", "/supplements", "/lab-exams", "/energy", "/body-records", "/food-diary", "/hydration", "/financial", "/chat", "/kpis", "/reports", "/settings", "/users", "/notifications", "/materials", "/schedule", "/shopping", "/whatsapp", "/billing", "/portal", "/login", "/register"]
       }
     ],
-    sitemap: `${BASE_URL}/sitemap.xml`
+    sitemap: `${BASE_URL}/sitemap.xml`,
+    host: BASE_URL
   };
 }

@@ -127,7 +127,7 @@ export default function LoginScreen({ navigation }: any) {
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
       <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
-        <Text style={styles.title}>NutreClin</Text>
+        <Text style={styles.title}>ClinOS</Text>
         <Text style={styles.subtitle}>Acesso ao Sistema</Text>
 
         <View style={styles.tabsContainer}>

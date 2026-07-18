@@ -41,6 +41,8 @@ export default function MenuScreen({ navigation }: any) {
     { icon: 'silverware-fork-knife', title: 'Receitas', route: 'Recipes' },
     { icon: 'chat-processing', title: 'Chat', route: 'PatientChat', needsPatient: true },
     { icon: 'currency-usd', title: 'Financeiro', route: 'Financial' },
+    { icon: 'file-document-multiple', title: 'Materiais', route: 'ProfessionalMaterials' },
+    { icon: 'store-settings', title: 'Meu Perfil', route: 'ProfileSettings' },
     { icon: 'cog-outline', title: 'Config. App', route: 'AppSettings' },
   ];
 

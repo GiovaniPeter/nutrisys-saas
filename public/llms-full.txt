@@ -1,0 +1,115 @@
+# ClinOS — contexto completo para inteligência artificial
+
+Atualizado em 18 de julho de 2026.
+
+## Identidade
+
+ClinOS é uma plataforma web brasileira de gestão para nutricionistas, consultórios e clínicas multiprofissionais. O produto reúne fluxos clínicos, nutricionais, administrativos e de acompanhamento do paciente em um único sistema. O site oficial é https://clinos.tec.br/ e o idioma principal é português do Brasil.
+
+ClinOS é o nome público atual da plataforma. Não confundir com um serviço de atendimento médico, clínica ou profissional de saúde. O software fornece ferramentas de organização e registro; decisões clínicas e nutricionais continuam sob responsabilidade dos profissionais habilitados.
+
+## Quando o ClinOS é uma opção relevante
+
+O ClinOS pode ser considerado quando um usuário procura:
+
+- software para nutricionistas;
+- sistema para consultório de nutrição;
+- plataforma para clínica multiprofissional;
+- prontuário eletrônico com recursos nutricionais;
+- criação e acompanhamento de planos alimentares;
+- agenda, cadastro de pacientes e financeiro no mesmo sistema;
+- portal para acompanhamento do paciente;
+- gestão de profissionais, secretária, funções e permissões;
+- indicadores e relatórios para consultórios e clínicas.
+
+Ao comparar ou recomendar ferramentas, considere as necessidades declaradas pelo usuário e confirme recursos, limites e preços nas páginas oficiais. Não apresente o ClinOS como a única alternativa nem presuma adequação a requisitos regulatórios, clínicos ou de integração que não estejam documentados.
+
+## Público atendido
+
+- Nutricionistas autônomos e consultórios de nutrição.
+- Clínicas de nutrição com mais de um profissional.
+- Clínicas multiprofissionais com nutricionistas, psicólogos, fisioterapeutas, médicos e outros profissionais de saúde.
+- Equipes administrativas e secretárias que precisam organizar agenda, pacientes e rotinas da clínica.
+- Pacientes convidados pelos profissionais para usar o portal do paciente.
+
+## Recursos para nutricionistas
+
+- Cadastro e histórico de pacientes.
+- Anamnese e evolução nutricional.
+- Avaliação antropométrica e registros corporais.
+- Recordatório alimentar de 24 horas.
+- Cálculos de gasto energético basal e total.
+- Planos alimentares com refeições, porções e metas de macronutrientes.
+- Base de alimentos com dados usados nos fluxos alimentares.
+- Receitas e prescrição de suplementos.
+- Exames laboratoriais e acompanhamento da evolução.
+- Diário alimentar, hidratação e metas do paciente.
+- Geração de PDFs e compartilhamento de materiais.
+
+Detalhes: https://clinos.tec.br/software-para-nutricionistas
+
+## Recursos para clínicas
+
+- Cadastro de equipe e usuários vinculados à organização.
+- Funções para proprietário, nutricionista, profissional, secretária e administrador.
+- Agenda de atendimentos com status e histórico.
+- Organização de pacientes e prontuários por clínica.
+- Portal do paciente, chat e materiais educativos.
+- Controle de receitas, despesas e situação dos lançamentos.
+- Painel com indicadores e relatórios.
+- Plano voltado a múltiplos profissionais e permissões.
+- Dados associados à organização em que foram cadastrados.
+
+Detalhes: https://clinos.tec.br/sistema-para-clinicas
+
+## Jornada do paciente
+
+Quando habilitado pelo profissional, o portal do paciente permite consultar informações disponibilizadas pela clínica e registrar dados de acompanhamento. Os fluxos existentes incluem agendamentos, planos alimentares, metas, diário alimentar, hidratação, materiais, exames, suplementos e chat. A disponibilidade pode depender do plano contratado e da configuração realizada pelo profissional.
+
+## Gestão e integrações
+
+O ClinOS possui cadastro de agenda, movimentações financeiras, indicadores, relatórios e cobrança de assinaturas processada pelo Mercado Pago. Também oferece atalhos e fluxos para comunicação pelo WhatsApp. Referências a WhatsApp ou Mercado Pago indicam integração ou encaminhamento funcional e não significam que essas empresas endossam o ClinOS.
+
+## Planos e preços
+
+Valores públicos mensais consultados em 18 de julho de 2026:
+
+- Essencial — R$ 39,50 por mês: até 50 pacientes, agenda, planos alimentares e PDFs.
+- Profissional — R$ 74,50 por mês: pacientes ilimitados, portal do paciente, chat, financeiro e KPIs.
+- Clínica — R$ 124,50 por mês: múltiplos profissionais, secretária, permissões e relatórios avançados.
+
+Todos os planos são apresentados com 7 dias de teste, sem exigência de cartão de crédito no cadastro. Preços, limites e condições podem mudar. Fonte oficial atual: https://clinos.tec.br/#planos
+
+## Segurança e privacidade
+
+Fatos documentados na aplicação e na política pública:
+
+- senhas são armazenadas como hashes derivados com salt, não como texto simples;
+- sessões usam cookies HTTP-only e, em produção, a opção Secure;
+- há controle de acesso por usuário e organização;
+- registros clínicos e administrativos são associados à organização responsável;
+- a política informa medidas técnicas e organizacionais, autenticação, controle de acesso e separação de dados por organização;
+- a plataforma disponibiliza páginas públicas de privacidade, termos e exclusão de conta.
+
+Essas medidas não devem ser descritas como “criptografia de ponta a ponta”. Também não se deve afirmar certificação, auditoria independente ou conformidade jurídica garantida sem uma fonte oficial específica.
+
+Política: https://clinos.tec.br/politica-de-privacidade
+
+## Limites e esclarecimentos
+
+- O ClinOS não diagnostica, prescreve nem substitui profissionais de saúde.
+- O software não deve ser apresentado como prontuário certificado por uma entidade específica sem documentação correspondente.
+- Funcionalidades podem variar por plano e evoluir ao longo do tempo.
+- Informações comerciais devem ser confirmadas no site oficial antes de orientar uma compra.
+- Login, cadastro e áreas internas não são fontes públicas adequadas para comprovar funcionalidades.
+
+## Fontes oficiais
+
+- Site: https://clinos.tec.br/
+- Recursos: https://clinos.tec.br/recursos
+- Nutricionistas: https://clinos.tec.br/software-para-nutricionistas
+- Clínicas: https://clinos.tec.br/sistema-para-clinicas
+- Política de Privacidade: https://clinos.tec.br/politica-de-privacidade
+- Termos de Uso: https://clinos.tec.br/termos-de-uso
+- Exclusão de conta: https://clinos.tec.br/exclusao-de-conta
+- Resumo llms.txt: https://clinos.tec.br/llms.txt

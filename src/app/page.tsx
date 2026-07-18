@@ -99,7 +99,7 @@ const faqs = [
   },
   {
     question: "Os dados ficam separados por clínica?",
-    answer: "Sim. Cada clínica tem seus dados 100% separados e seguros, em conformidade com a LGPD."
+    answer: "Os registros são associados à organização responsável, com autenticação e controle de acesso. A plataforma também mantém uma política pública de privacidade; cada clínica continua responsável por seus próprios processos e obrigações legais."
   }
 ];
 
@@ -113,19 +113,69 @@ export default function Home() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            "name": "ClinOS",
-            "description": "Sistema completo para profissionais de saúde e gestão de clínicas. Agendamento online, prontuários, controle financeiro, portal do paciente e lembretes via WhatsApp.",
-            "url": "https://clinos.tec.br/",
-            "applicationCategory": "HealthApplication",
-            "operatingSystem": "Web",
-            "offers": {
-              "@type": "AggregateOffer",
-              "lowPrice": "39",
-              "highPrice": "124",
-              "priceCurrency": "BRL",
-              "offerCount": "3"
-            }
+            "@graph": [
+              {
+                "@type": "WebSite",
+                "@id": "https://clinos.tec.br/#website",
+                "url": "https://clinos.tec.br/",
+                "name": "ClinOS",
+                "inLanguage": "pt-BR",
+                "publisher": { "@id": "https://clinos.tec.br/#organization" }
+              },
+              {
+                "@type": "Organization",
+                "@id": "https://clinos.tec.br/#organization",
+                "name": "ClinOS",
+                "url": "https://clinos.tec.br/",
+                "email": "contato@clinos.tec.br",
+                "telephone": "+55-69-99925-8988"
+              },
+              {
+                "@type": "SoftwareApplication",
+                "@id": "https://clinos.tec.br/#software",
+                "name": "ClinOS",
+                "description": "Plataforma web de gestão para nutricionistas, consultórios e clínicas multiprofissionais, com prontuário, agenda, planos alimentares, acompanhamento do paciente e financeiro.",
+                "url": "https://clinos.tec.br/",
+                "applicationCategory": "HealthApplication",
+                "applicationSubCategory": "Practice Management Software",
+                "operatingSystem": "Web",
+                "inLanguage": "pt-BR",
+                "audience": [
+                  { "@type": "Audience", "audienceType": "Nutricionistas" },
+                  { "@type": "Audience", "audienceType": "Clínicas multiprofissionais" }
+                ],
+                "featureList": [
+                  "Prontuário e anamnese",
+                  "Avaliação antropométrica",
+                  "Planos alimentares",
+                  "Agenda",
+                  "Portal do paciente",
+                  "Gestão financeira",
+                  "Indicadores e relatórios"
+                ],
+                "offers": {
+                  "@type": "AggregateOffer",
+                  "lowPrice": "39.50",
+                  "highPrice": "124.50",
+                  "priceCurrency": "BRL",
+                  "offerCount": 3,
+                  "url": "https://clinos.tec.br/#planos"
+                },
+                "provider": { "@id": "https://clinos.tec.br/#organization" }
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://clinos.tec.br/#faq-schema",
+                "mainEntity": faqs.map((faq) => ({
+                  "@type": "Question",
+                  "name": faq.question,
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": faq.answer
+                  }
+                }))
+              }
+            ]
           })
         }}
       />
@@ -139,9 +189,10 @@ export default function Home() {
         </Link>
 
         <nav className="np-nav" aria-label="Navegação principal">
-          <a href="#recursos">Recursos</a>
+          <Link href="/recursos">Recursos</Link>
+          <Link href="/software-para-nutricionistas">Nutricionistas</Link>
+          <Link href="/sistema-para-clinicas">Clínicas</Link>
           <a href="#planos">Planos</a>
-          <a href="#faq">FAQ</a>
         </nav>
 
         <div className="np-header-actions">
@@ -352,16 +403,25 @@ export default function Home() {
             </span>
           </Link>
           <p>Solução completa de gestão para consultórios e clínicas multiprofissionais.</p>
-          <div className="np-socials" aria-label="Redes sociais">
-            <a href="#" aria-label="Instagram">◎</a>
-            <a href="#" aria-label="Facebook">f</a>
-            <a href="#" aria-label="LinkedIn">in</a>
-            <a href="#" aria-label="YouTube">▶</a>
-          </div>
         </div>
 
-        <FooterColumn title="Produto" links={["Recursos", "Planos", "Integrações"]} />
-        <FooterColumn title="Empresa" links={["Sobre nós", "Blog", "Contato"]} />
+        <FooterColumn
+          title="Produto"
+          links={[
+            { label: "Recursos", href: "/recursos" },
+            { label: "Nutricionistas", href: "/software-para-nutricionistas" },
+            { label: "Clínicas", href: "/sistema-para-clinicas" },
+            { label: "Planos", href: "/#planos" }
+          ]}
+        />
+        <FooterColumn
+          title="Empresa"
+          links={[
+            { label: "Sobre nós", href: "/#sobre" },
+            { label: "Dúvidas frequentes", href: "/#faq" },
+            { label: "Contato", href: "mailto:contato@clinos.tec.br" }
+          ]}
+        />
         <FooterColumn
           title="Suporte"
           links={[
@@ -374,7 +434,7 @@ export default function Home() {
         />
         <div className="np-footer-column">
           <h3>Fale conosco</h3>
-          <a href="mailto:contato@clinos.com.br">contato@clinos.com.br</a>
+          <a href="mailto:contato@clinos.tec.br">contato@clinos.tec.br</a>
           <a href="tel:+5569999258988">(69) 99925-8988</a>
         </div>
 
@@ -531,7 +591,7 @@ function FooterColumn({ title, links }: { title: string; links: Array<string | {
       <h3>{title}</h3>
       {links.map((link) => {
         const label = typeof link === "string" ? link : link.label;
-        const href = typeof link === "string" ? "#" : link.href;
+        const href = typeof link === "string" ? `/#${link.toLowerCase()}` : link.href;
 
         return <a href={href} key={label}>{label}</a>;
       })}

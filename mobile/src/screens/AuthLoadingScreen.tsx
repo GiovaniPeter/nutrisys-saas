@@ -27,7 +27,7 @@ export default function AuthLoadingScreen({ navigation }: any) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.logo}>NutreClin</Text>
+      <Text style={styles.logo}>ClinOS</Text>
       <ActivityIndicator size="large" color="#10b981" />
       <Text style={styles.caption}>Carregando seu acesso...</Text>
     </View>

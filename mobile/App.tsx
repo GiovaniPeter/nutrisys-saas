@@ -31,6 +31,8 @@ import PatientRecallsScreen from './src/screens/PatientRecallsScreen';
 import RecipesScreen from './src/screens/RecipesScreen';
 import FoodsScreen from './src/screens/FoodsScreen';
 import AppSettingsScreen from './src/screens/AppSettingsScreen';
+import ProfileSettingsScreen from './src/screens/ProfileSettingsScreen';
+import ProfessionalMaterialsScreen from './src/screens/ProfessionalMaterialsScreen';
 
 // Portal do Paciente
 import PortalHomeScreen from './src/screens/portal/PortalHomeScreen';
@@ -324,6 +326,16 @@ export default function App() {
             name="AppSettings"
             component={AppSettingsScreen}
             options={{ title: 'Configurações do App' }}
+          />
+          <Stack.Screen
+            name="ProfileSettings"
+            component={ProfileSettingsScreen}
+            options={{ title: 'Meu Perfil' }}
+          />
+          <Stack.Screen
+            name="ProfessionalMaterials"
+            component={ProfessionalMaterialsScreen}
+            options={{ title: 'Materiais' }}
           />
         </Stack.Navigator>
       </NavigationContainer>

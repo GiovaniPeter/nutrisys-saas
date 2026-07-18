@@ -84,7 +84,7 @@ export default function PortalProfileScreen() {
           </View>
         </TouchableOpacity>
         <Text style={styles.name}>{patient?.name || 'Paciente'}</Text>
-        <Text style={styles.clinic}>{patient?.organization?.name || 'Clínica NutreClin'}</Text>
+        <Text style={styles.clinic}>{patient?.organization?.name || 'Clínica ClinOS'}</Text>
       </View>
 
       <View style={styles.card}>

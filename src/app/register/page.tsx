@@ -48,7 +48,7 @@ export default function RegisterPage({ searchParams }: RegisterPageProps) {
         <div className="auth-copy">
           <Link href="/" className="auth-back">← Voltar para a landing</Link>
           <span className="eyebrow">Criar acesso</span>
-          <h1>Criar conta no NutreClin</h1>
+          <h1>Criar conta no ClinOS</h1>
           <p>
             Escolha o perfil correto para iniciar o trial da clínica ou acessar
             uma conta já vinculada por um profissional.
