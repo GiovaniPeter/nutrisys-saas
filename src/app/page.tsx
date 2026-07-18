@@ -351,7 +351,7 @@ export default function Home() {
           ))}
         </div>
 
-        <p className="np-pricing-note">7 dias de trial grátis em todos os planos. Cancele quando quiser.</p>
+        <p className="np-pricing-note">7 dias grátis em todos os planos, sem cartão no cadastro.</p>
       </section>
 
       <section className="np-section" id="faq">

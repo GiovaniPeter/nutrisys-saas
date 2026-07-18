@@ -7,6 +7,7 @@ import { createSessionCookie, setSessionCookie } from "@/lib/session";
 import { error, slugify, validationError } from "@/lib/api";
 import { findPlan } from "@/lib/plans";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { FREE_TRIAL_DAYS } from "@/lib/subscriptions";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -55,7 +56,7 @@ export async function POST(request: NextRequest) {
     const isProfessional = Boolean(input.specialty);
     const organizationSlug = await buildUniqueSlug(input.organizationName);
     const passwordHash = await hashPassword(input.password);
-    const trialEndsAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    const trialEndsAt = new Date(Date.now() + FREE_TRIAL_DAYS * 24 * 60 * 60 * 1000);
 
     const result = await prisma.$transaction(async (tx) => {
       const organization = await tx.organization.create({
@@ -130,12 +131,12 @@ export async function POST(request: NextRequest) {
         await resend.emails.send({
           from: process.env.RESEND_FROM_EMAIL || "onboarding@clinos.tec.br",
           to: input.email,
-          subject: "Bem-vindo(a) ao ClinOS! Seu teste de 7 dias começou \uD83C\uDF89",
+          subject: `Bem-vindo(a) ao ClinOS! Seu teste de ${FREE_TRIAL_DAYS} dias começou \uD83C\uDF89`,
           html: `
             <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; line-height: 1.6;">
               <h1 style="color: #009981;">Bem-vindo(a) ao ClinOS!</h1>
               <p>Olá <strong>${input.name}</strong>,</p>
-              <p>Sua conta foi criada com sucesso e seu período de teste grátis de 7 dias acaba de começar.</p>
+              <p>Sua conta foi criada com sucesso e seu período de teste grátis de ${FREE_TRIAL_DAYS} dias acaba de começar. Nenhum cartão é necessário durante o teste.</p>
               <p>O ClinOS é o sistema operacional completo para o seu consultório, com agenda online, controle financeiro, anamnese e planos alimentares.</p>
               <p>
                 <a href="${process.env.APP_URL || 'https://clinos.tec.br'}/dashboard" style="display: inline-block; background-color: #009981; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; margin-top: 10px;">

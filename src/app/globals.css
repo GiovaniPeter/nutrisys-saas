@@ -50,6 +50,118 @@ button, input, textarea, select { font: inherit; }
   padding: 24px clamp(18px, 3vw, 36px) 48px 290px;
 }
 
+.trial-alert {
+  align-items: center;
+  background:
+    linear-gradient(100deg, rgba(0, 153, 129, 0.11), rgba(17, 92, 199, 0.08)),
+    #fff;
+  border: 1px solid rgba(0, 153, 129, 0.2);
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(9, 23, 41, 0.06);
+  display: flex;
+  gap: 14px;
+  margin: 0 0 24px;
+  padding: 15px 16px;
+}
+
+.trial-alert-urgent {
+  background:
+    linear-gradient(100deg, rgba(201, 52, 46, 0.08), rgba(243, 188, 69, 0.1)),
+    #fff;
+  border-color: rgba(201, 52, 46, 0.2);
+}
+
+.trial-alert-icon {
+  align-items: center;
+  background: #dff7f1;
+  border-radius: 13px;
+  color: var(--app-primary-dark);
+  display: inline-flex;
+  flex: 0 0 42px;
+  height: 42px;
+  justify-content: center;
+  width: 42px;
+}
+
+.trial-alert-urgent .trial-alert-icon {
+  background: #fff0ed;
+  color: var(--app-danger);
+}
+
+.trial-alert-icon svg {
+  fill: none;
+  height: 22px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.9;
+  width: 22px;
+}
+
+.trial-alert-copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.trial-alert-kicker {
+  color: var(--app-primary-dark);
+  font-size: .7rem;
+  font-weight: 850;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.trial-alert-urgent .trial-alert-kicker {
+  color: var(--app-danger);
+}
+
+.trial-alert-copy strong {
+  font-size: .98rem;
+  letter-spacing: -.01em;
+}
+
+.trial-alert-copy p {
+  color: var(--app-muted);
+  font-size: .84rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.trial-alert-action {
+  align-items: center;
+  background: var(--app-primary);
+  border-radius: 11px;
+  color: #fff;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: .82rem;
+  font-weight: 800;
+  gap: 8px;
+  margin-left: auto;
+  min-height: 40px;
+  padding: 10px 14px;
+  transition: background .18s ease, transform .18s ease;
+}
+
+.trial-alert-action:hover {
+  background: var(--app-primary-dark);
+  transform: translateY(-1px);
+}
+
+.trial-alert-urgent .trial-alert-action {
+  background: var(--app-danger);
+}
+
+.trial-alert-owner-note {
+  color: var(--app-muted);
+  flex: 0 0 180px;
+  font-size: .78rem;
+  line-height: 1.4;
+  margin-left: auto;
+  text-align: right;
+}
+
 .app-error-shell {
   align-items: center;
   display: grid;
@@ -2544,6 +2656,32 @@ form button[type="submit"] {
 @media (max-width: 680px) {
   .workspace-shell {
     padding: 14px 12px 34px;
+  }
+
+  .trial-alert {
+    align-items: flex-start;
+    display: grid;
+    gap: 11px;
+    grid-template-columns: 42px minmax(0, 1fr);
+    margin-bottom: 20px;
+    padding: 14px;
+  }
+
+  .trial-alert-copy {
+    grid-column: 2;
+  }
+
+  .trial-alert-action {
+    grid-column: 2;
+    justify-content: center;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .trial-alert-owner-note {
+    grid-column: 2;
+    margin-left: 0;
+    text-align: left;
   }
 
   .patient-form-grid > label,

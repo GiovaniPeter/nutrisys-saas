@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { TrialAlert } from "@/components/billing/trial-alert";
 import type { AuthenticatedUser } from "@/lib/session";
 
 export type AppNavKey =
@@ -205,7 +206,7 @@ export function AppNav({ active, user }: AppNavProps) {
       if (isProfessional) return navItems.filter((item) => professionalNavKeys.has(item.key));
       return navItems;
     },
-    [user.role, isSecretary, isProfessional]
+    [isSecretary, isProfessional]
   );
   const itemByKey = useMemo(
     () => new Map(visibleNavItems.map((item) => [item.key, item])),
@@ -297,10 +298,11 @@ export function AppNav({ active, user }: AppNavProps) {
   }
 
   return (
-    <header className="app-header">
-      <div className={pendingHref ? "app-navigation-progress active" : "app-navigation-progress"} aria-hidden="true">
-        <span />
-      </div>
+    <>
+      <header className="app-header">
+        <div className={pendingHref ? "app-navigation-progress active" : "app-navigation-progress"} aria-hidden="true">
+          <span />
+        </div>
 
       <Link
         href="/dashboard"
@@ -400,7 +402,9 @@ export function AppNav({ active, user }: AppNavProps) {
           </svg>
         </button>
       </div>
-    </header>
+      </header>
+      <TrialAlert userRole={user.role} />
+    </>
   );
 }
 

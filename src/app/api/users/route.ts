@@ -6,6 +6,7 @@ import { error, json, validationError } from "@/lib/api";
 import { hashPassword } from "@/lib/password";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
+import { getLatestSubscription, hasSubscriptionAccess } from "@/lib/subscriptions";
 
 const userSchema = z.object({
   name: z.string().min(2, "Informe o nome."),
@@ -66,15 +67,9 @@ export async function POST(request: NextRequest) {
     }
 
     if (input.role === "SECRETARY") {
-      const activeSubscription = await prisma.subscription.findFirst({
-        where: {
-          organizationId: currentUser.organizationId,
-          status: { in: ["ACTIVE", "TRIALING"] }
-        },
-        orderBy: { createdAt: "desc" }
-      });
+      const activeSubscription = await getLatestSubscription(currentUser.organizationId);
 
-      if (activeSubscription?.planCode !== "clinic") {
+      if (!hasSubscriptionAccess(activeSubscription) || activeSubscription?.planCode !== "clinic") {
         return error("O perfil de Secretária está disponível apenas no plano Clínica. Faça upgrade para utilizar este recurso.", 403);
       }
     }

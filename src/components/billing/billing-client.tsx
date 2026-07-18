@@ -50,14 +50,42 @@ export function BillingClient() {
     currentPlan?.patientLimit && currentPlan.patientLimit > 0
       ? Math.min((patientCount / currentPlan.patientLimit) * 100, 100)
       : null;
+  const trialRemainingDays = useMemo(() => {
+    if (subscription?.status !== "TRIALING" || !subscription.trialEndsAt) {
+      return null;
+    }
+
+    const remainingMs = new Date(subscription.trialEndsAt).getTime() - Date.now();
+    return remainingMs > 0 ? Math.max(1, Math.ceil(remainingMs / (24 * 60 * 60 * 1000))) : 0;
+  }, [subscription]);
+  const canCancel = Boolean(
+    subscription?.provider === "MERCADO_PAGO" &&
+    subscription.providerSubId &&
+    subscription.status === "ACTIVE"
+  );
+  const canReactivate = Boolean(
+    subscription?.provider === "MERCADO_PAGO" &&
+    subscription.providerSubId &&
+    subscription.status === "CANCELED"
+  );
 
   useEffect(() => {
-    void loadBilling();
+    const checkoutReturn = new URLSearchParams(window.location.search).get("checkout") === "mercadopago";
+    void loadBilling(checkoutReturn);
+
+    if (checkoutReturn) {
+      window.history.replaceState({}, "", window.location.pathname);
+    }
   }, []);
 
-  async function loadBilling() {
+  async function loadBilling(syncMercadoPago = false) {
     setLoading(true);
-    const response = await fetch("/api/billing/subscription");
+    const response = await fetch(
+      syncMercadoPago
+        ? "/api/billing/subscription?sync=mercadopago"
+        : "/api/billing/subscription",
+      { cache: "no-store" }
+    );
     const data = (await response.json()) as BillingResponse & { error?: string };
     setLoading(false);
 
@@ -69,17 +97,24 @@ export function BillingClient() {
     setSubscription(data.subscription);
     setPatientCount(data.patientCount);
     setPlans(data.plans);
+
+    if (syncMercadoPago) {
+      setMessage(
+        data.subscription?.status === "ACTIVE"
+          ? "Assinatura ativada com sucesso."
+          : "Recebemos seu retorno do Mercado Pago. A confirmação pode levar alguns instantes."
+      );
+    }
   }
 
-  async function updateSubscription(action: "change_plan" | "cancel" | "reactivate", planCode?: string) {
-    const key = planCode ? `${action}:${planCode}` : action;
-    setSavingAction(key);
+  async function updateSubscription(action: "cancel" | "reactivate") {
+    setSavingAction(action);
     setMessage(null);
 
     const response = await fetch("/api/billing/subscription", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action, ...(planCode ? { planCode } : {}) })
+      body: JSON.stringify({ action })
     });
     const data = (await response.json()) as { subscription?: Subscription; error?: string };
     setSavingAction(null);
@@ -144,13 +179,15 @@ export function BillingClient() {
 
         {message ? <p className="form-message neutral">{message}</p> : null}
 
-        {subscription?.status === "PAST_DUE" || subscription?.status === "CANCELED" ? (
+        {subscription?.status === "PAST_DUE" ||
+        subscription?.status === "CANCELED" ||
+        subscription?.status === "EXPIRED" ? (
           <div className="expiration-warning">
-            <strong>Atenção:</strong> Sua assinatura está pendente ou cancelada. Regularize para evitar o bloqueio de acesso dos seus pacientes.
+            <strong>Atenção:</strong> Seu teste terminou ou a assinatura está inativa. Escolha um plano abaixo para continuar usando todos os recursos.
           </div>
         ) : subscription?.status === "TRIALING" ? (
           <div className="expiration-warning" style={{ background: '#e0f2fe', borderColor: '#bae6fd', color: '#0369a1' }}>
-            <strong>Trial Ativo:</strong> Você está no período de testes. Assine um plano para continuar aproveitando todos os recursos.
+            <strong>Teste gratuito ativo:</strong> {trialRemainingDays === 1 ? "Resta 1 dia" : `Restam ${trialRemainingDays || 0} dias`}. Nenhum cartão é necessário durante o teste. Se ativar agora, a cobrança começa somente depois dele.
           </div>
         ) : null}
 
@@ -185,30 +222,32 @@ export function BillingClient() {
           </div>
         ) : null}
 
-        <div className="row-actions billing-actions">
-          {subscription?.status === "CANCELED" ? (
-            <button
-              className="button"
-              type="button"
-              disabled={savingAction === "reactivate"}
-              onClick={() => void updateSubscription("reactivate")}
-            >
-              {savingAction === "reactivate" ? "Reativando..." : "Reativar assinatura"}
-            </button>
-          ) : (
-            <button
-              className="button secondary"
-              type="button"
-              disabled={savingAction === "cancel"}
-              onClick={() => void updateSubscription("cancel")}
-            >
-              {savingAction === "cancel" ? "Cancelando..." : "Cancelar assinatura"}
-            </button>
-          )}
-        </div>
+        {canCancel || canReactivate ? (
+          <div className="row-actions billing-actions">
+            {canReactivate ? (
+              <button
+                className="button"
+                type="button"
+                disabled={savingAction === "reactivate"}
+                onClick={() => void updateSubscription("reactivate")}
+              >
+                {savingAction === "reactivate" ? "Reativando..." : "Reativar assinatura"}
+              </button>
+            ) : canCancel ? (
+              <button
+                className="button secondary"
+                type="button"
+                disabled={savingAction === "cancel"}
+                onClick={() => void updateSubscription("cancel")}
+              >
+                {savingAction === "cancel" ? "Cancelando..." : "Cancelar assinatura"}
+              </button>
+            ) : null}
+          </div>
+        ) : null}
 
         <p className="billing-note">
-          As assinaturas sao processadas pelo Mercado Pago. A ativacao pode levar alguns instantes apos a autorizacao.
+          As assinaturas são processadas pelo Mercado Pago. A ativação pode levar alguns instantes após a autorização.
         </p>
       </div>
 
@@ -224,8 +263,10 @@ export function BillingClient() {
           const actionKey = `checkout:${plan.code}`;
           const buttonLabel = currentPlanIsPaid
             ? "Plano atual"
-            : active
-              ? "Ativar assinatura"
+            : active && subscription?.status === "TRIALING"
+              ? "Ativar sem perder o teste"
+              : active
+                ? "Ativar assinatura"
               : "Assinar este plano";
 
           return (

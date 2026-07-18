@@ -120,7 +120,7 @@ export function RegisterProfessionalForm({ initialPlanCode = "professional" }: R
       </label>
       {message ? <p className="form-message error">{message}</p> : null}
       <button className="button" type="submit" disabled={loading}>
-        {loading ? "Criando..." : "Criar conta e iniciar trial"}
+        {loading ? "Criando..." : "Começar 7 dias grátis — sem cartão"}
       </button>
     </form>
   );

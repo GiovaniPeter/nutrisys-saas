@@ -12,6 +12,7 @@ import {
 import { PLANS } from "@/lib/plans";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
+import { getLatestSubscription, hasSubscriptionAccess } from "@/lib/subscriptions";
 
 const subscriptionUpdateSchema = z.discriminatedUnion("action", [
   z.object({
@@ -22,14 +23,49 @@ const subscriptionUpdateSchema = z.discriminatedUnion("action", [
   })
 ]);
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const user = await getCurrentUser();
 
   if (!user) {
     return error("Nao autenticado.", 401);
   }
 
-  const subscription = await getLatestSubscription(user.organizationId);
+  let subscription = await getLatestSubscription(user.organizationId);
+
+  if (
+    request.nextUrl.searchParams.get("sync") === "mercadopago" &&
+    subscription?.provider === "MERCADO_PAGO" &&
+    subscription.providerSubId
+  ) {
+    try {
+      assertMercadoPagoConfigured();
+      const preApproval = await mpPreApproval.get({ id: subscription.providerSubId });
+      const mercadoPagoStatus = (preApproval.status || "").toLowerCase();
+      const status =
+        mercadoPagoStatus === "pending" && hasSubscriptionAccess(subscription)
+          ? subscription.status
+          : mapMercadoPagoSubscriptionStatus(preApproval.status);
+
+      subscription = await prisma.subscription.update({
+        where: { id: subscription.id },
+        data: {
+          status,
+          providerCustomerId: preApproval.payer_id
+            ? String(preApproval.payer_id)
+            : preApproval.payer_email || subscription.providerCustomerId,
+          currentPeriodEndsAt:
+            parseMercadoPagoDate(preApproval.next_payment_date) || subscription.currentPeriodEndsAt
+        }
+      });
+    } catch (err) {
+      console.error("Falha ao confirmar assinatura no retorno do Mercado Pago.", err);
+    }
+  }
+
+  if (request.nextUrl.searchParams.get("summary") === "1") {
+    return json({ subscription });
+  }
+
   const patientCount = await prisma.patient.count({
     where: { organizationId: user.organizationId }
   });
@@ -120,33 +156,13 @@ export async function PATCH(request: NextRequest) {
       return json({ subscription });
     }
 
-    const subscription = await prisma.subscription.update({
-      where: { id: existing.id },
-      data: {
-        status: SubscriptionStatus.ACTIVE,
-        currentPeriodEndsAt: addDays(new Date(), 30)
-      }
-    });
-
-    await audit({
-      organizationId: user.organizationId,
-      userId: user.id,
-      action: "subscription.reactivated",
-      entity: "Subscription",
-      entityId: subscription.id
-    });
-
-    return json({ subscription });
+    return error(
+      "Escolha um plano e conclua a ativação no Mercado Pago para reativar a assinatura.",
+      409
+    );
   } catch (err) {
     return validationError(err);
   }
-}
-
-function getLatestSubscription(organizationId: string) {
-  return prisma.subscription.findFirst({
-    where: { organizationId },
-    orderBy: { createdAt: "desc" }
-  });
 }
 
 function addDays(date: Date, days: number) {

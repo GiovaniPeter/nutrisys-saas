@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { audit } from "@/lib/audit";
 import { error, json, validationError } from "@/lib/api";
 import { getCurrentUser } from "@/lib/session";
+import { getLatestSubscription, hasSubscriptionAccess } from "@/lib/subscriptions";
 
 const patientSchema = z.object({
   name: z.string().min(2, "Informe o nome do paciente."),
@@ -96,13 +97,13 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const activeSubscription = await prisma.subscription.findFirst({
-      where: { organizationId: user.organizationId },
-      orderBy: { createdAt: "desc" }
-    });
+    const activeSubscription = await getLatestSubscription(user.organizationId);
 
-    if (!activeSubscription || activeSubscription.provider !== "MERCADO_PAGO") {
-      return error("Para cadastrar pacientes, você precisa iniciar seu trial de 7 dias grátis. Acesse o menu Assinatura.", 403);
+    if (!hasSubscriptionAccess(activeSubscription)) {
+      return error(
+        "Seu teste gratuito terminou ou a assinatura está inativa. Acesse Assinatura para continuar cadastrando pacientes.",
+        403
+      );
     }
 
     const input = patientSchema.parse(await request.json());

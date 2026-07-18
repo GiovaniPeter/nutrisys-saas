@@ -50,8 +50,8 @@ export default function RegisterPage({ searchParams }: RegisterPageProps) {
           <span className="eyebrow">Criar acesso</span>
           <h1>Criar conta no ClinOS</h1>
           <p>
-            Escolha o perfil correto para iniciar o trial da clínica ou acessar
-            uma conta já vinculada por um profissional.
+            Escolha o perfil correto para começar 7 dias grátis, sem cartão, ou
+            acessar uma conta já vinculada por um profissional.
           </p>
 
           <div className="login-role-grid" aria-label="Tipos de cadastro">
@@ -71,7 +71,7 @@ export default function RegisterPage({ searchParams }: RegisterPageProps) {
         <div className="auth-panel">
           {selectedProfile === "nutricionista" ? (
             <>
-              <span className="eyebrow">Trial da clínica</span>
+              <span className="eyebrow">7 dias grátis · sem cartão</span>
               <h2>Cadastro do nutricionista</h2>
               <p>
                 Esta conta será a responsável pela clínica e poderá cadastrar
@@ -81,7 +81,7 @@ export default function RegisterPage({ searchParams }: RegisterPageProps) {
             </>
           ) : selectedProfile === "profissional" ? (
             <>
-              <span className="eyebrow">Trial da clínica</span>
+              <span className="eyebrow">7 dias grátis · sem cartão</span>
               <h2>Cadastro para outras especialidades</h2>
               <p>
                 Crie a clínica escolhendo sua especialidade. O sistema será adaptado

@@ -10,12 +10,12 @@ import {
   getAppUrl,
   moneyFromCents,
   mpPreApproval,
-  mpPreApprovalPlan,
   parseMercadoPagoDate
 } from "@/lib/mercadopago";
 import { findPlan } from "@/lib/plans";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
+import { getLatestSubscription, hasSubscriptionAccess } from "@/lib/subscriptions";
 
 const checkoutSchema = z.object({
   planCode: z.string().min(1)
@@ -42,10 +42,30 @@ export async function POST(request: NextRequest) {
       return error("Plano invalido.", 422);
     }
 
-    const existing = await prisma.subscription.findFirst({
-      where: { organizationId: user.organizationId },
-      orderBy: { createdAt: "desc" }
-    });
+    let existing = await getLatestSubscription(user.organizationId);
+    let providerPreApproval: Awaited<ReturnType<typeof mpPreApproval.get>> | null = null;
+
+    if (
+      existing?.provider === "MERCADO_PAGO" &&
+      existing.providerSubId &&
+      existing.status !== SubscriptionStatus.ACTIVE
+    ) {
+      providerPreApproval = await mpPreApproval.get({ id: existing.providerSubId });
+
+      if ((providerPreApproval.status || "").toLowerCase() === "authorized") {
+        existing = await prisma.subscription.update({
+          where: { id: existing.id },
+          data: {
+            status: SubscriptionStatus.ACTIVE,
+            providerCustomerId: providerPreApproval.payer_id
+              ? String(providerPreApproval.payer_id)
+              : existing.providerCustomerId,
+            currentPeriodEndsAt:
+              parseMercadoPagoDate(providerPreApproval.next_payment_date) || existing.currentPeriodEndsAt
+          }
+        });
+      }
+    }
 
     if (
       existing?.provider === "MERCADO_PAGO" &&
@@ -97,63 +117,124 @@ export async function POST(request: NextRequest) {
 
     const appUrl = getAppUrl();
     const planReason = buildReason(plan.name);
-
-    // Encontra ou cria o plano no Mercado Pago para evitar o bug de trial em assinaturas diretas
-    const planSearch = await mpPreApprovalPlan.search({
-      options: { status: "active", q: planReason }
+    const externalReference = buildSubscriptionReference({
+      organizationId: user.organizationId,
+      planCode: plan.code
     });
 
-    let mpPlanId = planSearch.results?.find((p) => p.reason === planReason)?.id;
-    let newPlan: any = null;
-
-    if (!mpPlanId) {
-      newPlan = await mpPreApprovalPlan.create({
+    if (
+      existing?.providerSubId &&
+      providerPreApproval &&
+      (providerPreApproval.status || "").toLowerCase() === "pending" &&
+      providerPreApproval.init_point
+    ) {
+      const updatedPreApproval = await mpPreApproval.update({
+        id: existing.providerSubId,
         body: {
           reason: planReason,
+          external_reference: externalReference,
+          payer_email: user.email,
+          back_url: `${appUrl}/billing?checkout=mercadopago`,
           auto_recurring: {
-            frequency: 1,
-            frequency_type: "months",
             transaction_amount: moneyFromCents(plan.monthlyPriceCents),
-            currency_id: "BRL",
-            free_trial: {
-              frequency: 7,
-              frequency_type: "days"
-            }
-          },
-          back_url: `${appUrl}/billing?checkout=mercadopago`
+            currency_id: "BRL"
+          }
         },
         requestOptions: { idempotencyKey: randomUUID() }
       });
-      mpPlanId = newPlan.id;
+      const checkoutUrl = updatedPreApproval.init_point || providerPreApproval.init_point;
+      const subscription = await prisma.subscription.update({
+        where: { id: existing.id },
+        data: {
+          planCode: plan.code,
+          provider: "MERCADO_PAGO",
+          providerSubId: updatedPreApproval.id || existing.providerSubId,
+          status: hasSubscriptionAccess(existing) ? existing.status : SubscriptionStatus.PAST_DUE
+        }
+      });
+
+      await audit({
+        organizationId: user.organizationId,
+        userId: user.id,
+        action: "subscription.mercadopago_checkout_reused",
+        entity: "Subscription",
+        entityId: subscription.id,
+        metadata: {
+          planCode: plan.code,
+          providerSubId: subscription.providerSubId,
+          status: "pending"
+        }
+      });
+
+      return json({
+        success: true,
+        checkoutUrl,
+        providerSubId: subscription.providerSubId,
+        status: "pending"
+      });
     }
 
-    if (!mpPlanId) {
-      return error("Erro ao configurar plano de assinatura no provedor.", 502);
+    const trialStartDate = getFutureTrialEnd(existing?.trialEndsAt);
+    const preApproval = await mpPreApproval.create({
+      body: {
+        reason: planReason,
+        external_reference: externalReference,
+        payer_email: user.email,
+        auto_recurring: {
+          frequency: 1,
+          frequency_type: "months",
+          ...(trialStartDate ? { start_date: trialStartDate } : {}),
+          transaction_amount: moneyFromCents(plan.monthlyPriceCents),
+          currency_id: "BRL"
+        },
+        back_url: `${appUrl}/billing?checkout=mercadopago`,
+        status: "pending"
+      },
+      requestOptions: { idempotencyKey: randomUUID() }
+    });
+
+    if (!preApproval.id || !preApproval.init_point) {
+      return error("Erro ao obter link de ativação da assinatura.", 502);
     }
 
-    const planInitPoint = newPlan ? newPlan.init_point : planSearch.results?.find((p) => p.reason === planReason)?.init_point;
-
-    if (!planInitPoint) {
-      return error("Erro ao obter link de checkout do plano.", 502);
-    }
+    const subscriptionData = {
+      planCode: plan.code,
+      provider: "MERCADO_PAGO",
+      providerCustomerId: preApproval.payer_id ? String(preApproval.payer_id) : user.email,
+      providerSubId: preApproval.id,
+      status: hasSubscriptionAccess(existing) ? existing!.status : SubscriptionStatus.PAST_DUE,
+      currentPeriodEndsAt: parseMercadoPagoDate(preApproval.next_payment_date)
+    };
+    const subscription = existing
+      ? await prisma.subscription.update({
+          where: { id: existing.id },
+          data: subscriptionData
+        })
+      : await prisma.subscription.create({
+          data: {
+            organizationId: user.organizationId,
+            ...subscriptionData
+          }
+        });
 
     await audit({
       organizationId: user.organizationId,
       userId: user.id,
       action: "subscription.mercadopago_checkout_created",
       entity: "Subscription",
-      entityId: existing?.id,
+      entityId: subscription.id,
       metadata: {
         planCode: plan.code,
-        providerSubId: mpPlanId,
+        providerSubId: preApproval.id,
+        firstChargeAt: trialStartDate,
         status: "pending"
       }
     });
 
     return json({
       success: true,
-      checkoutUrl: planInitPoint,
-      providerSubId: mpPlanId,
+      checkoutUrl: preApproval.init_point,
+      providerSubId: preApproval.id,
       status: "pending"
     });
   } catch (err) {
@@ -167,7 +248,16 @@ export async function POST(request: NextRequest) {
 }
 
 function buildReason(planName: string) {
-  return `NutreClin - Plano ${planName}`;
+  return `ClinOS - Plano ${planName}`;
+}
+
+function getFutureTrialEnd(trialEndsAt?: Date | null) {
+  if (!trialEndsAt) {
+    return null;
+  }
+
+  const minimumLeadTime = Date.now() + 10 * 60 * 1000;
+  return trialEndsAt.getTime() > minimumLeadTime ? trialEndsAt.toISOString() : null;
 }
 
 function isMercadoPagoError(err: unknown): err is { message: string; status?: number } {
