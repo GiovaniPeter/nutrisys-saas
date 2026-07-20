@@ -128,7 +128,7 @@ export default function Home() {
                 "name": "ClinOS",
                 "url": "https://clinos.tec.br/",
                 "email": "contato@clinos.tec.br",
-                "telephone": "+55-69-99925-8988"
+                "telephone": "+55-67-99982-4092"
               },
               {
                 "@type": "SoftwareApplication",
@@ -435,7 +435,7 @@ export default function Home() {
         <div className="np-footer-column">
           <h3>Fale conosco</h3>
           <a href="mailto:contato@clinos.tec.br">contato@clinos.tec.br</a>
-          <a href="tel:+5569999258988">(69) 99925-8988</a>
+          <a href="https://wa.me/5567999824092" target="_blank" rel="noopener noreferrer">(67) 99982-4092</a>
         </div>
 
         <p className="np-copyright">© 2026 ClinOS. Todos os direitos reservados.</p>
