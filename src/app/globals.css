@@ -924,6 +924,254 @@ button, input, textarea, select { font: inherit; }
   min-width: 210px;
 }
 
+.feedback-layout {
+  align-items: start;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) minmax(290px, 360px);
+  margin: 0 auto;
+  max-width: 1180px;
+}
+
+.feedback-form-card {
+  padding: clamp(20px, 3vw, 32px);
+}
+
+.feedback-form {
+  display: grid;
+  gap: 20px;
+}
+
+.feedback-type-fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.feedback-type-fieldset legend {
+  color: var(--app-ink);
+  font-size: .9rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.feedback-type-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.feedback-type-card {
+  align-items: center;
+  background: #f8fbf8;
+  border: 1px solid var(--app-line);
+  border-radius: 16px;
+  cursor: pointer;
+  display: flex;
+  gap: 13px;
+  min-height: 98px;
+  padding: 16px;
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+.feedback-type-card:hover {
+  border-color: rgba(22, 141, 56, .45);
+  transform: translateY(-1px);
+}
+
+.feedback-type-card:focus-within {
+  outline: 3px solid rgba(22, 141, 56, .2);
+  outline-offset: 2px;
+}
+
+.feedback-type-card.selected {
+  background: rgba(22, 141, 56, .06);
+  border-color: #168d38;
+  box-shadow: 0 0 0 3px rgba(22, 141, 56, .1);
+}
+
+.feedback-type-card.selected.bug {
+  background: rgba(194, 65, 12, .05);
+  border-color: #c2410c;
+  box-shadow: 0 0 0 3px rgba(194, 65, 12, .09);
+}
+
+.feedback-type-card input {
+  height: 1px;
+  opacity: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.feedback-type-icon {
+  align-items: center;
+  background: #e5f5e9;
+  border-radius: 12px;
+  color: #126c2d;
+  display: inline-flex;
+  flex: 0 0 42px;
+  font-size: 1.5rem;
+  font-weight: 900;
+  height: 42px;
+  justify-content: center;
+}
+
+.feedback-type-card.bug .feedback-type-icon {
+  background: #fff0e8;
+  color: #a53c0a;
+}
+
+.feedback-type-card strong,
+.feedback-type-card small {
+  display: block;
+}
+
+.feedback-type-card strong {
+  color: var(--app-ink);
+  margin-bottom: 4px;
+}
+
+.feedback-type-card small {
+  color: var(--app-muted);
+  line-height: 1.4;
+}
+
+.feedback-form label {
+  color: var(--app-ink);
+  font-weight: 800;
+}
+
+.feedback-form label input,
+.feedback-form label textarea {
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.feedback-bug-fields {
+  display: grid;
+  gap: 18px;
+}
+
+.optional-label {
+  color: var(--app-muted);
+  font-size: .78rem;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.feedback-context-option {
+  align-items: flex-start;
+  background: #f8fbf8;
+  border: 1px solid var(--app-line);
+  border-radius: 14px;
+  cursor: pointer;
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+}
+
+.feedback-context-option input {
+  flex: 0 0 auto;
+  height: 18px;
+  margin: 2px 0 0 !important;
+  width: 18px;
+}
+
+.feedback-context-option strong,
+.feedback-context-option small {
+  display: block;
+}
+
+.feedback-context-option small {
+  color: var(--app-muted);
+  font-weight: 500;
+  margin-top: 3px;
+}
+
+.feedback-privacy-note {
+  background: #fff8e8;
+  border: 1px solid #f1dda5;
+  border-radius: 12px;
+  color: #72520e;
+  font-size: .88rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 11px 13px;
+}
+
+.feedback-submit {
+  justify-self: end;
+  min-width: 210px;
+}
+
+.feedback-guide {
+  padding: 26px;
+  position: sticky;
+  top: 100px;
+}
+
+.feedback-guide h2 {
+  font-size: 1.45rem;
+  line-height: 1.15;
+  margin: 8px 0 22px;
+}
+
+.feedback-guide ul {
+  display: grid;
+  gap: 18px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.feedback-guide li {
+  border-left: 3px solid #b9dfc3;
+  display: grid;
+  gap: 4px;
+  padding-left: 13px;
+}
+
+.feedback-guide li span {
+  color: var(--app-muted);
+  font-size: .9rem;
+  line-height: 1.5;
+}
+
+.feedback-guide-callout {
+  background: var(--app-soft);
+  border-radius: 14px;
+  display: grid;
+  gap: 5px;
+  margin-top: 26px;
+  padding: 15px;
+}
+
+.feedback-guide-callout a {
+  color: var(--app-primary-dark);
+  font-weight: 800;
+}
+
+@media (max-width: 900px) {
+  .feedback-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .feedback-guide {
+    position: static;
+  }
+}
+
+@media (max-width: 620px) {
+  .feedback-type-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feedback-submit {
+    justify-self: stretch;
+    width: 100%;
+  }
+}
+
 .brand-preview {
   overflow: hidden;
   position: sticky;

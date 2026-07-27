@@ -33,6 +33,7 @@ export type AppNavKey =
   | "portal"
   | "billing"
   | "settings"
+  | "feedback"
   | "users";
 
 type IconName =
@@ -70,6 +71,7 @@ const navItems: NavItem[] = [
   { key: "reports", href: "/reports", label: "Relatórios", icon: "analytics" },
   { key: "chat", href: "/chat", label: "Mensagens", icon: "communication" },
   { key: "settings", href: "/settings", label: "Perfil", icon: "settings" },
+  { key: "feedback", href: "/feedback", label: "Sugestões e bugs", icon: "communication" },
   { key: "portal", href: "/portal/login", label: "Portal do Paciente", icon: "people" },
   { key: "schedule", href: "/schedule", label: "Calendário", icon: "clock", mobileOptional: true },
   { key: "meal-plans", href: "/meal-plans", label: "Planos", icon: "plan", mobileOptional: true },
@@ -132,6 +134,10 @@ const menuGroups: Array<{ label: string; keys: AppNavKey[] }> = [
   {
     label: "Relacionamento e Gestão",
     keys: ["portal", "whatsapp", "notifications", "kpis", "materials", "billing", "schedule"]
+  },
+  {
+    label: "Ajuda",
+    keys: ["feedback"]
   }
 ];
 
@@ -143,6 +149,10 @@ const menuGroupsProfessional: Array<{ label: string; keys: AppNavKey[] }> = [
   {
     label: "Relacionamento e Gestão",
     keys: ["portal", "whatsapp", "notifications", "kpis", "materials", "billing", "users", "schedule"]
+  },
+  {
+    label: "Ajuda",
+    keys: ["feedback"]
   }
 ];
 
@@ -153,7 +163,8 @@ const secretaryNavKeys = new Set<AppNavKey>([
   "schedule",
   "chat",
   "whatsapp",
-  "notifications"
+  "notifications",
+  "feedback"
 ]);
 
 const professionalNavKeys = new Set<AppNavKey>([
@@ -174,7 +185,8 @@ const professionalNavKeys = new Set<AppNavKey>([
   "portal",
   "billing",
   "users",
-  "settings"
+  "settings",
+  "feedback"
 ]);
 
 const specialtyLabels: Record<string, string> = {
