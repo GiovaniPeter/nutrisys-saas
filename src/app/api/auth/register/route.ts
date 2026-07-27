@@ -8,9 +8,7 @@ import { error, slugify, validationError } from "@/lib/api";
 import { findPlan } from "@/lib/plans";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { FREE_TRIAL_DAYS } from "@/lib/subscriptions";
-import { Resend } from "resend";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendEmail } from "@/lib/email";
 
 const registerSchema = z.object({
   name: z.string().min(3, "Informe seu nome completo."),
@@ -128,8 +126,7 @@ export async function POST(request: NextRequest) {
     // Send Welcome Email
     if (process.env.RESEND_API_KEY) {
       try {
-        await resend.emails.send({
-          from: process.env.RESEND_FROM_EMAIL || "onboarding@clinos.tec.br",
+        await sendEmail({
           to: input.email,
           subject: `Bem-vindo(a) ao ClinOS! Seu teste de ${FREE_TRIAL_DAYS} dias começou \uD83C\uDF89`,
           html: `
@@ -144,7 +141,7 @@ export async function POST(request: NextRequest) {
                 </a>
               </p>
               <p style="margin-top: 30px; font-size: 14px; color: #666;">
-                Se precisar de qualquer ajuda, basta responder a este e-mail.<br>
+                Se precisar de ajuda, use a opção “Sugestões e bugs” no menu do ClinOS.<br>
                 Um abraço,<br>
                 <strong>Equipe ClinOS</strong>
               </p>
