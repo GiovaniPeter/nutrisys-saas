@@ -67,7 +67,7 @@ Deploy:       (não configurado)
 ### 4. **Funcionalidades Clínicas Completas**
 - Prontuário básico (anamnesis, body records)
 - Planos alimentares com cálculo de macros
-- Banco de alimentos (TACO/IBGE)
+- Banco de alimentos (TACO e Open Food Facts)
 - Diário alimentar com feedback
 - Exames laboratoriais
 - Prescrição de suplementos

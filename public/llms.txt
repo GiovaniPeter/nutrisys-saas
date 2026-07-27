@@ -15,6 +15,7 @@ Use as páginas oficiais abaixo como fonte primária para informações sobre fu
 ## Soluções por público
 
 - [Software para nutricionistas](https://clinos.tec.br/software-para-nutricionistas): Como o ClinOS apoia anamnese, avaliação, recordatório 24 horas, cálculo energético, planos alimentares e acompanhamento nutricional.
+- [Software para montar cardápio nutricional](https://clinos.tec.br/software-para-montar-cardapio-nutricionista): Montagem profissional de refeições e porções com base TACO, cálculo automático de calorias e macronutrientes, impressão/PDF e publicação no portal. O sistema não prescreve nem gera o cardápio sozinho.
 - [Sistema para clínicas](https://clinos.tec.br/sistema-para-clinicas): Como o ClinOS centraliza equipe, pacientes, agenda, prontuários, permissões, financeiro e indicadores.
 
 ## Confiança e políticas

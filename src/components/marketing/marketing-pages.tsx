@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { TrackedLink } from "@/components/analytics/tracked-link";
 
 export type MarketingFeature = {
   title: string;
@@ -110,9 +111,14 @@ export function SolutionPage({
           <h1>{title}</h1>
           <p>{lead}</p>
           <div className="marketing-actions">
-            <Link href="/register" className="np-button np-button-primary">
+            <TrackedLink
+              href="/register?perfil=nutricionista&plan=professional&source=solution-hero"
+              className="np-button np-button-primary"
+              eventName="cta_click"
+              eventParams={{ cta_name: "start_free_trial", cta_location: "solution_hero" }}
+            >
               Testar grátis por 7 dias
-            </Link>
+            </TrackedLink>
             <Link href="/recursos" className="np-button np-button-outline">
               Explorar recursos
             </Link>
@@ -229,12 +235,20 @@ export function MarketingHeader() {
       <nav aria-label="Navegação principal">
         <Link href="/recursos">Recursos</Link>
         <Link href="/software-para-nutricionistas">Nutricionistas</Link>
+        <Link href="/software-para-montar-cardapio-nutricionista">Cardápios</Link>
         <Link href="/sistema-para-clinicas">Clínicas</Link>
         <Link href="/#planos">Planos</Link>
       </nav>
       <div className="marketing-header-actions">
         <Link href="/login">Entrar</Link>
-        <Link href="/register" className="np-button np-button-primary">Criar conta</Link>
+        <TrackedLink
+          href="/register?perfil=nutricionista&plan=professional&source=marketing-header"
+          className="np-button np-button-primary"
+          eventName="cta_click"
+          eventParams={{ cta_name: "create_account", cta_location: "marketing_header" }}
+        >
+          Criar conta
+        </TrackedLink>
       </div>
     </header>
   );
@@ -248,9 +262,14 @@ export function MarketingCta() {
         <h2>Centralize sua rotina sem perder o foco no paciente.</h2>
         <p>Crie sua conta, escolha o plano e teste os fluxos que fazem sentido para sua operação.</p>
       </div>
-      <Link href="/register" className="np-button np-button-light np-button-large">
+      <TrackedLink
+        href="/register?perfil=nutricionista&plan=professional&source=marketing-final-cta"
+        className="np-button np-button-light np-button-large"
+        eventName="cta_click"
+        eventParams={{ cta_name: "start_free_trial", cta_location: "marketing_final_cta" }}
+      >
         Começar teste grátis <span aria-hidden="true">→</span>
-      </Link>
+      </TrackedLink>
     </section>
   );
 }
@@ -271,6 +290,7 @@ export function MarketingFooter() {
       <nav aria-label="Soluções">
         <strong>Soluções</strong>
         <Link href="/software-para-nutricionistas">Para nutricionistas</Link>
+        <Link href="/software-para-montar-cardapio-nutricionista">Montagem de cardápios</Link>
         <Link href="/sistema-para-clinicas">Para clínicas</Link>
         <Link href="/recursos">Todos os recursos</Link>
       </nav>

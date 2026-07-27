@@ -1,11 +1,27 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+import { AnalyticsEvent } from "@/components/analytics/analytics-event";
+import { TrackedLink } from "@/components/analytics/tracked-link";
 import { RegisterForm } from "@/components/auth/register-form";
 import { RegisterProfessionalForm } from "@/components/auth/register-professional-form";
+
+export const metadata: Metadata = {
+  title: "Criar conta grátis no ClinOS",
+  description: "Crie sua conta profissional e teste o ClinOS por 7 dias, sem cartão de crédito.",
+  alternates: {
+    canonical: "/register"
+  },
+  robots: {
+    index: false,
+    follow: true
+  }
+};
 
 type RegisterPageProps = {
   searchParams?: {
     perfil?: string;
     plan?: string;
+    source?: string;
   };
 };
 
@@ -41,29 +57,41 @@ const registerOptions = [
 export default function RegisterPage({ searchParams }: RegisterPageProps) {
   const selectedProfile = normalizeProfile(searchParams?.perfil);
   const initialPlanCode = searchParams?.plan && allowedPlans.has(searchParams.plan) ? searchParams.plan : "professional";
+  const acquisitionSource = normalizeSource(searchParams?.source);
 
   return (
     <main className="shell auth-shell">
+      <AnalyticsEvent
+        name="registration_view"
+        params={{
+          professional_profile: selectedProfile,
+          plan_code: initialPlanCode,
+          acquisition_source: acquisitionSource
+        }}
+      />
       <section className="auth-layout">
         <div className="auth-copy">
           <Link href="/" className="auth-back">← Voltar para a landing</Link>
-          <span className="eyebrow">Criar acesso</span>
-          <h1>Criar conta no ClinOS</h1>
+          <span className="eyebrow auth-copy-eyebrow">Comece sem compromisso</span>
+          <h1>Comece seu teste no ClinOS</h1>
           <p>
-            Escolha o perfil correto para começar 7 dias grátis, sem cartão, ou
-            acessar uma conta já vinculada por um profissional.
+            Crie seu espaço profissional em poucos passos. São 7 dias grátis,
+            sem cartão de crédito.
           </p>
 
-          <div className="login-role-grid" aria-label="Tipos de cadastro">
+          <div className="login-role-grid auth-role-options" aria-label="Tipos de cadastro">
+            <span className="auth-role-label">Outro tipo de acesso</span>
             {registerOptions.map((option) => (
-              <Link
+              <TrackedLink
                 href={option.href}
                 key={option.key}
                 className={selectedProfile === option.key ? "login-role-card active" : "login-role-card"}
+                eventName="registration_profile_select"
+                eventParams={{ selected_profile: option.key }}
               >
                 <strong>{option.title}</strong>
                 <span>{option.text}</span>
-              </Link>
+              </TrackedLink>
             ))}
           </div>
         </div>
@@ -139,4 +167,9 @@ function normalizeProfile(profile?: string) {
   }
 
   return "nutricionista";
+}
+
+function normalizeSource(source?: string) {
+  if (!source) return "direct";
+  return source.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 48) || "direct";
 }

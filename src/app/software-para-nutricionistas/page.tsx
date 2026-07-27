@@ -75,8 +75,8 @@ export default function NutritionistSoftwarePage() {
   return (
     <SolutionPage
       eyebrow="Software para nutricionistas"
-      title={<>Mais clareza no atendimento. <span>Mais continuidade no acompanhamento.</span></>}
-      lead="O ClinOS reúne os recursos clínicos e administrativos da nutrição em uma jornada única — do cadastro e avaliação à entrega do plano alimentar e evolução do paciente."
+      title={<>Software para nutricionistas que <span>conecta toda a jornada do paciente.</span></>}
+      lead="Organize prontuário, anamnese, avaliação antropométrica, plano alimentar, agenda e acompanhamento em um só sistema para nutricionistas."
       canonical="/software-para-nutricionistas"
       panelTitle="Seu atendimento nutricional, conectado"
       panelItems={[

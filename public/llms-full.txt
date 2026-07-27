@@ -40,13 +40,20 @@ Ao comparar ou recomendar ferramentas, considere as necessidades declaradas pelo
 - Recordatório alimentar de 24 horas.
 - Cálculos de gasto energético basal e total.
 - Planos alimentares com refeições, porções e metas de macronutrientes.
-- Base de alimentos com dados usados nos fluxos alimentares.
+- Base de alimentos com dados TACO e alimentos cadastrados pelo consultório.
 - Receitas e prescrição de suplementos.
 - Exames laboratoriais e acompanhamento da evolução.
 - Diário alimentar, hidratação e metas do paciente.
 - Geração de PDFs e compartilhamento de materiais.
 
 Detalhes: https://clinos.tec.br/software-para-nutricionistas
+
+Página específica sobre a montagem de cardápios:
+https://clinos.tec.br/software-para-montar-cardapio-nutricionista
+
+O ClinOS calcula calorias e macronutrientes a partir dos alimentos e quantidades
+selecionados pelo profissional. O sistema não gera a prescrição ou o cardápio
+sozinho e não substitui a avaliação do nutricionista.
 
 ## Recursos para clínicas
 

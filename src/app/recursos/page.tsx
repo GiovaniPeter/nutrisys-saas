@@ -110,11 +110,14 @@ export default function ResourcesPage() {
           recursos depende do plano e do perfil de acesso configurado.
         </p>
         <div className="marketing-actions">
-          <Link href="/software-para-nutricionistas" className="np-button np-button-primary">
-            Solução para nutricionistas
+          <Link href="/software-para-montar-cardapio-nutricionista" className="np-button np-button-primary">
+            Ver montagem de cardápios
+          </Link>
+          <Link href="/software-para-nutricionistas" className="np-button np-button-outline">
+            Para nutricionistas
           </Link>
           <Link href="/sistema-para-clinicas" className="np-button np-button-outline">
-            Solução para clínicas
+            Para clínicas
           </Link>
         </div>
       </section>

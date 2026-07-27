@@ -1,7 +1,8 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { trackEvent } from "@/lib/analytics";
 
 type Specialty = {
   value: string;
@@ -32,6 +33,7 @@ export function RegisterProfessionalForm({ initialPlanCode = "professional" }: R
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [selectedSpecialty, setSelectedSpecialty] = useState<Specialty>(specialties[0]);
+  const hasStarted = useRef(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -39,30 +41,58 @@ export function RegisterProfessionalForm({ initialPlanCode = "professional" }: R
     setMessage(null);
 
     const form = new FormData(event.currentTarget);
-    const response = await fetch("/api/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: form.get("name"),
-        email: form.get("email"),
-        password: form.get("password"),
-        organizationName: form.get("organizationName"),
-        planCode: form.get("planCode"),
-        specialty: form.get("specialty"),
-        councilRegistration: form.get("councilRegistration")
-      })
+    const planCode = String(form.get("planCode") || initialPlanCode);
+    const specialty = String(form.get("specialty") || "other");
+
+    trackEvent("registration_submit", {
+      professional_profile: specialty,
+      plan_code: planCode
     });
 
-    const data = await response.json();
-    setLoading(false);
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.get("name"),
+          email: form.get("email"),
+          password: form.get("password"),
+          organizationName: form.get("organizationName"),
+          planCode,
+          specialty,
+          councilRegistration: form.get("councilRegistration")
+        })
+      });
 
-    if (!response.ok) {
-      setMessage(data.error || "Não foi possível criar a conta.");
-      return;
+      const data = await response.json();
+
+      if (!response.ok) {
+        trackEvent("registration_error", {
+          professional_profile: specialty,
+          plan_code: planCode,
+          http_status: response.status
+        });
+        setMessage(data.error || "Não foi possível criar a conta.");
+        return;
+      }
+
+      trackEvent("sign_up", {
+        method: "email",
+        professional_profile: specialty,
+        plan_code: planCode
+      });
+      router.push("/dashboard");
+      router.refresh();
+    } catch {
+      trackEvent("registration_error", {
+        professional_profile: specialty,
+        plan_code: planCode,
+        error_type: "network"
+      });
+      setMessage("Não foi possível conectar ao ClinOS. Tente novamente.");
+    } finally {
+      setLoading(false);
     }
-
-    router.push("/dashboard");
-    router.refresh();
   }
 
   function handleSpecialtyChange(value: string) {
@@ -70,8 +100,17 @@ export function RegisterProfessionalForm({ initialPlanCode = "professional" }: R
     if (found) setSelectedSpecialty(found);
   }
 
+  function handleFormStart() {
+    if (hasStarted.current) return;
+    hasStarted.current = true;
+    trackEvent("registration_start", {
+      professional_profile: selectedSpecialty.value,
+      plan_code: initialPlanCode
+    });
+  }
+
   return (
-    <form className="form" onSubmit={handleSubmit}>
+    <form className="form registration-form" onSubmit={handleSubmit} onFocusCapture={handleFormStart}>
       <label>
         Especialidade
         <select
@@ -96,28 +135,33 @@ export function RegisterProfessionalForm({ initialPlanCode = "professional" }: R
       </label>
       <label>
         Nome completo
-        <input name="name" required minLength={3} placeholder="Dr. João Silva" />
+        <input name="name" required minLength={3} autoComplete="name" placeholder="Dr. João Silva" />
       </label>
       <label>
         E-mail
-        <input name="email" type="email" required placeholder="joao@clinica.com" />
+        <input name="email" type="email" required autoComplete="email" placeholder="joao@clinica.com" />
       </label>
       <label>
         Senha
-        <input name="password" type="password" required minLength={8} placeholder="Mínimo 8 caracteres" />
+        <input
+          name="password"
+          type="password"
+          required
+          minLength={8}
+          autoComplete="new-password"
+          placeholder="Mínimo 8 caracteres"
+        />
       </label>
       <label>
         Nome da clínica
-        <input name="organizationName" required placeholder="Clínica Saúde Integral" />
+        <input name="organizationName" required autoComplete="organization" placeholder="Clínica Saúde Integral" />
       </label>
-      <label>
-        Plano inicial
-        <select name="planCode" defaultValue={initialPlanCode}>
-          <option value="essential">Essencial</option>
-          <option value="professional">Profissional</option>
-          <option value="clinic">Clínica</option>
-        </select>
-      </label>
+      <input name="planCode" type="hidden" value={initialPlanCode} />
+      <div className="registration-plan-note">
+        <span>Teste selecionado</span>
+        <strong>7 dias para conhecer o ClinOS</strong>
+        <small>Sem cartão. Você poderá comparar ou trocar o plano depois.</small>
+      </div>
       {message ? <p className="form-message error">{message}</p> : null}
       <button className="button" type="submit" disabled={loading}>
         {loading ? "Criando..." : "Começar 7 dias grátis — sem cartão"}

@@ -64,6 +64,6 @@ npm.cmd run dev
 - Conectar a landing atual ao `POST /api/auth/register`.
 - Migrar a tela de pacientes do `localStorage` para `GET/POST /api/patients`.
 - Migrar a tela de cardápios para `GET/POST /api/meal-plans`.
-- Criar seed/importação da TACO/IBGE no PostgreSQL.
+- Criar seed/importação da TACO e Open Food Facts no PostgreSQL.
 - Integrar Mercado Pago ou Stripe para checkout e webhooks.
 - Criar geração real de PDF no servidor.

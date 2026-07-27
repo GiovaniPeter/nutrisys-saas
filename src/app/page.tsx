@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { Metadata } from "next";
+import { AnalyticsEvent } from "@/components/analytics/analytics-event";
+import { TrackedLink } from "@/components/analytics/tracked-link";
 import { DashboardLink } from "@/components/auth/dashboard-link";
 
 export const metadata: Metadata = {
@@ -21,7 +23,7 @@ const features = [
   {
     icon: "meal",
     title: "Planos alimentares e receitas",
-    text: "Monte planos alimentares personalizados com tabela TACO/IBGE, calcule macros automaticamente e envie pelo portal do paciente."
+    text: "Monte planos alimentares personalizados com a base TACO e alimentos próprios, calcule macros automaticamente e publique no portal do paciente."
   },
   {
     icon: "calendar",
@@ -83,7 +85,7 @@ const plans = [
 const faqs = [
   {
     question: "Serve para nutricionistas?",
-    answer: "Sim! O ClinOS foi pensado especialmente para nutricionistas: planos alimentares, recordatório 24h, tabela TACO/IBGE, diário alimentar, cálculo de GEB/GET e muito mais."
+    answer: "Sim! O ClinOS inclui fluxos para nutricionistas, como montagem de planos alimentares com base TACO, recordatório 24h, diário alimentar e cálculo de GEB/GET."
   },
   {
     question: "E para outros profissionais de saúde?",
@@ -108,6 +110,7 @@ export default function Home() {
 
   return (
     <main className="np-page">
+      <AnalyticsEvent name="marketing_landing_view" params={{ landing_name: "home" }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -191,6 +194,7 @@ export default function Home() {
         <nav className="np-nav" aria-label="Navegação principal">
           <Link href="/recursos">Recursos</Link>
           <Link href="/software-para-nutricionistas">Nutricionistas</Link>
+          <Link href="/software-para-montar-cardapio-nutricionista">Cardápios</Link>
           <Link href="/sistema-para-clinicas">Clínicas</Link>
           <a href="#planos">Planos</a>
         </nav>
@@ -200,9 +204,14 @@ export default function Home() {
           <Link href="/login" className="np-button np-button-outline">
             Login
           </Link>
-          <Link href="/register" className="np-button np-button-primary">
+          <TrackedLink
+            href="/register?perfil=nutricionista&source=home-header"
+            className="np-button np-button-primary"
+            eventName="cta_click"
+            eventParams={{ cta_name: "create_account", cta_location: "home_header" }}
+          >
             Criar conta
-          </Link>
+          </TrackedLink>
         </div>
       </header>
 
@@ -220,6 +229,26 @@ export default function Home() {
           <p>
             Prontuário, agenda, financeiro, planos alimentares e portal do paciente — tudo em uma <strong>única plataforma</strong>.
           </p>
+
+          <div className="np-hero-actions">
+            <TrackedLink
+              href="/register?perfil=nutricionista&plan=professional&source=home-hero"
+              className="np-button np-button-primary np-button-large"
+              eventName="cta_click"
+              eventParams={{ cta_name: "start_free_trial", cta_location: "home_hero", plan_code: "professional" }}
+            >
+              Testar grátis por 7 dias <span aria-hidden="true">→</span>
+            </TrackedLink>
+            <TrackedLink
+              href="/software-para-montar-cardapio-nutricionista"
+              className="np-button np-button-outline np-button-large"
+              eventName="cta_click"
+              eventParams={{ cta_name: "view_meal_plan_builder", cta_location: "home_hero" }}
+            >
+              Ver montagem de cardápios
+            </TrackedLink>
+          </div>
+          <p className="np-hero-trial-note">Sem cartão de crédito · cancele quando quiser</p>
 
           <div className="np-hero-features">
             <div className="np-hero-feature">
@@ -344,9 +373,14 @@ export default function Home() {
               <ul>
                 {plan.features.map((feature) => <li key={feature}>{feature}</li>)}
               </ul>
-              <Link href={`/register?plan=${plan.code}`} className={plan.highlighted ? "np-button np-button-primary" : "np-button np-button-outline"}>
+              <TrackedLink
+                href={`/register?perfil=nutricionista&plan=${plan.code}&source=home-pricing`}
+                className={plan.highlighted ? "np-button np-button-primary" : "np-button np-button-outline"}
+                eventName="cta_click"
+                eventParams={{ cta_name: "select_plan", cta_location: "home_pricing", plan_code: plan.code }}
+              >
                 Começar trial
-              </Link>
+              </TrackedLink>
             </article>
           ))}
         </div>
@@ -386,9 +420,14 @@ export default function Home() {
           </p>
         </div>
         <div className="np-final-action">
-          <Link href={trialHref} className="np-button np-button-light np-button-large">
+          <TrackedLink
+            href={`${trialHref}?perfil=nutricionista&plan=professional&source=home-final-cta`}
+            className="np-button np-button-light np-button-large"
+            eventName="cta_click"
+            eventParams={{ cta_name: "create_account", cta_location: "home_final_cta", plan_code: "professional" }}
+          >
             Criar conta agora <span aria-hidden="true">→</span>
-          </Link>
+          </TrackedLink>
           <small>7 dias de trial grátis</small>
         </div>
       </section>
@@ -410,6 +449,7 @@ export default function Home() {
           links={[
             { label: "Recursos", href: "/recursos" },
             { label: "Nutricionistas", href: "/software-para-nutricionistas" },
+            { label: "Cardápios", href: "/software-para-montar-cardapio-nutricionista" },
             { label: "Clínicas", href: "/sistema-para-clinicas" },
             { label: "Planos", href: "/#planos" }
           ]}

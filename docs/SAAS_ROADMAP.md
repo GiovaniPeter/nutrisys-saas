@@ -22,7 +22,7 @@ Pontos fortes já existentes:
 - Login local com perfis de nutricionista e secretária.
 - Cadastro de pacientes, consultas, agenda, financeiro e KPIs.
 - Planos alimentares com metas, cálculo de macros, substituições e lista de compras.
-- Banco de alimentos inicial com dados TACO/IBGE.
+- Banco de alimentos inicial com dados TACO e Open Food Facts.
 - Anamnese, recordatório 24h, exames, suplementos e evolução corporal.
 - Portal do paciente simulado, diário alimentar, metas, hidratação, chat e videochamada via Jitsi.
 - Relatórios imprimíveis com aparência de PDF.
@@ -217,4 +217,3 @@ Prioridade de produto:
 2. Definir três planos simples: Essencial, Profissional e Clínica.
 3. Criar uma lista de 5 a 10 nutricionistas beta para testar fluxo real.
 4. Validar se o maior diferencial será preço, experiência do paciente, automação ou IA.
-
