@@ -129,6 +129,7 @@ export async function POST(request: NextRequest) {
         await sendEmail({
           to: input.email,
           subject: `Bem-vindo(a) ao ClinOS! Seu teste de ${FREE_TRIAL_DAYS} dias começou \uD83C\uDF89`,
+          replyTo: process.env.SUPPORT_EMAIL || process.env.FEEDBACK_EMAIL || "suporteclinostec@gmail.com",
           html: `
             <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; line-height: 1.6;">
               <h1 style="color: #009981;">Bem-vindo(a) ao ClinOS!</h1>

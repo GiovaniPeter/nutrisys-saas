@@ -80,7 +80,8 @@ export async function POST(request: Request) {
       await sendEmail({
         to: process.env.FEEDBACK_EMAIL || process.env.SUPPORT_EMAIL || "contato@clinos.tec.br",
         subject: `[ClinOS] ${label}: ${input.title}`,
-        html: buildEmailTemplate(label, content)
+        html: buildEmailTemplate(label, content),
+        replyTo: user.email
       });
     } catch (emailError) {
       console.error("Solicitação registrada, mas a notificação de feedback falhou:", emailError);

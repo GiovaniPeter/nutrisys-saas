@@ -15,10 +15,12 @@ export async function sendEmail({
   to,
   subject,
   html,
+  replyTo,
 }: {
   to: string | string[];
   subject: string;
   html: string;
+  replyTo?: string;
 }) {
   if (!resend) {
     console.warn('RESEND_API_KEY não configurada. Simulando envio de e-mail:', { to, subject });
@@ -31,6 +33,7 @@ export async function sendEmail({
       to: Array.isArray(to) ? to : [to],
       subject,
       html,
+      ...(replyTo ? { replyTo } : {}),
     });
 
     if (error) {
