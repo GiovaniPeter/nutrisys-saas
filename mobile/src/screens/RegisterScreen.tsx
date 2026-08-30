@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { PRIVACY_POLICY_URL, api, getApiBaseUrl } from '../services/api';
+import { PRIVACY_POLICY_URL, api } from '../services/api';
 
 export default function RegisterScreen({ navigation }: any) {
   const [name, setName] = useState('');
@@ -22,8 +22,18 @@ export default function RegisterScreen({ navigation }: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [specialty, setSpecialty] = useState('nutricionista');
+  const [councilRegistration, setCouncilRegistration] = useState('');
   const [planCode, setPlanCode] = useState<'essential' | 'professional' | 'clinic'>('professional');
   const [loading, setLoading] = useState(false);
+
+  const specialties = [
+    { key: 'nutricionista', label: 'Nutrição' },
+    { key: 'medico', label: 'Medicina' },
+    { key: 'psicologo', label: 'Psicologia' },
+    { key: 'fisioterapeuta', label: 'Fisioterapia' },
+    { key: 'outro', label: 'Outra área' },
+  ];
 
   const handleRegister = async () => {
     if (!name.trim() || !organizationName.trim() || !email.trim() || !password) {
@@ -44,12 +54,13 @@ export default function RegisterScreen({ navigation }: any) {
         email: email.trim().toLowerCase(),
         password,
         planCode,
+        specialty: specialty === 'nutricionista' ? undefined : specialty,
+        councilRegistration: councilRegistration.trim() || undefined,
       });
 
       const loginResponse = await api.post('/auth/login', {
         email: email.trim().toLowerCase(),
         password,
-        accessMode: 'nutritionist',
       });
 
       const { token, user } = loginResponse.data;
@@ -72,10 +83,9 @@ export default function RegisterScreen({ navigation }: any) {
       const data = error.response?.data;
       const message = data?.error || data?.message || error.message || 'Não foi possível criar a conta.';
       if (!status) {
-        const currentApiBaseUrl = await getApiBaseUrl();
         Alert.alert(
           'Erro de conexão',
-          `Não foi possível acessar ${currentApiBaseUrl}. Volte ao login, abra "Configurar conexão do app" e use "Testar conexão".`
+          'Não foi possível acessar o serviço. Verifique sua conexão com a internet e tente novamente.'
         );
         return;
       }
@@ -174,6 +184,30 @@ export default function RegisterScreen({ navigation }: any) {
           </TouchableOpacity>
         </View>
 
+        <Text style={styles.sectionLabel}>Especialidade principal</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.specialtyScroll}>
+          {specialties.map((spec) => (
+            <TouchableOpacity
+              key={spec.key}
+              style={[styles.specialtyChip, specialty === spec.key && styles.specialtyChipActive]}
+              onPress={() => setSpecialty(spec.key)}
+            >
+              <Text style={[styles.specialtyChipText, specialty === spec.key && styles.specialtyChipTextActive]}>
+                {spec.label}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+
+        <TextInput
+          autoCapitalize="characters"
+          onChangeText={setCouncilRegistration}
+          placeholder="Registro profissional (CRN, CRM...) - opcional"
+          placeholderTextColor="#9ca3af"
+          style={styles.input}
+          value={councilRegistration}
+        />
+
         <Text style={styles.sectionLabel}>Plano inicial</Text>
         <View style={styles.planRow}>
           <PlanButton label="Essencial" active={planCode === 'essential'} onPress={() => setPlanCode('essential')} />
@@ -238,6 +272,28 @@ const styles = StyleSheet.create({
   passwordInput: { flex: 1, fontSize: 16, padding: 16 },
   eyeButton: { paddingHorizontal: 14, paddingVertical: 12 },
   sectionLabel: { color: '#374151', fontSize: 14, fontWeight: '800', marginBottom: 10 },
+  specialtyScroll: { flexDirection: 'row', marginBottom: 16 },
+  specialtyChip: {
+    backgroundColor: '#fff',
+    borderColor: '#e5e7eb',
+    borderRadius: 20,
+    borderWidth: 1,
+    marginRight: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+  },
+  specialtyChipActive: {
+    backgroundColor: '#ecfdf5',
+    borderColor: '#10b981',
+  },
+  specialtyChipText: {
+    color: '#6b7280',
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  specialtyChipTextActive: {
+    color: '#047857',
+  },
   planRow: { flexDirection: 'row', gap: 8, marginBottom: 22 },
   planButton: {
     alignItems: 'center',

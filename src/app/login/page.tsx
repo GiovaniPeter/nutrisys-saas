@@ -44,6 +44,7 @@ const accessOptions = [
 
 export default function LoginPage({ searchParams }: LoginPageProps) {
   const selectedProfile = normalizeProfile(searchParams?.perfil);
+  const canCreateTrial = selectedProfile === "nutricionista" || selectedProfile === "profissional";
 
   return (
     <main className="shell auth-shell">
@@ -109,7 +110,15 @@ export default function LoginPage({ searchParams }: LoginPageProps) {
           )}
 
           <p className="auth-footer-note">
-            Ainda não tem conta? <Link href="/register">Criar trial</Link>
+            {canCreateTrial ? (
+              <>
+                Ainda não tem conta? <Link href={`/register?perfil=${selectedProfile}`}>Criar trial</Link>
+              </>
+            ) : selectedProfile === "secretaria" ? (
+              "O acesso da secretária deve ser criado pelo responsável da clínica."
+            ) : (
+              "O acesso do paciente deve ser liberado pela clínica."
+            )}
           </p>
         </div>
       </section>

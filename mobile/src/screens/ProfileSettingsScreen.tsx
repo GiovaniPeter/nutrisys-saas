@@ -138,7 +138,7 @@ export default function ProfileSettingsScreen() {
 
   const shareBookingLink = async () => {
     if (!organization?.slug) return;
-    const url = `https://nutrisys-pro-rho.vercel.app/book/${organization.slug}`;
+    const url = `https://clinos.tec.br/book/${organization.slug}`;
     try {
       await Share.share({
         message: `Agende sua consulta online através do nosso link:\n${url}`,
@@ -235,7 +235,7 @@ export default function ProfileSettingsScreen() {
       {organization?.slug && (
         <View style={styles.card}>
           <View style={styles.linkHeader}>
-            <MaterialCommunityIcons name="calendar-link" size={24} color="#10b981" />
+            <MaterialCommunityIcons name="calendar-account" size={24} color="#10b981" />
             <Text style={styles.sectionTitleLink}>Link Público de Agendamento</Text>
           </View>
           <Text style={styles.descriptionText}>
@@ -243,7 +243,7 @@ export default function ProfileSettingsScreen() {
           </Text>
           <View style={styles.linkBox}>
             <Text style={styles.linkText} numberOfLines={1}>
-              https://nutrisys-pro-rho.vercel.app/book/{organization.slug}
+              https://clinos.tec.br/book/{organization.slug}
             </Text>
           </View>
           <TouchableOpacity style={styles.shareButton} onPress={shareBookingLink}>

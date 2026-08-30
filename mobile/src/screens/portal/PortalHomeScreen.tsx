@@ -208,9 +208,9 @@ export default function PortalHomeScreen({ navigation }: any) {
 
         <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('AppSettings')}>
           <View style={[styles.iconCircle, { backgroundColor: '#f3f4f6' }]}>
-             <MaterialCommunityIcons name="cog-outline" size={32} color="#4b5563" />
+             <MaterialCommunityIcons name="shield-account-outline" size={32} color="#4b5563" />
           </View>
-          <Text style={styles.menuText}>Config. App</Text>
+          <Text style={styles.menuText}>Privacidade</Text>
         </TouchableOpacity>
       </View>
 

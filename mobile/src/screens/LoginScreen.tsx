@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { PASSWORD_RECOVERY_URL, PRIVACY_POLICY_URL, api, getApiBaseUrl } from '../services/api';
+import { PASSWORD_RECOVERY_URL, PRIVACY_POLICY_URL, api } from '../services/api';
 
 export default function LoginScreen({ navigation }: any) {
   const [activeTab, setActiveTab] = useState<'PROFESSIONAL' | 'PATIENT'>('PROFESSIONAL');
@@ -75,10 +75,9 @@ export default function LoginScreen({ navigation }: any) {
        const data = error.response?.data;
        const msg = data?.error || data?.message || error.message || 'Erro ao realizar login.';
        if (!status) {
-         const currentApiBaseUrl = await getApiBaseUrl();
          Alert.alert(
            'Erro de conexão',
-           `Não foi possível acessar ${currentApiBaseUrl}. Abra "Configurar conexão do app" e use "Testar conexão".`
+           'Não foi possível acessar o serviço. Verifique sua conexão com a internet e tente novamente.'
          );
          return;
        }
@@ -230,10 +229,6 @@ export default function LoginScreen({ navigation }: any) {
           </TouchableOpacity>
         ) : null}
 
-        <TouchableOpacity style={styles.settingsButton} onPress={() => navigation.navigate('AppSettings')}>
-          <Text style={styles.settingsText}>Configurar conexão do app</Text>
-        </TouchableOpacity>
-
         <TouchableOpacity style={styles.privacyButton} onPress={handleOpenPrivacyPolicy}>
           <Text style={styles.privacyText}>Política de privacidade</Text>
         </TouchableOpacity>
@@ -379,16 +374,6 @@ const styles = StyleSheet.create({
     color: '#047857',
     fontSize: 14,
     fontWeight: '800',
-  },
-  settingsButton: {
-    alignItems: 'center',
-    marginTop: 18,
-    padding: 8,
-  },
-  settingsText: {
-    color: '#047857',
-    fontSize: 14,
-    fontWeight: '700',
   },
   privacyButton: {
     alignItems: 'center',

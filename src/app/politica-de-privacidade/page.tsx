@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Política de Privacidade | ClinOS",
-  description: "Política de Privacidade do ClinOS.",
+  description: "Política de Privacidade do aplicativo e da plataforma ClinOS.",
   alternates: {
     canonical: "/politica-de-privacidade"
   }
@@ -13,7 +13,7 @@ const sections = [
   {
     title: "1. Quem somos",
     text: [
-      "O ClinOS é uma plataforma para nutricionistas, clínicas e pacientes, voltada à organização de atendimentos, prontuários, planos alimentares, receitas, agenda, comunicação e acompanhamento nutricional.",
+      "O ClinOS é um aplicativo e uma plataforma para nutricionistas, clínicas e pacientes, voltado à organização de atendimentos, prontuários, planos alimentares, receitas, agenda, comunicação e acompanhamento nutricional.",
       "Esta Politica de Privacidade explica quais dados podem ser tratados, para quais finalidades e quais direitos os usuarios possuem."
     ]
   },
@@ -44,7 +44,7 @@ const sections = [
   {
     title: "5. Dados de saude e informacoes sensiveis",
     text: [
-      "O ClinOS pode tratar dados relacionados à saúde, nutrição, composição corporal, exames e acompanhamento alimentar. Esses dados são usados para permitir que profissionais e pacientes acompanhem o tratamento nutricional e as informações registradas na plataforma.",
+      "O aplicativo e a plataforma ClinOS podem tratar dados relacionados à saúde, nutrição, composição corporal, exames e acompanhamento alimentar. Esses dados são usados para permitir que profissionais e pacientes acompanhem o tratamento nutricional e as informações registradas na plataforma.",
       "O uso desses dados deve respeitar a legislacao aplicavel, incluindo a Lei Geral de Protecao de Dados Pessoais (LGPD)."
     ]
   },
@@ -88,12 +88,12 @@ export default function PrivacyPolicyPage() {
       <section className="legal-hero">
         <Link href="/" className="legal-back">ClinOS</Link>
         <span className="eyebrow">Privacidade</span>
-        <h1>Politica de Privacidade</h1>
+        <h1>Política de Privacidade do ClinOS</h1>
         <p>
-          Esta política descreve como o ClinOS trata dados pessoais,
-          dados de saúde e informações usadas para operar a plataforma.
+          Esta política descreve como o aplicativo e a plataforma ClinOS tratam
+          dados pessoais, dados de saúde e informações usadas para operar o serviço.
         </p>
-        <small>Última atualização: 18 de julho de 2026</small>
+        <small>Última atualização: 29 de agosto de 2026</small>
       </section>
 
       <section className="legal-content">
@@ -106,10 +106,11 @@ export default function PrivacyPolicyPage() {
           </article>
         ))}
         <article>
-          <h2>Exclusao de conta</h2>
+          <h2>Exclusão de conta e dados do ClinOS</h2>
           <p>
-            Para solicitar a exclusao da sua conta e dos dados associados ao app,
-            acesse <Link href="/exclusao-de-conta">a pagina de exclusao de conta</Link>.
+            Para solicitar a exclusão da sua conta do ClinOS e dos dados
+            associados ao aplicativo, acesse a {" "}
+            <Link href="/exclusao-de-conta">página oficial de exclusão de conta e dados</Link>.
           </p>
         </article>
       </section>

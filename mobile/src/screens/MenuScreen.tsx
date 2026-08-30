@@ -42,8 +42,9 @@ export default function MenuScreen({ navigation }: any) {
     { icon: 'chat-processing', title: 'Chat', route: 'PatientChat', needsPatient: true },
     { icon: 'currency-usd', title: 'Financeiro', route: 'Financial' },
     { icon: 'file-document-multiple', title: 'Materiais', route: 'ProfessionalMaterials' },
+    { icon: 'message-alert-outline', title: 'Sugestões/Bugs', route: 'Feedback' },
     { icon: 'store-settings', title: 'Meu Perfil', route: 'ProfileSettings' },
-    { icon: 'cog-outline', title: 'Config. App', route: 'AppSettings' },
+    { icon: 'shield-account-outline', title: 'Privacidade', route: 'AppSettings' },
   ];
 
   const handleMenuPress = (item: typeof menuItems[0]) => {

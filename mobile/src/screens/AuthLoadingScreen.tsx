@@ -1,18 +1,14 @@
 import React, { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { api, getApiBaseUrl } from '../services/api';
 
 export default function AuthLoadingScreen({ navigation }: any) {
   useEffect(() => {
     async function restoreSession() {
-      const [token, role, apiBaseUrl] = await Promise.all([
+      const [token, role] = await Promise.all([
         AsyncStorage.getItem('@NutriPlan:token'),
         AsyncStorage.getItem('@NutriPlan:role'),
-        getApiBaseUrl(),
       ]);
-
-      api.defaults.baseURL = apiBaseUrl;
 
       if (!token) {
         navigation.replace('Login');

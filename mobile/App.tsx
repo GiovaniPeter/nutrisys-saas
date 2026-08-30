@@ -33,6 +33,7 @@ import FoodsScreen from './src/screens/FoodsScreen';
 import AppSettingsScreen from './src/screens/AppSettingsScreen';
 import ProfileSettingsScreen from './src/screens/ProfileSettingsScreen';
 import ProfessionalMaterialsScreen from './src/screens/ProfessionalMaterialsScreen';
+import FeedbackScreen from './src/screens/FeedbackScreen';
 
 // Portal do Paciente
 import PortalHomeScreen from './src/screens/portal/PortalHomeScreen';
@@ -325,7 +326,7 @@ export default function App() {
           <Stack.Screen
             name="AppSettings"
             component={AppSettingsScreen}
-            options={{ title: 'Configurações do App' }}
+            options={{ title: 'Privacidade e conta' }}
           />
           <Stack.Screen
             name="ProfileSettings"
@@ -336,6 +337,11 @@ export default function App() {
             name="ProfessionalMaterials"
             component={ProfessionalMaterialsScreen}
             options={{ title: 'Materiais' }}
+          />
+          <Stack.Screen
+            name="Feedback"
+            component={FeedbackScreen}
+            options={{ title: 'Sugestões e Bugs' }}
           />
         </Stack.Navigator>
       </NavigationContainer>
