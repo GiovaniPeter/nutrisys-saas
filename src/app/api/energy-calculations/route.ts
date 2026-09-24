@@ -5,7 +5,14 @@ import { error, json, validationError } from "@/lib/api";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 
-const formulaSchema = z.enum(["Harris-Benedict", "Mifflin-St Jeor", "FAO/OMS"]);
+const formulaSchema = z.enum([
+  "Harris-Benedict",
+  "Mifflin-St Jeor",
+  "FAO/OMS",
+  "Cunningham (1980)",
+  "Katch-McArdle",
+  "Tinsley (2018)"
+]);
 
 const calculationSchema = z.object({
   patientId: z.string().min(1, "Informe o paciente."),
@@ -15,6 +22,8 @@ const calculationSchema = z.object({
   weightKg: z.coerce.number().min(10).max(400),
   heightCm: z.coerce.number().min(50).max(250),
   activityFactor: z.coerce.number().min(1).max(2.5),
+  leanBodyMassKg: z.coerce.number().min(10).max(250).optional(),
+  extraExerciseKcal: z.coerce.number().min(0).max(5000).optional(),
   notes: z.string().optional()
 });
 
@@ -22,7 +31,7 @@ export async function GET(request: NextRequest) {
   const user = await getCurrentUser();
 
   if (!user) {
-    return error("Nao autenticado.", 401);
+    return error("Não autenticado.", 401);
   }
 
   const patientId = request.nextUrl.searchParams.get("patientId") || undefined;
@@ -55,7 +64,7 @@ export async function POST(request: NextRequest) {
   const user = await getCurrentUser();
 
   if (!user) {
-    return error("Nao autenticado.", 401);
+    return error("Não autenticado.", 401);
   }
 
   try {
@@ -69,11 +78,19 @@ export async function POST(request: NextRequest) {
     });
 
     if (!patient) {
-      return error("Paciente nao encontrado.", 404);
+      return error("Paciente não encontrado.", 404);
     }
 
-    const basalMetabolicRate = calculateBmr(input.formula, input.sex, input.weightKg, input.heightCm, input.age);
-    const totalEnergyExpenditure = basalMetabolicRate * input.activityFactor;
+    const basalMetabolicRate = calculateBmr(
+      input.formula,
+      input.sex,
+      input.weightKg,
+      input.heightCm,
+      input.age,
+      input.leanBodyMassKg
+    );
+    const totalEnergyExpenditure =
+      basalMetabolicRate * input.activityFactor + (input.extraExerciseKcal || 0);
 
     const calculation = await prisma.energyCalculation.create({
       data: {
@@ -117,29 +134,54 @@ export async function POST(request: NextRequest) {
   }
 }
 
-function calculateBmr(formula: z.infer<typeof formulaSchema>, sex: "MALE" | "FEMALE", weightKg: number, heightCm: number, age: number) {
-  const male = sex === "MALE";
+function calculateBmr(
+  formula: z.infer<typeof formulaSchema>,
+  sex: "MALE" | "FEMALE",
+  weightKg: number,
+  heightCm: number,
+  age: number,
+  leanBodyMassKg?: number
+) {
+  const estimatedLbm =
+    leanBodyMassKg && leanBodyMassKg > 15
+      ? leanBodyMassKg
+      : sex === "MALE"
+        ? weightKg * 0.82
+        : weightKg * 0.75;
+
+  if (formula === "Cunningham (1980)") {
+    return 500 + 22 * estimatedLbm;
+  }
+
+  if (formula === "Katch-McArdle") {
+    return 370 + 21.6 * estimatedLbm;
+  }
+
+  if (formula === "Tinsley (2018)") {
+    return leanBodyMassKg && leanBodyMassKg > 15
+      ? 25.9 * estimatedLbm + 284
+      : 24.8 * weightKg + 10;
+  }
 
   if (formula === "Harris-Benedict") {
-    return male
-      ? 66.5 + 13.75 * weightKg + 5.003 * heightCm - 6.755 * age
-      : 655.1 + 9.563 * weightKg + 1.85 * heightCm - 4.676 * age;
+    return sex === "MALE"
+      ? 66.47 + 13.75 * weightKg + 5 * heightCm - 6.76 * age
+      : 655.1 + 9.56 * weightKg + 1.85 * heightCm - 4.68 * age;
   }
 
   if (formula === "Mifflin-St Jeor") {
-    return male
+    return sex === "MALE"
       ? 10 * weightKg + 6.25 * heightCm - 5 * age + 5
       : 10 * weightKg + 6.25 * heightCm - 5 * age - 161;
   }
 
-  if (male) {
-    if (age < 18) return 17.5 * weightKg + 651;
+  // FAO/OMS
+  if (sex === "MALE") {
     if (age < 30) return 15.3 * weightKg + 679;
     if (age < 60) return 11.6 * weightKg + 879;
     return 13.5 * weightKg + 487;
   }
 
-  if (age < 18) return 12.2 * weightKg + 746;
   if (age < 30) return 14.7 * weightKg + 496;
   if (age < 60) return 8.7 * weightKg + 829;
   return 10.5 * weightKg + 596;

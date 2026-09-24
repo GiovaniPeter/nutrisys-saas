@@ -1,14 +1,26 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { CookieBanner } from "@/components/cookie-banner";
 import "./globals.css";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
+export const viewport: Viewport = {
+  themeColor: "#059669",
+  width: "device-width",
+  initialScale: 1
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://clinos.tec.br"),
-  applicationName: "NutriPlan ClinOS",
-  title: "Software para Nutricionistas — Planos Alimentares, TACO e Portal do Paciente | NutriPlan",
+  applicationName: "NutriPlan",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "NutriPlan"
+  },
+  title: "NutriPlan | Software para Nutricionistas — Cardápios TACO, Pollock/Guedes e Portal do Paciente",
   description:
-    "O software completo para nutricionistas: monte cardápios calculados em minutos com tabela TACO e medidas caseiras, gere substituições equivalentes, calcule GEB/GET e fidelize pacientes com diário alimentar e portal exclusivo.",
+    "O software completo para nutricionistas: monte cardápios calculados em minutos com tabela TACO (+1.000 itens) e medidas caseiras, dobras cutâneas Pollock 3/7 e Guedes, Cunningham/Tinsley, PDF com CRN e Portal do Paciente instalável.",
   keywords: [
     "software para nutricionistas",
     "programa para montar cardápio nutricionista",
@@ -18,8 +30,8 @@ export const metadata: Metadata = {
     "tabela TACO online nutricionista",
     "app para nutricionista e paciente",
     "prontuário nutricional eletrônico",
-    "cálculo energético GEB GET nutrição",
-    "avaliação antropométrica nutricionista",
+    "cálculo energético Cunningham Tinsley",
+    "avaliação antropométrica Pollock 3 e 7 dobras",
     "recordatório 24h online",
     "diário alimentar com fotos",
     "prescrição de suplementos nutricionista"
@@ -32,11 +44,11 @@ export const metadata: Metadata = {
     canonical: "/"
   },
   openGraph: {
-    title: "Software para Nutricionistas — Cardápios, Prontuário e App do Paciente | NutriPlan",
+    title: "NutriPlan | Software para Nutricionistas — Cardápios TACO, Pollock e App do Paciente",
     description:
-      "Monte planos alimentares em minutos com medidas caseiras reais, substituições automáticas, cálculo de GEB/GET, prontuário nutricional e Portal do Paciente.",
+      "Monte planos alimentares em minutos com medidas caseiras reais, templates prontos, dobras cutâneas Pollock/Guedes, PDF com CRN e Portal do Paciente.",
     url: "/",
-    siteName: "NutriPlan ClinOS",
+    siteName: "NutriPlan",
     images: [
       {
         url: "/social-card.png",
@@ -50,9 +62,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Software para Nutricionistas — Cardápios, TACO e Portal do Paciente",
+    title: "NutriPlan | Software para Nutricionistas — Cardápios TACO e Portal do Paciente",
     description:
-      "Monte planos alimentares com medidas caseiras, substituições equivalentes, prontuário nutricional e app do paciente em uma única plataforma.",
+      "Monte planos alimentares com medidas caseiras, substituições equivalentes, dobras Pollock/Guedes e app do paciente em uma única plataforma.",
     images: ["/social-card.png"]
   }
 };
