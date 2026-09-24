@@ -18,26 +18,34 @@ export default async function MealPlanDetailPage({ params }: Params) {
     redirect("/login");
   }
 
-  const mealPlan = await prisma.mealPlan.findFirst({
-    where: {
-      id: params.mealPlanId,
-      organizationId: user.organizationId
-    },
-    include: {
-      organization: true,
-      patient: true,
-      meals: {
-        orderBy: { position: "asc" },
-        include: {
-          items: true
+  const [mealPlan, dbUser] = await Promise.all([
+    prisma.mealPlan.findFirst({
+      where: {
+        id: params.mealPlanId,
+        organizationId: user.organizationId
+      },
+      include: {
+        organization: true,
+        patient: true,
+        meals: {
+          orderBy: { position: "asc" },
+          include: {
+            items: true
+          }
         }
       }
-    }
-  });
+    }),
+    prisma.user.findUnique({
+      where: { id: user.id },
+      select: { professionalCouncil: true }
+    })
+  ]);
 
   if (!mealPlan) {
     notFound();
   }
+
+  const councilLabel = dbUser?.professionalCouncil || "CRN Ativo — Uso Exclusivo (Lei 8.234/91)";
 
   const totals = mealPlan.meals
     .flatMap((meal) => meal.items)
@@ -103,7 +111,7 @@ export default async function MealPlanDetailPage({ params }: Params) {
           <div className="luxury-diet-professional">
             <strong>{user.name}</strong>
             <span>Nutricionista Responsável</span>
-            <small>{user.professionalCouncil || "CRN Ativo — Uso Exclusivo (Lei 8.234/91)"}</small>
+            <small>{councilLabel}</small>
           </div>
         </header>
 
@@ -261,7 +269,7 @@ export default async function MealPlanDetailPage({ params }: Params) {
           <div className="luxury-signature-block">
             <div className="luxury-signature-line" />
             <strong>{user.name}</strong>
-            <span>Nutricionista — {user.professionalCouncil || "CRN"}</span>
+            <span>Nutricionista — {dbUser?.professionalCouncil || "CRN"}</span>
           </div>
         </footer>
       </article>
