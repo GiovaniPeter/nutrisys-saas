@@ -5289,4 +5289,467 @@ form button[type="submit"] {
   }
 }
 
+/* LUXURY CLINICAL MEAL PLAN SHEET & A4 PRINT STYLES */
+.luxury-diet-sheet {
+  background: #ffffff !important;
+  border: 1px solid #d1fae5 !important;
+  border-radius: 20px !important;
+  box-shadow: 0 24px 60px rgba(6, 78, 59, 0.08) !important;
+  max-width: 1040px;
+  margin: 0 auto 48px;
+  padding: 36px 40px !important;
+  color: #0f172a;
+}
+
+.luxury-diet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  border-bottom: 3px solid #059669;
+  padding-bottom: 20px;
+  margin-bottom: 22px;
+}
+
+.luxury-diet-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.luxury-diet-logo-badge {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(5, 150, 105, 0.22);
+}
+
+.luxury-diet-clinic {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #059669;
+  margin-bottom: 2px;
+}
+
+.luxury-diet-brand h2 {
+  font-size: 1.55rem;
+  font-weight: 850;
+  color: #0f172a;
+  margin: 0 0 4px;
+  letter-spacing: -0.02em;
+}
+
+.luxury-diet-brand p {
+  margin: 0;
+  font-size: 0.86rem;
+  color: #475569;
+}
+
+.luxury-diet-professional {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  padding: 10px 16px;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.luxury-diet-professional strong {
+  font-size: 0.96rem;
+  color: #065f46;
+}
+
+.luxury-diet-professional span {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #047857;
+}
+
+.luxury-diet-professional small {
+  font-size: 0.72rem;
+  color: #475569;
+}
+
+.luxury-patient-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+}
+
+.luxury-patient-strip div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.luxury-patient-strip span {
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+}
+
+.luxury-patient-strip strong {
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.luxury-macro-summary {
+  background: linear-gradient(135deg, #f0fdf4 0%, #f8fafc 100%);
+  border: 1px solid #bbf7d0;
+  border-radius: 16px;
+  padding: 18px 20px;
+  margin-bottom: 24px;
+}
+
+.luxury-macro-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.luxury-macro-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.luxury-macro-box span {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.luxury-macro-box strong {
+  font-size: 1.3rem;
+  font-weight: 850;
+  color: #0f172a;
+}
+
+.luxury-macro-box.kcal strong { color: #059669; }
+.luxury-macro-box.prot strong { color: #047857; }
+.luxury-macro-box.carb strong { color: #0284c7; }
+.luxury-macro-box.fat strong { color: #d97706; }
+
+.luxury-macro-box small {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.luxury-vet-bar {
+  height: 11px;
+  border-radius: 999px;
+  overflow: hidden;
+  display: flex;
+  background: #e2e8f0;
+  margin-bottom: 8px;
+}
+
+.luxury-vet-legend {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.luxury-vet-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.luxury-vet-legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.luxury-meals-container {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.luxury-meal-card {
+  border: 1px solid #cbd5e1;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #ffffff;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+.luxury-meal-card-header {
+  background: linear-gradient(135deg, #065f46 0%, #059669 100%);
+  color: #ffffff;
+  padding: 12px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.luxury-meal-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.luxury-meal-badge {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.luxury-meal-title-group h3 {
+  margin: 0;
+  font-size: 1.08rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.luxury-meal-subtotal {
+  text-align: right;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.luxury-meal-subtotal strong {
+  background: rgba(255, 255, 255, 0.18);
+  padding: 3px 9px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+}
+
+.luxury-meal-subtotal span {
+  font-size: 0.78rem;
+  opacity: 0.92;
+  font-weight: 600;
+}
+
+.luxury-meal-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.luxury-food-row {
+  padding: 12px 18px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.luxury-food-row:last-child {
+  border-bottom: none;
+}
+
+.luxury-food-main {
+  display: grid;
+  grid-template-columns: 1.45fr 1fr 0.75fr;
+  align-items: center;
+  gap: 14px;
+}
+
+.luxury-food-name-col strong {
+  display: block;
+  font-size: 0.94rem;
+  color: #0f172a;
+}
+
+.luxury-food-substitutions {
+  margin-top: 5px;
+  background: #f0fdf4;
+  border-left: 3px solid #059669;
+  padding: 5px 10px;
+  border-radius: 0 8px 8px 0;
+}
+
+.luxury-food-substitutions span {
+  font-size: 0.78rem;
+  font-weight: 650;
+  color: #065f46;
+  line-height: 1.35;
+}
+
+.luxury-portion-pill {
+  display: inline-block;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 0.84rem;
+  font-weight: 750;
+  color: #1e293b;
+}
+
+.luxury-food-macros-col {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.luxury-food-macros-col strong {
+  font-size: 0.9rem;
+  color: #059669;
+}
+
+.luxury-food-macros-col span {
+  font-size: 0.74rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.luxury-observations-box {
+  margin-top: 22px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 16px 20px;
+  break-inside: avoid;
+}
+
+.luxury-observations-box h4 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  color: #065f46;
+}
+
+.luxury-observations-box p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: #334155;
+  white-space: pre-line;
+}
+
+.luxury-diet-footer {
+  margin-top: 32px;
+  padding-top: 18px;
+  border-top: 2px dashed #cbd5e1;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  break-inside: avoid;
+}
+
+.luxury-diet-footer > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.luxury-diet-footer > div:first-child strong {
+  font-size: 0.88rem;
+  color: #0f172a;
+}
+
+.luxury-diet-footer > div:first-child span {
+  font-size: 0.76rem;
+  color: #64748b;
+}
+
+.luxury-signature-block {
+  text-align: center;
+  min-width: 240px;
+}
+
+.luxury-signature-line {
+  border-top: 1px solid #0f172a;
+  margin-bottom: 6px;
+}
+
+.luxury-signature-block strong {
+  display: block;
+  font-size: 0.88rem;
+  color: #0f172a;
+}
+
+.luxury-signature-block span {
+  font-size: 0.76rem;
+  color: #059669;
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .luxury-diet-header,
+  .luxury-diet-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .luxury-patient-strip,
+  .luxury-macro-cards,
+  .luxury-food-main {
+    grid-template-columns: 1fr;
+  }
+  .luxury-food-macros-col {
+    text-align: left;
+  }
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm;
+  }
+  body {
+    background: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .no-print,
+  .app-nav,
+  .workspace-heading,
+  .cookie-banner {
+    display: none !important;
+  }
+  .shell,
+  .workspace-shell {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+  .luxury-diet-sheet {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+}
+
+
 
