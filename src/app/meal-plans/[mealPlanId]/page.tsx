@@ -37,7 +37,7 @@ export default async function MealPlanDetailPage({ params }: Params) {
     }),
     prisma.user.findUnique({
       where: { id: user.id },
-      select: { professionalCouncil: true }
+      select: { crn: true }
     })
   ]);
 
@@ -45,7 +45,7 @@ export default async function MealPlanDetailPage({ params }: Params) {
     notFound();
   }
 
-  const councilLabel = dbUser?.professionalCouncil || "CRN Ativo — Uso Exclusivo (Lei 8.234/91)";
+  const councilLabel = dbUser?.crn ? `CRN: ${dbUser.crn} — Lei 8.234/91` : "CRN Ativo — Uso Exclusivo (Lei 8.234/91)";
 
   const totals = mealPlan.meals
     .flatMap((meal) => meal.items)
@@ -269,7 +269,7 @@ export default async function MealPlanDetailPage({ params }: Params) {
           <div className="luxury-signature-block">
             <div className="luxury-signature-line" />
             <strong>{user.name}</strong>
-            <span>Nutricionista — {dbUser?.professionalCouncil || "CRN"}</span>
+            <span>Nutricionista — {dbUser?.crn ? `CRN ${dbUser.crn}` : "CRN"}</span>
           </div>
         </footer>
       </article>
