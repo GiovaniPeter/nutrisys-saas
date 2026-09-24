@@ -45,82 +45,75 @@ type AnamnesesResponse = {
 type FieldDef = [keyof AnamnesisAnswers, string, string];
 
 const TEMPLATES: Record<string, FieldDef[]> = {
-  "Evolução Multiprofissional (SOAP)": [
-    ["mainComplaint", "S — Subjetivo (Relato do Paciente)", "Relato do paciente sobre sintomas, evolução desde a última consulta e adesão..."],
-    ["clinicalHistory", "O — Objetivo (Exame Físico, Dados Antropométricos e Exames)", "PA, FC, peso, medidas, testes clínicos e resultados de exames..."],
-    ["medications", "Medicamentos / Suplementos Atuais", "Fármacos, suplementos ou protocolos em uso..."],
-    ["routine", "A — Avaliação (Raciocínio Clínico / Diagnóstico)", "Interpretação clínica da evolução e resposta terapêutica..."],
-    ["goals", "Metas Pactuadas com o Paciente", "Metas até o próximo retorno..."],
-    ["conduct", "P — Plano Terapêutico e Conduta", "Prescrições, encaminhamentos multiprofissionais e orientações..."]
+  "Anamnese Nutricional Clínica Completa": [
+    ["mainComplaint", "Queixa Principal e Motivo da Consulta", "Objetivo principal e queixas relatadas pelo paciente..."],
+    ["clinicalHistory", "Histórico Clínico, Patologias e Cirurgias", "Diabetes, HAS, dislipidemia, hipotireoidismo, SOP, gastrite, cirurgia bariátrica..."],
+    ["medications", "Medicamentos e Suplementos em Uso", "Nome, dosagem, horário e tempo de uso..."],
+    ["allergies", "Alergias, Intolerâncias e Sensibilidades Alimentares", "Lactose, glúten/celíaca, APLV, frutos do mar, FODMAPs..."],
+    ["bowelFunction", "Funcionamento Intestinal (Escala de Bristol) e Digestão", "Frequência evacuatória, consistência (Bristol 1-7), estufamento, gases, azia/refluxo..."],
+    ["sleep", "Qualidade do Sono, Estresse e Ansiedade", "Horários de dormir/acordar, despertares noturnos e gatilhos emocionais..."],
+    ["waterIntake", "Ingestão Hídrica Diária e Outras Bebidas", "Litros de água/dia, consumo de café, chás, refrigerantes e álcool..."],
+    ["physicalActivity", "Atividade Física (Modalidade, Horário e Frequência)", "Musculação, corrida, crossfit, horário do treino para ajuste pré/pós-treino..."],
+    ["foodPreferences", "Preferências Alimentares (Alimentos Favoritos)", "Alimentos que o paciente gosta e faz questão de manter no cardápio..."],
+    ["foodAversions", "Aversões Alimentares (Não Consome)", "Alimentos que o paciente não come de jeito nenhum..."],
+    ["routine", "Rotina Diária, Trabalho e Logística das Refeições", "Horários de trabalho, quem prepara as refeições, se leva marmita ou almoça fora..."],
+    ["goals", "Objetivos Antropométricos e Metas Pactuadas", "Meta de peso, redução de % de gordura, ganho de massa magra..."],
+    ["conduct", "Conduta Nutricional Inicial e Estratégia Dietética", "VET prescrito, divisão de macronutrientes, suplementação e orientações..."]
   ],
-  "Consulta Médica / Clínica Geral": [
-    ["mainComplaint", "Queixa Principal (QP) e Duração", "Motivo principal da consulta e tempo de evolução..."],
-    ["clinicalHistory", "História da Doença Atual (HDA) e Antecedentes", "Início, características dos sintomas, comorbidades e histórico familiar..."],
-    ["medications", "Medicamentos de Uso Contínuo", "Nome, dose, frequência e tempo de uso..."],
-    ["allergies", "Alergias Medicamentosas e Alimentares", "Reações adversas conhecidas..."],
-    ["bowelFunction", "Exame Físico e Sinais Vitais (PA, FC, SatO2)", "Achados do exame físico geral e específico..."],
-    ["sleep", "Sono, Humor e Nível de Estresse", "Qualidade do sono e aspectos emocionais..."],
-    ["physicalActivity", "Hábitos de Vida (Atividade Física, Tabagismo, Etilismo)", "Rotina de exercícios e hábitos..."],
-    ["routine", "Hipótese Diagnóstica / CID-10", "Hipóteses clínicas principais e secundárias..."],
-    ["goals", "Exames Solicitados e Encaminhamentos", "Exames laboratoriais/imagem e interconsultas..."],
-    ["conduct", "Conduta Médica e Prescrição", "Plano farmacológico e orientações clínicas..."]
+  "Nutrição Esportiva & Hipertrofia": [
+    ["mainComplaint", "Objetivo Esportivo (Hipertrofia, Performance, Cutting, Endurance)", "Meta principal e calendário de competições/provas..."],
+    ["physicalActivity", "Rotina de Treinamento (Modalidade, Volume, Intensidade e Horário)", "Divisão de treino, duração das sessões, duplo treino e gasto estimado..."],
+    ["routine", "Nutrição Peritreino Atual (Pré, Intra e Pós-Treino)", "O que consome antes, durante e logo após os treinos..."],
+    ["medications", "Suplementos, Ergogênicos e Recursos em Uso", "Whey, creatina, cafeína, beta-alanina, carboidratos em gel, recursos hormonais..."],
+    ["sleep", "Recuperação Muscular, Sono e Sinais de Overtraining", "Qualidade do sono, dor muscular tardia (DOMS) e disposição..."],
+    ["waterIntake", "Hidratação, Taxa de Sudorese e Reposição de Eletrólitos", "Consumo hídrico basal e durante os treinos..."],
+    ["bowelFunction", "Conforto Gastrointestinal no Exercício", "Tolerância a carboidratos e fibras antes do treino..."],
+    ["foodPreferences", "Alimentos Preferidos e Praticidade na Rotina", "Fontes proteicas e de carboidratos preferidas..."],
+    ["goals", "Metas de Composição Corporal e Performance", "Meta de peso magro, % de gordura e rendimento..."],
+    ["conduct", "Estratégia Nutricional e Periodização de Macros", "g/kg de proteína, carboidrato e lipídeos + protocolo de suplementação..."]
   ],
-  "Avaliação Psicológica / Saúde Mental": [
-    ["mainComplaint", "Demanda Inicial / Queixa Principal", "Motivo da busca pelo atendimento psicológico..."],
-    ["clinicalHistory", "Histórico de Vida, Familiar e Contexto Psicossocial", "Dinâmica familiar, eventos significativos e histórico prévio..."],
-    ["medications", "Psicofármacos e Acompanhamento Psiquiátrico", "Medicações em uso e profissionais envolvidos..."],
-    ["sleep", "Padrão de Sono, Humor, Afeto e Ansiedade", "Avaliação do estado mental, sono e regulação emocional..."],
-    ["routine", "Rotina Diária, Trabalho e Rede de Apoio", "Relações sociais, ocupacionais e suporte..."],
-    ["goals", "Objetivos Terapêuticos", "Demandas a serem trabalhadas no processo..."],
-    ["conduct", "Síntese Clínica e Plano de Intervenção", "Abordagem, frequência das sessões e encaminhamentos..."]
+  "Emagrecimento & Comportamento Alimentar": [
+    ["mainComplaint", "Histórico do Peso e Expectativa de Emagrecimento", "Evolução do peso nos últimos anos, efeito sanfona e peso desejado..."],
+    ["clinicalHistory", "Dietas Anteriores e Tratamentos Prévios", "Estratégias já tentadas (low carb, jejum, medicamentos) e por que parou..."],
+    ["sleep", "Fome Física vs. Fome Emocional e Compulsão", "Horários de maior vontade de doce/beliscar, ansiedade noturna e culpa ao comer..."],
+    ["routine", "Rotina de Finais de Semana e Eventos Sociais", "Comportamento alimentar de sexta a domingo, delivery e bebidas alcoólicas..."],
+    ["bowelFunction", "Saciedade, Digestão e Funcionamento Intestinal", "Percepção de saciedade após as refeições e trânsito intestinal..."],
+    ["foodPreferences", "Alimentos de Conforto e Preferências", "Doces ou salgados favoritos para inclusão estratégica no plano..."],
+    ["foodAversions", "Restrições e Aversões Alimentares", "Alimentos que não consome..."],
+    ["goals", "Metas Comportamentais e Antropométricas", "Pequenas metas semanais de adesão e perda de gordura..."],
+    ["conduct", "Conduta Nutricional (Déficit Calórico e Estratégia de Adesão)", "Estratégia para controle de saciedade, organização de marmitas/lanches..."]
   ],
-  "Avaliação Fisioterapêutica / Reabilitação": [
-    ["mainComplaint", "Queixa Funcional e Escala de Dor (EVA 0-10)", "Localização da dor, fatores de melhora/piora e limitação funcional..."],
-    ["clinicalHistory", "Histórico da Lesão, Cirurgias e Exames de Imagem", "Mecanismo de lesão, pós-operatório e laudos..."],
-    ["medications", "Medicamentos Analgésicos / Anti-inflamatórios", "Fármacos em uso..."],
-    ["bowelFunction", "Inspeção, Palpação, ADM e Força Muscular", "Amplitude de movimento articular, trofismo e força..."],
-    ["physicalActivity", "Testes Especiais e Avaliação Postural / Funcional", "Testes ortopédicos, neurológicos ou respiratórios..."],
-    ["routine", "Diagnóstico Cinético-Funcional", "Conclusão funcional fisioterapêutica..."],
-    ["goals", "Metas de Reabilitação (Curto e Médio Prazo)", "Ganho de ADM, analgesia, retorno ao esporte/AVDs..."],
-    ["conduct", "Conduta Fisioterapêutica e Exercícios Domiciliares", "Recursos terapêuticos, cinesioterapia e orientações..."]
+  "Nutrição Funcional, Intolerâncias & Saúde Intestinal": [
+    ["mainComplaint", "Queixas Gastrointestinais e Sintomas Sistêmicos", "Estufamento, distensão abdominal, diarreia/constipação, fadiga, queda de cabelo, pele..."],
+    ["bowelFunction", "Avaliação Intestinal Detalhada (Escala de Bristol e Disbiose)", "Frequência, formato das fezes, muco, dor abdominal, SIBO/SII..."],
+    ["allergies", "Hipersensibilidades, Intolerâncias e Gatilhos Alimentares", "Reação ao leite/derivados, trigo/glúten, leguminosas, alimentos fermentáveis (FODMAPs)..."],
+    ["clinicalHistory", "Uso Recente de Antibióticos, IBP (Omeprazol) ou Anti-inflamatórios", "Histórico medicamentoso que impacta a microbiota..."],
+    ["medications", "Suplementos, Probióticos e Fitoterápicos Atuais", "Cepas probióticas, glutamina, enzimas digestivas, vitaminas..."],
+    ["waterIntake", "Hidratação, Chás Digestivos e Mastigação", "Velocidade da mastigação, ingestão de líquidos junto às refeições..."],
+    ["goals", "Objetivos de Modulação Intestinal e Remissão de Sintomas", "Fases de remoção, reparo e reintrodução..."],
+    ["conduct", "Protocolo Nutricional e Suplementação Funcional", "Dieta anti-inflamatória / Low FODMAP, fibras solúveis e nutracêuticos..."]
   ],
-  "Avaliação Educação Física / Esportiva": [
-    ["mainComplaint", "Objetivo Principal (Hipertrofia, Emagrecimento, Performance)", "Meta principal do aluno/paciente..."],
-    ["clinicalHistory", "PAR-Q, Histórico Clínico e Lesões Musculoesqueléticas", "Restrições articulares, cardíacas ou dores ao movimento..."],
-    ["physicalActivity", "Experiência de Treino, Modalidades e Frequência", "Histórico esportivo e disponibilidade semanal..."],
-    ["sleep", "Recuperação, Sono e Nível de Energia Diário", "Horas de sono e fadiga percebida..."],
-    ["waterIntake", "Hidratação e Nutrição Peritreino", "Ingestão hídrica e suplementação atual..."],
-    ["routine", "Periodização e Divisão de Treinamento", "Estrutura de micro/mesociclo recomendada..."],
-    ["goals", "Metas de Performance e Composição Corporal", "Indicadores de progresso..."],
-    ["conduct", "Prescrição de Treino e Recomendações", "Volume, intensidade, cadência e cuidados..."]
+  "Nutrição Materno-Infantil & Gestante": [
+    ["mainComplaint", "Fase Atual (Tentante, Trimestre Gestacional, Lactante ou Introdução Alimentar)", "Idade gestacional / idade da criança e motivo da consulta..."],
+    ["clinicalHistory", "Peso Pré-Gestacional, Ganho Ponderal e Exames do Pré-Natal", "Curva de ganho de peso, glicemia, ferritina, vitamina D, B12, pressão arterial..."],
+    ["bowelFunction", "Sintomas Gestacionais (Náuseas, Azia, Constipação, Desejos/Aversões)", "Enjoos matinais, refluxo, constipação ou seletividade alimentar..."],
+    ["medications", "Suplementação Gestacional / Pediátrica em Uso", "Ácido fólico/metilfolato, ferro, ômega 3 DHA, polivitamínico, vitamina D..."],
+    ["waterIntake", "Ingestão Hídrica e Produção Láctea / Hidratação", "Consumo de água ao longo do dia..."],
+    ["routine", "Rotina Familiar e Rede de Apoio na Alimentação", "Preparo das refeições em casa e horários..."],
+    ["goals", "Metas de Ganho de Peso Adequado e Nutrição Materno-Fetal", "Metas por trimestre ou desenvolvimento infantil..."],
+    ["conduct", "Conduta Nutricional e Ajuste de Micronutrientes", "Fracionamento das refeições, manejo de enjoos e plano alimentar..."]
   ],
-  "Avaliação Fonoaudiológica / Odontológica": [
-    ["mainComplaint", "Queixa Principal (Deglutição, Fala, Voz, Mastigação / Dor Orofacial)", "Descrição detalhada da queixa..."],
-    ["clinicalHistory", "Histórico Clínico, Neurológico ou Odontológico", "Antecedentes, próteses, cirurgias ou disfagia..."],
-    ["medications", "Medicamentos em Uso e Xerostomia", "Fármacos que afetam salivação/deglutição..."],
-    ["bowelFunction", "Avaliação Motricidade Orofacial / Ausculta Cervical / Oclusão", "Achados clínicos da avaliação estrutural e funcional..."],
-    ["foodPreferences", "Consistências Alimentares Seguras (IDDSI / Texturas)", "Líquido fino, néctar, mel, pudim, pastoso, sólido macio..."],
-    ["goals", "Objetivos Terapêuticos", "Segurança de via oral, reabilitação fonatória ou oclusal..."],
-    ["conduct", "Conduta Clínica e Exercícios / Orientações", "Manobras, espessantes, fonoterapia ou plano odontológico..."]
-  ],
-  "Anamnese Nutricional Completa": [
-    ["mainComplaint", "Queixa Principal e Motivo da Consulta", "Objetivo e queixas relatadas..."],
-    ["clinicalHistory", "Histórico Clínico e Patologias", "Diabetes, HAS, dislipidemia, SOP, gastrite..."],
-    ["medications", "Medicamentos e Suplementos em Uso", "Posologia e horários..."],
-    ["allergies", "Alergias e Intolerâncias Alimentares", "Lactose, glúten, APLV, frutos do mar..."],
-    ["bowelFunction", "Funcionamento Intestinal (Escala de Bristol) e Digestão", "Frequência, consistência, gases, refluxo..."],
-    ["sleep", "Qualidade do Sono e Estresse", "Horários de dormir/acordar e qualidade..."],
-    ["waterIntake", "Ingestão Hídrica Diária", "Litros/dia e hábito de hidratação..."],
-    ["physicalActivity", "Atividade Física (Tipo, Horário e Intensidade)", "Treinos e rotina de gasto energético..."],
-    ["foodPreferences", "Preferências Alimentares", "Alimentos favoritos que não podem faltar..."],
-    ["foodAversions", "Aversões e Restrições Alimentares", "Alimentos que não consome..."],
-    ["routine", "Rotina Diária e Horários das Refeições", "Quem cozinha, onde faz as refeições, horários..."],
-    ["goals", "Objetivos Antropométricos e de Saúde", "Metas de peso, massa magra e exames..."],
-    ["conduct", "Conduta Nutricional Inicial", "Estratégia calórica, distribuição de macros e orientações..."]
+  "Consulta de Retorno Nutricional (Evolução SOAP)": [
+    ["mainComplaint", "S — Subjetivo (Adesão ao Cardápio, Dificuldades e Conquistas)", "Como foi seguir o plano alimentar, horários em que sentiu mais fome ou dificuldade..."],
+    ["clinicalHistory", "O — Objetivo (Evolução de Peso, Medidas, % de Gordura e Exames)", "Comparativo antropométrico e bioquímico em relação à consulta anterior..."],
+    ["bowelFunction", "Evolução de Sintomas (Intestino, Disposição, Sono e Hidratação)", "Mudanças percebidas na energia diária, intestino e ingestão de água..."],
+    ["routine", "A — Avaliação Nutricional da Evolução", "Análise da resposta metabólica e comportamental ao plano vigente..."],
+    ["goals", "Novas Metas para o Próximo Ciclo", "Metas ajustadas até o próximo retorno..."],
+    ["conduct", "P — Plano (Ajustes no Cardápio, Calorias e Suplementação)", "Alterações feitas nas refeições, novas substituições e orientações..."]
   ]
 };
 
-const DEFAULT_TEMPLATE_KEY = "Anamnese Nutricional Completa";
+const DEFAULT_TEMPLATE_KEY = "Anamnese Nutricional Clínica Completa";
 
 export function AnamnesesClient() {
   const searchParams = useSearchParams();

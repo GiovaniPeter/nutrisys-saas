@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 
 const BASE_URL = "https://clinos.tec.br";
-const CONTENT_UPDATED_AT = new Date("2026-07-26T00:00:00-04:00");
+const CONTENT_UPDATED_AT = new Date();
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -14,26 +14,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${BASE_URL}/software-para-nutricionistas`,
       lastModified: CONTENT_UPDATED_AT,
-      changeFrequency: "monthly",
-      priority: 0.9
+      changeFrequency: "weekly",
+      priority: 0.95
     },
     {
       url: `${BASE_URL}/software-para-montar-cardapio-nutricionista`,
       lastModified: CONTENT_UPDATED_AT,
-      changeFrequency: "monthly",
+      changeFrequency: "weekly",
+      priority: 0.95
+    },
+    {
+      url: `${BASE_URL}/recursos`,
+      lastModified: CONTENT_UPDATED_AT,
+      changeFrequency: "weekly",
       priority: 0.9
     },
     {
       url: `${BASE_URL}/sistema-para-clinicas`,
       lastModified: CONTENT_UPDATED_AT,
       changeFrequency: "monthly",
-      priority: 0.9
-    },
-    {
-      url: `${BASE_URL}/recursos`,
-      lastModified: CONTENT_UPDATED_AT,
-      changeFrequency: "monthly",
-      priority: 0.85
+      priority: 0.75
     },
     {
       url: `${BASE_URL}/termos-de-uso`,

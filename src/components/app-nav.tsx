@@ -66,75 +66,65 @@ const navItems: NavItem[] = [
   { key: "dashboard", href: "/dashboard", label: "Resumo", icon: "home" },
   { key: "appointments", href: "/appointments", label: "Agenda", icon: "calendar" },
   { key: "patients", href: "/patients", label: "Pacientes", icon: "people" },
+  { key: "meal-plans", href: "/meal-plans", label: "Cardápios", icon: "plan" },
+  { key: "foods", href: "/foods", label: "Alimentos", icon: "nutrition" },
   { key: "anamneses", href: "/anamneses", label: "Prontuário", icon: "clinical" },
-  { key: "supplements", href: "/supplements", label: "Prescrições", icon: "clinical", mobileOptional: true },
+  { key: "chat", href: "/chat", label: "Chat", icon: "communication" },
   { key: "financial", href: "/financial", label: "Financeiro", icon: "wallet", mobileOptional: true },
-  { key: "reports", href: "/reports", label: "Relatórios", icon: "analytics" },
-  { key: "chat", href: "/chat", label: "Mensagens", icon: "communication" },
+  { key: "reports", href: "/reports", label: "Relatórios", icon: "analytics", mobileOptional: true },
   { key: "settings", href: "/settings", label: "Perfil", icon: "settings" },
   { key: "feedback", href: "/feedback", label: "Sugestões e bugs", icon: "communication" },
   { key: "portal", href: "/portal/login", label: "Portal do Paciente", icon: "people" },
   { key: "schedule", href: "/schedule", label: "Calendário", icon: "clock", mobileOptional: true },
-  { key: "meal-plans", href: "/meal-plans", label: "Planos & Dietas", icon: "plan", mobileOptional: true },
   { key: "recipes", href: "/recipes", label: "Receitas", icon: "nutrition" },
-  { key: "shopping", href: "/shopping", label: "Compras", icon: "nutrition" },
-  { key: "foods", href: "/foods", label: "Alimentos & Fórmulas", icon: "nutrition" },
-  { key: "body-records", href: "/body-records", label: "Evolução Corporal", icon: "clinical" },
+  { key: "shopping", href: "/shopping", label: "Lista de Compras", icon: "nutrition" },
+  { key: "body-records", href: "/body-records", label: "Antropometria", icon: "clinical" },
   { key: "recalls", href: "/recalls", label: "Recordatório 24h", icon: "clinical" },
   { key: "lab-exams", href: "/lab-exams", label: "Exames Lab.", icon: "clinical" },
-  { key: "food-diary", href: "/food-diary", label: "Diário do Paciente", icon: "nutrition" },
-  { key: "hydration", href: "/hydration", label: "Metas & Hábitos", icon: "clinical" },
-  { key: "energy", href: "/energy", label: "Avaliação Metabólica", icon: "clinical" },
+  { key: "supplements", href: "/supplements", label: "Suplementos", icon: "nutrition" },
+  { key: "food-diary", href: "/food-diary", label: "Diário Alimentar", icon: "nutrition" },
+  { key: "hydration", href: "/hydration", label: "Metas & Água", icon: "clinical" },
+  { key: "energy", href: "/energy", label: "Cálculo GEB/GET", icon: "clinical" },
   { key: "whatsapp", href: "/whatsapp", label: "WhatsApp", icon: "communication" },
   { key: "notifications", href: "/notifications", label: "Alertas", icon: "communication" },
   { key: "kpis", href: "/kpis", label: "KPIs", icon: "analytics" },
   { key: "materials", href: "/materials", label: "Materiais", icon: "analytics" },
-  { key: "users", href: "/users", label: "Equipe Multiprofissional", icon: "people" }
+  { key: "users", href: "/users", label: "Equipe", icon: "people" }
 ];
 
 const primaryNavKeys = new Set<AppNavKey>([
   "dashboard",
   "appointments",
   "patients",
+  "meal-plans",
+  "foods",
   "anamneses",
-  "supplements",
-  "financial",
-  "reports",
   "chat",
-  "settings"
+  "financial"
 ]);
 
-const primaryNavKeysProfessional = new Set<AppNavKey>([
-  "dashboard",
-  "appointments",
-  "patients",
-  "anamneses",
-  "supplements",
-  "financial",
-  "reports",
-  "chat",
-  "settings"
-]);
+const primaryNavKeysProfessional = primaryNavKeys;
 
 const menuGroups: Array<{ label: string; keys: AppNavKey[] }> = [
   {
-    label: "Nutrição & Prescrição Dietética (Privativo Nutricionista)",
+    label: "Avaliação & Prescrição Nutricional",
     keys: [
-      "meal-plans",
-      "foods",
-      "recipes",
-      "shopping",
+      "energy",
+      "body-records",
       "recalls",
-      "food-diary"
+      "recipes",
+      "supplements",
+      "lab-exams",
+      "shopping"
     ]
   },
   {
-    label: "Atendimento Clínico Multiprofissional",
-    keys: ["body-records", "lab-exams", "energy", "hydration", "supplements"]
+    label: "Acompanhamento do Paciente",
+    keys: ["food-diary", "hydration", "portal", "materials"]
   },
   {
-    label: "Relacionamento e Gestão da Clínica",
-    keys: ["users", "portal", "whatsapp", "notifications", "kpis", "materials", "billing", "schedule"]
+    label: "Gestão do Consultório",
+    keys: ["schedule", "reports", "kpis", "whatsapp", "notifications", "users", "billing", "settings"]
   },
   {
     label: "Ajuda",
@@ -142,20 +132,7 @@ const menuGroups: Array<{ label: string; keys: AppNavKey[] }> = [
   }
 ];
 
-const menuGroupsProfessional: Array<{ label: string; keys: AppNavKey[] }> = [
-  {
-    label: "Atendimento Clínico Multiprofissional",
-    keys: ["body-records", "lab-exams", "energy", "hydration", "supplements"]
-  },
-  {
-    label: "Relacionamento e Gestão da Clínica",
-    keys: ["users", "portal", "whatsapp", "notifications", "kpis", "materials", "billing", "schedule"]
-  },
-  {
-    label: "Ajuda",
-    keys: ["feedback"]
-  }
-];
+const menuGroupsProfessional = menuGroups;
 
 const secretaryNavKeys = new Set<AppNavKey>([
   "dashboard",
@@ -332,8 +309,8 @@ export function AppNav({ active, user }: AppNavProps) {
       >
         <span className="brand-mark"><ClinOSLogo /></span>
         <span className="app-brand-copy">
-          <strong>Clin<span style={{ color: '#00d8ff' }}>OS</span></strong>
-          <small>O sistema operacional da sua clínica</small>
+          <strong>Nutri<span style={{ color: '#00b894' }}>Plan</span></strong>
+          <small>Software para Nutricionistas</small>
         </span>
       </Link>
 
