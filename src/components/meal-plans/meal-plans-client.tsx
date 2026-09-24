@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { extractGramsFromPortion } from "@/components/foods/foods-client";
 
 type PatientOption = {
   id: string;
@@ -12,6 +13,7 @@ type Food = {
   id: string;
   name: string;
   portion: string;
+  householdMeasure?: string | null;
   calories: string | number;
   protein: string | number;
   carbs: string | number;
@@ -29,6 +31,7 @@ type MealItem = {
   carbs: number;
   fat: number;
   notes: string;
+  category?: string | null;
 };
 
 type DraftMeal = {
@@ -88,6 +91,7 @@ export function MealPlansClient() {
   const [meals, setMeals] = useState<DraftMeal[]>([createDraftMeal(0)]);
   const [selectedMealId, setSelectedMealId] = useState<string>(() => meals[0].id);
   const [foodSearch, setFoodSearch] = useState("");
+  const [foodCategoryFilter, setFoodCategoryFilter] = useState("");
   const [foodsTotal, setFoodsTotal] = useState(0);
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -95,7 +99,9 @@ export function MealPlansClient() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [publishingId, setPublishingId] = useState<string | null>(null);
   const [selectedFoodId, setSelectedFoodId] = useState("");
+  const [quantityMode, setQuantityMode] = useState<"portion" | "grams">("portion");
   const [quantity, setQuantity] = useState(1);
+  const [customGrams, setCustomGrams] = useState(100);
   const skippedInitialFoodsLoad = useRef(false);
   const skippedInitialMealPlansLoad = useRef(false);
 
@@ -108,17 +114,23 @@ export function MealPlansClient() {
   }, []);
 
   useEffect(() => {
+    if (selectedFood) {
+      setCustomGrams(extractGramsFromPortion(selectedFood.portion));
+    }
+  }, [selectedFoodId]);
+
+  useEffect(() => {
     if (!skippedInitialFoodsLoad.current) {
       skippedInitialFoodsLoad.current = true;
       return;
     }
 
     const timeout = window.setTimeout(() => {
-      void loadFoods(foodSearch);
-    }, foodSearch.trim() ? 240 : 0);
+      void loadFoods(foodSearch, foodCategoryFilter);
+    }, foodSearch.trim() ? 200 : 0);
 
     return () => window.clearTimeout(timeout);
-  }, [foodSearch]);
+  }, [foodSearch, foodCategoryFilter]);
 
   useEffect(() => {
     if (!skippedInitialMealPlansLoad.current) {
@@ -147,11 +159,14 @@ export function MealPlansClient() {
     setPatients(data.patients);
   }
 
-  async function loadFoods(search = "") {
-    const params = new URLSearchParams({ limit: "60" });
+  async function loadFoods(search = "", category = "") {
+    const params = new URLSearchParams({ limit: "120" });
 
     if (search.trim()) {
       params.set("q", search.trim());
+    }
+    if (category) {
+      params.set("category", category);
     }
 
     const response = await fetch(`/api/foods?${params}`);
@@ -195,23 +210,82 @@ export function MealPlansClient() {
       return;
     }
 
-    const safeQuantity = Number.isFinite(quantity) && quantity > 0 ? quantity : 1;
-    const nextItem = {
+    const baseGrams = extractGramsFromPortion(selectedFood.portion);
+    let multiplier = 1;
+    let displayPortion = selectedFood.householdMeasure
+      ? `${selectedFood.portion} (${selectedFood.householdMeasure})`
+      : selectedFood.portion;
+    let displayQuantity = 1;
+
+    if (quantityMode === "grams") {
+      const safeGrams = Number.isFinite(customGrams) && customGrams > 0 ? customGrams : baseGrams;
+      multiplier = baseGrams > 0 ? safeGrams / baseGrams : 1;
+      displayQuantity = 1;
+      const unit = selectedFood.portion.toLowerCase().includes("ml") ? "ml" : "g";
+      displayPortion = selectedFood.householdMeasure
+        ? `${safeGrams} ${unit} [Ref: ${selectedFood.householdMeasure}]`
+        : `${safeGrams} ${unit}`;
+    } else {
+      const safeQuantity = Number.isFinite(quantity) && quantity > 0 ? quantity : 1;
+      multiplier = safeQuantity;
+      displayQuantity = safeQuantity;
+    }
+
+    const nextItem: MealItem = {
       id: crypto.randomUUID(),
       foodName: selectedFood.name,
-      portion: selectedFood.portion,
-      quantity: safeQuantity,
-      calories: roundMacro(toNumber(selectedFood.calories) * safeQuantity),
-      protein: roundMacro(toNumber(selectedFood.protein) * safeQuantity),
-      carbs: roundMacro(toNumber(selectedFood.carbs) * safeQuantity),
-      fat: roundMacro(toNumber(selectedFood.fat) * safeQuantity),
-      notes: ""
+      portion: displayPortion,
+      quantity: displayQuantity,
+      calories: roundMacro(toNumber(selectedFood.calories) * multiplier),
+      protein: roundMacro(toNumber(selectedFood.protein) * multiplier),
+      carbs: roundMacro(toNumber(selectedFood.carbs) * multiplier),
+      fat: roundMacro(toNumber(selectedFood.fat) * multiplier),
+      notes: "",
+      category: selectedFood.category
     };
 
     setMeals((current) =>
       current.map((meal) => (meal.id === selectedMeal.id ? { ...meal, items: [...meal.items, nextItem] } : meal))
     );
     setMessage(null);
+  }
+
+  function updateItemNotes(mealId: string, itemId: string, notes: string) {
+    setMeals((current) =>
+      current.map((meal) =>
+        meal.id === mealId
+          ? {
+              ...meal,
+              items: meal.items.map((item) => (item.id === itemId ? { ...item, notes } : item))
+            }
+          : meal
+      )
+    );
+  }
+
+  function suggestSubstitutions(mealId: string, item: MealItem) {
+    const targetKcal = Math.max(item.calories, 15);
+    const candidates = foods.filter(
+      (f) =>
+        f.name !== item.foodName &&
+        toNumber(f.calories) > 10 &&
+        (item.category ? f.category === item.category : true)
+    );
+
+    if (candidates.length === 0) {
+      setMessage("Busque ou carregue mais alimentos da mesma categoria para sugerir substituições.");
+      return;
+    }
+
+    const picked = candidates.slice(0, 3).map((candidate) => {
+      const candBaseGrams = extractGramsFromPortion(candidate.portion);
+      const candKcal = toNumber(candidate.calories);
+      const eqGrams = Math.max(5, Math.round((targetKcal / candKcal) * candBaseGrams));
+      return `${candidate.name} (${eqGrams}g)`;
+    });
+
+    const suggestionText = `Substituições equivalentes: ${picked.join(" OU ")}`;
+    updateItemNotes(mealId, item.id, suggestionText);
   }
 
   function addMeal() {
@@ -433,7 +507,7 @@ export function MealPlansClient() {
           </label>
           <label>
             Nome do plano
-            <input name="name" required minLength={2} placeholder="Plano inicial" />
+            <input name="name" required minLength={2} placeholder="Plano inicial / Hipertrofia / Reeducação" />
           </label>
           <div className="form-row">
             <label>
@@ -520,15 +594,35 @@ export function MealPlansClient() {
           </div>
 
           <div className="item-builder">
-            <label>
-              Buscar alimento
-              <input
-                value={foodSearch}
-                onChange={(event) => setFoodSearch(event.target.value)}
-                placeholder="Digite arroz, banana, frango..."
-                autoComplete="off"
-              />
-            </label>
+            <div className="form-row">
+              <label style={{ flex: 1.5 }}>
+                Buscar alimento ou suplemento
+                <input
+                  value={foodSearch}
+                  onChange={(event) => setFoodSearch(event.target.value)}
+                  placeholder="Ex: pao frances, arroz, frango, whey..."
+                  autoComplete="off"
+                />
+              </label>
+              <label style={{ flex: 1 }}>
+                Filtrar grupo
+                <select
+                  value={foodCategoryFilter}
+                  onChange={(e) => setFoodCategoryFilter(e.target.value)}
+                >
+                  <option value="">Todos</option>
+                  <option value="Cereais, Pães e Tubérculos">Cereais e Pães</option>
+                  <option value="Carnes, Aves, Peixes e Ovos">Carnes e Ovos</option>
+                  <option value="Feijões, Leguminosas e Oleaginosas">Leguminosas/Castanhas</option>
+                  <option value="Frutas e Sucos Naturais">Frutas</option>
+                  <option value="Verduras, Hortaliças e Legumes">Verduras e Legumes</option>
+                  <option value="Laticínios, Queijos e Bebidas Vegetais">Laticínios</option>
+                  <option value="Suplementos e Nutrição Esportiva">Suplementos</option>
+                  <option value="Nutrição Clínica e Enteral (Multiprofissional)">Nutrição Clínica</option>
+                </select>
+              </label>
+            </div>
+
             <span className="form-hint">
               {foods.length === 0 ? "Nenhum alimento encontrado" : `${foods.length} resultados de ${foodsTotal}`}
             </span>
@@ -545,7 +639,9 @@ export function MealPlansClient() {
                   >
                     <div className="food-result-info">
                       <strong>{food.name}</strong>
-                      <span className="food-result-portion">{food.portion}</span>
+                      <span className="food-result-portion">
+                        {food.portion} {food.householdMeasure ? `· ${food.householdMeasure}` : ""}
+                      </span>
                     </div>
                     <div className="food-result-macros">
                       <span className="macro-pill kcal">{Math.round(toNumber(food.calories))} kcal</span>
@@ -561,39 +657,82 @@ export function MealPlansClient() {
               ) : null}
             </div>
 
-            <div className="food-add-row">
-              <label className="food-qty-label">
-                Qtd
-                <input
-                  type="number"
-                  min="0.1"
-                  step="0.1"
-                  value={quantity}
-                  onChange={(event) => setQuantity(Number(event.target.value))}
-                />
+            <div className="form-row" style={{ marginTop: "8px", alignItems: "flex-end" }}>
+              <label style={{ flex: 1 }}>
+                Modo de prescrição
+                <select
+                  value={quantityMode}
+                  onChange={(e) => setQuantityMode(e.target.value as "portion" | "grams")}
+                >
+                  <option value="portion">Por Porção / Medida Caseira</option>
+                  <option value="grams">Por Gramas / ml exatos (g/ml)</option>
+                </select>
               </label>
-              <button className="button secondary" type="button" onClick={addItem}>
-                + Adicionar{selectedFood ? `: ${selectedFood.name.substring(0, 25)}` : ""}
+
+              {quantityMode === "portion" ? (
+                <label className="food-qty-label" style={{ flex: 0.7 }}>
+                  Nº Porções
+                  <input
+                    type="number"
+                    min="0.1"
+                    step="0.5"
+                    value={quantity}
+                    onChange={(event) => setQuantity(Number(event.target.value))}
+                  />
+                </label>
+              ) : (
+                <label className="food-qty-label" style={{ flex: 0.7 }}>
+                  Peso (g/ml)
+                  <input
+                    type="number"
+                    min="1"
+                    step="5"
+                    value={customGrams}
+                    onChange={(event) => setCustomGrams(Number(event.target.value))}
+                  />
+                </label>
+              )}
+
+              <button className="button secondary" type="button" onClick={addItem} style={{ flex: 1.3 }}>
+                + Adicionar{selectedFood ? `: ${selectedFood.name.substring(0, 20)}` : ""}
               </button>
             </div>
           </div>
 
           <div className="selected-items">
             {selectedMeal.items.map((item) => (
-              <div className="selected-item" key={item.id}>
-                <div>
-                  <strong>{item.foodName}</strong>
-                  <span>
-                    {item.quantity} x {item.portion}
-                  </span>
+              <div className="selected-item" key={item.id} style={{ flexDirection: "column", alignItems: "stretch", gap: "6px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div>
+                    <strong>{item.foodName}</strong>
+                    <span>
+                      {item.quantity > 1 ? `${item.quantity} x ` : ""}{item.portion} · {Math.round(item.calories)} kcal (P {item.protein}g | C {item.carbs}g | G {item.fat}g)
+                    </span>
+                  </div>
+                  <div className="row-actions">
+                    <button
+                      className="text-button"
+                      type="button"
+                      onClick={() => suggestSubstitutions(selectedMeal.id, item)}
+                      title="Gera automaticamente opções equivalentes em gramas da mesma categoria"
+                    >
+                      🔄 Substituições
+                    </button>
+                    <button
+                      className="text-button danger"
+                      type="button"
+                      onClick={() => removeItem(selectedMeal.id, item.id)}
+                    >
+                      Remover
+                    </button>
+                  </div>
                 </div>
-                <button
-                  className="text-button danger"
-                  type="button"
-                  onClick={() => removeItem(selectedMeal.id, item.id)}
-                >
-                  Remover
-                </button>
+                <input
+                  value={item.notes}
+                  onChange={(e) => updateItemNotes(selectedMeal.id, item.id, e.target.value)}
+                  placeholder="Observações ou lista de substituições equivalentes para este item..."
+                  style={{ fontSize: "0.82rem", padding: "6px 10px" }}
+                />
               </div>
             ))}
             {selectedMeal.items.length === 0 ? <p>Nenhum alimento adicionado nesta refeicao.</p> : null}
@@ -647,7 +786,7 @@ function getMealPlanPayload(form: FormData, meals: DraftMeal[]) {
         label: meal.label || `Refeicao ${index + 1}`,
         time: meal.time,
         position: index,
-        items: meal.items.map(({ id: _id, ...item }) => item)
+        items: meal.items.map(({ id: _id, category: _category, ...item }) => item)
       }))
   };
 }

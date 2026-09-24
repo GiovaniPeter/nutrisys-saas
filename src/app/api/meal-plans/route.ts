@@ -36,11 +36,21 @@ const mealPlanSchema = z.object({
   meals: z.array(mealSchema).default([])
 });
 
+function canPrescribeDiet(user: { role: string; specialty?: string }) {
+  if (user.role === "SECRETARY") return false;
+  if (user.role === "PROFESSIONAL" && user.specialty !== "nutricionista") return false;
+  return true;
+}
+
 export async function GET(request: NextRequest) {
   const user = await getCurrentUser();
 
   if (!user) {
     return error("Não autenticado.", 401);
+  }
+
+  if (!canPrescribeDiet(user)) {
+    return error("A prescrição dietética e planos alimentares são privativos do Nutricionista (Lei nº 8.234/91).", 403);
   }
 
   const patientId = request.nextUrl.searchParams.get("patientId") || undefined;
@@ -75,6 +85,10 @@ export async function POST(request: NextRequest) {
 
   if (!user) {
     return error("Não autenticado.", 401);
+  }
+
+  if (!canPrescribeDiet(user)) {
+    return error("A prescrição dietética e planos alimentares são privativos do Nutricionista (Lei nº 8.234/91).", 403);
   }
 
   try {

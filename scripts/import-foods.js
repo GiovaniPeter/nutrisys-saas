@@ -5,20 +5,189 @@ const prisma = new PrismaClient();
 const TARGET_GLOBAL_FOODS = Number(process.env.FOOD_IMPORT_TARGET || 1000);
 const TACO_URL = "https://raw.githubusercontent.com/machine-learning-mocha/taco/main/formatados/alimentos.csv";
 const OFF_SEARCH_URL = "https://world.openfoodfacts.org/cgi/search.pl";
-const BASE_FOODS = [
+
+const CURATED_FOODS = [
   {
-    id: "base-knorr-caldo-em-po-sabor-carne-144g",
+    id: "curated-arroz-branco-cozido",
     organizationId: null,
-    name: "Caldo em po sabor carne [Knorr]",
+    name: "Arroz branco, tipo 1, cozido",
     portion: "100 g",
-    householdMeasure: "21 porcoes de 4,75 g",
-    calories: 316,
-    protein: 0,
-    carbs: 29.47,
-    fat: 21.05,
-    fiber: 0,
-    category: "Temperos",
-    source: "base inicial"
+    householdMeasure: "4 colheres de sopa cheias (100 g)",
+    calories: 128.3,
+    protein: 2.5,
+    carbs: 28.1,
+    fat: 0.2,
+    fiber: 1.6,
+    category: "Cereais, Pães e Tubérculos",
+    source: "TACO / Curadoria Clínica"
+  },
+  {
+    id: "curated-arroz-integral-cozido",
+    organizationId: null,
+    name: "Arroz integral, cozido",
+    portion: "100 g",
+    householdMeasure: "4 colheres de sopa cheias (100 g)",
+    calories: 123.5,
+    protein: 2.6,
+    carbs: 25.8,
+    fat: 1.0,
+    fiber: 2.7,
+    category: "Cereais, Pães e Tubérculos",
+    source: "TACO / Curadoria Clínica"
+  },
+  {
+    id: "curated-aveia-flocos",
+    organizationId: null,
+    name: "Aveia em flocos (finos ou regulares)",
+    portion: "30 g",
+    householdMeasure: "2 colheres de sopa cheias (30 g)",
+    calories: 118.2,
+    protein: 4.2,
+    carbs: 20.0,
+    fat: 2.5,
+    fiber: 2.7,
+    category: "Cereais, Pães e Tubérculos",
+    source: "TACO / Curadoria Clínica"
+  },
+  {
+    id: "curated-pao-frances",
+    organizationId: null,
+    name: "Pão francês (pão de sal)",
+    portion: "50 g",
+    householdMeasure: "1 unidade média (50 g)",
+    calories: 150.0,
+    protein: 4.0,
+    carbs: 29.3,
+    fat: 1.5,
+    fiber: 1.2,
+    category: "Cereais, Pães e Tubérculos",
+    source: "TACO / Curadoria Clínica"
+  },
+  {
+    id: "curated-pao-forma-integral",
+    organizationId: null,
+    name: "Pão de forma integral",
+    portion: "50 g",
+    householdMeasure: "2 fatias médias (50 g)",
+    calories: 126.5,
+    protein: 4.7,
+    carbs: 24.9,
+    fat: 1.8,
+    fiber: 3.5,
+    category: "Cereais, Pães e Tubérculos",
+    source: "TACO / Curadoria Clínica"
+  },
+  {
+    id: "curated-peito-frango-grelhado",
+    organizationId: null,
+    name: "Peito de frango sem pele, grelhado",
+    portion: "100 g",
+    householdMeasure: "1 filé médio grelhado (100 g)",
+    calories: 159.2,
+    protein: 32.0,
+    carbs: 0.0,
+    fat: 2.5,
+    fiber: 0.0,
+    category: "Carnes, Aves, Peixes e Ovos",
+    source: "TACO / Curadoria Clínica"
+  },
+  {
+    id: "curated-patinho-bovino-grelhado",
+    organizationId: null,
+    name: "Carne bovina, patinho sem gordura, grelhado / moído",
+    portion: "100 g",
+    householdMeasure: "1 bife médio ou 4 colheres de sopa moído (100 g)",
+    calories: 219.3,
+    protein: 35.9,
+    carbs: 0.0,
+    fat: 7.3,
+    fiber: 0.0,
+    category: "Carnes, Aves, Peixes e Ovos",
+    source: "TACO / Curadoria Clínica"
+  },
+  {
+    id: "curated-ovo-inteiro-cozido",
+    organizationId: null,
+    name: "Ovo de galinha inteiro (cozido, pochê ou mexido sem óleo)",
+    portion: "50 g",
+    householdMeasure: "1 unidade média (50 g)",
+    calories: 72.8,
+    protein: 6.7,
+    carbs: 0.3,
+    fat: 4.8,
+    fiber: 0.0,
+    category: "Carnes, Aves, Peixes e Ovos",
+    source: "TACO / Curadoria Clínica"
+  },
+  {
+    id: "curated-feijao-carioca-cozido",
+    organizationId: null,
+    name: "Feijão carioca, cozido (50% grão e 50% caldo)",
+    portion: "100 g",
+    householdMeasure: "1 concha média cheia (100 g)",
+    calories: 76.4,
+    protein: 4.8,
+    carbs: 13.6,
+    fat: 0.5,
+    fiber: 8.5,
+    category: "Feijões, Leguminosas e Oleaginosas",
+    source: "TACO / Curadoria Clínica"
+  },
+  {
+    id: "curated-whey-protein-concentrado",
+    organizationId: null,
+    name: "Whey Protein Concentrado (80%)",
+    portion: "30 g",
+    householdMeasure: "1 scoop dosador cheio (30 g)",
+    calories: 120.0,
+    protein: 24.0,
+    carbs: 3.0,
+    fat: 1.5,
+    fiber: 0.0,
+    category: "Suplementos e Nutrição Esportiva",
+    source: "Suplementação Clínica"
+  },
+  {
+    id: "curated-whey-protein-isolado",
+    organizationId: null,
+    name: "Whey Protein Isolado / Hidrolisado (Zero Lactose)",
+    portion: "30 g",
+    householdMeasure: "1 scoop dosador cheio (30 g)",
+    calories: 112.0,
+    protein: 26.5,
+    carbs: 0.8,
+    fat: 0.3,
+    fiber: 0.0,
+    category: "Suplementos e Nutrição Esportiva",
+    source: "Suplementação Clínica"
+  },
+  {
+    id: "curated-suplemento-hiperproteico-senior",
+    organizationId: null,
+    name: "Suplemento Nutricional Oral Hiperproteico (tipo Nutren Senior / Ensure)",
+    portion: "55 g",
+    householdMeasure: "6 colheres de sopa rasas em 180ml de água/leite (55 g)",
+    calories: 235.0,
+    protein: 20.0,
+    carbs: 21.0,
+    fat: 7.8,
+    fiber: 3.0,
+    category: "Nutrição Clínica e Enteral (Multiprofissional)",
+    source: "Protocolo Clínico / Hospitalar"
+  },
+  {
+    id: "curated-espessante-disfagia-fono",
+    organizationId: null,
+    name: "Espessante Alimentar Instantâneo para Disfagia (Fonoaudiologia / Clínica)",
+    portion: "3.6 g",
+    householdMeasure: "3 colheres-medida para consistência Néctar/Mel (3,6 g)",
+    calories: 11.0,
+    protein: 0.0,
+    carbs: 2.6,
+    fat: 0.0,
+    fiber: 0.9,
+    category: "Nutrição Clínica e Enteral (Multiprofissional)",
+    source: "Protocolo Fonoaudiologia / Disfagia"
   }
 ];
 
@@ -39,9 +208,10 @@ async function main() {
     }
   });
 
+  await upsertFoods(CURATED_FOODS);
+
   const tacoFoods = await fetchTacoFoods();
   await upsertFoods(tacoFoods);
-  await upsertFoods(BASE_FOODS);
 
   let globalCount = await prisma.food.count({
     where: { organizationId: null }
@@ -63,6 +233,7 @@ async function main() {
     JSON.stringify(
       {
         targetGlobalFoods: TARGET_GLOBAL_FOODS,
+        curatedImported: CURATED_FOODS.length,
         tacoImported: tacoFoods.length,
         globalFoods: globalCount,
         customFoods: customCount
@@ -76,7 +247,7 @@ async function main() {
 async function fetchTacoFoods() {
   const response = await fetch(TACO_URL, {
     headers: {
-      "User-Agent": "NutriPlan/0.1 local importer"
+      "User-Agent": "NutriPlan/0.2 local importer"
     }
   });
 
@@ -93,24 +264,26 @@ async function fetchTacoFoods() {
     .map((row) => {
       const number = getValue(row, headerIndex, "numero do alimento");
       const name = titleCaseFood(getValue(row, headerIndex, "descricao dos alimentos"));
-      const category = getValue(row, headerIndex, "categoria do alimento");
+      const rawCategory = getValue(row, headerIndex, "categoria do alimento");
 
       if (!number || !name) {
         return null;
       }
+
+      const category = normalizeCategory(rawCategory, name);
 
       return {
         id: `taco-${number}`,
         organizationId: null,
         name,
         portion: "100 g",
-        householdMeasure: null,
+        householdMeasure: inferHouseholdMeasure(name, category),
         calories: parseNumber(getValue(row, headerIndex, "energia kcal")),
         protein: parseNumber(getValue(row, headerIndex, "proteina g")),
         carbs: parseNumber(getValue(row, headerIndex, "carboidrato g")),
         fat: parseNumber(getValue(row, headerIndex, "lipideos g")),
         fiber: parseNullableNumber(getValue(row, headerIndex, "fibra alimentar g")),
-        category: category || "TACO",
+        category,
         source: "TACO/NEPA-Unicamp 4a edicao"
       };
     })
@@ -137,7 +310,7 @@ async function fetchOpenFoodFactsFoods(limit) {
 
     const response = await fetchWithRetry(`${OFF_SEARCH_URL}?${params}`, {
       headers: {
-        "User-Agent": "NutriPlan/0.1 local importer"
+        "User-Agent": "NutriPlan/0.2 local importer"
       }
     });
 
@@ -150,29 +323,33 @@ async function fetchOpenFoodFactsFoods(limit) {
       }
 
       const code = String(product.code || "").trim();
-      const name = cleanName(product.product_name || "");
+      const rawName = cleanName(product.product_name || "");
+      const brand = cleanName(product.brands || "");
+      const name = brand && !rawName.toLowerCase().includes(brand.toLowerCase()) ? `${rawName} [${brand}]` : rawName;
       const nutriments = product.nutriments || {};
 
-      if (!code || !name || seenCodes.has(code)) {
+      if (!code || !rawName || rawName.length < 3 || seenCodes.has(code)) {
         continue;
       }
+
+      const category = normalizeCategory(firstCategory(product.categories), name);
 
       const food = {
         id: `off-${code}`,
         organizationId: null,
-        name,
+        name: name.slice(0, 180),
         portion: "100 g",
-        householdMeasure: null,
+        householdMeasure: inferHouseholdMeasure(name, category),
         calories: parseNumber(nutriments["energy-kcal_100g"] ?? nutriments["energy-kcal"]),
         protein: parseNumber(nutriments.proteins_100g ?? nutriments.proteins),
         carbs: parseNumber(nutriments.carbohydrates_100g ?? nutriments.carbohydrates),
         fat: parseNumber(nutriments.fat_100g ?? nutriments.fat),
         fiber: parseNullableNumber(nutriments.fiber_100g ?? nutriments.fiber),
-        category: firstCategory(product.categories) || "Open Food Facts",
-        source: "Open Food Facts ODbL"
+        category,
+        source: "Open Food Facts Brasil"
       };
 
-      if (!hasRequiredMacros(food)) {
+      if (!hasRequiredMacros(food) || food.calories <= 0) {
         continue;
       }
 
@@ -188,6 +365,35 @@ async function fetchOpenFoodFactsFoods(limit) {
   }
 
   return foods;
+}
+
+function inferHouseholdMeasure(name, category) {
+  const norm = normalize(`${name} ${category || ""}`);
+  if (norm.includes("feijao")) return "1 concha média cheia (100 g)";
+  if (norm.includes("arroz") || norm.includes("lentilha") || norm.includes("grao")) return "4 colheres de sopa cheias (100 g)";
+  if (norm.includes("aveia") || norm.includes("farelo") || norm.includes("granola") || norm.includes("farinha")) return "5 colheres de sopa cheias (100 g) | 1 col. sopa ≈ 20 g";
+  if (norm.includes("pao frances")) return "2 unidades médias (100 g) | 1 unidade ≈ 50 g";
+  if (norm.includes("pao")) return "4 fatias médias (100 g) | 1 fatia ≈ 25 g";
+  if (norm.includes("frango") || norm.includes("bife") || norm.includes("patinho") || norm.includes("alcatra") || norm.includes("file") || norm.includes("peixe") || norm.includes("tilapia") || norm.includes("salmao") || norm.includes("carne")) return "1 filé / bife médio (100 g)";
+  if (norm.includes("ovo")) return "2 unidades médias (100 g) | 1 ovo ≈ 50 g";
+  if (norm.includes("queijo") || norm.includes("mucarela") || norm.includes("minas")) return "3 fatias médias (100 g) | 1 fatia ≈ 30 g";
+  if (norm.includes("leite") || norm.includes("iogurte") || norm.includes("suco") || norm.includes("bebida")) return "1/2 copo americano (100 ml) | 1 copo = 200 ml";
+  if (norm.includes("fruta") || norm.includes("banana") || norm.includes("maca") || norm.includes("laranja") || norm.includes("mamao")) return "1 porção / unidade média (100 g)";
+  if (norm.includes("azeite") || norm.includes("oleo") || norm.includes("manteiga")) return "10 colheres de sopa (100 g) | 1 col. sopa ≈ 10 g";
+  return "4 colheres de sopa / 1 porção padrão (100 g)";
+}
+
+function normalizeCategory(rawCategory, name) {
+  const norm = normalize(`${rawCategory || ""} ${name || ""}`);
+  if (norm.includes("cereal") || norm.includes("cereais") || norm.includes("pao") || norm.includes("arroz") || norm.includes("batata") || norm.includes("mandioca") || norm.includes("macarrao") || norm.includes("aveia")) return "Cereais, Pães e Tubérculos";
+  if (norm.includes("carne") || norm.includes("ave") || norm.includes("frango") || norm.includes("bovin") || norm.includes("suin") || norm.includes("peixe") || norm.includes("pescado") || norm.includes("ovo")) return "Carnes, Aves, Peixes e Ovos";
+  if (norm.includes("leguminosa") || norm.includes("feijao") || norm.includes("lentilha") || norm.includes("grao") || norm.includes("castanha") || norm.includes("nozes") || norm.includes("amendoim")) return "Feijões, Leguminosas e Oleaginosas";
+  if (norm.includes("fruta") || norm.includes("banana") || norm.includes("maca") || norm.includes("laranja") || norm.includes("mamao") || norm.includes("abacaxi") || norm.includes("morango")) return "Frutas e Sucos Naturais";
+  if (norm.includes("verdura") || norm.includes("hortalica") || norm.includes("legume") || norm.includes("brocolis") || norm.includes("alface") || norm.includes("tomate") || norm.includes("cenoura")) return "Verduras, Hortaliças e Legumes";
+  if (norm.includes("leite") || norm.includes("laticinio") || norm.includes("queijo") || norm.includes("iogurte")) return "Laticínios, Queijos e Bebidas Vegetais";
+  if (norm.includes("oleo") || norm.includes("gordura") || norm.includes("azeite") || norm.includes("manteiga")) return "Óleos, Gorduras e Sementes";
+  if (norm.includes("doce") || norm.includes("acucar") || norm.includes("chocolate") || norm.includes("mel")) return "Doces, Açúcares e Condimentos";
+  return "Cereais, Pães e Tubérculos";
 }
 
 async function fetchWithRetry(url, init, attempts = 4) {

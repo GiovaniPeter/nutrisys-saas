@@ -67,6 +67,7 @@ const navItems: NavItem[] = [
   { key: "appointments", href: "/appointments", label: "Agenda", icon: "calendar" },
   { key: "patients", href: "/patients", label: "Pacientes", icon: "people" },
   { key: "anamneses", href: "/anamneses", label: "Prontuário", icon: "clinical" },
+  { key: "supplements", href: "/supplements", label: "Prescrições", icon: "clinical", mobileOptional: true },
   { key: "financial", href: "/financial", label: "Financeiro", icon: "wallet", mobileOptional: true },
   { key: "reports", href: "/reports", label: "Relatórios", icon: "analytics" },
   { key: "chat", href: "/chat", label: "Mensagens", icon: "communication" },
@@ -74,22 +75,21 @@ const navItems: NavItem[] = [
   { key: "feedback", href: "/feedback", label: "Sugestões e bugs", icon: "communication" },
   { key: "portal", href: "/portal/login", label: "Portal do Paciente", icon: "people" },
   { key: "schedule", href: "/schedule", label: "Calendário", icon: "clock", mobileOptional: true },
-  { key: "meal-plans", href: "/meal-plans", label: "Planos", icon: "plan", mobileOptional: true },
+  { key: "meal-plans", href: "/meal-plans", label: "Planos & Dietas", icon: "plan", mobileOptional: true },
   { key: "recipes", href: "/recipes", label: "Receitas", icon: "nutrition" },
   { key: "shopping", href: "/shopping", label: "Compras", icon: "nutrition" },
-  { key: "foods", href: "/foods", label: "Alimentos", icon: "nutrition" },
-  { key: "body-records", href: "/body-records", label: "Evolução", icon: "clinical" },
-  { key: "recalls", href: "/recalls", label: "Recordatório", icon: "clinical" },
-  { key: "lab-exams", href: "/lab-exams", label: "Exames", icon: "clinical" },
-  { key: "supplements", href: "/supplements", label: "Suplementos", icon: "nutrition" },
-  { key: "food-diary", href: "/food-diary", label: "Diário alimentar", icon: "nutrition" },
-  { key: "hydration", href: "/hydration", label: "Metas e hidratação", icon: "clinical" },
-  { key: "energy", href: "/energy", label: "Cálculo energético", icon: "clinical" },
+  { key: "foods", href: "/foods", label: "Alimentos & Fórmulas", icon: "nutrition" },
+  { key: "body-records", href: "/body-records", label: "Evolução Corporal", icon: "clinical" },
+  { key: "recalls", href: "/recalls", label: "Recordatório 24h", icon: "clinical" },
+  { key: "lab-exams", href: "/lab-exams", label: "Exames Lab.", icon: "clinical" },
+  { key: "food-diary", href: "/food-diary", label: "Diário do Paciente", icon: "nutrition" },
+  { key: "hydration", href: "/hydration", label: "Metas & Hábitos", icon: "clinical" },
+  { key: "energy", href: "/energy", label: "Avaliação Metabólica", icon: "clinical" },
   { key: "whatsapp", href: "/whatsapp", label: "WhatsApp", icon: "communication" },
   { key: "notifications", href: "/notifications", label: "Alertas", icon: "communication" },
   { key: "kpis", href: "/kpis", label: "KPIs", icon: "analytics" },
   { key: "materials", href: "/materials", label: "Materiais", icon: "analytics" },
-  { key: "users", href: "/users", label: "Equipe", icon: "people" }
+  { key: "users", href: "/users", label: "Equipe Multiprofissional", icon: "people" }
 ];
 
 const primaryNavKeys = new Set<AppNavKey>([
@@ -97,6 +97,7 @@ const primaryNavKeys = new Set<AppNavKey>([
   "appointments",
   "patients",
   "anamneses",
+  "supplements",
   "financial",
   "reports",
   "chat",
@@ -108,6 +109,7 @@ const primaryNavKeysProfessional = new Set<AppNavKey>([
   "appointments",
   "patients",
   "anamneses",
+  "supplements",
   "financial",
   "reports",
   "chat",
@@ -116,24 +118,23 @@ const primaryNavKeysProfessional = new Set<AppNavKey>([
 
 const menuGroups: Array<{ label: string; keys: AppNavKey[] }> = [
   {
-    label: "Nutrição (Opcional)",
+    label: "Nutrição & Prescrição Dietética (Privativo Nutricionista)",
     keys: [
       "meal-plans",
+      "foods",
       "recipes",
       "shopping",
-      "foods",
       "recalls",
-      "supplements",
       "food-diary"
     ]
   },
   {
-    label: "Atendimento Clínico",
-    keys: ["body-records", "lab-exams", "hydration", "energy"]
+    label: "Atendimento Clínico Multiprofissional",
+    keys: ["body-records", "lab-exams", "energy", "hydration", "supplements"]
   },
   {
-    label: "Relacionamento e Gestão",
-    keys: ["portal", "whatsapp", "notifications", "kpis", "materials", "billing", "schedule"]
+    label: "Relacionamento e Gestão da Clínica",
+    keys: ["users", "portal", "whatsapp", "notifications", "kpis", "materials", "billing", "schedule"]
   },
   {
     label: "Ajuda",
@@ -143,12 +144,12 @@ const menuGroups: Array<{ label: string; keys: AppNavKey[] }> = [
 
 const menuGroupsProfessional: Array<{ label: string; keys: AppNavKey[] }> = [
   {
-    label: "Atendimento Clínico",
-    keys: ["body-records", "lab-exams"]
+    label: "Atendimento Clínico Multiprofissional",
+    keys: ["body-records", "lab-exams", "energy", "hydration", "supplements"]
   },
   {
-    label: "Relacionamento e Gestão",
-    keys: ["portal", "whatsapp", "notifications", "kpis", "materials", "billing", "users", "schedule"]
+    label: "Relacionamento e Gestão da Clínica",
+    keys: ["users", "portal", "whatsapp", "notifications", "kpis", "materials", "billing", "schedule"]
   },
   {
     label: "Ajuda",
@@ -176,6 +177,9 @@ const professionalNavKeys = new Set<AppNavKey>([
   "body-records",
   "anamneses",
   "lab-exams",
+  "supplements",
+  "hydration",
+  "energy",
   "chat",
   "whatsapp",
   "notifications",
@@ -189,17 +193,19 @@ const professionalNavKeys = new Set<AppNavKey>([
   "feedback"
 ]);
 
-const specialtyLabels: Record<string, string> = {
-  "medico": "Médico(a)",
+export const specialtyLabels: Record<string, string> = {
+  "medico": "Médico(a) Clínico",
+  "endocrinologista": "Endocrinologista / Nutrólogo(a)",
   "psicologo": "Psicólogo(a)",
   "fisioterapeuta": "Fisioterapeuta",
   "fonoaudiologo": "Fonoaudiólogo(a)",
-  "dentista": "Dentista",
-  "educador-fisico": "Ed. Físico(a)",
+  "dentista": "Dentista / Odontólogo(a)",
+  "educador-fisico": "Prof. Educação Física",
   "enfermeiro": "Enfermeiro(a)",
-  "terapeuta-ocupacional": "Terapeuta Ocup.",
+  "terapeuta-ocupacional": "Terapeuta Ocupacional",
   "farmaceutico": "Farmacêutico(a)",
-  "biomedico": "Biomédico(a)"
+  "biomedico": "Biomédico(a)",
+  "nutricionista": "Nutricionista"
 };
 
 export function AppNav({ active, user }: AppNavProps) {
@@ -209,7 +215,7 @@ export function AppNav({ active, user }: AppNavProps) {
   const menuRef = useRef<HTMLDetailsElement>(null);
   const prefetchedRoutes = useRef(new Set<string>());
 
-  const isProfessional = user.role === "PROFESSIONAL";
+  const isProfessional = user.role === "PROFESSIONAL" && user.specialty !== "nutricionista";
   const isSecretary = user.role === "SECRETARY";
 
   const visibleNavItems = useMemo(

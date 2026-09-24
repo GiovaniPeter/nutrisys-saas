@@ -10,6 +10,7 @@ const userUpdateSchema = z.object({
   name: z.string().min(2, "Informe o nome.").optional(),
   role: z.nativeEnum(UserRole).optional(),
   crn: z.string().optional(),
+  specialty: z.string().optional(),
   active: z.boolean().optional()
 });
 
@@ -37,6 +38,7 @@ export async function GET(_request: NextRequest, { params }: Params) {
       email: true,
       role: true,
       crn: true,
+      specialty: true,
       active: true,
       createdAt: true,
       updatedAt: true
@@ -93,6 +95,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
         ...(input.name !== undefined ? { name: input.name } : {}),
         ...(input.role !== undefined ? { role: input.role } : {}),
         ...(input.crn !== undefined ? { crn: input.crn || null } : {}),
+        ...(input.specialty !== undefined ? { specialty: input.specialty || null } : {}),
         ...(input.active !== undefined ? { active: input.active } : {})
       },
       select: {
@@ -101,6 +104,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
         email: true,
         role: true,
         crn: true,
+        specialty: true,
         active: true,
         createdAt: true,
         updatedAt: true

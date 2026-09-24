@@ -16,9 +16,12 @@ export default async function SupplementsPage() {
 
       <section className="workspace-heading">
         <div>
-          <span className="eyebrow">Prescricao</span>
-          <h1>Suplementos</h1>
-          <p>Registre suplementos, fitoterapicos, formulas manipuladas e orientacoes de uso.</p>
+          <span className="eyebrow">Receituário & Prescrição Multiprofissional</span>
+          <h1>Prescrições, Fórmulas e Suplementos</h1>
+          <p>
+            Elabore receituários de medicamentos, suplementos nutricionais, fitoterápicos, fórmulas manipuladas e
+            protocolos terapêuticos para o paciente.
+          </p>
         </div>
       </section>
 

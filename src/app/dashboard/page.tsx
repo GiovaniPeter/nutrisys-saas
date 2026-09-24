@@ -15,7 +15,7 @@ export default async function DashboardPage() {
 
   const isSecretary = user.role === "SECRETARY";
   const isProfessional = user.role === "PROFESSIONAL";
-  const includeNutritionData = !isSecretary && !isProfessional;
+  const includeNutritionData = !isSecretary;
   const { organization, commonData, professionalData } = await loadCachedDashboardData(
     user.organizationId,
     includeNutritionData

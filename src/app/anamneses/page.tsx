@@ -16,9 +16,12 @@ export default async function AnamnesesPage() {
 
       <section className="workspace-heading">
         <div>
-          <span className="eyebrow">Prontuario</span>
-          <h1>Anamnese</h1>
-          <p>Registre historico, rotina, preferências, sintomas e condutas iniciais.</p>
+          <span className="eyebrow">Prontuário Eletrônico Multiprofissional</span>
+          <h1>Prontuário, Anamnese e Evolução SOAP</h1>
+          <p>
+            Registre atendimentos médicos, nutricionais, psicológicos, fisioterapêuticos, esportivos, fonoaudiológicos e
+            evoluções SOAP em um único prontuário integrado.
+          </p>
         </div>
       </section>
 

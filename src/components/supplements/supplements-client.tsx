@@ -49,33 +49,41 @@ type PrescriptionsResponse = {
 };
 
 const categories = [
+  "Medicamento Alopático / Contínuo",
+  "Medicamento Sintomático / Analgésico",
+  "Fórmula Manipulada",
   "Vitamina",
   "Mineral",
   "Proteina/Aminoacido",
   "Acido graxo",
   "Probiotico/Prebiotico",
   "Fitoterapico",
-  "Formula manipulada",
+  "Dermocosmético / Tópico",
   "Termogenico",
   "Antioxidante",
   "Adaptogeno",
+  "Protocolo Clínico / Reabilitação",
   "Outro"
 ];
 
 const commonSupplements = [
-  { name: "Vitamina D3", category: "Vitamina", dose: "2.000 UI", frequency: "1x ao dia" },
-  { name: "Vitamina C", category: "Vitamina", dose: "500 mg", frequency: "1x ao dia" },
-  { name: "Vitamina B12", category: "Vitamina", dose: "1.000 mcg", frequency: "1x ao dia" },
-  { name: "Zinco quelado", category: "Mineral", dose: "30 mg", frequency: "1x ao dia" },
-  { name: "Magnesio dimalato", category: "Mineral", dose: "300 mg", frequency: "1x ao dia" },
-  { name: "Omega 3 EPA/DHA", category: "Acido graxo", dose: "1.000 mg", frequency: "2x ao dia" },
-  { name: "Whey Protein Isolado", category: "Proteina/Aminoacido", dose: "30 g", frequency: "1x ao dia" },
-  { name: "Creatina monohidratada", category: "Proteina/Aminoacido", dose: "5 g", frequency: "1x ao dia" },
-  { name: "Probiotico", category: "Probiotico/Prebiotico", dose: "10 bilhoes UFC", frequency: "1x ao dia" },
-  { name: "Psyllium", category: "Probiotico/Prebiotico", dose: "5 g", frequency: "2x ao dia" },
-  { name: "Curcumina", category: "Fitoterapico", dose: "500 mg", frequency: "1x ao dia" },
-  { name: "Ashwagandha", category: "Adaptogeno", dose: "300 mg", frequency: "2x ao dia" },
-  { name: "Coenzima Q10", category: "Antioxidante", dose: "100 mg", frequency: "1x ao dia" }
+  { name: "Vitamina D3 (Colecalciferol)", category: "Vitamina", dose: "2.000 UI", frequency: "1x ao dia após o almoço" },
+  { name: "Vitamina B12 (Metilcobalamina)", category: "Vitamina", dose: "1.000 mcg sublingual", frequency: "1x ao dia" },
+  { name: "Vitamina C Revestida", category: "Vitamina", dose: "500 mg", frequency: "1x ao dia" },
+  { name: "Magnésio Dimalato / Inositol", category: "Mineral", dose: "350 mg", frequency: "1x ao dia à noite" },
+  { name: "Zinco Quelado (Bisglicinato)", category: "Mineral", dose: "25 mg", frequency: "1x ao dia" },
+  { name: "Ferro Quelado (Bisglicinato Ferroso)", category: "Mineral", dose: "30 mg", frequency: "1x ao dia longe de laticínios" },
+  { name: "Ômega 3 TG (EPA 660mg / DHA 440mg)", category: "Acido graxo", dose: "2 cápsulas (2.000 mg)", frequency: "1x ao dia com refeição" },
+  { name: "Whey Protein Isolado / Concentrado", category: "Proteina/Aminoacido", dose: "30 g (1 scoop)", frequency: "1x ao dia" },
+  { name: "Creatina Monohidratada 100% Pura", category: "Proteina/Aminoacido", dose: "5 g (1 dosador)", frequency: "1x ao dia todos os dias" },
+  { name: "Colágeno Tipo II Não Desnaturado (Articular / Fisio)", category: "Protocolo Clínico / Reabilitação", dose: "40 mg", frequency: "1x ao dia em jejum" },
+  { name: "Pool de Probióticos Multi-Cepas", category: "Probiotico/Prebiotico", dose: "10 bilhões UFC", frequency: "1x ao dia antes de dormir" },
+  { name: "Psyllium (Fibra Solúvel)", category: "Probiotico/Prebiotico", dose: "5 g (1 colher de sopa rasa)", frequency: "1 a 2x ao dia com 250ml de água" },
+  { name: "Ashwagandha (Withania somnifera)", category: "Adaptogeno", dose: "300 mg", frequency: "2x ao dia" },
+  { name: "Melatonina Sublingual", category: "Fórmula Manipulada", dose: "0,5 mg a 2 mg", frequency: "30 min antes de dormir" },
+  { name: "Curcumina Padronizada 95% + Piperina", category: "Fitoterapico", dose: "500 mg + 5 mg", frequency: "1x ao dia" },
+  { name: "Coenzima Q10 (Ubiquinona)", category: "Antioxidante", dose: "100 mg", frequency: "1x ao dia com refeição lipídica" },
+  { name: "Espessante Alimentar Instantâneo (Disfagia)", category: "Protocolo Clínico / Reabilitação", dose: "2 a 3 medidas", frequency: "Adicionar aos líquidos conforme consistência prescrita" }
 ];
 
 export function SupplementsClient() {

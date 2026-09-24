@@ -9,7 +9,8 @@ const secretaryAllowedPages = [
   "/patients",
   "/chat",
   "/notifications",
-  "/whatsapp"
+  "/whatsapp",
+  "/feedback"
 ];
 
 const secretaryAllowedApis = [
@@ -20,35 +21,31 @@ const secretaryAllowedApis = [
   "/api/notifications",
   "/api/public-booking",
   "/api/health",
-  "/api/portal"
+  "/api/portal",
+  "/api/feedback"
 ];
 
-const professionalBlockedPages = [
+// Prescrição dietética e montagem de cardápios/planos alimentares são atividades privativas do Nutricionista (Lei Federal nº 8.234/91)
+const nutritionistExclusivePages = [
   "/meal-plans",
   "/recipes",
   "/shopping",
   "/foods",
-  "/supplements",
   "/food-diary",
-  "/hydration",
-  "/energy",
   "/recalls"
 ];
 
-const professionalBlockedApis = [
+const nutritionistExclusiveApis = [
   "/api/meal-plans",
   "/api/recipes",
   "/api/shopping",
   "/api/foods",
-  "/api/supplements",
   "/api/food-diary",
-  "/api/hydration",
-  "/api/energy",
   "/api/recalls"
 ];
 
 export function middleware(request: NextRequest) {
-  const { role } = readSession(request.cookies.get(SESSION_COOKIE)?.value);
+  const { role, specialty } = readSession(request.cookies.get(SESSION_COOKIE)?.value);
 
   if (!role || (role !== "SECRETARY" && role !== "PROFESSIONAL")) {
     return NextResponse.next();
@@ -56,42 +53,52 @@ export function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  if (role === "PROFESSIONAL") {
+  // Restrição para outros Profissionais de Saúde (Médicos, Psicólogos, Fisios, etc.):
+  // Têm acesso a Prontuário, Evolução, Exames, Prescrições, Metas e Gasto Energético,
+  // mas a Prescrição de Dietas / Planos Alimentares é restrita e privativa de Nutricionistas.
+  if (role === "PROFESSIONAL" && specialty !== "nutricionista") {
     if (pathname.startsWith("/api/")) {
-      if (professionalBlockedApis.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
-        return NextResponse.json({ error: "Funcionalidade exclusiva para nutricionistas." }, { status: 403 });
+      if (nutritionistExclusiveApis.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
+        return NextResponse.json(
+          { error: "A prescrição de dietas e planos alimentares é privativa do Nutricionista (Lei nº 8.234/91)." },
+          { status: 403 }
+        );
       }
 
       return NextResponse.next();
     }
 
-    if (professionalBlockedPages.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
+    if (nutritionistExclusivePages.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
 
     return NextResponse.next();
   }
 
-  // SECRETARY restrictions
-  if (pathname.startsWith("/api/")) {
-    if (secretaryAllowedApis.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
+  // Restrição para SECRETÁRIA (apenas módulos administrativos e de recepção)
+  if (role === "SECRETARY") {
+    if (pathname.startsWith("/api/")) {
+      if (secretaryAllowedApis.some((path) => pathname === path || pathname.startsWith(`${path}/`))) {
+        return NextResponse.next();
+      }
+
+      return NextResponse.json({ error: "Acesso bloqueado para o modo secretária." }, { status: 403 });
+    }
+
+    if (
+      pathname === "/" ||
+      pathname.startsWith("/login") ||
+      pathname.startsWith("/register") ||
+      pathname.startsWith("/portal") ||
+      secretaryAllowedPages.some((path) => pathname === path || pathname.startsWith(`${path}/`))
+    ) {
       return NextResponse.next();
     }
 
-    return NextResponse.json({ error: "Acesso bloqueado para o modo secretária." }, { status: 403 });
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
-  if (
-    pathname === "/" ||
-    pathname.startsWith("/login") ||
-    pathname.startsWith("/register") ||
-    pathname.startsWith("/portal") ||
-    secretaryAllowedPages.some((path) => pathname === path || pathname.startsWith(`${path}/`))
-  ) {
-    return NextResponse.next();
-  }
-
-  return NextResponse.redirect(new URL("/dashboard", request.url));
+  return NextResponse.next();
 }
 
 function readSession(cookie?: string): { role: string | null; specialty: string | null } {
