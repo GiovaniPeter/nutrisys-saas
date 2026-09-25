@@ -30,6 +30,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9
     },
     {
+      url: `${BASE_URL}/llms.txt`,
+      lastModified: CONTENT_UPDATED_AT,
+      changeFrequency: "weekly",
+      priority: 0.9
+    },
+    {
+      url: `${BASE_URL}/llms-full.txt`,
+      lastModified: CONTENT_UPDATED_AT,
+      changeFrequency: "weekly",
+      priority: 0.9
+    },
+    {
       url: `${BASE_URL}/sistema-para-clinicas`,
       lastModified: CONTENT_UPDATED_AT,
       changeFrequency: "monthly",
