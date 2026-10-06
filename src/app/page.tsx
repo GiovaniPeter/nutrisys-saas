@@ -7,67 +7,122 @@ import { TrackedLink } from "@/components/analytics/tracked-link";
 import { DashboardLink } from "@/components/auth/dashboard-link";
 
 export const metadata: Metadata = {
-  title: "Software para Nutricionistas — Planos Alimentares, TACO e Portal do Paciente | NutriPlan",
+  title: "NutriPlan | Software para Nutricionistas — Cardápios em 3 Minutos, Tabela TACO e Portal do Paciente",
   description:
-    "Monte planos alimentares em 3 minutos com tabela TACO, TBCA e medidas caseiras reais. Gere substituições equivalentes, calcule GEB/GET e encante seus pacientes com diário alimentar por fotos e portal exclusivo.",
+    "Prescreva cardápios calculados em minutos com a Tabela TACO (+1.000 itens com medidas caseiras), substituições em 1 clique, antropometria Pollock/Guedes e PDF com CRN por um preço que cabe no seu consultório. Teste 7 dias grátis.",
   alternates: {
     canonical: "/"
   }
 };
 
-const features = [
+const painPoints = [
   {
-    icon: "meal",
-    title: "Planos alimentares em 3 minutos",
-    text: "Prescreva em gramas exatas ou medidas caseiras reais (colheres, fatias, conchas, scoops) com mais de 1.000 alimentos da TACO, TBCA e suplementos."
-  },
-  {
-    icon: "leaf",
-    title: "Substituições equivalentes em 1 clique",
-    text: "Gere automaticamente opções de substituição do mesmo grupo alimentar calculadas para manter exatamente as mesmas calorias e macronutrientes."
-  },
-  {
-    icon: "patient",
-    title: "Prontuário, GEB/GET e antropometria",
-    text: "Anamneses para nutrição clínica, esportiva e materno-infantil, protocolos de gasto energético (Mifflin, Harris-Benedict, Katch-McArdle) e evolução corporal."
-  },
-  {
-    icon: "message",
-    title: "Portal exclusivo do paciente no celular",
-    text: "Seu paciente acessa o cardápio publicado, envia fotos das refeições no diário alimentar, registra hidratação diária, bate metas e conversa com você pelo chat."
+    icon: "calculator",
+    badge: "O pesadelo das substituições",
+    title: "Horas perdidas calculando equivalências no meio da consulta",
+    text: "Ficar fazendo contas de cabeça ou procurando tabelas para descobrir quantas colheres de arroz equivalem a 130g de batata-doce rouba o tempo que você deveria dedicar a ouvir o paciente."
   },
   {
     icon: "clipboard",
-    title: "Receitas calculadas, suplementos e exames",
-    text: "Biblioteca de receitas fitness com cálculo automático de macros, lista de compras inteligente, prescrição de suplementos/fitoterápicos e histórico laboratorial."
+    badge: "Planilhas travadas e feias",
+    title: "Entregar PDFs amadores que não transmitem autoridade",
+    text: "O paciente não segue o plano porque não entende tabelas cinzas e confusas. Você estudou anos para ter um consultório e não merece ficar dependendo de fórmulas quebradas no Excel."
   },
   {
     icon: "growth",
-    title: "Agenda online, WhatsApp e financeiro",
-    text: "Link público de agendamento para captação de pacientes, confirmação de consultas, controle de receitas/despesas e indicadores de retenção do consultório."
+    badge: "Mensalidades abusivas",
+    title: "Pagar mais de R$ 100/mês em softwares complexos e cheios de travas",
+    text: "A maioria das ferramentas cobra caro, trava recursos essenciais no plano básico e força você a pagar por dezenas de botões inúteis que você nunca vai usar na rotina real de atendimento."
   }
 ];
 
-const steps = [
+const pillars = [
   {
-    icon: "clinic",
-    title: "Crie sua conta grátis",
-    text: "Cadastre seu consultório de nutrição em menos de 1 minuto e libere 7 dias de acesso completo sem precisar de cartão."
+    num: "01",
+    tag: "Prescrição Descomplicada",
+    title: "Tabela TACO com Medidas Caseiras de Verdade",
+    subtitle: "Chega de paciente mandando mensagem perguntando quanto pesam 120g de frango.",
+    text: "Todos os alimentos já vêm convertidos para a linguagem da cozinha brasileira: colher de sopa, concha média, fatia, unidade ou gramas exatos. Além disso, você tem 4 templates prontos (Emagrecimento, Hipertrofia, Reeducação e Low Carb) para clonar e adaptar em segundos.",
+    highlights: ["+1.014 alimentos e suplementos em português", "Busca instantânea sem acento", "Gramas exatos ou porções caseiras"],
+    icon: "meal"
   },
   {
-    icon: "addPatient",
-    title: "Avalie seu paciente",
-    text: "Registre a anamnese nutricional, evolução antropométrica, exames laboratoriais e calcule o GEB/GET automaticamente."
+    num: "02",
+    tag: "Velocidade na Consulta",
+    title: "Substituições Equivalentes em 1 Clique",
+    subtitle: "Varie o cardápio sem ter que refazer as contas de cabeça.",
+    text: "Basta clicar em '🔄 Substituições' em qualquer alimento e o NutriPlan sugere instantaneamente opções do mesmo grupo alimentar calculadas na gramagem exata para bater as calorias daquela refeição. O paciente ganha autonomia e você economiza horas de trabalho.",
+    highlights: ["Equivalência calórica automática", "Mesmo grupo alimentar", "Sem risco de furar o VET planejado"],
+    icon: "leaf"
   },
   {
-    icon: "meal",
-    title: "Monte o cardápio com medidas caseiras",
-    text: "Adicione alimentos da TACO e suplementos, gere substituições equivalentes em 1 clique e publique no Portal do Paciente."
+    num: "03",
+    tag: "Ciência Clínica & Esportiva",
+    title: "Antropometria Pollock 3/7, Guedes & Cunningham/Tinsley",
+    subtitle: "Do emagrecimento à alta performance esportiva em um só painel.",
+    text: "Preencha as dobras do adipômetro e o sistema calcula sozinho a densidade, o % de gordura por Siri, a Massa Magra e o RCQ. Para atletas, compare Cunningham, Tinsley, Katch-McArdle e Mifflin lado a lado, com adicional de METs para treinos intensos e divisão de macros em g/kg de peso.",
+    highlights: ["Pollock 3 e 7 dobras + Guedes (Brasil)", "Cálculo de Massa Magra e Gorda", "Cunningham & Tinsley para esportistas"],
+    icon: "clipboard"
   },
   {
-    icon: "dashboard",
-    title: "Fidelize entre as consultas",
-    text: "Acompanhe as fotos do diário alimentar, metas de água, dúvidas pelo chat e o faturamento mensal em um único painel."
+    num: "04",
+    tag: "Encantamento & Adesão",
+    title: "Prescrição A4 com Registro CRN e Portal Instalável (PWA)",
+    subtitle: "Entregue um documento médico de altíssimo padrão e acompanhe no celular.",
+    text: "Gere um PDF impecável com seu cabeçalho, logo e registro no CRN (em total conformidade com a Lei Federal nº 8.234/91). Seu paciente ainda pode instalar o Portal do Paciente direto na tela inicial do celular como um aplicativo para ver o cardápio, controlar a meta de água e enviar fotos no diário.",
+    highlights: ["PDF de consultório com carimbo CRN", "Portal do Paciente PWA no celular", "Diário alimentar com fotos e hidratação"],
+    icon: "message"
+  }
+];
+
+const comparisonRows = [
+  {
+    feature: "Preço mensal",
+    nutriplan: "A partir de R$ 39,50/mês",
+    others: "R$ 89,00 a R$ 149,00/mês",
+    sheets: "R$ 0 (Custa seu tempo livre)"
+  },
+  {
+    feature: "Tabela TACO + Suplementos com Medidas Caseiras",
+    nutriplan: "✅ +1.000 itens padronizados",
+    others: "✅ Presente",
+    sheets: "❌ Manual, desatualizada e incompleta"
+  },
+  {
+    feature: "Substituições equivalentes em 1 clique",
+    nutriplan: "✅ Automático e calibrado",
+    others: "⚠️ Lento ou complexo",
+    sheets: "❌ Não tem (calcula de cabeça)"
+  },
+  {
+    feature: "Templates de Cardápios Prontos (Emagrecimento, Hipertrofia...)",
+    nutriplan: "✅ 4 modelos completos inclusos",
+    others: "⚠️ Bloqueado em planos caros",
+    sheets: "❌ Não tem"
+  },
+  {
+    feature: "Fórmulas Esportivas (Cunningham, Tinsley & METs)",
+    nutriplan: "✅ Incluso nativamente",
+    others: "❌ Apenas Harris/Mifflin básicos",
+    sheets: "❌ Exige programação avançada"
+  },
+  {
+    feature: "Antropometria Pollock 3/7, Guedes e Laudo PDF",
+    nutriplan: "✅ Completo com % de Gordura e Magra",
+    others: "⚠️ Muitas vezes cobrado à parte",
+    sheets: "⚠️ Risco alto de fórmulas corrompidas"
+  },
+  {
+    feature: "Portal do Paciente instalável no celular (PWA)",
+    nutriplan: "✅ Incluso com diário e fotos",
+    others: "✅ Presente",
+    sheets: "❌ Não tem (apenas arquivos avulsos)"
+  },
+  {
+    feature: "Exige cartão de crédito para testar?",
+    nutriplan: "❌ NÃO exige (7 dias livres)",
+    others: "⚠️ Exigem cartão antes do teste",
+    sheets: "—"
   }
 ];
 
@@ -76,13 +131,15 @@ const plans = [
     code: "essential",
     name: "Nutri Essencial",
     price: "R$ 39,50",
+    description: "Ideal para recém-formados e quem está estruturando os primeiros atendimentos no consultório.",
     features: [
-      "Até 40 pacientes ativos",
-      "Planos alimentares ilimitados (TACO + Medidas Caseiras)",
-      "Cálculo energético (GEB/GET) e Antropometria",
-      "Anamnese nutricional, Recordatório 24h e Exames",
-      "Receitas calculadas e Prescrição de Suplementos",
-      "Impressão e PDF personalizado do cardápio"
+      "Até 50 pacientes ativos",
+      "Planos alimentares ilimitados com Tabela TACO",
+      "Medidas caseiras reais em português (colheres, conchas, fatias)",
+      "Antropometria Pollock (3/7 dobras) e Guedes",
+      "Cálculo energético (6 fórmulas + Cunningham/Tinsley)",
+      "Anamneses especializadas e recordatório 24h",
+      "Impressão e PDF de alto padrão com carimbo CRN"
     ]
   },
   {
@@ -90,69 +147,74 @@ const plans = [
     name: "Nutri Pro",
     price: "R$ 74,50",
     highlighted: true,
+    badge: "Mais Escolhido pelos Nutris",
+    description: "O plano definitivo para consultórios em crescimento que buscam velocidade e fidelização máxima.",
     features: [
-      "Pacientes e planos alimentares ilimitados",
-      "Portal do Paciente exclusivo no celular",
-      "Diário alimentar com fotos e feedback da Nutri",
-      "Gerador automático de substituições equivalentes",
-      "Metas de hidratação, lista de compras e Chat integrado",
-      "Agenda online pública, Financeiro completo e KPIs"
+      "Pacientes e planos alimentares ILIMITADOS",
+      "Gerador de substituições equivalentes em 1 clique",
+      "Portal do Paciente instalável no celular (PWA)",
+      "Diário alimentar com fotos e avaliação da nutri",
+      "Controle de hidratação diária (35 ml/kg) e metas",
+      "Receitas calculadas, suplementos e exames",
+      "Agenda online pública com link de captação",
+      "Controle financeiro do consultório e indicadores"
     ]
   },
   {
     code: "clinic",
     name: "Clínica de Nutrição",
     price: "R$ 124,50",
+    description: "Para clínicas com múltiplos profissionais e necessidade de recepção organizada.",
     features: [
       "Tudo do plano Nutri Pro liberado",
-      "Múltiplos nutricionistas na mesma clínica (CRN)",
-      "Acesso exclusivo para Secretária / Recepção",
-      "Base compartilhada de alimentos e receitas da clínica",
-      "Relatórios gerenciais avançados e Auditoria LGPD",
-      "Suporte prioritário no WhatsApp"
+      "Até 5 nutricionistas na mesma organização (CRN)",
+      "Acesso operacional para Secretária / Recepção",
+      "Base unificada de pacientes e histórico compartilhado",
+      "Relatórios financeiros consolidados da clínica",
+      "Auditoria LGPD e suporte prioritário no WhatsApp"
     ]
   }
 ];
 
 const faqs = [
   {
-    question: "Quais tabelas de alimentos já vêm cadastradas no sistema?",
+    question: "Preciso informar cartão de crédito para testar?",
     answer:
-      "O sistema já conta com mais de 1.000 alimentos prontos para uso imediato, unindo a Tabela TACO (Unicamp), referências TBCA/IBGE, preparações caseiras brasileiras e suplementos esportivos/clínicos (Whey, Creatina, módulos proteicos), todos com medidas caseiras em português."
+      "Não! Você cria sua conta em menos de 30 segundos informando apenas seu nome e e-mail. Tem 7 dias de acesso completo sem compromisso e sem renovação automática surpresa."
   },
   {
-    question: "Consigo prescrever tanto em gramas quanto em medidas caseiras?",
+    question: "Já uso outro software ou planilhas no Excel. É difícil migrar para o NutriPlan?",
     answer:
-      "Sim! Ao montar a refeição você pode escolher prescrever por medidas caseiras (ex: 1 unidade, 2 fatias, 4 colheres de sopa) ou digitar o peso exato em gramas/ml (ex: 130 g de arroz), com cálculo automático de calorias, proteínas, carboidratos, gorduras e fibras."
+      "É muito simples e intuitivo. O NutriPlan já vem 100% configurado com mais de 1.000 alimentos da Tabela TACO com medidas caseiras, templates prontos e fórmulas científicas. No seu primeiro paciente você já prescreve em menos de 3 minutos."
   },
   {
-    question: "Como funciona o gerador de substituições equivalentes?",
+    question: "A prescrição dietética fica em conformidade com o Conselho (CFN)?",
     answer:
-      "Em qualquer item adicionado ao cardápio, basta clicar em 'Substituições' para o sistema calcular automaticamente opções equivalentes do mesmo grupo alimentar na gramagem exata para manter o valor energético daquela refeição."
+      "Sim, rigorosamente! O NutriPlan respeita a Lei Federal nº 8.234/91. A prescrição de dietas é de uso privativo do nutricionista habilitado com CRN. O sistema gera automaticamente o cabeçalho e rodapé oficial com seu nome, número de registro profissional e termos legais."
   },
   {
-    question: "Como meu paciente acessa o plano alimentar pelo celular?",
+    question: "Como meu paciente visualiza o plano alimentar no celular?",
     answer:
-      "Assim que você publica o plano alimentar, o sistema gera um código exclusivo para o paciente acessar o Portal do Paciente pelo navegador do celular, onde ele consulta o cardápio, lista de compras, registra água, envia fotos no diário alimentar e conversa com você."
+      "Assim que você clica em 'Publicar', o paciente recebe um link direto ou pode instalar o Portal do Paciente como aplicativo (PWA) na tela inicial do celular. Ele vê as refeições organizadas por horário, as substituições liberadas, registra a ingestão de água e envia fotos do prato no diário alimentar."
   },
   {
-    question: "Posso cadastrar alimentos personalizados e receitas da minha clínica?",
+    question: "Como funciona o gerador de substituições equivalentes em 1 clique?",
     answer:
-      "Sim! Você pode cadastrar seus próprios alimentos, importar planilhas CSV ou clicar em 'Personalizar' em qualquer alimento da tabela TACO para criar uma versão customizada com um clique."
+      "Em qualquer alimento adicionado à refeição, basta clicar em 'Substituições'. O algoritmo do NutriPlan busca itens equivalentes da mesma categoria nutricional e ajusta a gramagem exata para manter o mesmo aporte calórico e de macronutrientes do prato."
   },
   {
-    question: "Preciso informar cartão de crédito para testar os 7 dias grátis?",
+    question: "Posso cancelar minha assinatura a qualquer momento?",
     answer:
-      "Não. Você cria sua conta em menos de 1 minuto sem cartão de crédito, testa todas as ferramentas com seus pacientes reais por 7 dias e só assina se gostar."
+      "Sim. Não há fidelidade nem multas. Você pode cancelar sua assinatura com apenas um clique diretamente no painel de configurações a qualquer momento."
   }
 ];
 
 export default function Home() {
-  const trialHref = "/register";
+  const trialHref = "/register?perfil=nutricionista";
 
   return (
     <main className="np-page">
-      <AnalyticsEvent name="marketing_landing_view" params={{ landing_name: "home_nutri" }} />
+      <AnalyticsEvent name="marketing_landing_view" params={{ landing_name: "home_nutri_vsl" }} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -180,7 +242,7 @@ export default function Home() {
                 "@id": "https://clinos.tec.br/#software",
                 "name": "NutriPlan — Software para Nutricionistas",
                 "description":
-                  "Software completo para nutricionistas com montagem de planos alimentares, tabela TACO com medidas caseiras, substituições equivalentes, cálculo energético GEB/GET, prontuário nutricional e portal do paciente.",
+                  "Software completo para nutricionistas com montagem de planos alimentares em minutos, tabela TACO com medidas caseiras, substituições equivalentes em 1 clique, antropometria Pollock/Guedes, fórmulas esportivas e portal do paciente.",
                 "url": "https://clinos.tec.br/",
                 "applicationCategory": "HealthApplication",
                 "applicationSubCategory": "Nutrition Practice Management Software",
@@ -191,13 +253,12 @@ export default function Home() {
                   { "@type": "Audience", "audienceType": "Consultórios e Clínicas de Nutrição" }
                 ],
                 "featureList": [
-                  "Planos alimentares com tabela TACO e medidas caseiras",
-                  "Gerador automático de substituições equivalentes",
-                  "Cálculo de GEB/GET e avaliação antropométrica",
-                  "Prontuário nutricional, anamnese e recordatório 24h",
-                  "Portal do paciente com diário alimentar por fotos e hidratação",
-                  "Prescrição de suplementos, fitoterápicos e exames laboratoriais",
-                  "Agenda online e controle financeiro para nutricionistas"
+                  "Tabela TACO com mais de 1.000 alimentos e medidas caseiras",
+                  "Substituições equivalentes em 1 clique",
+                  "Antropometria com Pollock 3 e 7 dobras, Guedes e equação de Siri",
+                  "Cálculo de TMB e GET com Mifflin, Cunningham, Tinsley e METs",
+                  "Prescrição em PDF A4 de alto padrão com carimbo CRN",
+                  "Portal do Paciente instalável no celular com diário por fotos e hidratação"
                 ],
                 "offers": {
                   "@type": "AggregateOffer",
@@ -226,6 +287,7 @@ export default function Home() {
         }}
       />
 
+      {/* HEADER DE NAVEGAÇÃO */}
       <header className="np-header">
         <Link href="/" className="np-logo" aria-label="NutriPlan — Software para Nutricionistas">
           <span className="np-logo-mark">
@@ -240,9 +302,9 @@ export default function Home() {
         </Link>
 
         <nav className="np-nav" aria-label="Navegação principal">
-          <a href="#recursos">Recursos</a>
-          <Link href="/software-para-montar-cardapio-nutricionista">Montar Cardápios</Link>
-          <Link href="/software-para-nutricionistas">Para Nutricionistas</Link>
+          <a href="#diferenciais">Por que o NutriPlan</a>
+          <a href="#pilares">Recursos Clínicos</a>
+          <a href="#comparativo">Comparativo</a>
           <a href="#planos">Planos e Preços</a>
           <a href="#faq">Dúvidas</a>
         </nav>
@@ -253,7 +315,7 @@ export default function Home() {
             Entrar
           </Link>
           <TrackedLink
-            href="/register?perfil=nutricionista&source=home-header"
+            href={`${trialHref}&source=home-header`}
             className="np-button np-button-primary"
             eventName="cta_click"
             eventParams={{ cta_name: "create_account", cta_location: "home_header" }}
@@ -263,79 +325,83 @@ export default function Home() {
         </div>
       </header>
 
+      {/* 1. HERO SECTION (GANCHO FORTE + PROPOSTA ÚNICA DE VALOR) */}
       <section className="np-hero">
         <div className="np-hero-copy">
           <div className="np-hero-brand">
-            <ClinOSLogo />
-            <span>
-              Exclusivo para <strong style={{ color: "#059669" }}>Nutricionistas</strong>
+            <span className="np-pill-badge">
+              ⚡ O Software Feito para a Rotina Real do Nutricionista
             </span>
           </div>
 
           <h1>
-            Monte planos alimentares em minutos e encante seus{" "}
-            <span className="np-hero-highlight">pacientes</span>
+            Prescreva cardápios calculados em minutos, fidelize pacientes e{" "}
+            <span className="np-hero-highlight">recupere o seu tempo livre.</span>
           </h1>
 
           <p>
-            Mais de <strong>1.000 alimentos TACO/TBCA com medidas caseiras reais</strong>, gerador automático de
-            substituições equivalentes, cálculo de GEB/GET, prontuário nutricional e{" "}
-            <strong>Portal do Paciente</strong> com diário alimentar por fotos.
+            Esqueça as noites perdidas no Excel e as mensalidades abusivas de outros softwares.
+            O <strong>NutriPlan</strong> reúne a <strong>Tabela TACO (+1.000 itens com medidas caseiras reais)</strong>,
+            substituições em 1 clique, antropometria Pollock/Guedes e PDF com CRN por um valor que cabe no seu consultório.
           </p>
 
           <div className="np-hero-actions">
             <TrackedLink
-              href="/register?perfil=nutricionista&plan=professional&source=home-hero"
+              href={`${trialHref}&plan=professional&source=home-hero`}
               className="np-button np-button-primary np-button-large"
               eventName="cta_click"
               eventParams={{ cta_name: "start_free_trial", cta_location: "home_hero", plan_code: "professional" }}
             >
-              Começar 7 dias grátis <span aria-hidden="true">→</span>
+              Começar Teste Grátis de 7 Dias <span aria-hidden="true">→</span>
             </TrackedLink>
-            <TrackedLink
-              href="/software-para-montar-cardapio-nutricionista"
+            <a
+              href="#pilares"
               className="np-button np-button-outline np-button-large"
-              eventName="cta_click"
-              eventParams={{ cta_name: "view_meal_plan_builder", cta_location: "home_hero" }}
             >
-              Ver montagem de cardápios
-            </TrackedLink>
+              Ver Recursos Clínicos 📄
+            </a>
           </div>
 
           <p className="np-hero-trial-note">
-            Sem cartão de crédito · Acesso imediato a toda a tabela TACO e medidas caseiras
+            ✓ Sem exigir cartão de crédito &nbsp;·&nbsp; ✓ Cancele quando quiser &nbsp;·&nbsp; ✓ Configurado em 2 minutos
           </p>
 
-          <div className="np-hero-features" style={{ gap: "12px" }}>
-            <div className="np-hero-feature" style={{ minWidth: "130px" }}>
+          <div className="np-hero-features">
+            <div className="np-hero-feature">
               <div className="np-feature-icon icon-green">
                 <LineIcon name="meal" />
               </div>
-              <span style={{ whiteSpace: "nowrap" }}>Cardápios TACO</span>
+              <span>Tabela TACO (+1.000 itens)</span>
             </div>
-            <div className="np-hero-feature" style={{ minWidth: "130px" }}>
+            <div className="np-hero-feature">
               <div className="np-feature-icon icon-blue">
                 <LineIcon name="leaf" />
               </div>
-              <span style={{ whiteSpace: "nowrap" }}>Medidas Caseiras</span>
+              <span>Substituições em 1 Clique</span>
             </div>
-            <div className="np-hero-feature" style={{ minWidth: "130px" }}>
+            <div className="np-hero-feature">
               <div className="np-feature-icon icon-green">
                 <LineIcon name="clipboard" />
               </div>
-              <span style={{ whiteSpace: "nowrap" }}>Cálculo GEB/GET</span>
+              <span>Pollock & Cunningham</span>
             </div>
-            <div className="np-hero-feature" style={{ minWidth: "130px" }}>
+            <div className="np-hero-feature">
               <div className="np-feature-icon icon-blue">
                 <LineIcon name="message" />
               </div>
-              <span style={{ whiteSpace: "nowrap" }}>App do Paciente</span>
+              <span>App do Paciente (PWA)</span>
             </div>
-            <div className="np-hero-feature" style={{ minWidth: "130px" }}>
+            <div className="np-hero-feature">
               <div className="np-feature-icon icon-purple">
                 <LineIcon name="calendar" />
               </div>
-              <span style={{ whiteSpace: "nowrap" }}>Agenda & Finanças</span>
+              <span>Agenda & Retornos</span>
+            </div>
+            <div className="np-hero-feature">
+              <div className="np-feature-icon icon-green">
+                <LineIcon name="growth" />
+              </div>
+              <span>PDF Oficial c/ CRN</span>
             </div>
           </div>
         </div>
@@ -345,106 +411,157 @@ export default function Home() {
         <div className="np-hero-badges">
           <div className="np-hero-badge">
             <LineIcon name="meal" />
-            <span>1.000+ alimentos com medida caseira</span>
+            <span>Medidas caseiras em português (colher, concha, fatia)</span>
           </div>
           <div className="np-hero-badge">
-            <LineIcon name="leaf" />
-            <span>Substituições equivalentes em 1 clique</span>
-          </div>
-          <div className="np-hero-badge">
-            <LineIcon name="dashboard" />
-            <span>Portal do paciente no celular</span>
+            <LineIcon name="clipboard" />
+            <span>Dobras cutâneas com % Gordura e Massa Magra automáticos</span>
           </div>
           <div className="np-hero-badge">
             <LineIcon name="growth" />
-            <span>Planos a partir de R$ 39,50/mês</span>
+            <span>Planos completos a partir de R$ 39,50/mês</span>
+          </div>
+          <div className="np-hero-badge">
+            <LineIcon name="patient" />
+            <span>Conformidade com o CFN e Lei Federal nº 8.234/91</span>
           </div>
         </div>
       </section>
 
-      <section className="np-section" id="recursos">
-        <div className="np-section-heading np-center">
-          <span>Pensado para a rotina real do consultório</span>
-          <h2>Tudo que o nutricionista precisa para calcular, prescrever e fidelizar</h2>
-        </div>
-
-        <div className="np-feature-grid">
-          {features.map((feature) => (
-            <article className="np-feature-card" key={feature.title}>
-              <LineIcon name={feature.icon} />
-              <h3>{feature.title}</h3>
-              <p>{feature.text}</p>
-            </article>
-          ))}
+      {/* 2. BARRA DE PROVA & AUTORIDADE CLÍNICA */}
+      <section className="np-authority-strip">
+        <div className="np-authority-content">
+          <div className="np-authority-item">
+            <strong>+1.014</strong>
+            <span>Alimentos TACO, IBGE e Suplementos</span>
+          </div>
+          <div className="np-authority-item">
+            <strong>3 minutos</strong>
+            <span>Tempo médio de montagem do cardápio</span>
+          </div>
+          <div className="np-authority-item">
+            <strong>6 equações</strong>
+            <span>TMB e GET Clínicos e Esportivos</span>
+          </div>
+          <div className="np-authority-item">
+            <strong>100% Legal</strong>
+            <span>Exclusivo para Nutricionistas (CRN)</span>
+          </div>
         </div>
       </section>
 
+      {/* 3. AGITAÇÃO DA DOR: "O CONSULTÓRIO NÃO DEVERIA CUSTAR SUAS NOITES" */}
       <section className="np-section" id="diferenciais">
         <div className="np-section-heading np-center">
-          <span>Por que escolher o NutriPlan</span>
-          <h2>Mais velocidade na consulta, maior adesão do paciente em casa</h2>
+          <span>A rotina real do consultório</span>
+          <h2>Você ainda perde suas noites de sábado no Excel e no Word?</h2>
+          <p style={{ maxWidth: "680px", margin: "14px auto 0", color: "#64748b", fontSize: "1.05rem" }}>
+            A faculdade te ensinou a cuidar da saúde das pessoas, mas ninguém te avisou que você passaria
+            mais tempo calculando gramas e formatando tabelas do que atendendo.
+          </p>
         </div>
 
-        <div className="np-feature-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))" }}>
-          <article className="np-feature-card">
-            <div className="np-feature-icon icon-green" style={{ marginBottom: "16px" }}>
-              <LineIcon name="meal" />
-            </div>
-            <h3>Fim dos cardápios demorados</h3>
-            <p>
-              Busque alimentos com ou sem acento, alterne entre gramas exatas e medidas caseiras, calcule calorias por
-              Atwater automaticamente e gere listas de substituições sem precisar abrir planilhas.
-            </p>
-          </article>
-
-          <article className="np-feature-card">
-            <div className="np-feature-icon icon-blue" style={{ marginBottom: "16px" }}>
-              <LineIcon name="message" />
-            </div>
-            <h3>Acompanhamento próximo no celular</h3>
-            <p>
-              O paciente não leva apenas um papel para casa: ele acompanha as refeições pelo celular, envia fotos do
-              prato para sua avaliação, controla a meta de água em ml e tira dúvidas no chat.
-            </p>
-          </article>
-
-          <article className="np-feature-card">
-            <div className="np-feature-icon icon-purple" style={{ marginBottom: "16px" }}>
-              <LineIcon name="growth" />
-            </div>
-            <h3>Preço justo e sem travas escondidas</h3>
-            <p>
-              Enquanto outros softwares cobram caro e limitam recursos essenciais, você conta com prontuário completo,
-              base TACO enriquecida, suplementos, receitas e gestão financeira com o melhor custo-benefício do Brasil.
-            </p>
-          </article>
-        </div>
-      </section>
-
-      <section className="np-section np-how">
-        <div className="np-section-heading np-center">
-          <span>Passo a passo simples</span>
-          <h2>Do agendamento ao cardápio no celular em 4 etapas</h2>
-        </div>
-
-        <div className="np-step-row">
-          {steps.map((step, index) => (
-            <article className="np-step" key={step.title}>
-              <strong>{index + 1}</strong>
-              <div className="np-step-icon">
-                <LineIcon name={step.icon} />
-              </div>
-              <h3>{step.title}</h3>
-              <p>{step.text}</p>
+        <div className="np-pain-grid">
+          {painPoints.map((item) => (
+            <article className="np-pain-card" key={item.title}>
+              <span className="np-pain-badge">{item.badge}</span>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
             </article>
           ))}
         </div>
       </section>
 
+      {/* 4. OS 4 PILARES DO NUTRIPLAN (O QUE FAZ O SISTEMA VENDER) */}
+      <section className="np-section np-pillars-section" id="pilares">
+        <div className="np-section-heading np-center">
+          <span>Como o NutriPlan resolve isso</span>
+          <h2>As 4 ferramentas que transformam a velocidade do seu atendimento</h2>
+        </div>
+
+        <div className="np-pillars-list">
+          {pillars.map((pillar, idx) => (
+            <div className={`np-pillar-row ${idx % 2 === 1 ? "reverse" : ""}`} key={pillar.num}>
+              <div className="np-pillar-copy">
+                <span className="np-pillar-num">{pillar.num} · {pillar.tag}</span>
+                <h3>{pillar.title}</h3>
+                <h4>{pillar.subtitle}</h4>
+                <p>{pillar.text}</p>
+                <ul className="np-pillar-highlights">
+                  {pillar.highlights.map((h) => (
+                    <li key={h}>✓ {h}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="np-pillar-visual">
+                <div className="np-pillar-card-mock">
+                  <div className="np-pillar-card-header">
+                    <LineIcon name={pillar.icon} />
+                    <span>Recurso Oficial NutriPlan</span>
+                  </div>
+                  <div className="np-pillar-card-body">
+                    <strong>{pillar.title}</strong>
+                    <p>{pillar.subtitle}</p>
+                    <div className="np-pillar-badge-box">
+                      <span>✓ Pronto para uso imediato</span>
+                      <span>✓ Atualizado conforme TACO e CFN</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 5. TABELA COMPARATIVA MATADORA */}
+      <section className="np-section" id="comparativo">
+        <div className="np-section-heading np-center">
+          <span>Comparativo transparente</span>
+          <h2>Por que os nutricionistas estão migrando para o NutriPlan?</h2>
+          <p style={{ maxWidth: "680px", margin: "14px auto 0", color: "#64748b", fontSize: "1.05rem" }}>
+            Compare o poder das ferramentas e veja como economizar mais de 50% todos os meses sem abrir mão de nada.
+          </p>
+        </div>
+
+        <div className="np-table-comparison-wrap">
+          <table className="np-comparison-table">
+            <thead>
+              <tr>
+                <th style={{ width: "38%" }}>Funcionalidade</th>
+                <th className="highlight-col" style={{ width: "24%" }}>
+                  NutriPlan 🚀
+                </th>
+                <th style={{ width: "20%" }}>Softwares Tradicionais (Dietbox/WebDiet)</th>
+                <th style={{ width: "18%" }}>Planilhas Excel</th>
+              </tr>
+            </thead>
+            <tbody>
+              {comparisonRows.map((row, i) => (
+                <tr key={i}>
+                  <td>
+                    <strong>{row.feature}</strong>
+                  </td>
+                  <td className="highlight-col">
+                    <strong>{row.nutriplan}</strong>
+                  </td>
+                  <td>{row.others}</td>
+                  <td>{row.sheets}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* 6. PLANOS E PREÇOS TRANSPARENTES */}
       <section className="np-section" id="planos">
         <div className="np-section-heading np-center">
-          <span>Planos transparentes para nutricionistas</span>
-          <h2>Escolha o plano ideal para o seu momento profissional</h2>
+          <span>Planos Justos e Sem Pegadinhas</span>
+          <h2>Escolha o plano ideal para a fase do seu consultório</h2>
+          <p style={{ maxWidth: "620px", margin: "14px auto 0", color: "#64748b", fontSize: "1.02rem" }}>
+            Todos os planos incluem 7 dias de teste grátis sem pedir cartão de crédito. Cancele com 1 clique a qualquer momento.
+          </p>
         </div>
 
         <div className="np-pricing-grid">
@@ -453,8 +570,11 @@ export default function Home() {
               className={plan.highlighted ? "np-price-card np-price-featured" : "np-price-card"}
               key={plan.code}
             >
-              {plan.highlighted ? <span className="np-popular">Mais escolhido pelos Nutris</span> : null}
+              {plan.highlighted ? <span className="np-popular">{plan.badge}</span> : null}
               <h3>{plan.name}</h3>
+              <p style={{ fontSize: "0.85rem", color: "#64748b", minHeight: "38px", margin: "0 0 16px" }}>
+                {plan.description}
+              </p>
               <div className="np-price">
                 <strong>{plan.price}</strong>
                 <span>/mês</span>
@@ -465,26 +585,27 @@ export default function Home() {
                 ))}
               </ul>
               <TrackedLink
-                href={`/register?perfil=nutricionista&plan=${plan.code}&source=home-pricing`}
+                href={`${trialHref}&plan=${plan.code}&source=home-pricing`}
                 className={plan.highlighted ? "np-button np-button-primary" : "np-button np-button-outline"}
                 eventName="cta_click"
                 eventParams={{ cta_name: "select_plan", cta_location: "home_pricing", plan_code: plan.code }}
               >
-                Testar 7 dias grátis
+                Testar 7 dias grátis →
               </TrackedLink>
             </article>
           ))}
         </div>
 
         <p className="np-pricing-note">
-          7 dias grátis em todos os planos · Sem fidelidade · Cancele quando quiser com 1 clique.
+          7 dias grátis em todos os planos · Sem fidelidade · Cancele quando quiser com 1 clique direto no painel.
         </p>
       </section>
 
+      {/* 7. FAQ QUEBRA-OBJEÇÕES */}
       <section className="np-section" id="faq">
         <div className="np-section-heading np-center">
-          <span>Perguntas frequentes</span>
-          <h2>Tire suas dúvidas sobre o NutriPlan</h2>
+          <span>Perguntas Frequentes</span>
+          <h2>Tudo o que você precisa saber antes de começar</h2>
         </div>
 
         <div className="np-faq-grid">
@@ -501,35 +622,37 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 8. CTA FINAL DE IMPACTO */}
       <section className="np-final-cta">
         <div className="np-final-photo">
           <Image
             src="/nutritionist-laptop.png"
-            alt="Nutricionista montando plano alimentar no notebook"
+            alt="Nutricionista prescrevendo cardápio no NutriPlan"
             width={640}
             height={380}
           />
         </div>
         <div className="np-final-copy">
-          <h2>Pronta(o) para elevar o nível dos seus atendimentos nutricionais?</h2>
+          <h2>Pronto para prescrever cardápios melhores na metade do tempo?</h2>
           <p>
-            Crie sua conta grátis agora e experimente montar seu próximo cardápio com medidas caseiras, substituições
-            automáticas e Portal do Paciente.
+            Junte-se aos nutricionistas que escolheram ter um consultório ágil, moderno e sem mensalidades abusivas.
+            Comece agora mesmo com seus pacientes reais.
           </p>
         </div>
         <div className="np-final-action">
           <TrackedLink
-            href={`${trialHref}?perfil=nutricionista&plan=professional&source=home-final-cta`}
+            href={`${trialHref}&plan=professional&source=home-final-cta`}
             className="np-button np-button-light np-button-large"
             eventName="cta_click"
             eventParams={{ cta_name: "create_account", cta_location: "home_final_cta", plan_code: "professional" }}
           >
-            Criar conta de Nutricionista <span aria-hidden="true">→</span>
+            Criar Conta e Testar 7 Dias Grátis <span aria-hidden="true">→</span>
           </TrackedLink>
-          <small>7 dias grátis · sem cartão de crédito</small>
+          <small>✓ Sem exigência de cartão de crédito &nbsp;|&nbsp; ✓ Acesso imediato</small>
         </div>
       </section>
 
+      {/* RODAPÉ OFICIAL */}
       <footer className="np-footer">
         <div className="np-footer-brand">
           <Link href="/" className="np-logo" aria-label="NutriPlan">
@@ -544,37 +667,37 @@ export default function Home() {
             </span>
           </Link>
           <p>
-            Plataforma completa de planos alimentares, prontuário nutricional, avaliação antropométrica e Portal do
-            Paciente para nutricionistas.
+            A plataforma completa e acessível de prescrição dietética com Tabela TACO, antropometria Pollock/Guedes,
+            fórmulas esportivas e Portal do Paciente.
           </p>
         </div>
 
         <FooterColumn
           title="Software de Nutrição"
           links={[
-            { label: "Recursos Completos", href: "/recursos" },
-            { label: "Software para Nutricionistas", href: "/software-para-nutricionistas" },
+            { label: "Recursos Clínicos", href: "/#pilares" },
+            { label: "Comparativo de Softwares", href: "/#comparativo" },
             { label: "Montagem de Cardápios", href: "/software-para-montar-cardapio-nutricionista" },
-            { label: "Para Clínicas de Nutrição", href: "/sistema-para-clinicas" },
+            { label: "Para Nutricionistas", href: "/software-para-nutricionistas" },
             { label: "Planos e Preços", href: "/#planos" }
           ]}
         />
         <FooterColumn
           title="Acesso Rápido"
           links={[
-            { label: "Criar Conta Grátis", href: "/register?perfil=nutricionista" },
+            { label: "Criar Conta Grátis", href: trialHref },
             { label: "Login do Nutricionista", href: "/login" },
             { label: "Portal do Paciente", href: "/portal/login" },
             { label: "Dúvidas Frequentes", href: "/#faq" }
           ]}
         />
         <FooterColumn
-          title="Legal e Suporte"
+          title="Transparência & Legal"
           links={[
             { label: "Termos de uso", href: "/termos-de-uso" },
             { label: "Política de privacidade", href: "/politica-de-privacidade" },
             { label: "Exclusão de conta", href: "/exclusao-de-conta" },
-            { label: "Recuperar senha", href: "/recuperar-senha" }
+            { label: "Contexto para IA (llms.txt)", href: "/llms.txt" }
           ]}
         />
         <div className="np-footer-column">
@@ -585,7 +708,7 @@ export default function Home() {
           </a>
         </div>
 
-        <p className="np-copyright">© 2026 NutriPlan ClinOS. Todos os direitos reservados.</p>
+        <p className="np-copyright">© 2026 NutriPlan. Todos os direitos reservados. Em conformidade com o CFN e LGPD.</p>
       </footer>
     </main>
   );
@@ -616,16 +739,16 @@ function ProductMockup() {
               <LineIcon name="dashboard" /> Resumo
             </b>
             <span>
-              <LineIcon name="meal" /> Cardápios
+              <LineIcon name="meal" /> Cardápios TACO
             </span>
             <span>
-              <LineIcon name="leaf" /> Alimentos TACO
+              <LineIcon name="leaf" /> +1.000 Alimentos
             </span>
             <span>
               <LineIcon name="users" /> Pacientes
             </span>
             <span>
-              <LineIcon name="clipboard" /> Antropometria
+              <LineIcon name="clipboard" /> Pollock & Dobras
             </span>
             <span>
               <LineIcon name="calendar" /> Agenda
@@ -638,14 +761,14 @@ function ProductMockup() {
             </span>
           </aside>
           <section>
-            <h3>Painel da Nutricionista</h3>
+            <h3>Painel da Nutricionista (CRN)</h3>
             <div className="np-metrics-preview">
               <div className="np-mock-card">
                 <span>
                   <LineIcon name="meal" /> Cardápios ativos
                 </span>
                 <strong>148</strong>
-                <small>publicados no app</small>
+                <small>com medidas caseiras</small>
               </div>
               <div className="np-mock-card">
                 <span>
@@ -885,6 +1008,18 @@ function LineIcon({ name }: { name: string }) {
   };
 
   const icons: Record<string, ReactNode> = {
+    calculator: (
+      <>
+        <rect x="5" y="4" width="22" height="24" rx="3" {...common} />
+        <line x1="9" y1="9" x2="23" y2="9" {...common} />
+        <line x1="9" y1="14" x2="13" y2="14" {...common} />
+        <line x1="19" y1="14" x2="23" y2="14" {...common} />
+        <line x1="9" y1="19" x2="13" y2="19" {...common} />
+        <line x1="19" y1="19" x2="23" y2="19" {...common} />
+        <line x1="9" y1="24" x2="13" y2="24" {...common} />
+        <line x1="19" y1="24" x2="23" y2="24" {...common} />
+      </>
+    ),
     patient: (
       <>
         <rect x="5" y="4" width="14" height="16" rx="2" {...common} />
@@ -910,19 +1045,6 @@ function LineIcon({ name }: { name: string }) {
       <>
         <path d="M5 27h22M8 23v-7M15 23V10M22 23V6" {...common} />
         <path d="M7 11l5-5 5 4 8-7" {...common} />
-      </>
-    ),
-    clinic: (
-      <>
-        <path d="M6 27V10l10-5 10 5v17" {...common} />
-        <path d="M11 27v-8h10v8M16 9v6M13 12h6" {...common} />
-      </>
-    ),
-    addPatient: (
-      <>
-        <path d="M14 17c-4 0-7 2.6-7 6v1h10" {...common} />
-        <circle cx="14" cy="10" r="4" {...common} />
-        <path d="M22 17v10M17 22h10" {...common} />
       </>
     ),
     clipboard: (
@@ -957,22 +1079,6 @@ function LineIcon({ name }: { name: string }) {
         <circle cx="12" cy="11" r="4" {...common} />
         <path d="M5 24c0-4 3-7 7-7s7 3 7 7" {...common} />
         <path d="M22 14a3 3 0 1 0 0-6M21 19c3 .2 5 2.4 5 5" {...common} />
-      </>
-    ),
-    assistant: (
-      <>
-        <path d="M8 25v-7a8 8 0 0 1 16 0v7" {...common} />
-        <path d="M8 20H6a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2M24 20h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-2" {...common} />
-        <path d="M12 18h8M12 23h5M19 27c0 2-1.5 3-4 3h-2" {...common} />
-      </>
-    ),
-    settings: (
-      <>
-        <circle cx="16" cy="16" r="3" {...common} />
-        <path
-          d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
-          {...common}
-        />
       </>
     )
   };
