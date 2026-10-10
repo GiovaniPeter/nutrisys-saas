@@ -7,9 +7,9 @@ import { TrackedLink } from "@/components/analytics/tracked-link";
 import { DashboardLink } from "@/components/auth/dashboard-link";
 
 export const metadata: Metadata = {
-  title: "NutriPlan | Software para Nutricionistas — Cardápios em 3 Minutos, Tabela TACO e Portal do Paciente",
+  title: "ClinOSTec | Software para Nutricionistas — Cardápios em 3 Minutos, Tabela TACO e Portal do Paciente",
   description:
-    "Prescreva cardápios calculados em minutos com a Tabela TACO (+1.000 itens com medidas caseiras), substituições em 1 clique, antropometria Pollock/Guedes e PDF com CRN por um preço que cabe no seu consultório. Teste 7 dias grátis.",
+    "Prescreva cardápios calculados em minutos com a Tabela TACO (+5.000 itens com medidas caseiras), substituições em 1 clique, antropometria Pollock/Guedes e PDF com CRN por um preço que cabe no seu consultório. Teste 7 dias grátis.",
   alternates: {
     canonical: "/"
   }
@@ -43,7 +43,7 @@ const pillars = [
     title: "Tabela TACO com Medidas Caseiras de Verdade",
     subtitle: "Chega de paciente mandando mensagem perguntando quanto pesam 120g de frango.",
     text: "Todos os alimentos já vêm convertidos para a linguagem da cozinha brasileira: colher de sopa, concha média, fatia, unidade ou gramas exatos. Além disso, você tem 4 templates prontos (Emagrecimento, Hipertrofia, Reeducação e Low Carb) para clonar e adaptar em segundos.",
-    highlights: ["+1.014 alimentos e suplementos em português", "Busca instantânea sem acento", "Gramas exatos ou porções caseiras"],
+    highlights: ["+5.000 alimentos e suplementos em português", "Busca instantânea sem acento", "Gramas exatos ou porções caseiras"],
     icon: "meal"
   },
   {
@@ -51,7 +51,7 @@ const pillars = [
     tag: "Velocidade na Consulta",
     title: "Substituições Equivalentes em 1 Clique",
     subtitle: "Varie o cardápio sem ter que refazer as contas de cabeça.",
-    text: "Basta clicar em '🔄 Substituições' em qualquer alimento e o NutriPlan sugere instantaneamente opções do mesmo grupo alimentar calculadas na gramagem exata para bater as calorias daquela refeição. O paciente ganha autonomia e você economiza horas de trabalho.",
+    text: "Basta clicar em '🔄 Substituições' em qualquer alimento e o ClinOSTec sugere instantaneamente opções do mesmo grupo alimentar calculadas na gramagem exata para bater as calorias daquela refeição. O paciente ganha autonomia e você economiza horas de trabalho.",
     highlights: ["Equivalência calórica automática", "Mesmo grupo alimentar", "Sem risco de furar o VET planejado"],
     icon: "leaf"
   },
@@ -84,7 +84,7 @@ const comparisonRows = [
   },
   {
     feature: "Tabela TACO + Suplementos com Medidas Caseiras",
-    nutriplan: "✅ +1.000 itens padronizados",
+    nutriplan: "✅ +5.000 itens padronizados",
     others: "✅ Presente",
     sheets: "❌ Manual, desatualizada e incompleta"
   },
@@ -183,14 +183,14 @@ const faqs = [
       "Não! Você cria sua conta em menos de 30 segundos informando apenas seu nome e e-mail. Tem 7 dias de acesso completo sem compromisso e sem renovação automática surpresa."
   },
   {
-    question: "Já uso outro software ou planilhas no Excel. É difícil migrar para o NutriPlan?",
+    question: "Já uso outro software ou planilhas no Excel. É difícil migrar para o ClinOSTec?",
     answer:
-      "É muito simples e intuitivo. O NutriPlan já vem 100% configurado com mais de 1.000 alimentos da Tabela TACO com medidas caseiras, templates prontos e fórmulas científicas. No seu primeiro paciente você já prescreve em menos de 3 minutos."
+      "É muito simples e intuitivo. O ClinOSTec já vem 100% configurado com mais de 5.000 alimentos da Tabela TACO e marcas brasileiras com medidas caseiras, templates prontos e fórmulas científicas. No seu primeiro paciente você já prescreve em menos de 3 minutos."
   },
   {
     question: "A prescrição dietética fica em conformidade com o Conselho (CFN)?",
     answer:
-      "Sim, rigorosamente! O NutriPlan respeita a Lei Federal nº 8.234/91. A prescrição de dietas é de uso privativo do nutricionista habilitado com CRN. O sistema gera automaticamente o cabeçalho e rodapé oficial com seu nome, número de registro profissional e termos legais."
+      "Sim, rigorosamente! O ClinOSTec respeita a Lei Federal nº 8.234/91. A prescrição de dietas é de uso privativo do nutricionista habilitado com CRN. O sistema gera automaticamente o cabeçalho e rodapé oficial com seu nome, número de registro profissional e termos legais."
   },
   {
     question: "Como meu paciente visualiza o plano alimentar no celular?",
@@ -200,7 +200,7 @@ const faqs = [
   {
     question: "Como funciona o gerador de substituições equivalentes em 1 clique?",
     answer:
-      "Em qualquer alimento adicionado à refeição, basta clicar em 'Substituições'. O algoritmo do NutriPlan busca itens equivalentes da mesma categoria nutricional e ajusta a gramagem exata para manter o mesmo aporte calórico e de macronutrientes do prato."
+      "Em qualquer alimento adicionado à refeição, basta clicar em 'Substituições'. O algoritmo do ClinOSTec busca itens equivalentes da mesma categoria nutricional e ajusta a gramagem exata para manter o mesmo aporte calórico e de macronutrientes do prato."
   },
   {
     question: "Posso cancelar minha assinatura a qualquer momento?",
@@ -225,14 +225,14 @@ export default function Home() {
                 "@type": "WebSite",
                 "@id": "https://clinos.tec.br/#website",
                 "url": "https://clinos.tec.br/",
-                "name": "NutriPlan — Software para Nutricionistas",
+                "name": "ClinOSTec — Software para Nutricionistas",
                 "inLanguage": "pt-BR",
                 "publisher": { "@id": "https://clinos.tec.br/#organization" }
               },
               {
                 "@type": "Organization",
                 "@id": "https://clinos.tec.br/#organization",
-                "name": "NutriPlan ClinOS",
+                "name": "ClinOSTec",
                 "url": "https://clinos.tec.br/",
                 "email": "contato@clinos.tec.br",
                 "telephone": "+55-67-99982-4092"
@@ -240,7 +240,7 @@ export default function Home() {
               {
                 "@type": "SoftwareApplication",
                 "@id": "https://clinos.tec.br/#software",
-                "name": "NutriPlan — Software para Nutricionistas",
+                "name": "ClinOSTec — Software para Nutricionistas",
                 "description":
                   "Software completo para nutricionistas com montagem de planos alimentares em minutos, tabela TACO com medidas caseiras, substituições equivalentes em 1 clique, antropometria Pollock/Guedes, fórmulas esportivas e portal do paciente.",
                 "url": "https://clinos.tec.br/",
@@ -475,7 +475,7 @@ export default function Home() {
       {/* 4. OS 4 PILARES DO NUTRIPLAN (O QUE FAZ O SISTEMA VENDER) */}
       <section className="np-section np-pillars-section" id="pilares">
         <div className="np-section-heading np-center">
-          <span>Como o NutriPlan resolve isso</span>
+          <span>Como o ClinOSTec resolve isso</span>
           <h2>As 4 ferramentas que transformam a velocidade do seu atendimento</h2>
         </div>
 
@@ -497,7 +497,7 @@ export default function Home() {
                 <div className="np-pillar-card-mock">
                   <div className="np-pillar-card-header">
                     <LineIcon name={pillar.icon} />
-                    <span>Recurso Oficial NutriPlan</span>
+                    <span>Recurso Oficial ClinOSTec</span>
                   </div>
                   <div className="np-pillar-card-body">
                     <strong>{pillar.title}</strong>
@@ -518,7 +518,7 @@ export default function Home() {
       <section className="np-section" id="comparativo">
         <div className="np-section-heading np-center">
           <span>Comparativo transparente</span>
-          <h2>Por que os nutricionistas estão migrando para o NutriPlan?</h2>
+          <h2>Por que os nutricionistas estão migrando para o ClinOSTec?</h2>
           <p style={{ maxWidth: "680px", margin: "14px auto 0", color: "#64748b", fontSize: "1.05rem" }}>
             Compare o poder das ferramentas e veja como economizar mais de 50% todos os meses sem abrir mão de nada.
           </p>
@@ -530,7 +530,7 @@ export default function Home() {
               <tr>
                 <th style={{ width: "38%" }}>Funcionalidade</th>
                 <th className="highlight-col" style={{ width: "24%" }}>
-                  NutriPlan 🚀
+                  ClinOSTec 🚀
                 </th>
                 <th style={{ width: "20%" }}>Softwares Tradicionais (Dietbox/WebDiet)</th>
                 <th style={{ width: "18%" }}>Planilhas Excel</th>
@@ -627,7 +627,7 @@ export default function Home() {
         <div className="np-final-photo">
           <Image
             src="/nutritionist-laptop.png"
-            alt="Nutricionista prescrevendo cardápio no NutriPlan"
+            alt="Nutricionista prescrevendo cardápio no ClinOSTec"
             width={640}
             height={380}
           />
@@ -655,13 +655,13 @@ export default function Home() {
       {/* RODAPÉ OFICIAL */}
       <footer className="np-footer">
         <div className="np-footer-brand">
-          <Link href="/" className="np-logo" aria-label="NutriPlan">
+          <Link href="/" className="np-logo" aria-label="ClinOSTec">
             <span className="np-logo-mark">
               <ClinOSLogo />
             </span>
             <span>
               <strong>
-                Nutri<span style={{ color: "#00b894" }}>Plan</span>
+                ClinOS<span style={{ color: "#059669" }}>Tec</span>
               </strong>
               <small>Software para Nutricionistas</small>
             </span>
@@ -708,7 +708,7 @@ export default function Home() {
           </a>
         </div>
 
-        <p className="np-copyright">© 2026 NutriPlan. Todos os direitos reservados. Em conformidade com o CFN e LGPD.</p>
+        <p className="np-copyright">© 2026 ClinOSTec. Todos os direitos reservados. Em conformidade com o CFN e LGPD.</p>
       </footer>
     </main>
   );
@@ -716,12 +716,12 @@ export default function Home() {
 
 function ProductMockup() {
   return (
-    <div className="np-product-wrap" aria-label="Prévia do sistema NutriPlan para Nutricionistas">
+    <div className="np-product-wrap" aria-label="Prévia do sistema ClinOSTec para Nutricionistas">
       <div className="np-tech-bg" aria-hidden="true" />
       <div className="np-laptop">
         <div className="np-laptop-top">
           <span>
-            Nutri<span style={{ color: "#00b894" }}>Plan</span> · Consultório Nutricional
+            ClinOS<span style={{ color: "#059669" }}>Tec</span> · Consultório Nutricional
           </span>
           <div>
             <i /> <i /> <i />
@@ -732,7 +732,7 @@ function ProductMockup() {
             <div className="np-mock-logo">
               <ClinOSLogo />
               <span>
-                Nutri<span style={{ color: "#00b894" }}>Plan</span>
+                ClinOS<span style={{ color: "#059669" }}>Tec</span>
               </span>
             </div>
             <b>
