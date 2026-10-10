@@ -111,7 +111,7 @@ export async function GET(request: NextRequest) {
         OR: [{ organizationId: null }, { organizationId: user.organizationId }]
       },
       orderBy: [{ name: "asc" }],
-      take: 2500
+      take: 6000
     });
 
     const hasCuratedInDb = dbFoods.some((item) => String(item.id).startsWith("curated-"));

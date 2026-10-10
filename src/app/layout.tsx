@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   },
   title: "NutriPlan | Software para Nutricionistas — Cardápios TACO, Pollock/Guedes e Portal do Paciente",
   description:
-    "O software completo para nutricionistas: monte cardápios calculados em minutos com tabela TACO (+1.000 itens) e medidas caseiras, dobras cutâneas Pollock 3/7 e Guedes, Cunningham/Tinsley, PDF com CRN e Portal do Paciente instalável.",
+    "O software completo para nutricionistas: monte cardápios calculados em minutos com mais de 5.000 alimentos (Tabela TACO e marcas brasileiras) com medidas caseiras, dobras cutâneas Pollock 3/7 e Guedes, Cunningham/Tinsley, PDF com CRN e Portal do Paciente instalável.",
   keywords: [
     "software para nutricionistas",
     "programa para montar cardápio nutricionista",

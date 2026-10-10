@@ -24,6 +24,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.95
     },
     {
+      url: `${BASE_URL}/tabela-taco`,
+      lastModified: CONTENT_UPDATED_AT,
+      changeFrequency: "weekly",
+      priority: 0.95
+    },
+    {
       url: `${BASE_URL}/recursos`,
       lastModified: CONTENT_UPDATED_AT,
       changeFrequency: "weekly",
