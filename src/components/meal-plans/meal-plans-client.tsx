@@ -885,7 +885,7 @@ export function MealPlansClient() {
       <body>
         <div class="header">
           <div>
-            <div class="brand">NutriPlan — Prescrição Dietética Individualizada</div>
+            <div class="brand">ClinOSTec — Prescrição Dietética Individualizada</div>
             <div style="font-size:14px;font-weight:700;margin-top:4px;">${plan.name}</div>
             <div style="font-size:12.5px;color:#475569;">Paciente: <strong>${plan.patientName}</strong> | Data: ${new Intl.DateTimeFormat("pt-BR").format(new Date())}</div>
           </div>
@@ -923,7 +923,7 @@ export function MealPlansClient() {
         }
 
         <div class="footer">
-          <span>Gerado via NutriPlan — Software Especializado para Nutricionistas</span>
+          <span>Gerado via ClinOSTec — Software Especializado para Nutricionistas</span>
           <span>Assinatura / Carimbo CRN do Nutricionista Responsável</span>
         </div>
         <script>window.onload = () => window.print();</script>

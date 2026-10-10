@@ -4,8 +4,8 @@ import { LoginForm } from "@/components/auth/login-form";
 import { PortalLoginForm } from "@/components/portal/portal-login-form";
 
 export const metadata: Metadata = {
-  title: "Entrar no NutriPlan | Software para Nutricionistas",
-  description: "Faça login na plataforma NutriPlan para nutricionistas, secretárias de consultório e portal do paciente.",
+  title: "Entrar no ClinOSTec | Software para Nutricionistas",
+  description: "Faça login na plataforma ClinOSTec para nutricionistas, secretárias de consultório e portal do paciente.",
   robots: { index: false, follow: false }
 };
 
@@ -45,8 +45,8 @@ export default function LoginPage({ searchParams }: LoginPageProps) {
       <section className="auth-layout">
         <div className="auth-copy">
           <Link href="/" className="auth-back">← Voltar para a página inicial</Link>
-          <span className="eyebrow">Central de acesso NutriPlan</span>
-          <h1>Entrar no NutriPlan</h1>
+          <span className="eyebrow">Central de acesso ClinOSTec</span>
+          <h1>Entrar no ClinOSTec</h1>
           <p>
             Escolha o seu perfil de acesso no software para nutricionistas:
             consultório nutricional, recepção ou portal do paciente.

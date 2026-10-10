@@ -263,7 +263,7 @@ export default async function MealPlanDetailPage({ params }: Params) {
         {/* RODAPÉ COM CARIMBO / ASSINATURA DO NUTRICIONISTA */}
         <footer className="luxury-diet-footer">
           <div>
-            <strong>{mealPlan.organization.name} · NutriPlan</strong>
+            <strong>{mealPlan.organization.name} · ClinOSTec</strong>
             <span>Plano alimentar calculado segundo a Tabela Brasileira de Composição de Alimentos (TACO/IBGE).</span>
           </div>
           <div className="luxury-signature-block">

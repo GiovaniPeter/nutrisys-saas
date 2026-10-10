@@ -44,17 +44,17 @@ export const metadata: Metadata = {
     canonical: "/"
   },
   openGraph: {
-    title: "NutriPlan | Software para Nutricionistas — Cardápios TACO, Pollock e App do Paciente",
+    title: "ClinOSTec | Software para Nutricionistas — Cardápios TACO, Pollock e App do Paciente",
     description:
       "Monte planos alimentares em minutos com medidas caseiras reais, templates prontos, dobras cutâneas Pollock/Guedes, PDF com CRN e Portal do Paciente.",
     url: "/",
-    siteName: "NutriPlan",
+    siteName: "ClinOSTec",
     images: [
       {
         url: "/social-card.png",
         width: 1200,
         height: 630,
-        alt: "NutriPlan - Software completo para nutricionistas e consultórios de nutrição."
+        alt: "ClinOSTec - Software completo para nutricionistas e consultórios de nutrição."
       }
     ],
     locale: "pt_BR",
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "NutriPlan | Software para Nutricionistas — Cardápios TACO e Portal do Paciente",
+    title: "ClinOSTec | Software para Nutricionistas — Cardápios TACO e Portal do Paciente",
     description:
       "Monte planos alimentares com medidas caseiras, substituições equivalentes, dobras Pollock/Guedes e app do paciente em uma única plataforma.",
     images: ["/social-card.png"]

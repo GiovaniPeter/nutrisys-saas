@@ -2,10 +2,10 @@ import { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "NutriPlan — Software para Nutricionistas & Portal do Paciente",
-    short_name: "NutriPlan",
+    name: "ClinOSTec — Software para Nutricionistas & Portal do Paciente",
+    short_name: "ClinOSTec",
     description:
-      "Software completo para nutricionistas com Tabela TACO (+1.000 itens), prescrição por medidas caseiras, antropometria Pollock/Guedes e Portal do Paciente.",
+      "Software completo para nutricionistas com Tabela TACO (+5.000 itens), prescrição por medidas caseiras, antropometria Pollock/Guedes e Portal do Paciente.",
     start_url: "/portal",
     scope: "/",
     display: "standalone",

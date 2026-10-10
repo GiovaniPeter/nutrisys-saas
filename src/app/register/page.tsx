@@ -5,8 +5,8 @@ import { TrackedLink } from "@/components/analytics/tracked-link";
 import { RegisterForm } from "@/components/auth/register-form";
 
 export const metadata: Metadata = {
-  title: "Criar conta grátis de Nutricionista | NutriPlan",
-  description: "Crie sua conta de nutricionista e teste o NutriPlan por 7 dias grátis, sem cartão de crédito.",
+  title: "Criar conta grátis de Nutricionista | ClinOSTec",
+  description: "Crie sua conta de nutricionista e teste o ClinOSTec por 7 dias grátis, sem cartão de crédito.",
   alternates: {
     canonical: "/register"
   },
@@ -68,7 +68,7 @@ export default function RegisterPage({ searchParams }: RegisterPageProps) {
             ← Voltar para a página inicial
           </Link>
           <span className="eyebrow auth-copy-eyebrow">Exclusivo para Nutrição · 7 dias grátis</span>
-          <h1>Comece seu teste grátis no NutriPlan</h1>
+          <h1>Comece seu teste grátis no ClinOSTec</h1>
           <p>
             Configure seu consultório digital em menos de 1 minuto. Acesso imediato à tabela TACO com medidas caseiras,
             planos alimentares e Portal do Paciente — sem cartão de crédito.

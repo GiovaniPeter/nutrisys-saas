@@ -370,7 +370,7 @@ export function BodyRecordsClient() {
       <body>
         <div class="header">
           <div>
-            <div class="brand">NutriPlan — Laudo de Avaliação Antropométrica & Composição Corporal</div>
+            <div class="brand">ClinOSTec — Laudo de Avaliação Antropométrica & Composição Corporal</div>
             <div class="subtitle">Paciente: <strong>${patientName}</strong> | Data de Emissão: ${new Intl.DateTimeFormat("pt-BR").format(new Date())}</div>
           </div>
           <div style="text-align:right;font-size:12px;color:#475569;">
@@ -416,7 +416,7 @@ export function BodyRecordsClient() {
         </table>
 
         <div class="footer">
-          Documento gerado pelo NutriPlan — Software Especializado para Nutricionistas.
+          Documento gerado pelo ClinOSTec — Software Especializado para Nutricionistas.
         </div>
         <script>window.onload = () => window.print();</script>
       </body>

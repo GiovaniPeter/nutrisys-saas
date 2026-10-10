@@ -6,7 +6,7 @@ import { MarketingHeader, MarketingFooter } from "@/components/marketing/marketi
 export const revalidate = 86400; // Cache por 24 horas
 
 export const metadata: Metadata = {
-  title: "Tabela TACO Online com Medidas Caseiras — Consulta Completa de Alimentos | NutriPlan",
+  title: "Tabela TACO Online com Medidas Caseiras — Consulta Completa de Alimentos | ClinOSTec",
   description:
     "Consulte a Tabela Brasileira de Composição de Alimentos (TACO 4ª Edição Unicamp) e tabela de macronutrientes com medidas caseiras em colheres, fatias, conchas e gramas exatos.",
   keywords: [
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     canonical: "/tabela-taco"
   },
   openGraph: {
-    title: "Tabela TACO Online com Medidas Caseiras | NutriPlan",
+    title: "Tabela TACO Online com Medidas Caseiras | ClinOSTec",
     description:
       "Pesquise calorias, proteínas, carboidratos, lipídios e fibras de milhares de alimentos da TACO e culinária brasileira com porções caseiras reais.",
     url: "/tabela-taco",
@@ -73,7 +73,7 @@ export default async function TabelaTacoPage() {
           "Base de dados nutricionais com valores de energia, proteínas, carboidratos, lipídios e fibras, enriquecida com porções e medidas caseiras da culinária brasileira.",
         creator: {
           "@type": "Organization",
-          name: "NutriPlan / ClinOS"
+          name: "ClinOSTec"
         },
         license: "https://creativecommons.org/licenses/by/4.0/",
         variableMeasured: ["Energia (kcal)", "Proteínas (g)", "Carboidratos (g)", "Lipídios (g)", "Fibras (g)"]
@@ -99,10 +99,10 @@ export default async function TabelaTacoPage() {
           },
           {
             "@type": "Question",
-            name: "Como o NutriPlan ajuda na montagem do cardápio?",
+            name: "Como o ClinOSTec ajuda na montagem do cardápio?",
             acceptedAnswer: {
               "@type": "Answer",
-              text: "O NutriPlan integra todo o catálogo da TACO diretamente no cálculo da dieta. Você clica em 'Substituições' e o sistema sugere opções equivalentes da mesma categoria calórica em 1 clique."
+              text: "O ClinOSTec integra todo o catálogo da TACO diretamente no cálculo da dieta. Você clica em 'Substituições' e o sistema sugere opções equivalentes da mesma categoria calórica em 1 clique."
             }
           }
         ]
@@ -136,7 +136,7 @@ export default async function TabelaTacoPage() {
               className="btn btn-primary"
               style={{ background: "#059669", color: "#fff", padding: "14px 28px", borderRadius: 10, fontWeight: 700, textDecoration: "none" }}
             >
-              Testar Prescrição no NutriPlan Grátis
+              Testar Prescrição no ClinOSTec Grátis
             </Link>
             <Link
               href="/software-para-montar-cardapio-nutricionista"
@@ -224,7 +224,7 @@ export default async function TabelaTacoPage() {
               2. Medidas Caseiras: a chave para o paciente não desistir da dieta
             </h3>
             <p>
-              Exigir que um paciente pese 80 gramas de feijão, 110 gramas de arroz ou 25 gramas de queijo branco todos os dias gera fricção e desistência precoce. No NutriPlan, todos os alimentos contam com conversões padronizadas em colheres de sopa cheias, conchas médias, xícaras de chá e fatias de espessura média.
+              Exigir que um paciente pese 80 gramas de feijão, 110 gramas de arroz ou 25 gramas de queijo branco todos os dias gera fricção e desistência precoce. No ClinOSTec, todos os alimentos contam com conversões padronizadas em colheres de sopa cheias, conchas médias, xícaras de chá e fatias de espessura média.
             </p>
           </div>
 
@@ -233,7 +233,7 @@ export default async function TabelaTacoPage() {
               3. Substituições equivalentes em 1 clique durante a consulta
             </h3>
             <p>
-              Quando o paciente relata aversão a um alimento ou deseja variar as opções do dia a dia, o nutricionista não precisa recalcular os macronutrientes manualmente. O algoritmo do NutriPlan identifica o grupo nutricional e equilibra as porções para manter as mesmas calorias e proporção de carboidratos, proteínas e lipídios.
+              Quando o paciente relata aversão a um alimento ou deseja variar as opções do dia a dia, o nutricionista não precisa recalcular os macronutrientes manualmente. O algoritmo do ClinOSTec identifica o grupo nutricional e equilibra as porções para manter as mesmas calorias e proporção de carboidratos, proteínas e lipídios.
             </p>
           </div>
         </div>
