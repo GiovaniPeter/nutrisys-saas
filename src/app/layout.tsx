@@ -11,16 +11,16 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://clinos.tec.br"),
-  applicationName: "NutriPlan",
+  applicationName: "ClinOSTec",
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "NutriPlan"
+    title: "ClinOSTec"
   },
-  title: "NutriPlan | Software para Nutricionistas — Cardápios TACO, Pollock/Guedes e Portal do Paciente",
+  title: "ClinOSTec | Software para Nutricionistas — Cardápios TACO, Pollock/Guedes e Portal do Paciente",
   description:
-    "O software completo para nutricionistas: monte cardápios calculados em minutos com mais de 5.000 alimentos (Tabela TACO e marcas brasileiras) com medidas caseiras, dobras cutâneas Pollock 3/7 e Guedes, Cunningham/Tinsley, PDF com CRN e Portal do Paciente instalável.",
+    "O software completo para nutricionistas e clínicas: monte cardápios calculados em minutos com mais de 5.000 alimentos (Tabela TACO e marcas brasileiras) com medidas caseiras, dobras cutâneas Pollock 3/7 e Guedes, Cunningham/Tinsley, PDF com CRN e Portal do Paciente instalável.",
   keywords: [
     "software para nutricionistas",
     "programa para montar cardápio nutricionista",

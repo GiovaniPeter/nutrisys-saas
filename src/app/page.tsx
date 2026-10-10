@@ -289,20 +289,20 @@ export default function Home() {
 
       {/* HEADER DE NAVEGAÇÃO */}
       <header className="np-header">
-        <Link href="/" className="np-logo" aria-label="NutriPlan — Software para Nutricionistas">
+        <Link href="/" className="np-logo" aria-label="ClinOSTec — Software para Nutricionistas">
           <span className="np-logo-mark">
             <ClinOSLogo />
           </span>
           <span>
             <strong>
-              Nutri<span style={{ color: "#00b894" }}>Plan</span>
+              ClinOS<span style={{ color: "#059669" }}>Tec</span>
             </strong>
             <small>Software para Nutricionistas</small>
           </span>
         </Link>
 
         <nav className="np-nav" aria-label="Navegação principal">
-          <a href="#diferenciais">Por que o NutriPlan</a>
+          <a href="#diferenciais">Por que o ClinOSTec</a>
           <a href="#pilares">Recursos Clínicos</a>
           <a href="#comparativo">Comparativo</a>
           <a href="#planos">Planos e Preços</a>
@@ -341,7 +341,7 @@ export default function Home() {
 
           <p>
             Esqueça as noites perdidas no Excel e as mensalidades abusivas de outros softwares.
-            O <strong>NutriPlan</strong> reúne a <strong>Tabela TACO (+1.000 itens com medidas caseiras reais)</strong>,
+            O <strong>ClinOSTec</strong> reúne mais de <strong>5.000 alimentos (Tabela TACO e marcas brasileiras)</strong>,
             substituições em 1 clique, antropometria Pollock/Guedes e PDF com CRN por um valor que cabe no seu consultório.
           </p>
 
@@ -371,7 +371,7 @@ export default function Home() {
               <div className="np-feature-icon icon-green">
                 <LineIcon name="meal" />
               </div>
-              <span>Tabela TACO (+1.000 itens)</span>
+              <span>Base TACO (+5.000 itens)</span>
             </div>
             <div className="np-hero-feature">
               <div className="np-feature-icon icon-blue">
@@ -432,8 +432,8 @@ export default function Home() {
       <section className="np-authority-strip">
         <div className="np-authority-content">
           <div className="np-authority-item">
-            <strong>+1.014</strong>
-            <span>Alimentos TACO, IBGE e Suplementos</span>
+            <strong>+5.000</strong>
+            <span>Alimentos TACO, Marcas e Suplementos</span>
           </div>
           <div className="np-authority-item">
             <strong>3 minutos</strong>

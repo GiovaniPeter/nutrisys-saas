@@ -309,8 +309,8 @@ export function AppNav({ active, user }: AppNavProps) {
       >
         <span className="brand-mark"><ClinOSLogo /></span>
         <span className="app-brand-copy">
-          <strong>Nutri<span style={{ color: '#00b894' }}>Plan</span></strong>
-          <small>Software para Nutricionistas</small>
+          <strong>ClinOS<span style={{ color: '#059669' }}>Tec</span></strong>
+          <small>Plataforma para Nutricionistas & Clínicas</small>
         </span>
       </Link>
 
