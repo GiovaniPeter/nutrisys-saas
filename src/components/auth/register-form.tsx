@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useRef, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 
@@ -124,6 +125,16 @@ export function RegisterForm({ initialPlanCode = "professional" }: RegisterFormP
       <button className="button" type="submit" disabled={loading}>
         {loading ? "Criando..." : "Começar 7 dias grátis — sem cartão"}
       </button>
+      <p style={{ fontSize: "0.82rem", color: "#64748b", marginTop: "12px", textAlign: "center", lineHeight: 1.5 }}>
+        Ao criar sua conta, você concorda com nossos{" "}
+        <Link href="/termos-de-uso" target="_blank" style={{ color: "#059669", textDecoration: "underline", fontWeight: 500 }}>
+          Termos de Uso
+        </Link>{" "}
+        e com a nossa{" "}
+        <Link href="/politica-de-privacidade" target="_blank" style={{ color: "#059669", textDecoration: "underline", fontWeight: 500 }}>
+          Política de Privacidade (LGPD)
+        </Link>.
+      </p>
     </form>
   );
 }
