@@ -1,17 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
-  --np-bg: #f8fafc;
+  --font-plus-jakarta: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-outfit: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+
+  /* ClinOSTec 2026 Core Tokens */
+  --clinos-sage-900: #183B32;
+  --clinos-sage-800: #233E37;
+  --clinos-sage-700: #2D4F46;
+  --clinos-sage-50: #F2F6F4;
+  
+  --clinos-terracotta: #D96B43;
+  --clinos-terracotta-dark: #C45A34;
+  --clinos-terracotta-soft: #FCEEE8;
+  
+  --clinos-sand-bg: #FAF9F6;
+  --clinos-sand-card: #FFFFFF;
+  --clinos-sand-border: #EAE6DC;
+  
+  --clinos-ink-primary: #131A17;
+  --clinos-ink-secondary: #5A6B64;
+  --clinos-ink-muted: #8E9B95;
+  
+  /* Macros */
+  --clinos-cho: #D97706;
+  --clinos-cho-soft: #FEF3C7;
+  --clinos-ptn: #DC4C3E;
+  --clinos-ptn-soft: #FEE9E7;
+  --clinos-lip: #0D9488;
+  --clinos-lip-soft: #CCFBF1;
+  --clinos-fib: #7C3AED;
+  --clinos-fib-soft: #EDE9FE;
+
+  /* Legacy fallback */
+  --np-bg: #FAF9F6;
   --np-card: #ffffff;
-  --np-ink: #0f172a;
-  --np-muted: #475569;
-  --np-soft: #ecfdf5;
-  --np-soft-2: #f1f5f9;
-  --np-primary: #059669;
-  --np-primary-2: #0284c7;
-  --np-primary-dark: #047857;
-  --np-accent: #10b981;
-  --np-line: #e2e8f0;
-  --np-glass-line: rgba(226, 232, 240, 0.8);
-  --np-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.06), 0 8px 16px -8px rgba(15, 23, 42, 0.03);
+  --np-ink: #131A17;
+  --np-muted: #5A6B64;
+  --np-soft: #F2F6F4;
+  --np-soft-2: #F5F3ED;
+  --np-primary: #183B32;
+  --np-primary-2: #24584B;
+  --np-primary-dark: #0E231E;
+  --np-accent: #D96B43;
+  --np-line: #EAE6DC;
+  --np-glass-line: rgba(234, 230, 220, 0.8);
+  --np-shadow: 0 20px 45px -10px rgba(19, 26, 23, 0.06), 0 8px 16px -8px rgba(19, 26, 23, 0.03);
   --np-radius: 16px;
 }
 
