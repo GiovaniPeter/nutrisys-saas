@@ -27,11 +27,11 @@ module.exports = {
           200: '#F7DDD2',
           300: '#EFC2AF',
           400: '#E59A7C',
-          500: '#D96B43',
-          600: '#C45A34',
-          700: '#A14526',
-          800: '#823820',
-          900: '#682E1B',
+          500: '#BF4B22', // Contraste 4.95:1 com branco (Aprovado WCAG AA)
+          600: '#A83E1A',
+          700: '#8F3415',
+          800: '#752B12',
+          900: '#5C220E',
         },
         sand: {
           50: '#FAF9F6',
@@ -74,8 +74,8 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['Plus Jakarta Sans', 'system-ui', '-apple-system', 'sans-serif'],
-        display: ['Outfit', 'Plus Jakarta Sans', 'sans-serif'],
+        sans: ['var(--font-sans)', 'Plus Jakarta Sans', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['var(--font-display)', 'Outfit', 'Plus Jakarta Sans', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
         subtle: '0 1px 2px rgba(19, 26, 23, 0.04)',

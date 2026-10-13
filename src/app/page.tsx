@@ -21,279 +21,312 @@ export default function LandingPage() {
       {/* ======================================================== */}
       {/* 1. TOPBAR & NAVEGAÇÃO                                    */}
       {/* ======================================================== */}
-      <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-sand-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between">
+      {/* ======================================================== */}
+      {/* 1. TOPBAR & NAVEGAÇÃO (Altura 80px fixa, zero quebras)   */}
+      {/* ======================================================== */}
+      <header className="sticky top-0 z-50 h-20 bg-white/85 backdrop-blur-md border-b border-sand-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between gap-4">
           {/* Logo Exclusivo ClinOSTec 2026 */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-xl bg-sage-900 text-white flex items-center justify-center font-display font-bold text-lg shadow-sm group-hover:bg-sage-800 transition-colors">
+          <Link
+            href="/"
+            className="flex items-center gap-3 shrink-0 group focus-visible:ring-2 focus-visible:ring-sage-700 rounded-xl"
+          >
+            <div className="w-10 h-10 rounded-xl bg-sage-900 text-white flex items-center justify-center shrink-0 shadow-sm group-hover:bg-sage-800 transition-colors">
               <svg className="w-6 h-6 text-terracotta-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="12" cy="12" r="9" />
                 <path d="M12 7v10M7 12h10" />
-                <circle cx="12" cy="12" r="3" fill="#D96B43" stroke="none" />
+                <circle cx="12" cy="12" r="3" fill="#BF4B22" stroke="none" />
               </svg>
             </div>
-            <div>
-              <span className="font-display font-bold text-xl text-ink-900 tracking-tight block leading-none">
-                ClinOS<span className="text-terracotta-500 font-normal">Tec</span>
+            <div className="flex flex-col justify-center">
+              <span className="font-display font-extrabold text-xl text-ink-900 tracking-tight leading-none whitespace-nowrap">
+                ClinOS<span className="text-terracotta-500 font-bold">Tec</span>
               </span>
-              <span className="text-[10px] uppercase font-semibold tracking-wider text-sage-800">
+              <span className="hidden xl:block text-[11px] uppercase font-semibold tracking-wider text-sage-900 mt-1 whitespace-nowrap">
                 Nutrição Clínica de Precisão
               </span>
             </div>
           </Link>
 
-          {/* Links Centrais */}
-          <nav className="hidden lg:flex items-center gap-8 text-sm font-medium text-ink-700">
-            <a href="#proposta" className="hover:text-sage-900 transition-colors">
-              A Nova Consulta
+          {/* Links Centrais (Rótulos objetivos, sem metáforas, whitespace-nowrap) */}
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-sm font-semibold text-ink-800">
+            <a
+              href="/editor-cardapio"
+              className="whitespace-nowrap hover:text-sage-900 transition-colors py-2 focus-visible:ring-2 focus-visible:ring-sage-700 rounded-lg"
+            >
+              Recursos
             </a>
-            <a href="#demonstracao" className="hover:text-sage-900 transition-colors">
-              Motor Clínico
+            <a
+              href="#como-funciona"
+              className="whitespace-nowrap hover:text-sage-900 transition-colors py-2 focus-visible:ring-2 focus-visible:ring-sage-700 rounded-lg"
+            >
+              Como funciona
             </a>
-            <a href="#comparativo" className="hover:text-sage-900 transition-colors">
-              Comparativo Real
+            <a
+              href="#comparativo"
+              className="whitespace-nowrap hover:text-sage-900 transition-colors py-2 focus-visible:ring-2 focus-visible:ring-sage-700 rounded-lg"
+            >
+              Comparativo
             </a>
-            <a href="#planos" className="hover:text-sage-900 transition-colors">
-              Planos & Preços
+            <a
+              href="#planos"
+              className="whitespace-nowrap hover:text-sage-900 transition-colors py-2 focus-visible:ring-2 focus-visible:ring-sage-700 rounded-lg"
+            >
+              Planos
             </a>
-            <a href="#faq" className="hover:text-sage-900 transition-colors">
+            <a
+              href="#faq"
+              className="whitespace-nowrap hover:text-sage-900 transition-colors py-2 focus-visible:ring-2 focus-visible:ring-sage-700 rounded-lg"
+            >
               Dúvidas
             </a>
           </nav>
 
-          {/* Ações */}
-          <div className="flex items-center gap-3">
+          {/* Ações (Entrar + Testar 7 dias grátis em linha única com min-height 44px) */}
+          <div className="flex items-center gap-3 shrink-0">
             <Link
               href="/login"
-              className="text-xs sm:text-sm font-semibold text-ink-700 hover:text-ink-900 px-3.5 py-2 rounded-xl transition-colors"
+              className="hidden sm:inline-flex items-center justify-center text-sm font-semibold text-ink-800 hover:text-ink-950 px-3.5 py-2.5 rounded-xl transition-colors whitespace-nowrap focus-visible:ring-2 focus-visible:ring-sage-700 min-h-[44px]"
             >
               Entrar
             </Link>
-            <Link href="/editor-cardapio">
-              <Button variant="terracotta" size="md">
-                Testar Grátis (7 Dias)
-              </Button>
+            <Link href="/editor-cardapio" className="focus-visible:ring-2 focus-visible:ring-sage-700 rounded-xl">
+              <button
+                type="button"
+                className="inline-flex items-center justify-center font-semibold select-none transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-terracotta-400 bg-terracotta-500 text-white hover:bg-terracotta-600 shadow-sm hover:shadow h-11 px-5 text-sm rounded-xl whitespace-nowrap min-h-[44px]"
+              >
+                Testar 7 dias grátis
+              </button>
             </Link>
           </div>
         </div>
       </header>
 
       {/* ======================================================== */}
-      {/* 2. HERO SECTION — NARRATIVA EDITORIAL & SIMULADOR VIVO   */}
+      {/* 2. HERO SECTION — HIERARQUIA BALANCEADA E ACIMA DA DOBRA */}
       {/* ======================================================== */}
-      <section className="pt-12 pb-20 px-4 sm:px-6 relative overflow-hidden bg-gradient-to-b from-white via-sand-50 to-sand-50">
-        <div className="max-w-5xl mx-auto text-center space-y-6">
-          {/* Tag de autoridade clínica */}
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-sage-50 border border-sage-200 text-xs font-semibold text-sage-900">
-            <span className="w-2 h-2 rounded-full bg-terracotta-500" />
-            <span>Projetado para o ritmo real do consultório brasileiro</span>
-            <span className="text-sand-300">•</span>
-            <span className="text-sage-700 font-normal">Tabela TACO + CFN + Lei 8.234/91</span>
-          </div>
+      <section className="pt-6 sm:pt-8 lg:pt-10 pb-12 sm:pb-16 lg:pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gradient-to-b from-white via-sand-50 to-sand-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-center">
+            
+            {/* Coluna da Esquerda: Mensagem, Autoridade e CTAs */}
+            <div className="lg:col-span-6 xl:col-span-6 space-y-4 sm:space-y-5 text-left">
+              {/* Selo (pill) de autoridade clínica com contraste AA / AAA */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-sage-200 shadow-subtle text-xs font-semibold text-sage-950">
+                <span className="w-2 h-2 rounded-full bg-terracotta-500 shrink-0" />
+                <span>Projetado para o consultório brasileiro</span>
+                <span className="text-sand-300">•</span>
+                <span className="text-sage-800 font-medium">Tabela TACO + CFN + Lei 8.234/91</span>
+              </div>
 
-          {/* Headline com voz autoral */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-ink-900 font-display tracking-tight leading-[1.12]">
-            Você estudou 5 anos de bioquímica para ouvir seus pacientes.
-            <span className="block mt-2 text-sage-900">
-              Não para somar calorias no Excel.
-            </span>
-          </h1>
+              {/* Título com clamp, line-height 1.08, max-width ~20ch, máx 3 linhas e 2 cores */}
+              <h1
+                className="font-display font-extrabold tracking-tight text-ink-900 leading-[1.08]"
+                style={{ fontSize: 'clamp(2.35rem, 3.8vw, 3.85rem)', maxWidth: '20ch' }}
+              >
+                Você se formou para cuidar de pessoas.{' '}
+                <span className="text-sage-900 block mt-1">
+                  Não para somar calorias no Excel.
+                </span>
+              </h1>
 
-          {/* Parágrafo de posicionamento */}
-          <p className="max-w-2xl mx-auto text-base sm:text-lg text-ink-600 leading-relaxed">
-            O <strong>ClinOSTec</strong> elimina o pesadelo das planilhas feias e dos softwares caros e travados.
-            Calcule cardápios em minutos com a Tabela TACO em medidas caseiras, substituições em 1 clique
-            e entregue uma prescrição elegante que gera autoridade no primeiro olhar.
-          </p>
+              {/* Subtítulo (até 2 linhas, 18px, contraste >8:1) */}
+              <p className="text-base sm:text-lg lg:text-[18px] text-ink-700 leading-snug max-w-xl">
+                Prescreva cardápios em minutos com a Tabela TACO em medidas caseiras,
+                substituições em 1 clique e autoridade clínica que seu consultório merece.
+              </p>
 
-          {/* Botões de Ação Imediata */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
-            <Link href="/editor-cardapio" className="w-full sm:w-auto">
-              <Button variant="terracotta" size="lg" fullWidth>
-                Abrir o Editor de Cardápio Agora (Sem Cadastro) →
-              </Button>
-            </Link>
-            <Link href="#planos" className="w-full sm:w-auto">
-              <Button variant="secondary" size="lg" fullWidth>
-                Ver Planos (A partir de R$ 39,50/mês)
-              </Button>
-            </Link>
-          </div>
+              {/* Botões de Ação com min-height 44px para toque acessível */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
+                <Link href="/editor-cardapio" className="focus-visible:ring-2 focus-visible:ring-sage-700 rounded-xl">
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center font-semibold select-none transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-terracotta-400 bg-terracotta-500 text-white hover:bg-terracotta-600 shadow-sm hover:shadow h-12 px-6 text-sm sm:text-base rounded-xl whitespace-nowrap min-h-[48px] w-full sm:w-auto"
+                  >
+                    Abrir o Editor de Cardápio →
+                  </button>
+                </Link>
+                <a href="#planos" className="focus-visible:ring-2 focus-visible:ring-sage-700 rounded-xl">
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center font-semibold select-none transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sand-400 bg-sand-100 text-ink-900 border border-sand-200 hover:bg-sand-200/80 hover:border-sand-300 h-12 px-5 text-sm sm:text-base rounded-xl whitespace-nowrap min-h-[48px] w-full sm:w-auto"
+                  >
+                    Ver Planos (A partir de R$ 39,50)
+                  </button>
+                </a>
+              </div>
 
-          <p className="text-xs text-ink-500">
-            ✓ 7 dias de teste completo grátis • Sem pedir cartão de crédito • Cancele quando quiser
-          </p>
-        </div>
-
-        {/* WORKSTATION INTERATIVA NO HERO (Simulador vivo sem template padrão) */}
-        <div className="max-w-5xl mx-auto mt-12 bg-white rounded-3xl border border-sand-200 shadow-float p-5 sm:p-7">
-          {/* Seletor de Micro-Demonstração */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-sand-100">
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-sage-900 bg-sage-100 px-2.5 py-1 rounded-md">
-                Simulação Viva do Motor ClinOSTec
-              </span>
-              <span className="text-xs text-ink-400 hidden sm:inline">
-                Clique para ver a interface em ação:
-              </span>
+              {/* Microtexto com contraste AA e alinhamento elegante */}
+              <p className="text-xs font-medium text-ink-600 pt-0.5">
+                Sem cartão de crédito · 7 dias grátis · Cancele quando quiser
+              </p>
             </div>
 
-            <div className="flex items-center gap-1.5 p-1 bg-sand-100 rounded-xl border border-sand-200">
-              <button
-                type="button"
-                onClick={() => setHeroSimStep('substituicao')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                  heroSimStep === 'substituicao'
-                    ? 'bg-white text-ink-900 shadow-sm'
-                    : 'text-ink-600 hover:text-ink-900'
-                }`}
-              >
-                🔄 Troca em 1 Clique
-              </button>
-              <button
-                type="button"
-                onClick={() => setHeroSimStep('medidas')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                  heroSimStep === 'medidas'
-                    ? 'bg-white text-ink-900 shadow-sm'
-                    : 'text-ink-600 hover:text-ink-900'
-                }`}
-              >
-                🥣 Medidas Caseiras
-              </button>
-              <button
-                type="button"
-                onClick={() => setHeroSimStep('macros')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                  heroSimStep === 'macros'
-                    ? 'bg-white text-ink-900 shadow-sm'
-                    : 'text-ink-600 hover:text-ink-900'
-                }`}
-              >
-                📊 VET & Macros
-              </button>
-            </div>
-          </div>
-
-          {/* Painel Reativo baseado no seletor */}
-          <div className="pt-6">
-            {heroSimStep === 'substituicao' && (
-              <div className="space-y-4">
-                <div className="p-4 rounded-2xl bg-sand-50 border border-sand-200 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="text-left">
-                    <span className="text-xs font-semibold text-ink-500 uppercase">Almoço • Prescrição Original</span>
-                    <h4 className="text-base font-bold text-ink-900 mt-0.5">
-                      Arroz integral cozido — 2 colheres de servir (100g)
-                    </h4>
-                    <p className="text-xs text-ink-600">
-                      124 kcal • C: 25,8g • P: 2,6g • G: 1,0g • TACO #18
-                    </p>
-                  </div>
+            {/* Coluna da Direita: Workstation Interativa Compacta (100% visível sem rolar) */}
+            <div className="lg:col-span-6 xl:col-span-6">
+              <div className="bg-white rounded-2xl border border-sand-200 shadow-card p-4 sm:p-5">
+                {/* Seletor Compacto do Simulador */}
+                <div className="flex flex-wrap items-center justify-between gap-2.5 pb-3.5 border-b border-sand-100">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-terracotta-700 bg-terracotta-100 px-3 py-1 rounded-full">
-                      1 Clique ➔ Sugestão Isocalórica
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-sage-900 bg-sage-100 px-2 py-0.5 rounded">
+                      Motor Clínico Ao Vivo
                     </span>
+                    <span className="text-xs text-ink-500 hidden xl:inline">
+                      Interaja com o motor:
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-1 p-0.5 bg-sand-100 rounded-xl border border-sand-200">
+                    <button
+                      type="button"
+                      onClick={() => setHeroSimStep('substituicao')}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                        heroSimStep === 'substituicao'
+                          ? 'bg-white text-ink-900 shadow-sm'
+                          : 'text-ink-600 hover:text-ink-900'
+                      }`}
+                    >
+                      🔄 1-Clique Troca
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setHeroSimStep('medidas')}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                        heroSimStep === 'medidas'
+                          ? 'bg-white text-ink-900 shadow-sm'
+                          : 'text-ink-600 hover:text-ink-900'
+                      }`}
+                    >
+                      🥣 Medidas pt-BR
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setHeroSimStep('macros')}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                        heroSimStep === 'macros'
+                          ? 'bg-white text-ink-900 shadow-sm'
+                          : 'text-ink-600 hover:text-ink-900'
+                      }`}
+                    >
+                      📊 Macros & VET
+                    </button>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div className="p-3.5 rounded-xl border border-sand-200 bg-white hover:border-terracotta-400 transition-all text-left">
-                    <span className="text-xs font-bold text-ink-900 block">Batata-doce cozida</span>
-                    <span className="text-xs font-semibold text-sage-900 bg-sage-100 px-2 py-0.5 rounded inline-block mt-1">
-                      2 fatias médias (160g)
-                    </span>
-                    <div className="mt-2 text-xs font-mono text-ink-500 flex justify-between">
-                      <span>123 kcal</span>
-                      <strong className="text-emerald-700">Δ -1 kcal (Exato)</strong>
-                    </div>
-                  </div>
+                {/* Área de Demonstração Reativa Compacta */}
+                <div className="pt-3.5">
+                  {heroSimStep === 'substituicao' && (
+                    <div className="space-y-3">
+                      <div className="p-3 rounded-xl bg-sand-50 border border-sand-200 flex items-center justify-between gap-3 text-left">
+                        <div>
+                          <span className="text-[10px] font-semibold text-ink-500 uppercase">Almoço • Prescrição Atual</span>
+                          <h4 className="text-sm font-bold text-ink-900">
+                            Arroz integral cozido (100g)
+                          </h4>
+                          <span className="text-xs text-ink-600">2 colheres de servir • 124 kcal</span>
+                        </div>
+                        <span className="text-[11px] font-bold text-terracotta-700 bg-terracotta-100 px-2 py-0.5 rounded-full shrink-0">
+                          Equivalência Automática
+                        </span>
+                      </div>
 
-                  <div className="p-3.5 rounded-xl border border-sand-200 bg-white hover:border-terracotta-400 transition-all text-left">
-                    <span className="text-xs font-bold text-ink-900 block">Mandioca cozida</span>
-                    <span className="text-xs font-semibold text-sage-900 bg-sage-100 px-2 py-0.5 rounded inline-block mt-1">
-                      1 pedaço médio (99g)
-                    </span>
-                    <div className="mt-2 text-xs font-mono text-ink-500 flex justify-between">
-                      <span>124 kcal</span>
-                      <strong className="text-emerald-700">Δ 0 kcal (Perfeito)</strong>
-                    </div>
-                  </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <div className="p-2.5 rounded-xl border border-sand-200 bg-white hover:border-terracotta-400 transition-all text-left">
+                          <span className="text-xs font-bold text-ink-900 block truncate">Batata-doce cozida</span>
+                          <span className="text-[11px] font-semibold text-sage-900 bg-sage-100 px-1.5 py-0.2 rounded inline-block mt-0.5">
+                            2 fatias (160g)
+                          </span>
+                          <div className="mt-1.5 text-[11px] font-mono text-ink-500 flex justify-between">
+                            <span>123 kcal</span>
+                            <strong className="text-emerald-700">Δ -1 kcal</strong>
+                          </div>
+                        </div>
 
-                  <div className="p-3.5 rounded-xl border border-sand-200 bg-white hover:border-terracotta-400 transition-all text-left">
-                    <span className="text-xs font-bold text-ink-900 block">Cuscuz de milho</span>
-                    <span className="text-xs font-semibold text-sage-900 bg-sage-100 px-2 py-0.5 rounded inline-block mt-1">
-                      1 fatia média (110g)
-                    </span>
-                    <div className="mt-2 text-xs font-mono text-ink-500 flex justify-between">
-                      <span>123 kcal</span>
-                      <strong className="text-emerald-700">Δ -1 kcal (Exato)</strong>
+                        <div className="p-2.5 rounded-xl border border-sand-200 bg-white hover:border-terracotta-400 transition-all text-left">
+                          <span className="text-xs font-bold text-ink-900 block truncate">Mandioca cozida</span>
+                          <span className="text-[11px] font-semibold text-sage-900 bg-sage-100 px-1.5 py-0.2 rounded inline-block mt-0.5">
+                            1 pedaço (99g)
+                          </span>
+                          <div className="mt-1.5 text-[11px] font-mono text-ink-500 flex justify-between">
+                            <span>124 kcal</span>
+                            <strong className="text-emerald-700">Δ 0 kcal</strong>
+                          </div>
+                        </div>
+
+                        <div className="p-2.5 rounded-xl border border-sand-200 bg-white hover:border-terracotta-400 transition-all text-left">
+                          <span className="text-xs font-bold text-ink-900 block truncate">Cuscuz de milho</span>
+                          <span className="text-[11px] font-semibold text-sage-900 bg-sage-100 px-1.5 py-0.2 rounded inline-block mt-0.5">
+                            1 fatia (110g)
+                          </span>
+                          <div className="mt-1.5 text-[11px] font-mono text-ink-500 flex justify-between">
+                            <span>123 kcal</span>
+                            <strong className="text-emerald-700">Δ -1 kcal</strong>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  )}
+
+                  {heroSimStep === 'medidas' && (
+                    <div className="p-3.5 rounded-xl bg-sand-50 border border-sand-200 text-left space-y-2.5">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-xs font-bold text-ink-900">
+                          Medidas da cozinha brasileira convertidas em gramas
+                        </h4>
+                        <span className="text-[10px] text-sage-900 font-semibold bg-sage-100 px-2 py-0.2 rounded">
+                          TACO Oficial
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 text-xs">
+                        <div className="p-2 bg-white rounded-lg border border-sand-200">
+                          <strong>Feijão carioca</strong>
+                          <p className="text-[11px] text-ink-500 mt-0.5">1 concha média = 140g</p>
+                        </div>
+                        <div className="p-2 bg-white rounded-lg border border-sand-200">
+                          <strong>Peito de frango</strong>
+                          <p className="text-[11px] text-ink-500 mt-0.5">1 filé médio = 100g</p>
+                        </div>
+                        <div className="p-2 bg-white rounded-lg border border-sand-200">
+                          <strong>Azeite extravirgem</strong>
+                          <p className="text-[11px] text-ink-500 mt-0.5">1 colher sobremesa = 5g</p>
+                        </div>
+                        <div className="p-2 bg-white rounded-lg border border-sand-200">
+                          <strong>Aveia em flocos</strong>
+                          <p className="text-[11px] text-ink-500 mt-0.5">1 colher sopa = 15g</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {heroSimStep === 'macros' && (
+                    <div className="space-y-2">
+                      <MacroBar
+                        current={{
+                          calories: 2080,
+                          carbs: 234,
+                          protein: 142,
+                          fat: 64,
+                          fiber: 31,
+                        }}
+                        target={{
+                          calories: 2100,
+                          bodyWeightKg: 64,
+                        }}
+                        variant="compact"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
-            )}
+            </div>
 
-            {heroSimStep === 'medidas' && (
-              <div className="p-5 rounded-2xl bg-sand-50 border border-sand-200 text-left space-y-3">
-                <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-bold text-ink-900">
-                    Linguagem que a paciente entende na cozinha, não enigma de laboratório
-                  </h4>
-                  <span className="text-xs text-sage-800 font-semibold bg-sage-100 px-2.5 py-0.5 rounded">
-                    Gramas Automáticos
-                  </span>
-                </div>
-                <p className="text-xs text-ink-600">
-                  Chega de receber WhatsApp da paciente às 19h perguntando se 130g de feijão é uma concha cheia ou rasa.
-                  No ClinOSTec, cada alimento já tem as porções da mesa brasileira com densidade em gramas calculada:
-                </p>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 text-xs">
-                  <div className="p-2.5 bg-white rounded-lg border border-sand-200">
-                    <strong>Feijão carioca</strong>
-                    <p className="text-ink-500 mt-0.5">1 concha média = 140g</p>
-                  </div>
-                  <div className="p-2.5 bg-white rounded-lg border border-sand-200">
-                    <strong>Peito de frango</strong>
-                    <p className="text-ink-500 mt-0.5">1 filé médio = 100g</p>
-                  </div>
-                  <div className="p-2.5 bg-white rounded-lg border border-sand-200">
-                    <strong>Azeite extravirgem</strong>
-                    <p className="text-ink-500 mt-0.5">1 colher sobremesa = 5g</p>
-                  </div>
-                  <div className="p-2.5 bg-white rounded-lg border border-sand-200">
-                    <strong>Aveia em flocos</strong>
-                    <p className="text-ink-500 mt-0.5">1 colher sopa = 15g</p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {heroSimStep === 'macros' && (
-              <div className="space-y-3">
-                <MacroBar
-                  current={{
-                    calories: 2080,
-                    carbs: 234,
-                    protein: 142,
-                    fat: 64,
-                    fiber: 31,
-                  }}
-                  target={{
-                    calories: 2100,
-                    bodyWeightKg: 64,
-                  }}
-                  variant="detailed"
-                />
-              </div>
-            )}
           </div>
         </div>
       </section>
-
       {/* ======================================================== */}
       {/* 3. OS 3 PILARES DO CLINOSTEC (Sem clichês de folhas/frutas) */}
       {/* ======================================================== */}
-      <section id="proposta" className="py-20 px-4 sm:px-6 bg-white border-y border-sand-200">
+      <section id="como-funciona" className="py-20 px-4 sm:px-6 bg-white border-y border-sand-200">
         <div className="max-w-7xl mx-auto space-y-12">
           <div className="max-w-3xl mx-auto text-center space-y-3">
             <span className="text-xs font-bold uppercase tracking-wider text-sage-800 bg-sage-100 px-3 py-1 rounded-full">

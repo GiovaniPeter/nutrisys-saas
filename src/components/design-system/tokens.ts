@@ -23,11 +23,11 @@ export const colors = {
     200: '#F7DDD2',
     300: '#EFC2AF',
     400: '#E59A7C',
-    500: '#D96B43', // CTA Principal
-    600: '#C45A34',
-    700: '#A14526',
-    800: '#823820',
-    900: '#682E1B',
+    500: '#BF4B22', // Contraste WCAG AA >4.9:1 com branco
+    600: '#A83E1A',
+    700: '#8F3415',
+    800: '#752B12',
+    900: '#5C220E',
   },
   // Neutros Quentes: Alabaster / Linho Mineral (Não cansa a visão em consultas longas)
   sand: {

@@ -1,10 +1,25 @@
 import type { Metadata, Viewport } from "next";
+import { Plus_Jakarta_Sans, Outfit } from "next/font/google";
 import { CookieBanner } from "@/components/cookie-banner";
 import "./globals.css";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800"],
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-display",
+  display: "swap",
+  weight: ["500", "600", "700", "800"],
+});
+
 export const viewport: Viewport = {
-  themeColor: "#059669",
+  themeColor: "#183B32",
   width: "device-width",
   initialScale: 1
 };
@@ -75,8 +90,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
-      <body>
+    <html lang="pt-BR" className={`${plusJakarta.variable} ${outfit.variable}`}>
+      <body className="font-sans bg-sand-50 text-ink-900 antialiased selection:bg-terracotta-100 selection:text-terracotta-900">
         {children}
         <CookieBanner />
         {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? (
