@@ -124,9 +124,9 @@ export default function LandingPage() {
                 className="font-display font-extrabold tracking-tight text-ink-900 leading-[1.08]"
                 style={{ fontSize: 'clamp(2.35rem, 3.8vw, 3.85rem)', maxWidth: '20ch' }}
               >
-                Você se formou para cuidar de pessoas.{' '}
+                Sua consulta é sobre ciência e pessoas.{' '}
                 <span className="text-sage-900 block mt-1">
-                  Não para somar calorias no Excel.
+                  Não sobre somar calorias no Excel.
                 </span>
               </h1>
 
