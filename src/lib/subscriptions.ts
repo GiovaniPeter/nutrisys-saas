@@ -4,7 +4,12 @@ import { prisma } from "@/lib/prisma";
 export const FREE_TRIAL_DAYS = 7;
 
 export function hasSubscriptionAccess(
-  subscription: Pick<Subscription, "status" | "trialEndsAt"> | null | undefined,
+  subscription:
+    | (Pick<Subscription, "status" | "trialEndsAt"> & {
+        currentPeriodEndsAt?: Date | null;
+      })
+    | null
+    | undefined,
   now = new Date()
 ) {
   if (!subscription) {
@@ -12,6 +17,18 @@ export function hasSubscriptionAccess(
   }
 
   if (subscription.status === SubscriptionStatus.ACTIVE) {
+    if (subscription.currentPeriodEndsAt && subscription.currentPeriodEndsAt <= now) {
+      return false;
+    }
+
+    return true;
+  }
+
+  if (
+    subscription.status === SubscriptionStatus.CANCELED &&
+    subscription.currentPeriodEndsAt &&
+    subscription.currentPeriodEndsAt > now
+  ) {
     return true;
   }
 
@@ -25,8 +42,16 @@ export async function expireElapsedTrials(organizationId: string, now = new Date
   await prisma.subscription.updateMany({
     where: {
       organizationId,
-      status: SubscriptionStatus.TRIALING,
-      trialEndsAt: { lte: now }
+      OR: [
+        {
+          status: SubscriptionStatus.TRIALING,
+          trialEndsAt: { lte: now }
+        },
+        {
+          status: { in: [SubscriptionStatus.ACTIVE, SubscriptionStatus.CANCELED] },
+          currentPeriodEndsAt: { lte: now }
+        }
+      ]
     },
     data: {
       status: SubscriptionStatus.EXPIRED

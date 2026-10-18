@@ -4,15 +4,14 @@ import { z } from "zod";
 import { audit } from "@/lib/audit";
 import { error, json, validationError } from "@/lib/api";
 import {
-  assertMercadoPagoConfigured,
-  mapMercadoPagoSubscriptionStatus,
-  mpPreApproval,
-  parseMercadoPagoDate
-} from "@/lib/mercadopago";
-import { PLANS } from "@/lib/plans";
+  calculateNextPeriodEnd,
+  checkInfinitePayPayment,
+  parseInfinitePayOrderNsu
+} from "@/lib/infinitepay";
+import { findPlan, PLANS } from "@/lib/plans";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
-import { getLatestSubscription, hasSubscriptionAccess } from "@/lib/subscriptions";
+import { getLatestSubscription } from "@/lib/subscriptions";
 
 const subscriptionUpdateSchema = z.discriminatedUnion("action", [
   z.object({
@@ -32,33 +31,88 @@ export async function GET(request: NextRequest) {
 
   let subscription = await getLatestSubscription(user.organizationId);
 
-  if (
-    request.nextUrl.searchParams.get("sync") === "mercadopago" &&
-    subscription?.provider === "MERCADO_PAGO" &&
-    subscription.providerSubId
-  ) {
-    try {
-      assertMercadoPagoConfigured();
-      const preApproval = await mpPreApproval.get({ id: subscription.providerSubId });
-      const mercadoPagoStatus = (preApproval.status || "").toLowerCase();
-      const status =
-        mercadoPagoStatus === "pending" && hasSubscriptionAccess(subscription)
-          ? subscription.status
-          : mapMercadoPagoSubscriptionStatus(preApproval.status);
+  if (request.nextUrl.searchParams.get("sync") === "infinitepay") {
+    const rawOrderNsu =
+      request.nextUrl.searchParams.get("order_nsu") ||
+      (subscription?.providerSubId?.startsWith("pending:")
+        ? subscription.providerSubId.slice("pending:".length)
+        : subscription?.providerSubId) ||
+      null;
+    const transactionNsu = request.nextUrl.searchParams.get("transaction_nsu");
+    const slug =
+      request.nextUrl.searchParams.get("slug") ||
+      request.nextUrl.searchParams.get("invoice_slug");
+    const reference = parseInfinitePayOrderNsu(rawOrderNsu);
 
-      subscription = await prisma.subscription.update({
-        where: { id: subscription.id },
-        data: {
-          status,
-          providerCustomerId: preApproval.payer_id
-            ? String(preApproval.payer_id)
-            : preApproval.payer_email || subscription.providerCustomerId,
-          currentPeriodEndsAt:
-            parseMercadoPagoDate(preApproval.next_payment_date) || subscription.currentPeriodEndsAt
+    if (
+      rawOrderNsu &&
+      transactionNsu &&
+      slug &&
+      reference &&
+      reference.organizationId === user.organizationId
+    ) {
+      try {
+        const plan = findPlan(reference.planCode);
+        const check = await checkInfinitePayPayment({
+          handle: plan?.infinitePayEnrollment?.merchantHandle,
+          orderNsu: rawOrderNsu,
+          transactionNsu,
+          slug
+        });
+
+        if (
+          check.paid &&
+          !(
+            subscription?.provider === "INFINITEPAY" &&
+            subscription.providerSubId === rawOrderNsu &&
+            subscription.status === SubscriptionStatus.ACTIVE
+          )
+        ) {
+          const currentPeriodEndsAt = calculateNextPeriodEnd(subscription);
+
+          subscription = subscription
+            ? await prisma.subscription.update({
+                where: { id: subscription.id },
+                data: {
+                  planCode: reference.planCode,
+                  provider: "INFINITEPAY",
+                  providerCustomerId: transactionNsu,
+                  providerSubId: rawOrderNsu,
+                  status: SubscriptionStatus.ACTIVE,
+                  currentPeriodEndsAt
+                }
+              })
+            : await prisma.subscription.create({
+                data: {
+                  organizationId: user.organizationId,
+                  planCode: reference.planCode,
+                  provider: "INFINITEPAY",
+                  providerCustomerId: transactionNsu,
+                  providerSubId: rawOrderNsu,
+                  status: SubscriptionStatus.ACTIVE,
+                  currentPeriodEndsAt
+                }
+              });
+
+          await audit({
+            organizationId: user.organizationId,
+            userId: user.id,
+            action: "subscription.infinitepay_synced",
+            entity: "Subscription",
+            entityId: subscription.id,
+            metadata: {
+              orderNsu: rawOrderNsu,
+              transactionNsu,
+              slug,
+              captureMethod: check.capture_method || null,
+              paidAmount: check.paid_amount ?? check.amount ?? null,
+              planCode: reference.planCode
+            }
+          });
         }
-      });
-    } catch (err) {
-      console.error("Falha ao confirmar assinatura no retorno do Mercado Pago.", err);
+      } catch (err) {
+        console.error("Falha ao confirmar assinatura no retorno da InfinitePay.", err);
+      }
     }
   }
 
@@ -97,14 +151,6 @@ export async function PATCH(request: NextRequest) {
     }
 
     if (input.action === "cancel") {
-      if (existing.provider === "MERCADO_PAGO" && existing.providerSubId) {
-        assertMercadoPagoConfigured();
-        await mpPreApproval.update({
-          id: existing.providerSubId,
-          body: { status: "cancelled" }
-        });
-      }
-
       const subscription = await prisma.subscription.update({
         where: { id: existing.id },
         data: {
@@ -124,20 +170,14 @@ export async function PATCH(request: NextRequest) {
       return json({ subscription });
     }
 
-    if (existing.provider === "MERCADO_PAGO" && existing.providerSubId) {
-      assertMercadoPagoConfigured();
-      const preApproval = await mpPreApproval.update({
-        id: existing.providerSubId,
-        body: { status: "authorized" }
-      });
-
+    if (
+      existing.currentPeriodEndsAt &&
+      existing.currentPeriodEndsAt.getTime() > Date.now()
+    ) {
       const subscription = await prisma.subscription.update({
         where: { id: existing.id },
         data: {
-          status: mapMercadoPagoSubscriptionStatus(preApproval.status),
-          currentPeriodEndsAt: parseMercadoPagoDate(preApproval.next_payment_date) || addDays(new Date(), 30),
-          providerCustomerId: preApproval.payer_id ? String(preApproval.payer_id) : existing.providerCustomerId,
-          providerSubId: preApproval.id || existing.providerSubId
+          status: SubscriptionStatus.ACTIVE
         }
       });
 
@@ -148,8 +188,8 @@ export async function PATCH(request: NextRequest) {
         entity: "Subscription",
         entityId: subscription.id,
         metadata: {
-          provider: "MERCADO_PAGO",
-          providerSubId: subscription.providerSubId
+          provider: existing.provider || "INFINITEPAY",
+          providerSubId: existing.providerSubId
         }
       });
 
@@ -157,7 +197,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     return error(
-      "Escolha um plano e conclua a ativação no Mercado Pago para reativar a assinatura.",
+      "Escolha um plano e conclua o pagamento na InfinitePay para reativar a assinatura.",
       409
     );
   } catch (err) {

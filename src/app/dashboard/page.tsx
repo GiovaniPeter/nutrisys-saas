@@ -624,11 +624,13 @@ function formatAuditAction(value: string) {
   const dictionary: Record<string, string> = {
     "subscription mercadopago checkout created": "Checkout MercadoPago Criado",
     "subscription.mercadopago.checkout.created": "Checkout MercadoPago Criado",
+    "subscription.infinitepay_checkout_created": "Checkout InfinitePay Criado",
     "subscription canceled": "Assinatura Cancelada",
     "subscription.canceled": "Assinatura Cancelada",
     "subscription reactivated": "Assinatura Reativada",
     "subscription.reactivated": "Assinatura Reativada",
     "subscription.mercadopago_synced": "Assinatura Sincronizada",
+    "subscription.infinitepay_synced": "Assinatura Ativada (InfinitePay)",
     "appointment.created": "Consulta Agendada",
     "appointment.updated": "Consulta Atualizada",
     "appointment.deleted": "Consulta Removida",

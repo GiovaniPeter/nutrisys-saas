@@ -44,7 +44,7 @@ export default function LandingPage() {
                 ClinOS<span className="text-terracotta-500 font-bold">Tec</span>
               </span>
               <span className="hidden xl:block text-[11px] uppercase font-semibold tracking-wider text-sage-900 mt-1 whitespace-nowrap">
-                Nutrição Clínica de Precisão
+                Nutrição Clínica & Tecnologia
               </span>
             </div>
           </Link>
@@ -145,22 +145,22 @@ export default function LandingPage() {
 
               {/* Botões de Ação com min-height 48px */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
-                <Link href="/editor-cardapio" className="focus-visible:ring-2 focus-visible:ring-sage-700 rounded-xl">
+                <Link href="/register?perfil=nutricionista&plan=professional&source=home-hero" className="focus-visible:ring-2 focus-visible:ring-sage-700 rounded-xl">
                   <button
                     type="button"
                     className="inline-flex items-center justify-center font-semibold select-none transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-terracotta-400 bg-terracotta-500 text-white hover:bg-terracotta-600 shadow-sm hover:shadow h-12 px-6 text-sm sm:text-base rounded-xl whitespace-nowrap min-h-[48px] w-full sm:w-auto"
                   >
-                    Abrir o Editor de Cardápio →
+                    Testar 7 dias grátis →
                   </button>
                 </Link>
-                <a href="#planos" className="focus-visible:ring-2 focus-visible:ring-sage-700 rounded-xl">
+                <Link href="/editor-cardapio" className="focus-visible:ring-2 focus-visible:ring-sage-700 rounded-xl">
                   <button
                     type="button"
                     className="inline-flex items-center justify-center font-semibold select-none transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sand-400 bg-sand-100 text-ink-900 border border-sand-200 hover:bg-sand-200/80 hover:border-sand-300 h-12 px-5 text-sm sm:text-base rounded-xl whitespace-nowrap min-h-[48px] w-full sm:w-auto"
                   >
-                    Ver Planos (A partir de R$ 39,50)
+                    Ver Demonstração do Editor
                   </button>
-                </a>
+                </Link>
               </div>
 
               {/* Microtexto com contraste AA */}
@@ -384,7 +384,7 @@ export default function LandingPage() {
                   <div className="flex items-start gap-3 text-sm text-ink-700">
                     <span className="text-red-500 font-bold shrink-0 mt-0.5">•</span>
                     <p>
-                      <strong>Softwares lentos e caros:</strong> Mensalidades pesadas de R$ 150 a R$ 250 em sistemas cheios de abas inúteis que travam no meio da consulta.
+                      <strong>Softwares lentos e caros:</strong> Cheios de funções que você não usa, cobrando mensalidades pesadas de R$ 150 a R$ 250 e travando na frente do paciente.
                     </p>
                   </div>
                 </div>
@@ -796,14 +796,14 @@ export default function LandingPage() {
           </p>
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/editor-cardapio" className="w-full sm:w-auto">
+            <Link href="/register?perfil=nutricionista&plan=professional&source=home-footer" className="w-full sm:w-auto">
               <Button variant="terracotta" size="lg" fullWidth>
-                Experimentar o Editor Agora →
+                Testar 7 Dias Grátis Agora →
               </Button>
             </Link>
-            <Link href="/register?perfil=nutricionista&plan=professional&source=home-footer" className="w-full sm:w-auto">
+            <Link href="/editor-cardapio" className="w-full sm:w-auto">
               <Button variant="outline" size="lg" className="border-sage-700 text-white hover:bg-sage-800" fullWidth>
-                Criar Minha Conta Grátis
+                Ver Demonstração do Editor
               </Button>
             </Link>
           </div>

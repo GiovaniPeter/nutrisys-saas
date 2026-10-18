@@ -687,9 +687,14 @@ export function MealPlannerEditor() {
           <Button
             variant="terracotta"
             size="sm"
-            onClick={() => showToast('Esta é uma demonstração. Crie sua conta para salvar planos alimentares reais.')}
+            onClick={() => {
+              showToast('Esta é uma demonstração. Redirecionando para criar sua conta grátis...');
+              setTimeout(() => {
+                window.location.href = '/register?perfil=nutricionista&plan=professional&source=editor-save';
+              }, 1200);
+            }}
           >
-            💾 Salvar (na conta)
+            💾 Salvar (Criar Conta Grátis)
           </Button>
         </div>
       </div>

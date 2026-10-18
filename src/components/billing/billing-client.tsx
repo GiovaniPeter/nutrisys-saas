@@ -58,31 +58,42 @@ export function BillingClient() {
     const remainingMs = new Date(subscription.trialEndsAt).getTime() - Date.now();
     return remainingMs > 0 ? Math.max(1, Math.ceil(remainingMs / (24 * 60 * 60 * 1000))) : 0;
   }, [subscription]);
-  const canCancel = Boolean(
-    subscription?.provider === "MERCADO_PAGO" &&
-    subscription.providerSubId &&
-    subscription.status === "ACTIVE"
-  );
+  const canCancel = Boolean(subscription?.status === "ACTIVE");
   const canReactivate = Boolean(
-    subscription?.provider === "MERCADO_PAGO" &&
-    subscription.providerSubId &&
-    subscription.status === "CANCELED"
+    subscription?.status === "CANCELED" &&
+    subscription.currentPeriodEndsAt &&
+    new Date(subscription.currentPeriodEndsAt).getTime() > Date.now()
   );
 
   useEffect(() => {
-    const checkoutReturn = new URLSearchParams(window.location.search).get("checkout") === "mercadopago";
-    void loadBilling(checkoutReturn);
+    const params = new URLSearchParams(window.location.search);
+    const isCheckoutReturn =
+      params.get("checkout") === "infinitepay" ||
+      Boolean(params.get("order_nsu") || params.get("transaction_nsu"));
 
-    if (checkoutReturn) {
+    const syncQuery = new URLSearchParams();
+    if (isCheckoutReturn) {
+      syncQuery.set("sync", "infinitepay");
+      for (const key of ["order_nsu", "transaction_nsu", "slug", "invoice_slug"]) {
+        const value = params.get(key);
+        if (value) {
+          syncQuery.set(key, value);
+        }
+      }
+    }
+
+    void loadBilling(isCheckoutReturn ? syncQuery.toString() : null);
+
+    if (isCheckoutReturn) {
       window.history.replaceState({}, "", window.location.pathname);
     }
   }, []);
 
-  async function loadBilling(syncMercadoPago = false) {
+  async function loadBilling(syncQueryString: string | null = null) {
     setLoading(true);
     const response = await fetch(
-      syncMercadoPago
-        ? "/api/billing/subscription?sync=mercadopago"
+      syncQueryString
+        ? `/api/billing/subscription?${syncQueryString}`
         : "/api/billing/subscription",
       { cache: "no-store" }
     );
@@ -98,11 +109,11 @@ export function BillingClient() {
     setPatientCount(data.patientCount);
     setPlans(data.plans);
 
-    if (syncMercadoPago) {
+    if (syncQueryString) {
       setMessage(
         data.subscription?.status === "ACTIVE"
-          ? "Assinatura ativada com sucesso."
-          : "Recebemos seu retorno do Mercado Pago. A confirmação pode levar alguns instantes."
+          ? "Assinatura ativada com sucesso via InfinitePay."
+          : "Recebemos seu retorno da InfinitePay. A confirmação automática pode levar alguns instantes."
       );
     }
   }
@@ -152,12 +163,12 @@ export function BillingClient() {
 
     if (data.subscription) {
       setSubscription(data.subscription);
-      setMessage("Plano atualizado no Mercado Pago.");
+      setMessage("Plano atualizado com sucesso.");
       return;
     }
 
     if (!data.checkoutUrl) {
-      setMessage("Mercado Pago nao retornou o link de checkout.");
+      setMessage("InfinitePay nao retornou o link de checkout.");
       return;
     }
 
@@ -247,19 +258,15 @@ export function BillingClient() {
         ) : null}
 
         <p className="billing-note">
-          As assinaturas são processadas pelo Mercado Pago. A ativação pode levar alguns instantes após a autorização.
+          Os pagamentos são processados com segurança pela InfinitePay (Pix ou Cartão de Crédito). A ativação ocorre automaticamente após a confirmação.
         </p>
       </div>
 
       <div className="plans-grid">
         {plans.map((plan) => {
           const active = plan.code === subscription?.planCode;
-          const hasMercadoPagoSubscription = Boolean(
-            subscription?.provider === "MERCADO_PAGO" &&
-            subscription.providerSubId &&
-            subscription.status === "ACTIVE"
-          );
-          const currentPlanIsPaid = active && hasMercadoPagoSubscription;
+          const hasActiveSubscription = Boolean(subscription?.status === "ACTIVE");
+          const currentPlanIsPaid = active && hasActiveSubscription;
           const actionKey = `checkout:${plan.code}`;
           const buttonLabel = currentPlanIsPaid
             ? "Plano atual"

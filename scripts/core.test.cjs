@@ -167,3 +167,64 @@ test("administrador não pode criar titular nem alterar a conta do titular", asy
   const update = await load("src/app/api/users/[userId]/route.ts", stubs).PATCH(request({ active: false }), { params: { userId: "owner" } });
   assert.equal(update.status, 403);
 });
+
+test("InfinitePay valida assinatura do webhook, ativa assinatura e mantém idempotência", async () => {
+  const ip = load("src/lib/infinitepay.ts");
+  const orderNsu = ip.buildInfinitePayOrderNsu({ organizationId: "org-1", planCode: "essential" }, 123456);
+  const parsed = ip.parseInfinitePayOrderNsu(orderNsu);
+  assert.equal(parsed?.organizationId, "org-1");
+  assert.equal(parsed?.planCode, "essential");
+  assert.equal(ip.parseInfinitePayOrderNsu("invalido"), null);
+
+  const sig = ip.signInfinitePayWebhookOrder(orderNsu);
+  assert.equal(ip.verifyInfinitePayWebhookSignature(orderNsu, sig), true);
+  assert.equal(ip.verifyInfinitePayWebhookSignature(orderNsu, "errada"), false);
+
+  let storedSub = { id: "sub-1", organizationId: "org-1", planCode: "essential", status: "TRIALING", provider: "INFINITEPAY", providerSubId: `pending:${orderNsu}`, trialEndsAt: new Date(Date.now() + 5 * 86400000), currentPeriodEndsAt: null };
+  let updateCalls = 0;
+
+  const { POST } = load("src/app/api/webhooks/infinitepay/route.ts", {
+    "@/lib/infinitepay": {
+      ...ip,
+      checkInfinitePayPayment: async () => ({ success: true, paid: true, paid_amount: 3950, capture_method: "pix" })
+    },
+    "@/lib/audit": { audit: async () => {} },
+    "@/lib/prisma": {
+      prisma: {
+        subscription: {
+          findFirst: async () => storedSub,
+          update: async ({ data }) => {
+            updateCalls += 1;
+            storedSub = { ...storedSub, ...data };
+            return storedSub;
+          }
+        }
+      }
+    }
+  });
+
+  const invalidReq = new NextRequest("http://localhost/api/webhooks/infinitepay?sig=invalida", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ order_nsu: orderNsu })
+  });
+  assert.equal((await POST(invalidReq)).status, 401);
+  assert.equal(updateCalls, 0);
+
+  const validReq = () => new NextRequest(`http://localhost/api/webhooks/infinitepay?sig=${encodeURIComponent(sig)}`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ order_nsu: orderNsu, transaction_nsu: "tx-99", invoice_slug: "slug-99", paid_amount: 3950, capture_method: "pix" })
+  });
+
+  assert.equal((await POST(validReq())).status, 200);
+  assert.equal(updateCalls, 1);
+  assert.equal(storedSub.status, "ACTIVE");
+  assert.equal(storedSub.provider, "INFINITEPAY");
+  assert.equal(storedSub.providerSubId, orderNsu);
+
+  // Chamada duplicada do webhook não deve somar mais 30 dias
+  assert.equal((await POST(validReq())).status, 200);
+  assert.equal(updateCalls, 1);
+});
+
