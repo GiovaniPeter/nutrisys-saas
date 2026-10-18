@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { readVerifiedSession } from "./lib/middleware-session";
 
 const SESSION_COOKIE = "nutrisys_session";
 
@@ -44,14 +45,23 @@ const nutritionistExclusiveApis = [
   "/api/recalls"
 ];
 
-export function middleware(request: NextRequest) {
-  const { role, specialty } = readSession(request.cookies.get(SESSION_COOKIE)?.value);
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const publicPages = ["/", "/login", "/register", "/recuperar-senha", "/portal", "/recursos",
+    "/termos-de-uso", "/politica-de-privacidade", "/exclusao-de-conta", "/editor-cardapio",
+    "/software-para-nutricionistas", "/software-para-montar-cardapio-nutricionista", "/sistema-para-clinicas", "/tabela-taco"];
+  if (publicPages.includes(pathname) || pathname.startsWith("/portal/") || pathname.startsWith("/book/") ||
+    pathname === "/manifest.webmanifest" || pathname === "/robots.txt" || pathname === "/sitemap.xml") {
+    return NextResponse.next();
+  }
+  const authorization = request.headers.get("authorization");
+  const token = request.cookies.get(SESSION_COOKIE)?.value ||
+    (authorization?.startsWith("Bearer ") ? authorization.split(" ")[1] : undefined);
+  const { role, specialty } = await readVerifiedSession(token);
 
   if (!role || (role !== "SECRETARY" && role !== "PROFESSIONAL")) {
     return NextResponse.next();
   }
-
-  const { pathname } = request.nextUrl;
 
   // Restrição para outros Profissionais de Saúde (Médicos, Psicólogos, Fisios, etc.):
   // Têm acesso a Prontuário, Evolução, Exames, Prescrições, Metas e Gasto Energético,
@@ -99,27 +109,6 @@ export function middleware(request: NextRequest) {
   }
 
   return NextResponse.next();
-}
-
-function readSession(cookie?: string): { role: string | null; specialty: string | null } {
-  if (!cookie) {
-    return { role: null, specialty: null };
-  }
-
-  const [encoded] = cookie.split(".");
-
-  if (!encoded) {
-    return { role: null, specialty: null };
-  }
-
-  try {
-    const base64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
-    const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), "=");
-    const payload = JSON.parse(atob(padded)) as { role?: string; specialty?: string };
-    return { role: payload.role || null, specialty: payload.specialty || null };
-  } catch {
-    return { role: null, specialty: null };
-  }
 }
 
 export const config = {

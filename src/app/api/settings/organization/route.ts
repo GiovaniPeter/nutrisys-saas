@@ -4,10 +4,12 @@ import { audit } from "@/lib/audit";
 import { error, json, validationError } from "@/lib/api";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
+import { isValidDocument, normalizeDocument } from "@/lib/brazilian-document";
 
 const organizationSettingsSchema = z.object({
   name: z.string().min(2, "Informe o nome da clinica.").optional(),
-  document: z.string().optional(),
+  document: z.string().max(32).transform(normalizeDocument)
+    .refine((value) => !value || isValidDocument(value), "Informe um CPF ou CNPJ válido.").optional(),
   phone: z.string().optional(),
   address: z.string().optional(),
   primaryColor: z.string().regex(/^#[0-9a-fA-F]{6}$/, "Cor primaria invalida.").optional(),
@@ -51,6 +53,10 @@ export async function PATCH(request: NextRequest) {
 
   if (!user) {
     return error("Nao autenticado.", 401);
+  }
+
+  if (!["OWNER", "ADMIN"].includes(user.role)) {
+    return error("Apenas responsáveis pela clínica podem alterar seus dados cadastrais.", 403);
   }
 
   try {

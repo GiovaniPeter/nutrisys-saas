@@ -50,13 +50,16 @@ export async function POST(request: NextRequest) {
     return error("Nao autenticado.", 401);
   }
 
-  const managementRoles = ["OWNER", "ADMIN", "NUTRITIONIST", "PROFESSIONAL"];
+  const managementRoles = ["OWNER", "ADMIN"];
   if (!managementRoles.includes(currentUser.role)) {
     return error("Sem permissao para criar usuarios.", 403);
   }
 
   try {
     const input = userSchema.parse(await request.json());
+    if (input.role === UserRole.OWNER && currentUser.role !== UserRole.OWNER) {
+      return error("Apenas o titular pode conceder acesso de responsável.", 403);
+    }
     const existing = await prisma.user.findUnique({
       where: { email: input.email.toLowerCase() },
       select: { id: true }

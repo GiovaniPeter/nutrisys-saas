@@ -1,5 +1,7 @@
 # NutreClin - Roadmap para SaaS de assinatura
 
+> Documento histórico de maio de 2026. O projeto evoluiu para Next.js com backend e banco de dados. Para o diagnóstico atual e as prioridades de competição com o Dietbox, consulte [DIAGNOSTICO_DIETBOX.md](./DIAGNOSTICO_DIETBOX.md).
+
 Data do diagnóstico: 2026-05-09
 
 ## Objetivo

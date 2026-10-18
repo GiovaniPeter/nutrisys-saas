@@ -59,7 +59,7 @@ export async function PATCH(request: NextRequest, { params }: Params) {
     return error("Nao autenticado.", 401);
   }
 
-  const managementRoles = ["OWNER", "ADMIN", "NUTRITIONIST", "PROFESSIONAL"];
+  const managementRoles = ["OWNER", "ADMIN"];
   if (!managementRoles.includes(currentUser.role)) {
     return error("Sem permissao para alterar usuarios.", 403);
   }
@@ -79,6 +79,14 @@ export async function PATCH(request: NextRequest, { params }: Params) {
 
     if (!existing) {
       return error("Usuario nao encontrado.", 404);
+    }
+
+    if ((existing.role === UserRole.OWNER || input.role === UserRole.OWNER) && currentUser.role !== UserRole.OWNER) {
+      return error("Apenas o titular pode alterar uma conta de responsável.", 403);
+    }
+
+    if (existing.role === UserRole.OWNER && input.active === false) {
+      return error("A conta do titular não pode ser desativada por este formulário.", 422);
     }
 
     if (existing.id === currentUser.id && input.active === false) {

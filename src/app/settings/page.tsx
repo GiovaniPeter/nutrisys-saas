@@ -51,7 +51,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: { t
       </section>
 
       {tab === "identity" ? (
-        <SettingsClient />
+        <SettingsClient currentUserRole={user.role} />
       ) : tab === "billing" ? (
         <BillingClient />
       ) : (

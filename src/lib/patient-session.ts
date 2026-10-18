@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import { cookies, headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { hasValidSessionIdentity } from "@/lib/session-payload";
 
 const COOKIE_NAME = "nutrisys_patient_portal";
 const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 14;
@@ -104,6 +105,7 @@ export async function getCurrentPortalPatient(): Promise<PortalPatient | null> {
 }
 
 function verifyPortalSessionCookie(cookie: string): PortalSessionPayload | null {
+  if (cookie.split(".").length !== 2) return null;
   const [encoded, signature] = cookie.split(".");
 
   if (!encoded || !signature || !safeEqual(signature, sign(encoded))) {
@@ -112,7 +114,7 @@ function verifyPortalSessionCookie(cookie: string): PortalSessionPayload | null 
 
   try {
     const payload = JSON.parse(Buffer.from(encoded, "base64url").toString("utf8")) as PortalSessionPayload;
-    if (!payload.patientId || !payload.organizationId || payload.exp < Math.floor(Date.now() / 1000)) {
+    if (!hasValidSessionIdentity(payload, "patientId")) {
       return null;
     }
 

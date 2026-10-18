@@ -666,30 +666,30 @@ export function MealPlannerEditor() {
           <Button
             variant="secondary"
             size="sm"
-            onClick={() => showToast('Cardápio duplicado como modelo para novo paciente.')}
+            onClick={() => showToast('Para duplicar um plano real, acesse Planos alimentares na sua conta.')}
           >
             📋 Duplicar
           </Button>
           <Button
             variant="outline"
             size="sm"
-            onClick={() => showToast('Gerando PDF A4 oficial com cabeçalho e carimbo CRN...')}
+            onClick={() => showToast('A impressão está disponível nos planos cadastrados na sua conta.')}
           >
-            📄 PDF A4 (CRN)
+            📄 Impressão (na conta)
           </Button>
           <Button
             variant="secondary"
             size="sm"
-            onClick={() => showToast('Cardápio sincronizado no app PWA da paciente Camila!')}
+            onClick={() => showToast('Para disponibilizar um plano no portal, publique-o pela sua conta.')}
           >
             📱 Enviar ao Paciente
           </Button>
           <Button
             variant="terracotta"
             size="sm"
-            onClick={() => showToast('Todas as alterações foram salvas com segurança!')}
+            onClick={() => showToast('Esta é uma demonstração. Crie sua conta para salvar planos alimentares reais.')}
           >
-            💾 Salvar Cardápio
+            💾 Salvar (na conta)
           </Button>
         </div>
       </div>

@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import { cookies, headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { hasValidSessionIdentity } from "@/lib/session-payload";
 
 const COOKIE_NAME = "nutrisys_session";
 const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 7;
@@ -106,6 +107,7 @@ export async function requireAuth(_request?: Request): Promise<RequiredAuthUser>
 }
 
 function verifySessionCookie(cookie: string): SessionPayload | null {
+  if (cookie.split(".").length !== 2) return null;
   const [encoded, signature] = cookie.split(".");
 
   if (!encoded || !signature || !safeEqual(signature, sign(encoded))) {
@@ -114,7 +116,7 @@ function verifySessionCookie(cookie: string): SessionPayload | null {
 
   try {
     const payload = JSON.parse(Buffer.from(encoded, "base64url").toString("utf8")) as SessionPayload;
-    if (!payload.userId || !payload.organizationId || payload.exp < Math.floor(Date.now() / 1000)) {
+    if (!hasValidSessionIdentity(payload, "userId")) {
       return null;
     }
 

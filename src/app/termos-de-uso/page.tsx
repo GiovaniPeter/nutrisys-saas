@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CompanyIdentity } from "@/components/marketing/company-identity";
 
 export const metadata: Metadata = {
   title: "Termos de Uso | ClinOS",
@@ -78,6 +79,7 @@ export default function TermsOfUsePage() {
           Leia atentamente as condições de uso da plataforma ClinOS para profissionais, clínicas e pacientes.
         </p>
         <small>Última atualização: 27 de Junho de 2026</small>
+        <CompanyIdentity />
       </section>
 
       <section className="legal-content">

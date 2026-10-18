@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CompanyIdentity } from "@/components/marketing/company-identity";
 
 export const metadata: Metadata = {
   title: "Política de Privacidade | ClinOS",
@@ -94,6 +95,7 @@ export default function PrivacyPolicyPage() {
           dados pessoais, dados de saúde e informações usadas para operar o serviço.
         </p>
         <small>Última atualização: 29 de agosto de 2026</small>
+        <CompanyIdentity />
       </section>
 
       <section className="legal-content">

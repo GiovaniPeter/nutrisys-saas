@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import { formatDocument, isValidDocument } from "@/lib/brazilian-document";
 
 type OrganizationSettings = {
   id: string;
@@ -19,7 +20,8 @@ type SettingsResponse = {
   organization: OrganizationSettings;
 };
 
-export function SettingsClient() {
+export function SettingsClient({ currentUserRole }: { currentUserRole: string }) {
+  const canEdit = ["OWNER", "ADMIN"].includes(currentUserRole);
   const [organization, setOrganization] = useState<OrganizationSettings | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -31,52 +33,75 @@ export function SettingsClient() {
 
   async function loadSettings() {
     setLoading(true);
-    const response = await fetch("/api/settings/organization");
-    const data = (await response.json()) as SettingsResponse & { error?: string };
-    setLoading(false);
+    setMessage(null);
+    try {
+      const response = await fetch("/api/settings/organization");
+      const data = (await response.json()) as SettingsResponse & { error?: string };
 
-    if (!response.ok) {
-      setMessage(data.error || "Nao foi possivel carregar configuracoes.");
-      return;
+      if (!response.ok) {
+        setMessage(data.error || "Nao foi possivel carregar configuracoes.");
+        return;
+      }
+
+      setOrganization(data.organization);
+    } catch {
+      setMessage("Não foi possível conectar. Tente carregar as configurações novamente.");
+    } finally {
+      setLoading(false);
     }
-
-    setOrganization(data.organization);
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-
-    setSaving(true);
-    setMessage(null);
-
-    const response = await fetch("/api/settings/organization", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: form.get("name"),
-        document: form.get("document"),
-        phone: form.get("phone"),
-        address: form.get("address"),
-        primaryColor: form.get("primaryColor"),
-        secondaryColor: form.get("secondaryColor"),
-        logoUrl: form.get("logoUrl")
-      })
-    });
-    const data = (await response.json()) as SettingsResponse & { error?: string };
-    setSaving(false);
-
-    if (!response.ok) {
-      setMessage(data.error || "Nao foi possivel salvar configuracoes.");
+    const document = String(form.get("document") || "").trim();
+    if (!canEdit) return;
+    if (document && !isValidDocument(document)) {
+      setMessage("Informe um CPF ou CNPJ válido, incluindo os dígitos verificadores.");
       return;
     }
 
-    setOrganization(data.organization);
-    setMessage("Configuracoes salvas com sucesso.");
+    setSaving(true);
+    setMessage(null);
+    try {
+      const response = await fetch("/api/settings/organization", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.get("name"),
+          document,
+          phone: form.get("phone"),
+          address: form.get("address"),
+          primaryColor: form.get("primaryColor"),
+          secondaryColor: form.get("secondaryColor"),
+          logoUrl: form.get("logoUrl")
+        })
+      });
+      const data = (await response.json()) as SettingsResponse & { error?: string };
+
+      if (!response.ok) {
+        setMessage(data.error || "Nao foi possivel salvar configuracoes.");
+        return;
+      }
+
+      setOrganization(data.organization);
+      setMessage("Configuracoes salvas com sucesso.");
+    } catch {
+      setMessage("Não foi possível conectar. Suas alterações não foram salvas. Tente novamente.");
+    } finally {
+      setSaving(false);
+    }
   }
 
   if (loading && !organization) {
     return <p className="empty-card">Carregando configuracoes...</p>;
+  }
+
+  if (!organization) {
+    return <div className="surface">
+      <p role="alert">{message || "Não foi possível carregar as configurações."}</p>
+      <button type="button" className="button" onClick={() => void loadSettings()}>Tentar novamente</button>
+    </div>;
   }
 
   return (
@@ -90,17 +115,21 @@ export function SettingsClient() {
           <span className="status-pill">{organization?.slug || "clinica"}</span>
         </div>
 
-        {message ? <p className="form-message neutral">{message}</p> : null}
+        {message ? <p className="form-message neutral" role="status">{message}</p> : null}
+        {!canEdit ? <p className="billing-note">Apenas o titular ou administrador pode alterar a identidade da clínica.</p> : null}
 
         <form key={organization?.id || "settings"} className="form compact-form" onSubmit={handleSubmit}>
+          <fieldset disabled={!canEdit || saving} className="form compact-form" style={{ border: 0, padding: 0, margin: 0, minWidth: 0 }}>
           <label>
             Nome da clinica
             <input name="name" required minLength={2} defaultValue={organization?.name || ""} />
           </label>
           <div className="form-row">
             <label>
-              Documento
-              <input name="document" placeholder="CPF/CNPJ" defaultValue={organization?.document || ""} />
+              CPF ou CNPJ da clínica
+              <input name="document" placeholder="CPF ou CNPJ" maxLength={18} autoCapitalize="characters" spellCheck={false}
+                defaultValue={formatDocument(organization?.document || "")}
+                onBlur={(event) => { event.currentTarget.value = formatDocument(event.currentTarget.value); }} />
             </label>
             <label>
               Telefone
@@ -128,6 +157,7 @@ export function SettingsClient() {
           <button className="button" type="submit" disabled={saving}>
             {saving ? "Salvando..." : "Salvar configuracoes"}
           </button>
+          </fieldset>
         </form>
       </div>
 
@@ -154,6 +184,7 @@ export function SettingsClient() {
           </div>
           <div>
             <h3>{organization?.name || "Clinica"}</h3>
+            {organization?.document ? <p>CPF/CNPJ: {formatDocument(organization.document)}</p> : null}
             <p>{organization?.phone || "Telefone nao informado"}</p>
             <p>{organization?.address || "Endereco nao informado"}</p>
           </div>

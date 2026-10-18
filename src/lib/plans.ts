@@ -3,6 +3,11 @@ export const PLANS = [
     code: "essential",
     name: "Essencial",
     monthlyPriceCents: 3950,
+    infinitePayEnrollment: {
+      merchantHandle: "rotuloconforme",
+      planId: "XazNjh24Wn",
+      url: "https://invoice.infinitepay.io/plans/rotuloconforme/XazNjh24Wn"
+    },
     patientLimit: 50,
     features: ["Pacientes", "Agenda", "Planos alimentares", "PDFs"]
   },
@@ -10,6 +15,11 @@ export const PLANS = [
     code: "professional",
     name: "Profissional",
     monthlyPriceCents: 7450,
+    infinitePayEnrollment: {
+      merchantHandle: "rotuloconforme",
+      planId: "Alkv2ysZ62",
+      url: "https://invoice.infinitepay.io/plans/rotuloconforme/Alkv2ysZ62"
+    },
     patientLimit: null,
     features: ["Pacientes ilimitados", "Portal do paciente", "Chat", "Financeiro", "KPIs"]
   },
@@ -17,6 +27,11 @@ export const PLANS = [
     code: "clinic",
     name: "Clínica",
     monthlyPriceCents: 12450,
+    infinitePayEnrollment: {
+      merchantHandle: "rotuloconforme",
+      planId: "hWKqLMlZnp",
+      url: "https://invoice.infinitepay.io/plans/rotuloconforme/hWKqLMlZnp"
+    },
     patientLimit: null,
     features: ["Multi-profissional", "Secretária", "Permissões", "Relatórios avançados"]
   }

@@ -11,7 +11,11 @@ export async function GET() {
 
   try {
     const mealPlans = await prisma.mealPlan.findMany({
-      where: { patientId: patient.id, organizationId: patient.organizationId },
+      where: {
+        patientId: patient.id,
+        organizationId: patient.organizationId,
+        publishedAt: { not: null }
+      },
       include: {
         meals: {
           orderBy: { position: "asc" },
@@ -20,7 +24,7 @@ export async function GET() {
           },
         },
       },
-      orderBy: { createdAt: "desc" },
+      orderBy: { publishedAt: "desc" },
     });
 
     return NextResponse.json(mealPlans);

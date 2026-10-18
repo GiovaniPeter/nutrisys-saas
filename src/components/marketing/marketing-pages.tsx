@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { TrackedLink } from "@/components/analytics/tracked-link";
+import { CompanyIdentity } from "@/components/marketing/company-identity";
 
 export type MarketingFeature = {
   title: string;
@@ -286,6 +287,7 @@ export function MarketingFooter() {
           </span>
         </Link>
         <p>Plataforma web brasileira para organizar atendimento, acompanhamento e gestão.</p>
+        <CompanyIdentity />
       </div>
       <nav aria-label="Soluções">
         <strong>Soluções</strong>

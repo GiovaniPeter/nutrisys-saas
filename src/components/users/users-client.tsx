@@ -68,7 +68,7 @@ export function UsersClient({ currentUserRole }: UsersClientProps) {
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const managementRoles = ["OWNER", "ADMIN", "NUTRITIONIST", "PROFESSIONAL"];
+  const managementRoles = ["OWNER", "ADMIN"];
   const canManage = managementRoles.includes(currentUserRole);
   const activeUsers = useMemo(() => users.filter((user) => user.active).length, [users]);
 
