@@ -640,7 +640,7 @@ export function MealPlannerEditor() {
             </span>
             <span className="text-xs text-ink-500">•</span>
             <span className="text-xs font-medium text-ink-600">
-              CRN-3 48.912/SP • Lei 8.234/91
+              CRN-X 00000/Fictício • CFN & Lei 8.234/91
             </span>
           </div>
 
@@ -835,7 +835,7 @@ export function MealPlannerEditor() {
                           </div>
                           <div className="flex items-center gap-1.5">
                             <span className="text-[11px] font-medium text-sage-800 bg-sage-50 px-1.5 py-0.5 rounded border border-sage-200">
-                              TACO
+                              {tacoRef?.category === 'suplementos' ? 'Rótulo/Fabricante' : 'TACO'}
                             </span>
                             <span className="text-[11px] text-ink-400 font-mono tabular-nums">
                               {item.totalGrams}g totais

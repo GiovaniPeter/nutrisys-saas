@@ -74,8 +74,8 @@ module.exports = {
         },
       },
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
-        display: ['Outfit', '"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-plus-jakarta)', '"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+        display: ['var(--font-outfit)', 'Outfit', '"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
         subtle: '0 1px 2px rgba(19, 26, 23, 0.04)',

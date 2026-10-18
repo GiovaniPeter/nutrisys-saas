@@ -9,7 +9,13 @@ export const PLANS = [
       url: "https://invoice.infinitepay.io/plans/rotuloconforme/XazNjh24Wn"
     },
     patientLimit: 50,
-    features: ["Pacientes", "Agenda", "Planos alimentares", "PDFs"]
+    features: [
+      "Prescrição dietética com Tabela TACO (+1.000 itens)",
+      "Medidas caseiras da cozinha brasileira",
+      "Antropometria completa (Pollock e Guedes)",
+      "Cálculo de TMB e VET (6 equações)",
+      "Impressão e laudo em PDF com carimbo e CRN"
+    ]
   },
   {
     code: "professional",
@@ -21,7 +27,13 @@ export const PLANS = [
       url: "https://invoice.infinitepay.io/plans/rotuloconforme/Alkv2ysZ62"
     },
     patientLimit: null,
-    features: ["Pacientes ilimitados", "Portal do paciente", "Chat", "Financeiro", "KPIs"]
+    features: [
+      "Portal do Paciente PWA no celular",
+      "Substituições equivalentes em 1 clique",
+      "Diário alimentar com fotos e meta de hidratação",
+      "Chat integrado diretamente com o paciente",
+      "Agenda, agendamento online e controle financeiro"
+    ]
   },
   {
     code: "clinic",
@@ -33,7 +45,13 @@ export const PLANS = [
       url: "https://invoice.infinitepay.io/plans/rotuloconforme/hWKqLMlZnp"
     },
     patientLimit: null,
-    features: ["Multi-profissional", "Secretária", "Permissões", "Relatórios avançados"]
+    features: [
+      "Até 5 nutricionistas inclusos na equipe",
+      "Acesso operacional para Secretária / Recepção",
+      "Gestão de permissões e prontuários centralizados",
+      "Agenda multi-profissional compartilhada",
+      "Relatórios gerenciais e indicadores financeiros (KPIs)"
+    ]
   }
 ] as const;
 

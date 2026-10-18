@@ -1,7 +1,22 @@
 import type { Metadata, Viewport } from "next";
+import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import { CookieBanner } from "@/components/cookie-banner";
 import "./globals.css";
 import { GoogleAnalytics } from "@next/third-parties/google";
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
+  variable: "--font-outfit",
+  display: "swap"
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-plus-jakarta",
+  display: "swap"
+});
 
 export const viewport: Viewport = {
   themeColor: "#183B32",
@@ -20,22 +35,7 @@ export const metadata: Metadata = {
   },
   title: "ClinOSTec | Software para Nutricionistas — Cardápios TACO, Pollock/Guedes e Portal do Paciente",
   description:
-    "O software completo para nutricionistas e clínicas: monte cardápios calculados em minutos com mais de 5.000 alimentos (Tabela TACO e marcas brasileiras) com medidas caseiras, dobras cutâneas Pollock 3/7 e Guedes, Cunningham/Tinsley, PDF com CRN e Portal do Paciente instalável.",
-  keywords: [
-    "software para nutricionistas",
-    "programa para montar cardápio nutricionista",
-    "sistema para nutricionista",
-    "software de nutrição",
-    "plano alimentar com medidas caseiras",
-    "tabela TACO online nutricionista",
-    "app para nutricionista e paciente",
-    "prontuário nutricional eletrônico",
-    "cálculo energético Cunningham Tinsley",
-    "avaliação antropométrica Pollock 3 e 7 dobras",
-    "recordatório 24h online",
-    "diário alimentar com fotos",
-    "prescrição de suplementos nutricionista"
-  ],
+    "O software de nutrição completo para o consultório brasileiro: monte cardápios em minutos com Tabela TACO (+1.000 alimentos) e medidas caseiras, substituições em 1 clique, antropometria Pollock 3/7 e Guedes, 6 fórmulas de TMB e Portal do Paciente PWA.",
   robots: {
     index: true,
     follow: true
@@ -75,15 +75,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="pt-BR" className={`${plusJakartaSans.variable} ${outfit.variable}`}>
       <body className="font-sans bg-sand-50 text-ink-900 antialiased selection:bg-terracotta-100 selection:text-terracotta-900">
         {children}
         <CookieBanner />

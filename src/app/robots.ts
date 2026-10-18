@@ -39,16 +39,19 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: ["/", "/llms.txt", "/llms-full.txt", "/software-para-nutricionistas", "/software-para-montar-cardapio-nutricionista", "/tabela-taco", "/recursos"],
-        disallow: DISALLOWED_PRIVATE_PATHS
-      },
-      {
-        userAgent: ["GPTBot", "OAI-SearchBot", "ChatGPT-User", "ClaudeBot", "anthropic-ai", "PerplexityBot", "Google-Extended", "Applebot-Extended"],
-        allow: ["/", "/llms.txt", "/llms-full.txt", "/software-para-nutricionistas", "/software-para-montar-cardapio-nutricionista", "/tabela-taco", "/recursos"],
+        allow: [
+          "/",
+          "/llms.txt",
+          "/llms-full.txt",
+          "/software-para-nutricionistas",
+          "/software-para-montar-cardapio-nutricionista",
+          "/tabela-taco",
+          "/recursos",
+          "/sistema-para-clinicas"
+        ],
         disallow: DISALLOWED_PRIVATE_PATHS
       }
     ],
-    sitemap: `${BASE_URL}/sitemap.xml`,
-    host: BASE_URL
+    sitemap: `${BASE_URL}/sitemap.xml`
   };
 }
