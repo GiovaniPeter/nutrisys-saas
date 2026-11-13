@@ -43,6 +43,8 @@ export default function LandingPage() {
   const [heroSimStep, setHeroSimStep] = useState<'substituicao' | 'medidas' | 'macros'>('substituicao');
   // Estado para alternância de perfil (Nutri Estabelecida x Estudante/Recém-formada)
   const [activePersona, setActivePersona] = useState<'recem-formada' | 'estabelecida'>('recem-formada');
+  // Estado para menu móvel/tablet no cabeçalho
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Dados estruturados JSON-LD Schema.org
   const jsonLd = {
@@ -126,34 +128,34 @@ export default function LandingPage() {
       />
 
       {/* ======================================================== */}
-      {/* 1. TOPBAR & NAVEGAÇÃO (80px fixa, blur translúcido, sem quebras) */}
+      {/* 1. TOPBAR & NAVEGAÇÃO (responsiva, sem cortes horizontais) */}
       {/* ======================================================== */}
-      <header className="sticky top-0 z-50 h-20 bg-white/85 backdrop-blur-md border-b border-sand-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center justify-between gap-4">
+      <header className="sticky top-0 z-50 bg-white/85 backdrop-blur-md border-b border-sand-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 lg:h-[72px] flex items-center justify-between gap-2 sm:gap-3">
           {/* Logo Exclusivo ClinOSTec */}
           <Link
             href="/"
-            className="flex items-center gap-3 shrink-0 group focus-visible:ring-2 focus-visible:ring-sage-700 rounded-xl"
+            className="flex items-center gap-2.5 sm:gap-3 shrink-0 group focus-visible:ring-2 focus-visible:ring-sage-700 rounded-xl"
           >
-            <div className="w-10 h-10 rounded-xl bg-sage-900 text-white flex items-center justify-center shrink-0 shadow-sm group-hover:bg-sage-800 transition-colors">
-              <svg className="w-6 h-6 text-terracotta-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-sage-900 text-white flex items-center justify-center shrink-0 shadow-sm group-hover:bg-sage-800 transition-colors">
+              <svg className="w-5 h-5 sm:w-6 sm:h-6 text-terracotta-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="12" cy="12" r="9" />
                 <path d="M12 7v10M7 12h10" />
                 <circle cx="12" cy="12" r="3" fill="#BF4B22" stroke="none" />
               </svg>
             </div>
             <div className="flex flex-col justify-center">
-              <span className="font-display font-extrabold text-xl text-ink-900 tracking-tight leading-none whitespace-nowrap">
+              <span className="font-display font-extrabold text-lg sm:text-xl text-ink-900 tracking-tight leading-none whitespace-nowrap">
                 ClinOS<span className="text-terracotta-500 font-bold">Tec</span>
               </span>
-              <span className="hidden xl:block text-[11px] uppercase font-semibold tracking-wider text-sage-900 mt-1 whitespace-nowrap">
+              <span className="hidden 2xl:block text-[11px] uppercase font-semibold tracking-wider text-sage-900 mt-1 whitespace-nowrap">
                 Nutrição Clínica & Tecnologia
               </span>
             </div>
           </Link>
 
-          {/* Links Centrais (Rótulos objetivos, whitespace-nowrap) */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-sm font-semibold text-ink-800">
+          {/* Links Centrais (Rótulos objetivos, espaçamento adaptado ao viewport) */}
+          <nav className="hidden lg:flex items-center gap-4 xl:gap-6 2xl:gap-7 text-[13px] xl:text-sm font-semibold text-ink-800">
             <Link
               href="/recursos"
               className="whitespace-nowrap hover:text-sage-900 transition-colors py-2 focus-visible:ring-2 focus-visible:ring-sage-700 rounded-lg"
@@ -192,35 +194,118 @@ export default function LandingPage() {
             </a>
           </nav>
 
-          {/* Ações (Entrar + Testar 7 dias grátis estilizados como Link direto, sem button aninhado) */}
-          <div className="flex items-center gap-3 shrink-0">
+          {/* Ações (Entrar + Testar 7 dias grátis + Botão menu em telas < lg) */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <Link
               href="/login"
-              className="hidden sm:inline-flex items-center justify-center text-sm font-semibold text-ink-800 hover:text-ink-950 px-3.5 py-2.5 rounded-xl transition-colors whitespace-nowrap focus-visible:ring-2 focus-visible:ring-sage-700 min-h-[44px]"
+              className="hidden sm:inline-flex items-center justify-center text-sm font-semibold text-ink-800 hover:text-ink-950 px-3 py-2 rounded-xl transition-colors whitespace-nowrap focus-visible:ring-2 focus-visible:ring-sage-700 min-h-[44px]"
             >
               Entrar
             </Link>
             <Link
               href="/register?perfil=nutricionista&plan=professional&source=home-header"
-              className="inline-flex items-center justify-center font-semibold select-none transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-terracotta-400 bg-terracotta-500 text-white hover:bg-terracotta-600 shadow-sm hover:shadow h-11 px-5 text-sm rounded-xl whitespace-nowrap min-h-[44px]"
+              className="hidden min-[360px]:inline-flex items-center justify-center font-semibold select-none transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-terracotta-400 bg-terracotta-500 text-white hover:bg-terracotta-600 shadow-sm hover:shadow h-10 sm:h-11 px-3.5 sm:px-5 text-xs sm:text-sm rounded-xl whitespace-nowrap min-h-[40px] sm:min-h-[44px]"
             >
               Testar 7 dias grátis
             </Link>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              aria-label={mobileMenuOpen ? 'Fechar menu de navegação' : 'Abrir menu de navegação'}
+              aria-expanded={mobileMenuOpen}
+              className="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-xl border border-sand-200 text-ink-800 hover:bg-sand-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sage-700"
+            >
+              {mobileMenuOpen ? (
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M4 7h16M4 12h16M4 17h16" />
+                </svg>
+              )}
+            </button>
           </div>
         </div>
+
+        {mobileMenuOpen && (
+          <nav
+            aria-label="Menu móvel"
+            className="lg:hidden border-t border-sand-200 bg-white/95 backdrop-blur-md px-4 py-3 shadow-card"
+          >
+            <div className="flex flex-col gap-1 text-sm font-semibold text-ink-800">
+              <Link
+                href="/recursos"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2.5 rounded-xl hover:bg-sand-100 hover:text-sage-900 transition-colors"
+              >
+                Recursos
+              </Link>
+              <a
+                href="#como-funciona"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2.5 rounded-xl hover:bg-sand-100 hover:text-sage-900 transition-colors"
+              >
+                Como funciona
+              </a>
+              <a
+                href="#para-quem"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2.5 rounded-xl hover:bg-sand-100 hover:text-sage-900 transition-colors"
+              >
+                Para você
+              </a>
+              <a
+                href="#comparativo"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2.5 rounded-xl hover:bg-sand-100 hover:text-sage-900 transition-colors"
+              >
+                Acompanhamento
+              </a>
+              <a
+                href="#planos"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2.5 rounded-xl hover:bg-sand-100 hover:text-sage-900 transition-colors"
+              >
+                Planos
+              </a>
+              <a
+                href="#faq"
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2.5 rounded-xl hover:bg-sand-100 hover:text-sage-900 transition-colors"
+              >
+                Dúvidas
+              </a>
+              <Link
+                href="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="sm:hidden mt-1 px-3 py-2.5 rounded-xl border border-sand-200 text-center hover:bg-sand-100 transition-colors"
+              >
+                Entrar
+              </Link>
+              <Link
+                href="/register?perfil=nutricionista&plan=professional&source=home-header"
+                onClick={() => setMobileMenuOpen(false)}
+                className="min-[360px]:hidden mt-1 px-3 py-2.5 rounded-xl bg-terracotta-500 text-white text-center hover:bg-terracotta-600 transition-colors"
+              >
+                Testar 7 dias grátis
+              </Link>
+            </div>
+          </nav>
+        )}
       </header>
 
       {/* ======================================================== */}
       {/* 2. HERO SECTION — PROFUNDA, MODERNA & ACIMA DA DOBRA    */}
       {/* ======================================================== */}
-      <section className="pt-6 sm:pt-8 lg:pt-10 pb-12 sm:pb-16 lg:pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden bg-gradient-to-b from-white via-sand-50 to-sand-50">
+      <section className="pt-5 sm:pt-7 lg:pt-8 pb-12 sm:pb-16 lg:pb-16 px-4 sm:px-6 lg:px-8 relative overflow-x-clip bg-gradient-to-b from-white via-sand-50 to-sand-50">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-center">
             
             {/* Coluna da Esquerda: Mensagem Visceral, Autoridade e CTAs */}
-            <div className="lg:col-span-6 xl:col-span-6 space-y-4 sm:space-y-5 text-left">
+            <div className="lg:col-span-6 xl:col-span-6 min-w-0 space-y-4 sm:space-y-5 text-left">
               {/* Selo (pill) de autoridade clínica com contraste AA / AAA */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-sage-200 shadow-subtle text-xs font-semibold text-sage-950">
+              <div className="inline-flex flex-wrap items-center gap-x-2 gap-y-1 px-3.5 py-1.5 rounded-full bg-white border border-sage-200 shadow-subtle text-xs font-semibold text-sage-950 max-w-full">
                 <span className="w-2 h-2 rounded-full bg-terracotta-500 shrink-0" />
                 <span>O Novo Padrão Clínico</span>
                 <span className="text-sand-300">•</span>
@@ -230,7 +315,7 @@ export default function LandingPage() {
               {/* Título de Alto Impacto Psicológico (clamp, 2 cores, max 3 linhas) */}
               <h1
                 className="font-display font-extrabold tracking-tight text-ink-900 leading-[1.08]"
-                style={{ fontSize: 'clamp(2.35rem, 3.8vw, 3.85rem)', maxWidth: '20ch' }}
+                style={{ fontSize: 'clamp(1.9rem, 3.25vw, 3.35rem)', maxWidth: '22ch' }}
               >
                 Você se formou para transformar vidas.{' '}
                 <span className="text-sage-900 block mt-1">
@@ -239,22 +324,22 @@ export default function LandingPage() {
               </h1>
 
               {/* Subtítulo Conectado com a Dor Real */}
-              <p className="text-base sm:text-lg lg:text-[18px] text-ink-700 leading-snug max-w-xl">
+              <p className="text-base sm:text-lg lg:text-[17px] text-ink-700 leading-snug max-w-xl">
                 Prescreva o cardápio ao vivo enquanto acolhe seu paciente. Medidas caseiras em português, 
                 substituições automáticas em 1 clique e entrega instantânea no app — para você nunca mais levar trabalho para casa.
               </p>
 
               {/* Botões de Ação com min-height 48px — estilizados como Links diretos (HTML válido) */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
+              <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 pt-1">
                 <Link
                   href="/register?perfil=nutricionista&plan=professional&source=home-hero"
-                  className="inline-flex items-center justify-center font-semibold select-none transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-terracotta-400 bg-terracotta-500 text-white hover:bg-terracotta-600 shadow-sm hover:shadow h-12 px-6 text-sm sm:text-base rounded-xl whitespace-nowrap min-h-[48px] w-full sm:w-auto text-center"
+                  className="inline-flex items-center justify-center font-semibold select-none transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-terracotta-400 bg-terracotta-500 text-white hover:bg-terracotta-600 shadow-sm hover:shadow h-12 px-5 sm:px-6 text-sm sm:text-base rounded-xl whitespace-normal sm:whitespace-nowrap min-h-[48px] w-full sm:w-auto text-center"
                 >
                   Testar 7 dias grátis →
                 </Link>
                 <Link
                   href="/editor-cardapio"
-                  className="inline-flex items-center justify-center font-semibold select-none transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sand-400 bg-sand-100 text-ink-900 border border-sand-200 hover:bg-sand-200/80 hover:border-sand-300 h-12 px-5 text-sm sm:text-base rounded-xl whitespace-nowrap min-h-[48px] w-full sm:w-auto text-center"
+                  className="inline-flex items-center justify-center font-semibold select-none transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sand-400 bg-sand-100 text-ink-900 border border-sand-200 hover:bg-sand-200/80 hover:border-sand-300 h-12 px-5 text-sm sm:text-base rounded-xl whitespace-normal sm:whitespace-nowrap min-h-[48px] w-full sm:w-auto text-center"
                 >
                   Ver Demonstração do Editor
                 </Link>
@@ -267,24 +352,24 @@ export default function LandingPage() {
             </div>
 
             {/* Coluna da Direita: Workstation Interativa Compacta (100% visível sem rolar) */}
-            <div className="lg:col-span-6 xl:col-span-6">
+            <div className="lg:col-span-6 xl:col-span-6 min-w-0">
               <div className="bg-white rounded-2xl border border-sand-200 shadow-card p-4 sm:p-5">
                 {/* Seletor Compacto do Simulador */}
-                <div className="flex flex-wrap items-center justify-between gap-2.5 pb-3.5 border-b border-sand-100">
+                <div className="flex flex-wrap items-center justify-between gap-2 pb-3.5 border-b border-sand-100">
                   <div className="flex items-center gap-2">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-sage-900 bg-sage-100 px-2 py-0.5 rounded">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-sage-900 bg-sage-100 px-2 py-0.5 rounded whitespace-nowrap">
                       Motor Clínico Ativo
                     </span>
-                    <span className="text-xs text-ink-500 hidden xl:inline">
+                    <span className="text-xs text-ink-500 hidden 2xl:inline whitespace-nowrap">
                       Simule ao vivo:
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-1 p-0.5 bg-sand-100 rounded-xl border border-sand-200">
+                  <div className="flex flex-wrap items-center gap-1 p-0.5 bg-sand-100 rounded-xl border border-sand-200 max-w-full">
                     <button
                       type="button"
                       onClick={() => setHeroSimStep('substituicao')}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                      className={`px-2 sm:px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-semibold whitespace-nowrap transition-all ${
                         heroSimStep === 'substituicao'
                           ? 'bg-white text-ink-900 shadow-sm'
                           : 'text-ink-600 hover:text-ink-900'
@@ -295,7 +380,7 @@ export default function LandingPage() {
                     <button
                       type="button"
                       onClick={() => setHeroSimStep('medidas')}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                      className={`px-2 sm:px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-semibold whitespace-nowrap transition-all ${
                         heroSimStep === 'medidas'
                           ? 'bg-white text-ink-900 shadow-sm'
                           : 'text-ink-600 hover:text-ink-900'
@@ -306,7 +391,7 @@ export default function LandingPage() {
                     <button
                       type="button"
                       onClick={() => setHeroSimStep('macros')}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                      className={`px-2 sm:px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-semibold whitespace-nowrap transition-all ${
                         heroSimStep === 'macros'
                           ? 'bg-white text-ink-900 shadow-sm'
                           : 'text-ink-600 hover:text-ink-900'
@@ -322,8 +407,8 @@ export default function LandingPage() {
                 <div className="pt-3.5">
                   {heroSimStep === 'substituicao' && (
                     <div className="space-y-3">
-                      <div className="p-3 rounded-xl bg-sand-50 border border-sand-200 flex items-center justify-between gap-3 text-left">
-                        <div>
+                      <div className="p-3 rounded-xl bg-sand-50 border border-sand-200 flex flex-wrap items-center justify-between gap-2 sm:gap-3 text-left">
+                        <div className="min-w-0">
                           <span className="text-[10px] font-semibold text-ink-500 uppercase">Almoço • Prescrição Atual</span>
                           <h3 className="text-sm font-bold text-ink-900">
                             Arroz integral cozido (100g)
@@ -374,7 +459,7 @@ export default function LandingPage() {
 
                   {heroSimStep === 'medidas' && (
                     <div className="p-3.5 rounded-xl bg-sand-50 border border-sand-200 text-left space-y-2.5">
-                      <div className="flex items-center justify-between">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
                         <h3 className="text-xs font-bold text-ink-900">
                           Medidas da cozinha brasileira convertidas em gramas
                         </h3>
@@ -561,11 +646,11 @@ export default function LandingPage() {
 
             {/* Alternador de Persona */}
             <div className="pt-4 flex items-center justify-center">
-              <div className="inline-flex p-1 bg-white rounded-2xl border border-sand-300 shadow-sm">
+              <div className="flex flex-col sm:inline-flex sm:flex-row w-full sm:w-auto max-w-full p-1 bg-white rounded-2xl border border-sand-300 shadow-sm">
                 <button
                   type="button"
                   onClick={() => setActivePersona('recem-formada')}
-                  className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
+                  className={`px-4 sm:px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
                     activePersona === 'recem-formada'
                       ? 'bg-sage-900 text-white shadow-sm'
                       : 'text-ink-600 hover:text-ink-950'
@@ -576,7 +661,7 @@ export default function LandingPage() {
                 <button
                   type="button"
                   onClick={() => setActivePersona('estabelecida')}
-                  className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
+                  className={`px-4 sm:px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
                     activePersona === 'estabelecida'
                       ? 'bg-sage-900 text-white shadow-sm'
                       : 'text-ink-600 hover:text-ink-950'
@@ -590,8 +675,8 @@ export default function LandingPage() {
 
           {/* Conteúdo Dinâmico por Persona */}
           {activePersona === 'recem-formada' ? (
-            <div className="bg-white rounded-3xl border border-sand-200 p-8 sm:p-12 shadow-card grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-7 space-y-6 text-left">
+            <div className="bg-white rounded-3xl border border-sand-200 p-6 sm:p-10 lg:p-12 shadow-card grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              <div className="lg:col-span-7 min-w-0 space-y-6 text-left">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-terracotta-50 text-terracotta-700 text-xs font-bold border border-terracotta-200">
                   <span>Elimine a Insegurança Clínica</span>
                 </div>
@@ -633,7 +718,7 @@ export default function LandingPage() {
                 <div className="pt-2">
                   <Link
                     href="/register?perfil=nutricionista&plan=essential&source=persona-student"
-                    className="inline-flex items-center justify-center font-semibold select-none transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-terracotta-400 bg-terracotta-500 text-white hover:bg-terracotta-600 shadow-sm hover:shadow h-12 px-6 text-sm sm:text-base rounded-xl whitespace-nowrap min-h-[48px]"
+                    className="inline-flex items-center justify-center font-semibold select-none transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-terracotta-400 bg-terracotta-500 text-white hover:bg-terracotta-600 shadow-sm hover:shadow min-h-[48px] py-2.5 px-4 sm:px-6 text-sm sm:text-base rounded-xl whitespace-normal sm:whitespace-nowrap text-center w-full sm:w-auto max-w-full"
                   >
                     Começar com o Plano Essencial (R$ 39,50) →
                   </Link>
@@ -641,7 +726,7 @@ export default function LandingPage() {
               </div>
 
               {/* Cenário Prático Objetivo (Sem depoimento fictício) */}
-              <div className="lg:col-span-5 bg-sand-100 rounded-2xl p-6 border border-sand-200 space-y-4">
+              <div className="lg:col-span-5 min-w-0 bg-sand-100 rounded-2xl p-6 border border-sand-200 space-y-4">
                 <span className="text-xs font-bold uppercase tracking-wider text-sage-900">
                   Cenário Clínico: Estágio e Primeiro Atendimento
                 </span>
@@ -659,8 +744,8 @@ export default function LandingPage() {
               </div>
             </div>
           ) : (
-            <div className="bg-white rounded-3xl border border-sand-200 p-8 sm:p-12 shadow-card grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              <div className="lg:col-span-7 space-y-6 text-left">
+            <div className="bg-white rounded-3xl border border-sand-200 p-6 sm:p-10 lg:p-12 shadow-card grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              <div className="lg:col-span-7 min-w-0 space-y-6 text-left">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sage-100 text-sage-900 text-xs font-bold border border-sage-200">
                   <span>Alta Performance Clínica</span>
                 </div>
@@ -702,7 +787,7 @@ export default function LandingPage() {
                 <div className="pt-2">
                   <Link
                     href="/register?perfil=nutricionista&plan=professional&source=persona-pro"
-                    className="inline-flex items-center justify-center font-semibold select-none transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-terracotta-400 bg-terracotta-500 text-white hover:bg-terracotta-600 shadow-sm hover:shadow h-12 px-6 text-sm sm:text-base rounded-xl whitespace-nowrap min-h-[48px]"
+                    className="inline-flex items-center justify-center font-semibold select-none transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-terracotta-400 bg-terracotta-500 text-white hover:bg-terracotta-600 shadow-sm hover:shadow min-h-[48px] py-2.5 px-4 sm:px-6 text-sm sm:text-base rounded-xl whitespace-normal sm:whitespace-nowrap text-center w-full sm:w-auto max-w-full"
                   >
                     Testar o Plano Profissional por 7 Dias →
                   </Link>
@@ -710,7 +795,7 @@ export default function LandingPage() {
               </div>
 
               {/* Cenário Prático Objetivo (Sem depoimento fictício) */}
-              <div className="lg:col-span-5 bg-sand-100 rounded-2xl p-6 border border-sand-200 space-y-4">
+              <div className="lg:col-span-5 min-w-0 bg-sand-100 rounded-2xl p-6 border border-sand-200 space-y-4">
                 <span className="text-xs font-bold uppercase tracking-wider text-sage-900">
                   Cenário Clínico: Consultório com Alto Volume de Retornos
                 </span>
@@ -868,13 +953,13 @@ export default function LandingPage() {
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/register?perfil=nutricionista&plan=professional&source=home-footer"
-              className="inline-flex items-center justify-center font-semibold select-none transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-terracotta-400 bg-terracotta-500 text-white hover:bg-terracotta-600 shadow-sm hover:shadow h-12 px-6 text-sm sm:text-base rounded-xl whitespace-nowrap min-h-[48px] w-full sm:w-auto text-center"
+              className="inline-flex items-center justify-center font-semibold select-none transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-terracotta-400 bg-terracotta-500 text-white hover:bg-terracotta-600 shadow-sm hover:shadow min-h-[48px] py-2.5 px-5 sm:px-6 text-sm sm:text-base rounded-xl whitespace-normal sm:whitespace-nowrap w-full sm:w-auto text-center"
             >
               Testar 7 Dias Grátis Agora →
             </Link>
             <Link
               href="/editor-cardapio"
-              className="inline-flex items-center justify-center font-semibold select-none transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sage-700 border border-sage-700 text-white hover:bg-sage-800 shadow-sm hover:shadow h-12 px-6 text-sm sm:text-base rounded-xl whitespace-nowrap min-h-[48px] w-full sm:w-auto text-center"
+              className="inline-flex items-center justify-center font-semibold select-none transition-all duration-150 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-sage-700 border border-sage-700 text-white hover:bg-sage-800 shadow-sm hover:shadow min-h-[48px] py-2.5 px-5 sm:px-6 text-sm sm:text-base rounded-xl whitespace-normal sm:whitespace-nowrap w-full sm:w-auto text-center"
             >
               Ver Demonstração do Editor
             </Link>

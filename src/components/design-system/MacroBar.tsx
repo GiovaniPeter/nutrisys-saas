@@ -81,11 +81,11 @@ export const MacroBar = ({
   if (variant === 'compact') {
     return (
       <div className={`flex flex-col gap-1.5 w-full ${className}`}>
-        <div className="flex items-center justify-between text-xs">
+        <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-xs">
           <span className="font-semibold text-ink-900 font-mono tabular-nums">
             {Math.round(totalKcal)} kcal
           </span>
-          <div className="flex items-center gap-2 text-[11px] font-mono tabular-nums text-ink-600">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] font-mono tabular-nums text-ink-600">
             <span className="text-amber-800 font-medium">C: {Math.round(current.carbs)}g ({choPct}%)</span>
             <span className="text-rose-800 font-medium">P: {Math.round(current.protein)}g ({ptnPct}%)</span>
             <span className="text-teal-800 font-medium">G: {Math.round(current.fat)}g ({lipPct}%)</span>

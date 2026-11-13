@@ -34,7 +34,7 @@ export function ConnectedCare() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {workflows.map((workflow, index) => (
-            <article key={workflow.title} className="p-6 rounded-2xl bg-white border border-sand-200 flex flex-col gap-4">
+            <article key={workflow.title} className="min-w-0 p-6 rounded-2xl bg-white border border-sand-200 flex flex-col gap-4">
               <span className="text-xs font-bold text-sage-800">0{index + 1}</span>
               <h3 className="text-xl font-bold font-display">{workflow.title}</h3>
               <p className="text-sm text-ink-600">{workflow.description}</p>

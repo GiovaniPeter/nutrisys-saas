@@ -21,7 +21,7 @@ export function PublicPricing() {
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
           {PLANS.map((plan) => (
-            <article key={plan.code} className={`p-7 rounded-3xl bg-white flex flex-col gap-6 ${
+            <article key={plan.code} className={`min-w-0 p-6 sm:p-7 rounded-3xl bg-white flex flex-col gap-6 ${
               plan.code === "professional" ? "border-2 border-sage-900 shadow-card" : "border border-sand-200"
             }`}>
               <div>
