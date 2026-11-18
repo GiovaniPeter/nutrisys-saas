@@ -111,7 +111,21 @@ export async function GET(request: NextRequest) {
         OR: [{ organizationId: null }, { organizationId: user.organizationId }]
       },
       orderBy: [{ name: "asc" }],
-      take: 6000
+      take: 25000,
+      select: {
+        id: true,
+        organizationId: true,
+        name: true,
+        portion: true,
+        householdMeasure: true,
+        calories: true,
+        protein: true,
+        carbs: true,
+        fat: true,
+        fiber: true,
+        category: true,
+        source: true
+      }
     });
 
     const hasCuratedInDb = dbFoods.some((item) => String(item.id).startsWith("curated-"));
