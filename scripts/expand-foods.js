@@ -8,10 +8,33 @@ const { loadEnv } = require("./load-env");
 loadEnv();
 
 const prisma = new PrismaClient();
-const TARGET_GLOBAL_FOODS = Number(process.env.FOOD_IMPORT_TARGET || 10500);
+const TARGET_GLOBAL_FOODS = Number(process.env.FOOD_IMPORT_TARGET || 10350);
 const OFF_V2_SEARCH_URL = "https://br.openfoodfacts.org/api/v2/search";
 const IBGE_SQL_URL = "https://raw.githubusercontent.com/renandspedrosa/tabela-alimentos-ibge-api/master/database/seeders/scripts/ibge.sql";
 const INSA_XLSX_URL = "https://portfir.insa.min-saude.pt/wp-content/uploads/2025/11/insa_tca.xlsx";
+
+const LOWER_WORDS = new Set([
+  "de", "da", "do", "das", "dos", "e", "em", "com", "sem", "para",
+  "ao", "aos", "a", "à", "às", "no", "na", "nos", "nas", "por", "ou", "sabor", "tipo"
+]);
+const KEEP_UPPER = new Set(["UHT", "BCAA", "IPA", "BBQ", "TCM", "MCT", "DHA", "EPA", "H2OH"]);
+
+const OFF_BRAZILIAN_BRANDS = [
+  "camil", "tio-joao", "urbano", "dona-benta", "renata", "adria", "yoki", "quaker",
+  "mae-terra", "jasmine", "vitalin", "kobber", "nutrimental", "wickbold", "pullman",
+  "plus-vita", "seven-boys", "bauducco", "visconti", "piraque", "marilan", "vitarella",
+  "nestle", "garoto", "lacta", "hersheys", "cacau-show", "kopenhagen",
+  "itambe", "piracanjuba", "danone", "vigor", "batavo", "tirol", "tirolez", "verde-campo",
+  "polenghi", "catupiry", "elegê", "italac", "parmalat", "leite-ninho", "molico", "activia",
+  "sadia", "perdigao", "seara", "aurora", "frimesa", "swift", "korin", "ceratti", "frios",
+  "gomes-da-costa", "coqueiro", "predilecta", "fugini", "quero", "heinz", "hellmanns",
+  "qualy", "doriana", "becel", "liza", "soya", "andorinha", "galo", "borges",
+  "natural-one", "del-valle", "maguary", "sufresh", "ades", "silk", "vida-veg",
+  "growth-supplements", "max-titanium", "integralmedica", "dux-nutrition", "essential-nutrition",
+  "atlhetica-nutrition", "probiotica", "vitafor", "puravida", "bold", "yopro", "piracanjuba-proforce",
+  "3-coracoes", "pilao", "melitta", "leao", "toddy", "nescau", "ovomatine",
+  "taeq", "qualita", "carrefour", "dia", "great-value", "liv-up", "casa-suica", "dacolonia"
+];
 
 const OFF_CATEGORIES = [
   "en:groceries",
@@ -85,22 +108,187 @@ function loadCuratedFoods() {
   return Array.isArray(mod.exports.CURATED_BRAZILIAN_FOODS) ? mod.exports.CURATED_BRAZILIAN_FOODS : [];
 }
 
+function decodeEntities(s) {
+  return String(s || "")
+    .replace(/&quot;/gi, '"')
+    .replace(/&amp;/gi, "&")
+    .replace(/&#39;|&apos;/gi, "'")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">");
+}
+
+function smartPortugueseTitleCase(str) {
+  return str
+    .toLowerCase()
+    .split(/(\s+|[-/()])/)
+    .map((tok, idx) => {
+      if (!/[a-zà-ÿ]/i.test(tok)) return tok;
+      const upper = tok.toUpperCase();
+      if (KEEP_UPPER.has(upper)) return upper;
+      if (/^\d+(g|kg|ml|l|mg|mcg|un)$/i.test(tok)) return tok.toLowerCase();
+      if (idx > 0 && LOWER_WORDS.has(tok)) return tok;
+      return tok[0].toUpperCase() + tok.slice(1);
+    })
+    .join("");
+}
+
+function cleanBrandList(rawBrand) {
+  const parts = String(rawBrand || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const filtered = [];
+  const seen = new Set();
+  for (const part of parts) {
+    if (
+      /\b(ltda|limitada|s\.?a\.?|s\/a|eireli|industria|indústria|comercio|comércio|international|alimentos\s+ltda|brasil\s+alimentos|associacao|associação|unigrupo|inc\.?|corp\.?|llc|gmbh)\b/i.test(
+        part
+      )
+    ) {
+      continue;
+    }
+    const clean = part
+      .replace(/\p{Extended_Pictographic}/gu, "")
+      .replace(/[’‘]/g, "'")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (!clean || clean.length < 2 || clean.length > 30) continue;
+    const key = normalize(clean);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    filtered.push(clean);
+  }
+  const chosen = filtered[0] || "";
+  if (!chosen) return "";
+  const letters = chosen.replace(/[^A-Za-zÀ-ÿ]/g, "");
+  if (letters.length >= 4 && letters === letters.toUpperCase()) {
+    return smartPortugueseTitleCase(chosen);
+  }
+  return chosen;
+}
+
+function sanitizeOffName(rawName, extraBrand = "") {
+  let s = decodeEntities(rawName);
+  s = s.replace(/\p{Extended_Pictographic}/gu, "");
+  s = s.replace(/[•·★☆♦♠♣♥►◄▪▫■□●○◦™®©]/g, " ");
+  s = s.replace(/[’‘]/g, "'").replace(/[“”]/g, '"');
+  s = s.replace(/!+/g, "");
+  s = s.replace(/\s+/g, " ").trim();
+
+  // Extract trailing [brand] if already present
+  let brand = cleanBrandList(extraBrand);
+  const brMatch = s.match(/^(.*?)\s*\[([^\]]+)\]\s*$/);
+  if (brMatch) {
+    s = brMatch[1].trim();
+    const extracted = cleanBrandList(brMatch[2]);
+    if (extracted) brand = extracted;
+  }
+
+  // Strip promo clutter phrases & expand common Brazilian supermarket abbreviations
+  s = s
+    .replace(/\b(embalagem econ[oô]mica|leve mais pague menos|oferta especial|edi[çc][ãa]o limitada)\b/gi, "")
+    .replace(/(?<![A-Za-zÀ-ÿ])Beb\.?\s+Lac\.?(?![A-Za-zÀ-ÿ])/gi, "Bebida Láctea")
+    .replace(/(?<![A-Za-zÀ-ÿ])Z\/Lac(?![A-Za-zÀ-ÿ])/gi, "Zero Lactose")
+    .replace(/(?<![A-Za-zÀ-ÿ])S\/Lac(?![A-Za-zÀ-ÿ])/gi, "Sem Lactose")
+    .replace(/(?<![A-Za-zÀ-ÿ])C\/Sal(?![A-Za-zÀ-ÿ])/gi, "Com Sal")
+    .replace(/(?<![A-Za-zÀ-ÿ])S\/Sal(?![A-Za-zÀ-ÿ])/gi, "Sem Sal")
+    .replace(/(?<![A-Za-zÀ-ÿ])S\/A[çc][úu]car(?![A-Za-zÀ-ÿ])/gi, "Sem Açúcar")
+    .replace(/(?<![A-Za-zÀ-ÿ])C\/A[çc][úu]car(?![A-Za-zÀ-ÿ])/gi, "Com Açúcar")
+    .replace(/(?<![A-Za-zÀ-ÿ])Qjo\.?(?![A-Za-zÀ-ÿ])/gi, "Queijo")
+    .replace(/(?<![A-Za-zÀ-ÿ])Muss\.?(?![A-Za-zÀ-ÿ])/gi, "Mussarela")
+    .replace(/(?<![A-Za-zÀ-ÿ])Requeij\.?(?![A-Za-zÀ-ÿ])/gi, "Requeijão")
+    .replace(/(?<![A-Za-zÀ-ÿ])Iog\.?(?![A-Za-zÀ-ÿ])/gi, "Iogurte")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  // Deduplicate repeated " - X - X - X" segments
+  const segs = s.split(/\s+-\s+/);
+  if (segs.length > 2) {
+    const dedup = [];
+    for (const seg of segs) {
+      if (dedup.length === 0 || dedup[dedup.length - 1].toLowerCase() !== seg.toLowerCase()) {
+        dedup.push(seg);
+      }
+    }
+    s = dedup.join(" - ");
+  }
+
+  // Strip stray leading/trailing quotes or punctuation
+  s = s.replace(/^["'\s+*\-.,;:]+/, "").replace(/["'\s\-.,;:]+$/, "").trim();
+
+  // Fix ALL CAPS or lowercase start
+  const letters = s.replace(/[^A-Za-zÀ-ÿ]/g, "");
+  const upperLetters = s.replace(/[^A-ZÀ-Þ]/g, "");
+  if (letters.length >= 6 && upperLetters.length / letters.length >= 0.78) {
+    s = smartPortugueseTitleCase(s);
+  } else if (/^[a-zà-ÿ]/.test(s)) {
+    s = s[0].toUpperCase() + s.slice(1);
+  }
+
+  // Re-attach single clean brand if not already in main name
+  if (brand) {
+    const normMain = normalize(s);
+    const normBrand = normalize(brand);
+    if (normMain === normBrand) return "";
+    if (!normMain.includes(normBrand)) {
+      s = `${s} [${brand}]`;
+    }
+  }
+
+  return s.replace(/\s+/g, " ").trim().slice(0, 180);
+}
+
+function getOffNameRejectReason(name) {
+  if (!name || name.length < 5) return "too_short";
+  if (name.length > 95) return "too_long";
+  if (name.includes("\uFFFD")) return "encoding_error";
+  if (/[^\u0000-\u024F\u1E00-\u1EFF\s\-\.,:;()\[\]\/&+%°ºª'"–—?*]/.test(name)) return "non_latin";
+  if (/^\d{5,}/.test(name) || /\b\d{8,}\b/.test(name)) return "barcode";
+  if (/^[\d\s\-./,+%]+$/.test(name)) return "numeric_only";
+  if (/([a-zà-ÿ])\1{3,}/i.test(name)) return "elongated_gibberish";
+  if (/^(kit|pack|combo|fardo|caixa com)\s+\d/i.test(name)) return "multipack_promo";
+  if (/\b(mdlz|bisc\s+rech|achoc\s+po|ext\s+virgem|cx\s+c\/|\d+x\d+\s?(g|ml)|elma chips m\b)\b/i.test(name)) {
+    return "sku_abbrev";
+  }
+
+  // Reject French / Spanish / German / Italian names
+  if (
+    /\b(avec|sans|aux|blé|fromage|yaourt|poulet|beurre|sucre|lait|farine|pâtes|crème|gâteau|chocolat au|fraise|pomme|noisette|amande|flocons|boisson|confiture|jambon|pain de mie|légumes|bonbon|sève|à la|tisane|sirop|con leche|sin azúcar|sin gluten|harina|queso|pollo|mantequilla|galletas|aceite de|jugo de|leche|manzana|naranja|fresa|vainilla|avellana|almendra|jamón|huevos|frijoles|frutos rojos|mantecoso|semillas de|y soya|chía y|salsa de soja|avena|azúcar|mermelada|helado|manteca|dulce de|postre|yogur|bizcocho|turrón|fideos|tallarines|lentejas|garbanzos|aceitunas|atún|cerdo|ternera|salchicha|zucker|milch|käse|fleisch|brot|zutaten|farina di|olio extravergine|latte intero|formaggio|biscotti)\b/i.test(
+      name
+    )
+  ) {
+    return "foreign_fr_es_de_it";
+  }
+
+  // Reject bare Spanish "Pan [Brand]"
+  if (/^pan\b/i.test(name)) return "foreign_es_pan";
+
+  // Reject English-only product names without Portuguese descriptors
+  if (
+    /\b(peanut butter|olive oil|semi-skimmed|lactose-restricted|natural milk|unfiltered|extra virgin|blended juice|100% juice|chocolate covered|pretzels with|peppermint|chicken breast|whole wheat|brown rice|rolled oats|almond milk|coconut milk|unsalted butter|refrigerated|wholegrain|salted caramel|dark chocolate|milk chocolate|white chocolate|apple, lemon|grape and apple|orange juice)\b/i.test(
+      name
+    ) &&
+    !/\b(de|com|sem|sabor|barra|biscoito|bolacha|leite|iogurte|bebida|pão|pao|arroz|feijão|feijao|queijo|manteiga|azeite|suco|creme|bolo|torta|pasta|recheio|recheado|cobertura)\b/i.test(
+      name
+    )
+  ) {
+    return "foreign_en";
+  }
+
+  // Reject bare short single-word OFF names (usually just brand names like "Bio+", "Fini", "Vitaliv")
+  if (!name.includes(" ") && name.length < 12) return "single_word_brand";
+
+  return null;
+}
+
 function isAlcoholicName(name) {
   return /cerveja|vinho|vodka|whisky|uisque|cachaca|aguardente|gin\b|rum\b|licor|champagne|espumante|sake|tequila|conhaque|sidra|catuaba|chopp/i.test(
     normalize(name)
   );
 }
 
-function isValidProductName(name) {
-  const cleaned = cleanName(name);
-  if (cleaned.length < 4) return false;
-  if (cleaned.includes("\uFFFD")) return false;
-  if (/^[\d\s\-./,+%]+$/.test(cleaned)) return false;
-  return true;
-}
-
 function isValidOffNutrition({ name, calories, protein, carbs, fat, fiber }) {
-  if (!isValidProductName(name)) return false;
+  if (getOffNameRejectReason(name)) return false;
   if (!Number.isFinite(calories) || calories <= 0 || calories > 920) return false;
   if (!Number.isFinite(protein) || protein < 0 || protein > 100) return false;
   if (!Number.isFinite(carbs) || carbs < 0 || carbs > 100) return false;
@@ -121,12 +309,9 @@ function isValidOffNutrition({ name, calories, protein, carbs, fat, fiber }) {
 }
 
 async function auditAndCleanExistingOffFoods() {
-  console.log("[1/5] Auditando registros Open Food Facts existentes no banco...");
-  const existingOff = await prisma.food.findMany({
-    where: {
-      organizationId: null,
-      id: { startsWith: "off-" }
-    },
+  console.log("[1/5] Auditando nutrição e nomenclatura dos registros Open Food Facts...");
+  const allFoods = await prisma.food.findMany({
+    where: { organizationId: null },
     select: {
       id: true,
       name: true,
@@ -134,35 +319,90 @@ async function auditAndCleanExistingOffFoods() {
       protein: true,
       carbs: true,
       fat: true,
-      fiber: true
+      fiber: true,
+      category: true
     }
   });
 
+  // Track official names first so OFF duplicates get pruned
+  const usedNormNames = new Set();
+  for (const item of allFoods) {
+    if (!item.id.startsWith("off-")) {
+      usedNormNames.add(normalize(item.name));
+    }
+  }
+
   const badIds = [];
-  for (const item of existingOff) {
+  const toRename = [];
+
+  for (const item of allFoods) {
+    if (!item.id.startsWith("off-")) continue;
+
+    const sanitizedName = sanitizeOffName(item.name);
     const valid = isValidOffNutrition({
-      name: item.name,
+      name: sanitizedName,
       calories: Number(item.calories),
       protein: Number(item.protein),
       carbs: Number(item.carbs),
       fat: Number(item.fat),
       fiber: item.fiber === null ? null : Number(item.fiber)
     });
-    if (!valid) badIds.push(item.id);
+
+    if (!valid) {
+      badIds.push(item.id);
+      continue;
+    }
+
+    const norm = normalize(sanitizedName);
+    if (usedNormNames.has(norm)) {
+      badIds.push(item.id);
+      continue;
+    }
+    usedNormNames.add(norm);
+
+    if (sanitizedName !== item.name) {
+      toRename.push({ id: item.id, name: sanitizedName });
+    }
   }
 
   if (badIds.length > 0) {
-    const del = await prisma.food.deleteMany({
-      where: { id: { in: badIds } }
-    });
-    console.log(`[Auditoria] Removidos ${del.count} registros inconsistentes do Open Food Facts.`);
-  } else {
-    console.log("[Auditoria] Nenhum registro inconsistente encontrado.");
+    for (let i = 0; i < badIds.length; i += 200) {
+      await prisma.food.deleteMany({
+        where: { id: { in: badIds.slice(i, i + 200) } }
+      });
+    }
+    console.log(`[Auditoria] Removidos ${badIds.length} registros inconsistentes/estranhos/duplicados do OFF.`);
+  }
+
+  if (toRename.length > 0) {
+    for (let i = 0; i < toRename.length; i += 50) {
+      const chunk = toRename.slice(i, i + 50);
+      await prisma.$transaction(
+        chunk.map((entry) =>
+          prisma.food.update({
+            where: { id: entry.id },
+            data: { name: entry.name }
+          })
+        )
+      );
+    }
+    console.log(`[Auditoria] Padronizadas ${toRename.length} nomenclaturas do OFF (capitalização, marcas e símbolos).`);
+  }
+
+  if (badIds.length === 0 && toRename.length === 0) {
+    console.log("[Auditoria] Todos os registros existentes estão limpos e padronizados.");
   }
 }
 
 async function syncCuratedFoods() {
   const curated = loadCuratedFoods();
+  const existingCuratedCount = await prisma.food.count({
+    where: { organizationId: null, id: { startsWith: "curated-" } }
+  });
+  if (existingCuratedCount >= curated.length && !process.env.FORCE_OFFICIAL) {
+    console.log(`[2/5] Curadoria clínica já sincronizada (${existingCuratedCount}/${curated.length}).`);
+    return;
+  }
   console.log(`[2/5] Sincronizando ${curated.length} alimentos de curadoria clínica...`);
   for (const item of curated) {
     await prisma.food.upsert({
@@ -185,6 +425,14 @@ async function syncCuratedFoods() {
 }
 
 async function fetchIbgeFoods(seenIds, seenNames) {
+  const existingIbgeCount = await prisma.food.count({
+    where: { organizationId: null, id: { startsWith: "ibge-" } }
+  });
+  if (existingIbgeCount >= 1350 && !process.env.FORCE_OFFICIAL) {
+    console.log(`[3/5] Tabela oficial IBGE / POF já importada (${existingIbgeCount} itens).`);
+    return 0;
+  }
+
   console.log("[3/5] Baixando e validando tabela oficial IBGE / POF...");
   const response = await fetchWithRetry(IBGE_SQL_URL, {
     headers: { "User-Agent": "NutriPlan-ClinOS/1.0 (contato@clinos.tec.br)" }
@@ -217,7 +465,6 @@ async function fetchIbgeFoods(seenIds, seenNames) {
     const bySig = groupedByCode.get(code);
 
     const existing = bySig.get(sig);
-    // Prefer "Não se aplica", "Cru(a)" or "Cozido(a)" when multiple preparations share identical macros
     const rankPrep = (p) => (p === "Não se aplica" ? 0 : p.startsWith("Cru") ? 1 : p.startsWith("Cozido") ? 2 : 3);
     if (!existing || rankPrep(prepName) < rankPrep(existing.prepName)) {
       bySig.set(sig, { code, desc, catRaw, prepCode, prepName, calories, protein, carbs, fat, fiber });
@@ -229,7 +476,9 @@ async function fetchIbgeFoods(seenIds, seenNames) {
     const multi = bySig.size > 1;
     for (const entry of bySig.values()) {
       const displayName =
-        entry.prepName && entry.prepName !== "Não se aplica" && (multi || !entry.desc.toLowerCase().includes(entry.prepName.toLowerCase()))
+        entry.prepName &&
+        entry.prepName !== "Não se aplica" &&
+        (multi || !entry.desc.toLowerCase().includes(entry.prepName.toLowerCase()))
           ? `${entry.desc} — ${entry.prepName}`
           : entry.desc;
 
@@ -323,6 +572,14 @@ print(json.dumps(items, ensure_ascii=False))
 }
 
 async function fetchInsaFoods(seenIds, seenNames) {
+  const existingInsaCount = await prisma.food.count({
+    where: { organizationId: null, id: { startsWith: "insa-" } }
+  });
+  if (existingInsaCount >= 1300 && !process.env.FORCE_OFFICIAL) {
+    console.log(`[4/5] Tabela oficial INSA BDCA v7.1 já importada (${existingInsaCount} itens).`);
+    return 0;
+  }
+
   console.log("[4/5] Baixando e validando INSA - BDCA v7.1 (2026)...");
   const rows = parseInsaWithPython();
   const toInsert = [];
@@ -373,18 +630,18 @@ async function fetchInsaFoods(seenIds, seenNames) {
 
 function buildFoodFromOffProduct(product, seenIds, seenNames) {
   const code = String(product.code || "").trim();
-  const rawName = cleanName(product.product_name_pt || product.product_name || "");
-  const brand = cleanName(product.brands || "");
+  const rawName = product.product_name_pt || product.product_name || "";
+  const brand = cleanBrandList(product.brands || "");
   if (!code || !rawName) return null;
-  if (brand && normalize(rawName) === normalize(brand)) return null;
 
-  const name = brand && !rawName.toLowerCase().includes(brand.toLowerCase()) ? `${rawName} [${brand}]` : rawName;
-  const nutriments = product.nutriments || {};
+  const name = sanitizeOffName(rawName, brand);
+  if (!name) return null;
+
   const foodId = `off-${code}`;
   const normName = normalize(name);
-
   if (seenIds.has(foodId) || seenNames.has(normName)) return null;
 
+  const nutriments = product.nutriments || {};
   const calories = round2(parseNumber(nutriments["energy-kcal_100g"] ?? nutriments["energy-kcal"]));
   const protein = round2(parseNumber(nutriments.proteins_100g ?? nutriments.proteins));
   const carbs = round2(parseNumber(nutriments.carbohydrates_100g ?? nutriments.carbohydrates));
@@ -403,7 +660,7 @@ function buildFoodFromOffProduct(product, seenIds, seenNames) {
   return {
     id: foodId,
     organizationId: null,
-    name: name.slice(0, 180),
+    name,
     portion: "100 g",
     householdMeasure: inferHouseholdMeasure(name, category),
     calories,
@@ -427,21 +684,21 @@ async function flushBatch(batch, state) {
   console.log(`[Neon DB] +${result.count} validados inseridos! Total no banco: ${state.currentTotal}/${TARGET_GLOBAL_FOODS}`);
 }
 
-async function expandOffByCategories(state, seenIds, seenNames) {
-  console.log(`[5/5] Expandindo catálogo brasileiro validado (Open Food Facts v2 por categoria)...`);
+async function queryOffV2Facet(facetKey, values, maxPages, state, seenIds, seenNames) {
   const batch = [];
 
-  for (const offCat of OFF_CATEGORIES) {
+  for (const val of values) {
     if (state.currentTotal + batch.length >= TARGET_GLOBAL_FOODS) break;
+    let addedForFacet = 0;
 
-    for (let page = 1; page <= 10; page++) {
+    for (let page = 1; page <= maxPages; page++) {
       if (state.currentTotal + batch.length >= TARGET_GLOBAL_FOODS) break;
 
       const params = new URLSearchParams({
         countries_tags_en: "brazil",
         languages_tags_en: "portuguese",
         states_tags_en: "nutrition-facts-completed",
-        categories_tags_en: offCat,
+        [facetKey]: val,
         sort_by: "unique_scans_n",
         fields: "code,product_name,product_name_pt,brands,nutriments,categories",
         page_size: "100",
@@ -449,9 +706,11 @@ async function expandOffByCategories(state, seenIds, seenNames) {
       });
 
       try {
-        const response = await fetchWithRetry(`${OFF_V2_SEARCH_URL}?${params}`, {
-          headers: { "User-Agent": "NutriPlan-ClinOS/1.0 (contato@clinos.tec.br)" }
-        }, 4);
+        const response = await fetchWithRetry(
+          `${OFF_V2_SEARCH_URL}?${params}`,
+          { headers: { "User-Agent": "NutriPlan-ClinOS/1.0 (contato@clinos.tec.br)" } },
+          4
+        );
 
         const data = await response.json();
         const products = Array.isArray(data.products) ? data.products : [];
@@ -460,20 +719,27 @@ async function expandOffByCategories(state, seenIds, seenNames) {
         for (const product of products) {
           if (state.currentTotal + batch.length >= TARGET_GLOBAL_FOODS) break;
           const food = buildFoodFromOffProduct(product, seenIds, seenNames);
-          if (food) batch.push(food);
+          if (food) {
+            batch.push(food);
+            addedForFacet++;
+          }
         }
 
-        if (batch.length >= 100) {
+        if (batch.length >= 50) {
           await flushBatch(batch, state);
         }
 
         if (products.length < 100) break;
-        await sleep(3000);
+        await sleep(3200);
       } catch (err) {
-        console.error(`Aviso em ${offCat} pág ${page}: ${err.message}`);
+        console.error(`Aviso em ${facetKey}=${val} pág ${page}: ${err.message}`);
         await sleep(5000);
         if (String(err.message).includes("401")) break;
       }
+    }
+
+    if (addedForFacet > 0) {
+      console.log(`  -> ${val}: +${addedForFacet} válidos`);
     }
   }
 
@@ -497,11 +763,18 @@ async function main() {
   const countAfterOfficial = await prisma.food.count({
     where: { organizationId: null }
   });
-  console.log(`Total após bases oficiais (Curadoria + TACO + IBGE + INSA + OFF limpo): ${countAfterOfficial}`);
+  console.log(`Total limpo antes da expansão complementar: ${countAfterOfficial}`);
 
   const state = { currentTotal: countAfterOfficial };
+
   if (state.currentTotal < TARGET_GLOBAL_FOODS) {
-    await expandOffByCategories(state, seenIds, seenNames);
+    console.log(`[5a/5] Expandindo por marcas brasileiras (Open Food Facts Brasil v2)...`);
+    await queryOffV2Facet("brands_tags", OFF_BRAZILIAN_BRANDS, 3, state, seenIds, seenNames);
+  }
+
+  if (state.currentTotal < TARGET_GLOBAL_FOODS) {
+    console.log(`[5b/5] Expandindo por categorias brasileiras (Open Food Facts Brasil v2)...`);
+    await queryOffV2Facet("categories_tags_en", OFF_CATEGORIES, 10, state, seenIds, seenNames);
   }
 
   const finalCount = await prisma.food.count({
@@ -592,7 +865,7 @@ async function fetchWithRetry(url, init, attempts = 3) {
     } catch (error) {
       lastError = error;
     }
-    await sleep(2500 * attempt);
+    await sleep(3000 * attempt);
   }
   throw lastError;
 }
