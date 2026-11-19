@@ -1,7 +1,6 @@
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { GetObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
-// Instância global para cache em tempo de execução
 let r2ClientInstance: S3Client | null = null;
 
 function getRequiredEnv(name: string): string {
@@ -12,7 +11,7 @@ function getRequiredEnv(name: string): string {
   return value;
 }
 
-function getR2Client(): { client: S3Client, accountId: string, defaultBucket: string } {
+function getR2Client(): { client: S3Client; accountId: string; defaultBucket: string } {
   const accountId = getRequiredEnv("R2_ACCOUNT_ID");
   const accessKeyId = getRequiredEnv("R2_ACCESS_KEY_ID");
   const secretAccessKey = getRequiredEnv("R2_SECRET_ACCESS_KEY");
@@ -24,8 +23,8 @@ function getR2Client(): { client: S3Client, accountId: string, defaultBucket: st
       endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
       credentials: {
         accessKeyId,
-        secretAccessKey,
-      },
+        secretAccessKey
+      }
     });
   }
 
@@ -33,38 +32,29 @@ function getR2Client(): { client: S3Client, accountId: string, defaultBucket: st
 }
 
 /**
- * Gera uma URL pré-assinada para upload direto do navegador para o Cloudflare R2
- * @param bucket Nome do bucket (geralmente ignorado se usar R2_BUCKET_NAME)
- * @param path Caminho do arquivo (ex: 'misc/arquivo.png')
- * @param contentType Tipo MIME do arquivo
- * @returns Um objeto contendo a presignedUrl (para o PUT) e a publicUrl (para salvar no banco)
+ * Gera uma URL pré-assinada de upload (PUT) para o Cloudflare R2.
  */
 export async function generatePresignedUrl(
   bucket: string,
   path: string,
   contentType: string
 ): Promise<{ presignedUrl: string; publicUrl: string }> {
-  // Isso garante que o erro de variável de ambiente só aconteça na hora do upload,
-  // e não durante o build (compilação) da Vercel.
   const { client, accountId, defaultBucket } = getR2Client();
   const targetBucket = defaultBucket || bucket;
-  
+
   const command = new PutObjectCommand({
     Bucket: targetBucket,
     Key: path,
-    ContentType: contentType,
+    ContentType: contentType
   });
 
   try {
-    // A URL pré-assinada expira em 1 hora (3600 segundos)
-    const presignedUrl = await getSignedUrl(client, command, { expiresIn: 3600 });
-    
-    // Calcula a URL pública para o frontend já saber como o arquivo se chamará
+    const presignedUrl = await getSignedUrl(client, command, { expiresIn: 900 });
     const publicBaseUrl = process.env.R2_PUBLIC_URL;
     let publicUrl = "";
-    
+
     if (publicBaseUrl) {
-      const base = publicBaseUrl.endsWith('/') ? publicBaseUrl.slice(0, -1) : publicBaseUrl;
+      const base = publicBaseUrl.endsWith("/") ? publicBaseUrl.slice(0, -1) : publicBaseUrl;
       publicUrl = `${base}/${path}`;
     } else {
       publicUrl = `https://${targetBucket}.${accountId}.r2.cloudflarestorage.com/${path}`;
@@ -75,4 +65,23 @@ export async function generatePresignedUrl(
     console.error("Erro ao gerar URL pré-assinada no R2:", error);
     throw new Error(`Erro ao gerar URL pré-assinada: ${error.message}`);
   }
+}
+
+/**
+ * Gera uma URL pré-assinada temporária de leitura (GET) para arquivos clínicos privados (LGPD Art. 46).
+ */
+export async function generateSignedReadUrl(
+  bucket: string,
+  path: string,
+  expiresInSeconds = 900
+): Promise<string> {
+  const { client, defaultBucket } = getR2Client();
+  const targetBucket = defaultBucket || bucket;
+
+  const command = new GetObjectCommand({
+    Bucket: targetBucket,
+    Key: path
+  });
+
+  return getSignedUrl(client, command, { expiresIn: expiresInSeconds });
 }

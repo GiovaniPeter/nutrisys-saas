@@ -18,6 +18,10 @@ export default async function PatientRecordPage({ params }: Params) {
     redirect("/login");
   }
 
+  if (user.role === "SECRETARY") {
+    redirect("/patients");
+  }
+
   const patient = await prisma.patient.findFirst({
     where: {
       id: params.patientId,
@@ -138,6 +142,9 @@ export default async function PatientRecordPage({ params }: Params) {
             Voltar
           </Link>
           <PrintPatientButton patient={patient} />
+          <a className="text-button" href={`/api/patients/${patient.id}/export`}>
+            Exportar LGPD
+          </a>
           <Link className="text-button" href={`/appointments?patientId=${patient.id}`}>
             Agendar
           </Link>

@@ -10,6 +10,8 @@ import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { FREE_TRIAL_DAYS } from "@/lib/subscriptions";
 import { sendEmail } from "@/lib/email";
 
+const LEGAL_TERMS_VERSION = "2026-11-18";
+
 const registerSchema = z.object({
   name: z.string().min(3, "Informe seu nome completo."),
   email: z.string().email("Informe um e-mail válido.").transform((value) => value.toLowerCase()),
@@ -17,14 +19,20 @@ const registerSchema = z.object({
   organizationName: z.string().min(2, "Informe o nome da clínica."),
   planCode: z.string().default("professional"),
   specialty: z.string().optional(),
-  councilRegistration: z.string().optional()
+  councilRegistration: z.string().optional(),
+  acceptTerms: z.literal(true, {
+    errorMap: () => ({
+      message: "É obrigatório aceitar os Termos de Uso e a Política de Privacidade (LGPD)."
+    })
+  })
 });
 
 export async function POST(request: NextRequest) {
   try {
     const input = registerSchema.parse(await request.json());
+    const clientIp = getClientIp(request);
     const rateLimit = checkRateLimit({
-      key: `register:${getClientIp(request)}:${input.email}`,
+      key: `register:${clientIp}:${input.email}`,
       limit: 20,
       windowMs: 60 * 60 * 1000
     });
@@ -55,6 +63,7 @@ export async function POST(request: NextRequest) {
     const organizationSlug = await buildUniqueSlug(input.organizationName);
     const passwordHash = await hashPassword(input.password);
     const trialEndsAt = new Date(Date.now() + FREE_TRIAL_DAYS * 24 * 60 * 60 * 1000);
+    const termsAcceptedAt = new Date().toISOString();
 
     const result = await prisma.$transaction(async (tx) => {
       const organization = await tx.organization.create({
@@ -102,6 +111,10 @@ export async function POST(request: NextRequest) {
           entityId: organization.id,
           metadata: {
             planCode: plan.code,
+            termsAcceptedAt,
+            termsVersion: LEGAL_TERMS_VERSION,
+            privacyVersion: LEGAL_TERMS_VERSION,
+            clientIp,
             ...(isProfessional ? { specialty: input.specialty } : {})
           }
         }
@@ -128,26 +141,26 @@ export async function POST(request: NextRequest) {
       try {
         await sendEmail({
           to: input.email,
-          subject: `Bem-vindo(a) ao ClinOS! Seu teste de ${FREE_TRIAL_DAYS} dias começou \uD83C\uDF89`,
+          subject: `Bem-vindo(a) ao ClinOSTec! Seu teste de ${FREE_TRIAL_DAYS} dias começou \uD83C\uDF89`,
           replyTo: process.env.SUPPORT_EMAIL || process.env.FEEDBACK_EMAIL || "suporteclinostec@gmail.com",
           html: `
             <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; line-height: 1.6;">
-              <h1 style="color: #009981;">Bem-vindo(a) ao ClinOS!</h1>
+              <h1 style="color: #009981;">Bem-vindo(a) ao ClinOSTec!</h1>
               <p>Olá <strong>${input.name}</strong>,</p>
               <p>Sua conta foi criada com sucesso e seu período de teste grátis de ${FREE_TRIAL_DAYS} dias acaba de começar. Nenhum cartão é necessário durante o teste.</p>
-              <p>O ClinOS é o sistema operacional completo para o seu consultório, com agenda online, controle financeiro, anamnese e planos alimentares.</p>
+              <p>O ClinOSTec é o sistema operacional completo para o seu consultório, com agenda online, controle financeiro, anamnese e planos alimentares.</p>
               <p>
-                <a href="${process.env.APP_URL || 'https://clinos.tec.br'}/dashboard" style="display: inline-block; background-color: #009981; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; margin-top: 10px;">
+                <a href="${process.env.APP_URL || "https://clinos.tec.br"}/dashboard" style="display: inline-block; background-color: #009981; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; margin-top: 10px;">
                   Acessar meu Dashboard
                 </a>
               </p>
               <p style="margin-top: 30px; font-size: 14px; color: #666;">
-                Se precisar de ajuda, use a opção “Sugestões e bugs” no menu do ClinOS.<br>
+                Se precisar de ajuda, use a opção “Sugestões e bugs” no menu do ClinOSTec.<br>
                 Um abraço,<br>
-                <strong>Equipe ClinOS</strong>
+                <strong>Equipe ClinOSTec</strong>
               </p>
             </div>
-          `,
+          `
         });
       } catch (emailErr) {
         console.error("Falha ao enviar e-mail de boas-vindas:", emailErr);
@@ -183,4 +196,3 @@ async function buildUniqueSlug(name: string) {
 
   return slug;
 }
-

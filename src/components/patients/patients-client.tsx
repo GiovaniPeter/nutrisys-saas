@@ -134,7 +134,7 @@ export function PatientsClient() {
   }
 
   async function handleDelete(patient: Patient) {
-    const confirmed = window.confirm(`Excluir ${patient.name}? Esta acao nao pode ser desfeita.`);
+    const confirmed = window.confirm(`Excluir ${patient.name}? Esta ação não pode ser desfeita.`);
 
     if (!confirmed) {
       return;
@@ -143,14 +143,35 @@ export function PatientsClient() {
     setDeletingId(patient.id);
     setMessage(null);
 
-    const response = await fetch(`/api/patients/${patient.id}`, {
+    let response = await fetch(`/api/patients/${patient.id}`, {
       method: "DELETE"
     });
-    const data = (await response.json()) as { error?: string };
+    let data = (await response.json()) as {
+      error?: string;
+      requiresClinicalConfirmation?: boolean;
+      clinicalRecordsCount?: number;
+    };
+
+    if (response.status === 409 && data.requiresClinicalConfirmation) {
+      const confirmClinical = window.confirm(
+        `ATENÇÃO LEGAL (Lei nº 13.787/2018):\n\n${patient.name} possui ${data.clinicalRecordsCount || "vários"} registro(s) clínico(s) no prontuário. Prontuários de saúde devem ser preservados por no mínimo 20 anos.\n\nRecomendamos cancelar e clicar em "Prontuário > Exportar LGPD" antes de excluir.\n\nDeseja realmente excluir definitivamente este paciente e todo o prontuário?`
+      );
+      if (!confirmClinical) {
+        setDeletingId(null);
+        setMessage("Exclusão cancelada. Você pode exportar o prontuário em Prontuário > Exportar LGPD.");
+        return;
+      }
+
+      response = await fetch(`/api/patients/${patient.id}?confirmClinicalDelete=1`, {
+        method: "DELETE"
+      });
+      data = (await response.json()) as { error?: string };
+    }
+
     setDeletingId(null);
 
     if (!response.ok) {
-      setMessage(data.error || "Nao foi possivel excluir o paciente.");
+      setMessage(data.error || "Não foi possível excluir o paciente.");
       return;
     }
 
@@ -158,7 +179,7 @@ export function PatientsClient() {
       setEditingPatient(null);
     }
 
-    setMessage("Paciente excluido com sucesso.");
+    setMessage("Paciente excluído com sucesso.");
     await loadPatients(query, birthDateQuery);
   }
 

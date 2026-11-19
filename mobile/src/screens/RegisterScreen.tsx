@@ -25,6 +25,7 @@ export default function RegisterScreen({ navigation }: any) {
   const [specialty, setSpecialty] = useState('nutricionista');
   const [councilRegistration, setCouncilRegistration] = useState('');
   const [planCode, setPlanCode] = useState<'essential' | 'professional' | 'clinic'>('professional');
+  const [acceptTerms, setAcceptTerms] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const specialties = [
@@ -46,6 +47,11 @@ export default function RegisterScreen({ navigation }: any) {
       return;
     }
 
+    if (!acceptTerms) {
+      Alert.alert('Aceite obrigatório', 'Marque a caixa aceitando os Termos de Uso e a Política de Privacidade (LGPD).');
+      return;
+    }
+
     setLoading(true);
     try {
       await api.post('/auth/register', {
@@ -56,6 +62,7 @@ export default function RegisterScreen({ navigation }: any) {
         planCode,
         specialty: specialty === 'nutricionista' ? undefined : specialty,
         councilRegistration: councilRegistration.trim() || undefined,
+        acceptTerms: true,
       });
 
       const loginResponse = await api.post('/auth/login', {
@@ -215,14 +222,32 @@ export default function RegisterScreen({ navigation }: any) {
           <PlanButton label="Clínica" active={planCode === 'clinic'} onPress={() => setPlanCode('clinic')} />
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={handleRegister} disabled={loading}>
-          {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Criar conta</Text>}
+        <TouchableOpacity
+          style={{ flexDirection: 'row', alignItems: 'flex-start', gap: 10, marginBottom: 16 }}
+          onPress={() => setAcceptTerms((value) => !value)}
+          activeOpacity={0.8}
+        >
+          <MaterialCommunityIcons
+            name={acceptTerms ? 'checkbox-marked' : 'checkbox-blank-outline'}
+            size={22}
+            color={acceptTerms ? '#047857' : '#6b7280'}
+          />
+          <Text style={[styles.privacyNote, { flex: 1, marginTop: 0, textAlign: 'left' }]}>
+            Li e concordo com os Termos de Uso e a{' '}
+            <Text style={styles.privacyLink} onPress={handleOpenPrivacyPolicy}>
+              Política de Privacidade (LGPD)
+            </Text>
+            .
+          </Text>
         </TouchableOpacity>
 
-        <Text style={styles.privacyNote}>
-          Ao criar conta, você concorda com o tratamento dos dados conforme a{' '}
-          <Text style={styles.privacyLink} onPress={handleOpenPrivacyPolicy}>Política de privacidade</Text>.
-        </Text>
+        <TouchableOpacity
+          style={[styles.button, (!acceptTerms || loading) && { opacity: 0.6 }]}
+          onPress={handleRegister}
+          disabled={loading || !acceptTerms}
+        >
+          {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Criar conta</Text>}
+        </TouchableOpacity>
 
         <TouchableOpacity style={styles.localButton} onPress={handleLocalRegister}>
           <Text style={styles.localButtonText}>Entrar em modo teste local</Text>

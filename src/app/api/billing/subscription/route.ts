@@ -3,6 +3,7 @@ import { SubscriptionStatus } from "@prisma/client";
 import { z } from "zod";
 import { audit } from "@/lib/audit";
 import { error, json, validationError } from "@/lib/api";
+import { sendEmail } from "@/lib/email";
 import {
   calculateNextPeriodEnd,
   checkInfinitePayPayment,
@@ -167,7 +168,24 @@ export async function PATCH(request: NextRequest) {
         entityId: subscription.id
       });
 
-      return json({ subscription });
+      // Notifica a equipe para interromper eventual recorrência ativa na InfinitePay (CDC / transparência)
+      if (process.env.RESEND_API_KEY) {
+        try {
+          await sendEmail({
+            to: process.env.SUPPORT_EMAIL || process.env.FEEDBACK_EMAIL || "contato@clinos.tec.br",
+            subject: `[ClinOSTec] Cancelamento de assinatura — ${user.email}`,
+            html: `<p>O usuário <strong>${user.name}</strong> (${user.email}) cancelou a assinatura da organização <code>${user.organizationId}</code> (plano <strong>${subscription.planCode}</strong>, provedor: ${subscription.provider || "não informado"}, ref: ${subscription.providerSubId || "-"}). Verifique se há recorrência ativa na InfinitePay para interromper cobranças futuras.</p>`
+          });
+        } catch (emailErr) {
+          console.error("Falha ao notificar equipe sobre cancelamento:", emailErr);
+        }
+      }
+
+      return json({
+        subscription,
+        cancellationNotice:
+          "Assinatura cancelada no ClinOSTec. Nossa equipe foi notificada para confirmar a interrupção de eventual cobrança recorrente na InfinitePay. Caso esteja nos primeiros 7 dias da contratação (Art. 49 do CDC), solicite o reembolso integral em contato@clinos.tec.br."
+      });
     }
 
     if (

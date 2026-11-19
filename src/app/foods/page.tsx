@@ -11,20 +11,8 @@ export default async function FoodsPage() {
   }
 
   return (
-    <main className="shell workspace-shell">
+    <main className="shell workspace-shell foods-page-shell">
       <AppNav active="foods" user={user} />
-
-      <section className="workspace-heading">
-        <div>
-          <span className="eyebrow">Base Nutricional, Suplementos & Nutrição Clínica</span>
-          <h1>Alimentos e Fórmulas Cadastradas</h1>
-          <p>
-            Consulte a base curada TACO/TBCA com medidas caseiras reais, suplementos esportivos, fórmulas enterais/clínicas
-            multiprofissionais ou cadastre itens personalizados da sua clínica.
-          </p>
-        </div>
-      </section>
-
       <FoodsClient />
     </main>
   );

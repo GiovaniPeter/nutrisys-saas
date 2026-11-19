@@ -46,7 +46,8 @@ async function register() {
       email,
       password,
       organizationName: `Smoke Test ${timestamp}`,
-      planCode: "professional"
+      planCode: "professional",
+      acceptTerms: true
     }
   });
   const data = await response.json();

@@ -1,14 +1,19 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { error, json, validationError } from "@/lib/api";
+import { audit } from "@/lib/audit";
 import { prisma } from "@/lib/prisma";
+import { getClientIp } from "@/lib/rate-limit";
 
 const bookingSchema = z.object({
   name: z.string().trim().min(2, "Informe seu nome."),
   phone: z.string().trim().min(8, "Informe um telefone para contato."),
-  email: z.string().email("Informe um e-mail valido.").optional().or(z.literal("")),
-  startsAt: z.string().datetime("Escolha um horario valido."),
-  type: z.string().min(2, "Informe o tipo de consulta.")
+  email: z.string().email("Informe um e-mail válido.").optional().or(z.literal("")),
+  startsAt: z.string().datetime("Escolha um horário válido."),
+  type: z.string().min(2, "Informe o tipo de consulta."),
+  lgpdConsent: z.literal(true, {
+    errorMap: () => ({ message: "É obrigatório aceitar o consentimento LGPD para solicitar o agendamento." })
+  })
 });
 
 export async function GET(_request: NextRequest, { params }: { params: { slug: string } }) {
@@ -58,23 +63,31 @@ export async function POST(request: NextRequest, { params }: { params: { slug: s
     }
 
     const cleanPhone = input.phone.replace(/\D/g, "");
-    const patient =
-      (await prisma.patient.findFirst({
-        where: {
-          organizationId: organization.id,
-          OR: [{ phone: { contains: cleanPhone.slice(-8) } }, ...(input.email ? [{ email: input.email }] : [])]
-        }
-      })) ||
-      (await prisma.patient.create({
-        data: {
-          organizationId: organization.id,
-          name: input.name,
-          phone: input.phone,
-          email: input.email || null,
-          notes: "Criado pelo agendamento online.",
-          lgpdConsentAt: new Date()
-        }
-      }));
+    const consentedAt = new Date();
+    const existingPatient = await prisma.patient.findFirst({
+      where: {
+        organizationId: organization.id,
+        OR: [{ phone: { contains: cleanPhone.slice(-8) } }, ...(input.email ? [{ email: input.email }] : [])]
+      }
+    });
+
+    const patient = existingPatient
+      ? existingPatient.lgpdConsentAt
+        ? existingPatient
+        : await prisma.patient.update({
+            where: { id: existingPatient.id },
+            data: { lgpdConsentAt: consentedAt }
+          })
+      : await prisma.patient.create({
+          data: {
+            organizationId: organization.id,
+            name: input.name,
+            phone: input.phone,
+            email: input.email || null,
+            notes: "Criado pelo agendamento online.",
+            lgpdConsentAt: consentedAt
+          }
+        });
 
     const appointment = await prisma.appointment.create({
       data: {
@@ -85,6 +98,19 @@ export async function POST(request: NextRequest, { params }: { params: { slug: s
         type: input.type,
         status: "PENDING",
         notes: "Solicitado pelo agendamento online."
+      }
+    });
+
+    await audit({
+      organizationId: organization.id,
+      action: "patient.public_booking_consent",
+      entity: "Patient",
+      entityId: patient.id,
+      metadata: {
+        appointmentId: appointment.id,
+        lgpdConsentAt: consentedAt.toISOString(),
+        privacyVersion: "2026-11-18",
+        clientIp: getClientIp(request)
       }
     });
 

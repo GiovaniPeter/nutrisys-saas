@@ -2,6 +2,7 @@
 
 import type { CSSProperties } from "react";
 import { FormEvent, useEffect, useState } from "react";
+import Link from "next/link";
 
 type Organization = {
   name: string;
@@ -30,6 +31,7 @@ export function BookingClient({ organization }: { organization: Organization }) 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [done, setDone] = useState(false);
+  const [lgpdConsent, setLgpdConsent] = useState(false);
 
   useEffect(() => {
     void loadSlots();
@@ -53,7 +55,12 @@ export function BookingClient({ organization }: { organization: Organization }) 
     event.preventDefault();
 
     if (!selectedSlot) {
-      setMessage("Escolha um horario.");
+      setMessage("Escolha um horário.");
+      return;
+    }
+
+    if (!lgpdConsent) {
+      setMessage("É necessário autorizar o tratamento de dados (LGPD) para solicitar o agendamento.");
       return;
     }
 
@@ -69,7 +76,8 @@ export function BookingClient({ organization }: { organization: Organization }) 
         phone: form.get("phone"),
         email: form.get("email"),
         type: form.get("type"),
-        startsAt: selectedSlot
+        startsAt: selectedSlot,
+        lgpdConsent
       })
     });
     const data = (await response.json()) as { error?: string };
@@ -153,9 +161,38 @@ export function BookingClient({ organization }: { organization: Organization }) 
               {loading ? <p className="empty-card">Carregando horarios...</p> : null}
             </div>
 
+            <label
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "flex-start",
+                gap: "10px",
+                fontSize: "0.85rem",
+                lineHeight: 1.45,
+                cursor: "pointer"
+              }}
+            >
+              <input
+                type="checkbox"
+                name="lgpdConsent"
+                checked={lgpdConsent}
+                onChange={(event) => setLgpdConsent(event.target.checked)}
+                required
+                style={{ width: "auto", marginTop: "3px" }}
+              />
+              <span>
+                Autorizo o tratamento dos meus dados pessoais e de saúde pela clínica{" "}
+                <strong>{organization.name}</strong> para agendamento e atendimento nutricional, conforme a{" "}
+                <Link href="/politica-de-privacidade" target="_blank" style={{ textDecoration: "underline" }}>
+                  Política de Privacidade (LGPD)
+                </Link>
+                .
+              </span>
+            </label>
+
             {message ? <p className="form-message neutral">{message}</p> : null}
 
-            <button className="button" type="submit" disabled={saving || !selectedSlot}>
+            <button className="button" type="submit" disabled={saving || !selectedSlot || !lgpdConsent}>
               {saving ? "Enviando..." : "Solicitar agendamento"}
             </button>
           </form>

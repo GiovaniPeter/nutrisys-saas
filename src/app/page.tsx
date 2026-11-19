@@ -994,6 +994,7 @@ export default function LandingPage() {
             <Link href="/recursos" className="hover:text-ink-900">Recursos</Link>
             <Link href="/termos-de-uso" className="hover:text-ink-900">Termos de Uso</Link>
             <Link href="/politica-de-privacidade" className="hover:text-ink-900">Privacidade & LGPD</Link>
+            <Link href="/exclusao-de-conta" className="hover:text-ink-900">Exclusão de Conta</Link>
             <a href="mailto:contato@clinos.tec.br" className="hover:text-ink-900">contato@clinos.tec.br</a>
           </div>
         </div>

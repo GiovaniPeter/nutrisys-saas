@@ -13,11 +13,16 @@ export function RegisterForm({ initialPlanCode = "professional" }: RegisterFormP
   const router = useRouter();
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [acceptTerms, setAcceptTerms] = useState(false);
   const hasStarted = useRef(false);
   const planName = getPlanName(initialPlanCode);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!acceptTerms) {
+      setMessage("Você precisa ler e aceitar os Termos de Uso e a Política de Privacidade (LGPD) para criar sua conta.");
+      return;
+    }
     setLoading(true);
     setMessage(null);
 
@@ -38,7 +43,8 @@ export function RegisterForm({ initialPlanCode = "professional" }: RegisterFormP
           email: form.get("email"),
           password: form.get("password"),
           organizationName: form.get("organizationName"),
-          planCode
+          planCode,
+          acceptTerms: true
         })
       });
 
@@ -121,20 +127,42 @@ export function RegisterForm({ initialPlanCode = "professional" }: RegisterFormP
         <strong>Plano {planName} por 7 dias</strong>
         <small>Sem cartão. Você poderá comparar ou trocar o plano depois.</small>
       </div>
+      <label
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "flex-start",
+          gap: "10px",
+          fontSize: "0.84rem",
+          color: "#475569",
+          lineHeight: 1.5,
+          cursor: "pointer"
+        }}
+      >
+        <input
+          type="checkbox"
+          name="acceptTerms"
+          checked={acceptTerms}
+          onChange={(event) => setAcceptTerms(event.target.checked)}
+          required
+          style={{ width: "auto", marginTop: "3px" }}
+        />
+        <span>
+          Li e concordo com os{" "}
+          <Link href="/termos-de-uso" target="_blank" style={{ color: "#059669", textDecoration: "underline", fontWeight: 500 }}>
+            Termos de Uso (incluindo DPA)
+          </Link>{" "}
+          e com a{" "}
+          <Link href="/politica-de-privacidade" target="_blank" style={{ color: "#059669", textDecoration: "underline", fontWeight: 500 }}>
+            Política de Privacidade (LGPD)
+          </Link>
+          .
+        </span>
+      </label>
       {message ? <p className="form-message error">{message}</p> : null}
-      <button className="button" type="submit" disabled={loading}>
+      <button className="button" type="submit" disabled={loading || !acceptTerms}>
         {loading ? "Criando..." : "Começar 7 dias grátis — sem cartão"}
       </button>
-      <p style={{ fontSize: "0.82rem", color: "#64748b", marginTop: "12px", textAlign: "center", lineHeight: 1.5 }}>
-        Ao criar sua conta, você concorda com nossos{" "}
-        <Link href="/termos-de-uso" target="_blank" style={{ color: "#059669", textDecoration: "underline", fontWeight: 500 }}>
-          Termos de Uso
-        </Link>{" "}
-        e com a nossa{" "}
-        <Link href="/politica-de-privacidade" target="_blank" style={{ color: "#059669", textDecoration: "underline", fontWeight: 500 }}>
-          Política de Privacidade (LGPD)
-        </Link>.
-      </p>
     </form>
   );
 }

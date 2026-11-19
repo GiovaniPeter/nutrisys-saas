@@ -8,7 +8,8 @@ import {
   CURATED_BRAZILIAN_FOODS,
   inferHouseholdMeasure,
   normalizeCategoryName,
-  normalizeTextForSearch
+  normalizeTextForSearch,
+  sanitizeHouseholdMeasure
 } from "@/lib/brazilian-foods-seed";
 
 const foodSchema = z.object({
@@ -145,7 +146,7 @@ export async function GET(request: NextRequest) {
   const mergedRaw = [
     ...dbFoods.map((food) => ({
       ...food,
-      householdMeasure: food.householdMeasure || inferHouseholdMeasure(food.name, food.category),
+      householdMeasure: sanitizeHouseholdMeasure(food.householdMeasure, food.name, food.category),
       category: food.category ? normalizeCategoryName(food.category, food.name) : normalizeCategoryName(null, food.name),
       source: food.source || (food.organizationId ? "Personalizado (Clínica)" : "TACO / Base Oficial")
     })),
@@ -261,23 +262,33 @@ export async function POST(request: NextRequest) {
           seededCount += 1;
         }
 
-        // Also enrich existing global foods that lack householdMeasure
-        const missingMeasureFoods = await prisma.food.findMany({
+        // Also enrich existing global foods that lack householdMeasure or had mis-inferred slice measures on liquids
+        const candidateFoods = await prisma.food.findMany({
           where: {
             organizationId: null,
-            OR: [{ householdMeasure: null }, { householdMeasure: "" }]
+            OR: [
+              { householdMeasure: null },
+              { householdMeasure: "" },
+              { householdMeasure: { contains: "fatias", mode: "insensitive" } }
+            ]
           },
-          select: { id: true, name: true, category: true }
+          select: { id: true, name: true, category: true, householdMeasure: true }
         });
 
-        for (const item of missingMeasureFoods) {
-          await prisma.food.update({
-            where: { id: item.id },
-            data: {
-              householdMeasure: inferHouseholdMeasure(item.name, item.category),
-              category: normalizeCategoryName(item.category, item.name)
-            }
-          });
+        let enrichedCount = 0;
+        for (const item of candidateFoods) {
+          const nextMeasure = sanitizeHouseholdMeasure(item.householdMeasure, item.name, item.category);
+          const nextCategory = normalizeCategoryName(item.category, item.name);
+          if (nextMeasure !== item.householdMeasure || nextCategory !== item.category) {
+            await prisma.food.update({
+              where: { id: item.id },
+              data: {
+                householdMeasure: nextMeasure,
+                category: nextCategory
+              }
+            });
+            enrichedCount += 1;
+          }
         }
 
         await audit({
@@ -289,7 +300,7 @@ export async function POST(request: NextRequest) {
 
         return json({
           seededCount,
-          enrichedCount: missingMeasureFoods.length
+          enrichedCount
         });
       }
 

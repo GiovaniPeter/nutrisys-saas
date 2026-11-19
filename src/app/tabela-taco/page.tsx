@@ -236,6 +236,19 @@ export default async function TabelaTacoPage() {
               Quando o paciente relata aversão a um alimento ou deseja variar as opções do dia a dia, o nutricionista não precisa recalcular os macronutrientes manualmente. O algoritmo do ClinOSTec identifica o grupo nutricional e equilibra as porções para manter as mesmas calorias e proporção de carboidratos, proteínas e lipídios.
             </p>
           </div>
+
+          <div style={{ padding: "18px 20px", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: 12, fontSize: "0.9rem", color: "#475569" }}>
+            <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "#1e293b", margin: "0 0 8px" }}>
+              Fontes e Créditos das Bases Nutricionais
+            </h3>
+            <p style={{ margin: 0 }}>
+              A base de composição nutricional do ClinOSTec reúne dados oficiais e abertos com atribuição de fonte:{" "}
+              <strong>TACO</strong> (Tabela Brasileira de Composição de Alimentos — NEPA/Unicamp, 4ª edição),{" "}
+              <strong>IBGE / POF</strong> (Tabelas de Composição Nutricional dos Alimentos Consumidos no Brasil),{" "}
+              <strong>INSA</strong> (Base de Dados da Composição de Alimentos — Instituto Nacional de Saúde Doutor Ricardo Jorge, I.P., v 7.1 - 2026) e{" "}
+              <strong>Open Food Facts Brasil</strong> (licença Open Database License — ODbL). Os valores são referência técnica e devem ser validados pelo profissional habilitado conforme cada caso clínico.
+            </p>
+          </div>
         </div>
       </section>
 

@@ -1342,49 +1342,104 @@ export function normalizeTextForSearch(value: string): string {
 }
 
 export function inferHouseholdMeasure(name: string, category?: string | null): string {
-  const norm = normalizeTextForSearch(`${name} ${category || ""}`);
+  const normName = normalizeTextForSearch(name);
+  const normCat = normalizeTextForSearch(category || "");
 
-  if (norm.includes("arroz") || norm.includes("feijao") || norm.includes("lentilha") || norm.includes("grao")) {
-    if (norm.includes("feijao")) return "1 concha média cheia (100 g)";
+  // 1. Match específico pelo NOME do alimento primeiro (evita conflitos como "Leite" herdando "Queijo" da categoria)
+  if (normName.includes("arroz")) {
     return "4 colheres de sopa cheias (100 g)";
   }
-  if (norm.includes("aveia") || norm.includes("farelo") || norm.includes("granola") || norm.includes("farinha")) {
+  if (normName.includes("feijao")) {
+    return "1 concha média cheia (100 g)";
+  }
+  if (normName.includes("lentilha") || normName.includes("grao de bico") || normName.includes("grao-de-bico") || normName.includes("ervilha")) {
+    return "4 colheres de sopa cheias (100 g)";
+  }
+  if (normName.includes("aveia") || normName.includes("farelo") || normName.includes("granola") || normName.includes("farinha")) {
     return "5 colheres de sopa cheias (100 g) | 1 col. sopa ≈ 20 g";
   }
-  if (norm.includes("pao frances") || norm.includes("pao de sal")) {
+  if (normName.includes("pao frances") || normName.includes("pao de sal")) {
     return "2 unidades médias (100 g) | 1 unidade ≈ 50 g";
   }
-  if (norm.includes("pao")) {
+  if (normName.includes("pao")) {
     return "4 fatias médias (100 g) | 1 fatia ≈ 25 g";
   }
-  if (norm.includes("frango") || norm.includes("bife") || norm.includes("patinho") || norm.includes("alcatra") || norm.includes("file") || norm.includes("peixe") || norm.includes("tilapia") || norm.includes("salmao") || norm.includes("carne") || norm.includes("suina")) {
-    return "1 filé / bife médio (100 g)";
+  if (normName.includes("leite em po")) {
+    return "4 colheres de sopa cheias (100 g) | 1 col. sopa ≈ 25 g";
   }
-  if (norm.includes("ovo")) {
-    return "2 unidades médias (100 g) | 1 ovo ≈ 50 g";
+  if (normName.includes("doce de leite") || normName.includes("leite condensado") || normName.includes("creme de leite")) {
+    return "5 colheres de sopa (100 g) | 1 col. sopa ≈ 20 g";
   }
-  if (norm.includes("queijo") || norm.includes("mucarela") || norm.includes("minas") || norm.includes("prato")) {
+  if (normName.includes("requeijao") || normName.includes("cottage") || normName.includes("cream cheese") || normName.includes("ricota")) {
+    return "3 colheres de sopa cheias (100 g) | 1 col. sopa ≈ 30 g";
+  }
+  if (normName.includes("queijo") || normName.includes("mucarela") || normName.includes("mussarela") || normName.includes("parmesao") || normName.includes("cheddar") || normName.includes("provolone")) {
     return "3 fatias médias (100 g) | 1 fatia ≈ 30 g";
   }
-  if (norm.includes("leite") || norm.includes("iogurte") || norm.includes("suco") || norm.includes("bebida")) {
+  if (normName.includes("leite") || normName.includes("iogurte") || normName.includes("kefir") || normName.includes("suco") || normName.includes("bebida") || normName.includes("vitamina") || normName.includes("achocolatado") || normName.includes("cafe") || normName.includes("cha")) {
     return "1/2 copo americano (100 ml) | 1 copo = 200 ml";
   }
-  if (norm.includes("banana") || norm.includes("maca") || norm.includes("laranja") || norm.includes("pera") || norm.includes("fruta") || norm.includes("mamao") || norm.includes("abacaxi") || norm.includes("manga")) {
+  if (normName.includes("ovo")) {
+    return "2 unidades médias (100 g) | 1 ovo ≈ 50 g";
+  }
+  if (normName.includes("frango") || normName.includes("bife") || normName.includes("patinho") || normName.includes("alcatra") || normName.includes("file") || normName.includes("peixe") || normName.includes("tilapia") || normName.includes("salmao") || normName.includes("atum") || normName.includes("carne") || normName.includes("suina") || normName.includes("bovin") || normName.includes("lombo")) {
+    return "1 filé / bife médio (100 g)";
+  }
+  if (normName.includes("banana") || normName.includes("maca") || normName.includes("laranja") || normName.includes("pera") || normName.includes("mamao") || normName.includes("abacaxi") || normName.includes("manga") || normName.includes("melancia") || normName.includes("morango") || normName.includes("uva") || normName.includes("abacate")) {
     return "1 porção / unidade média (100 g)";
   }
-  if (norm.includes("azeite") || norm.includes("oleo") || norm.includes("manteiga")) {
+  if (normName.includes("azeite") || normName.includes("oleo") || normName.includes("manteiga") || normName.includes("margarina")) {
     return "10 colheres de sopa (100 g) | 1 col. sopa ≈ 10 g";
   }
-  if (norm.includes("castanha") || norm.includes("nozes") || norm.includes("amendoim") || norm.includes("amendoa")) {
+  if (normName.includes("castanha") || normName.includes("nozes") || normName.includes("amendoim") || normName.includes("amendoa") || normName.includes("pistache")) {
     return "1 xícara (100 g) | 1 porção usual ≈ 15 g";
   }
-  if (norm.includes("whey") || norm.includes("proteina") || norm.includes("suplemento")) {
+  if (normName.includes("whey") || normName.includes("creatina") || normName.includes("albumina") || normName.includes("glutamina") || normName.includes("colageno") || normName.includes("suplemento")) {
     return "1 scoop dosador (30 g)";
   }
-  if (norm.includes("batata") || norm.includes("mandioca") || norm.includes("inhame") || norm.includes("legume") || norm.includes("brocolis") || norm.includes("cenoura")) {
+  if (normName.includes("batata") || normName.includes("mandioca") || normName.includes("inhame") || normName.includes("brocolis") || normName.includes("cenoura") || normName.includes("abobrinha") || normName.includes("macarrao")) {
     return "4 colheres de sopa cheias (100 g)";
   }
+
+  // 2. Fallback pela categoria apenas se o nome não indicou um alimento específico
+  if (normCat.includes("fruta")) return "1 porção / unidade média (100 g)";
+  if (normCat.includes("carne") || normCat.includes("peixe")) return "1 filé / bife médio (100 g)";
+  if (normCat.includes("suplemento")) return "1 scoop dosador (30 g)";
+  if (normCat.includes("oleo") || normCat.includes("gordura")) return "10 colheres de sopa (100 g) | 1 col. sopa ≈ 10 g";
+  if (normCat.includes("laticinio") || normCat.includes("bebida")) return "1/2 copo americano (100 ml) | 1 copo = 200 ml";
+  if (normCat.includes("verdura") || normCat.includes("legume")) return "4 colheres de sopa cheias (100 g)";
+
   return "4 colheres de sopa / 1 porção padrão (100 g)";
+}
+
+export function sanitizeHouseholdMeasure(
+  measure: string | null | undefined,
+  name: string,
+  category?: string | null
+): string {
+  const trimmed = String(measure || "").trim();
+  if (!trimmed) {
+    return inferHouseholdMeasure(name, category);
+  }
+
+  // Corrige medidas inferidas incorretamente em sincronizações anteriores (ex: leite/iogurte com "3 fatias médias")
+  const normName = normalizeTextForSearch(name);
+  const normMeasure = normalizeTextForSearch(trimmed);
+  const isLiquidOrDairyDrink =
+    (normName.includes("leite") ||
+      normName.includes("iogurte") ||
+      normName.includes("kefir") ||
+      normName.includes("suco") ||
+      normName.includes("bebida")) &&
+    !normName.includes("queijo") &&
+    !normName.includes("pao") &&
+    !normName.includes("bolo");
+
+  if (isLiquidOrDairyDrink && normMeasure.includes("fatia")) {
+    return inferHouseholdMeasure(name, category);
+  }
+
+  return trimmed;
 }
 
 export function normalizeCategoryName(rawCategory?: string | null, name?: string): string {

@@ -228,3 +228,52 @@ test("InfinitePay valida assinatura do webhook, ativa assinatura e mantém idemp
   assert.equal(updateCalls, 1);
 });
 
+test("LGPD e sigilo clínico: secretária não acessa prontuário /patients/[id] nem pode excluir pacientes", async () => {
+  const { middleware } = load("src/middleware.ts");
+  const signed = token({ userId: "sec", organizationId: "org", role: "SECRETARY", exp: Math.floor(Date.now() / 1000) + 60 });
+
+  // Pode abrir listagem /patients
+  const listRes = await middleware(new NextRequest("http://localhost/patients", { headers: { cookie: `nutrisys_session=${signed}` } }));
+  assert.equal(listRes.headers.get("x-middleware-next"), "1");
+
+  // Não pode abrir prontuário clínico /patients/pat-1
+  const chartRes = await middleware(new NextRequest("http://localhost/patients/pat-1", { headers: { cookie: `nutrisys_session=${signed}` } }));
+  assert.equal(chartRes.status, 307);
+
+  // Não pode excluir paciente via API
+  const { DELETE } = load("src/app/api/patients/[patientId]/route.ts", {
+    "@/lib/session": { getCurrentUser: async () => ({ id: "sec", organizationId: "org", role: "SECRETARY" }) },
+    "@/lib/prisma": { prisma: {} },
+    "@/lib/audit": { audit: async () => {} }
+  });
+  const delRes = await DELETE(new NextRequest("http://localhost/api/patients/pat-1", { method: "DELETE" }), { params: { patientId: "pat-1" } });
+  assert.equal(delRes.status, 403);
+});
+
+test("LGPD: cadastro exige aceite explícito dos termos e agendamento público exige consentimento LGPD", async () => {
+  const { POST: registerPost } = load("src/app/api/auth/register/route.ts", {
+    "@/lib/prisma": { prisma: {} },
+    "@/lib/password": { hashPassword: async () => "hash" },
+    "@/lib/session": { createSessionCookie: () => "tok", setSessionCookie: () => {} },
+    "@/lib/email": { sendEmail: async () => {} }
+  });
+  const regNoTerms = await registerPost(new NextRequest("http://localhost/api/auth/register", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ name: "Dra Teste", email: "dra@test.com", password: "Password123!", organizationName: "Clinica Teste" })
+  }));
+  assert.equal(regNoTerms.status, 422);
+
+  const { POST: bookingPost } = load("src/app/api/public-booking/[slug]/route.ts", {
+    "@/lib/prisma": { prisma: { organization: { findUnique: async () => ({ id: "org-1" }) } } },
+    "@/lib/audit": { audit: async () => {} }
+  });
+  const bookNoConsent = await bookingPost(new NextRequest("http://localhost/api/public-booking/clinica", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ name: "Paciente", phone: "11999990000", type: "Primeira consulta", startsAt: new Date(Date.now() + 86400000).toISOString() })
+  }), { params: { slug: "clinica" } });
+  assert.equal(bookNoConsent.status, 422);
+});
+
+

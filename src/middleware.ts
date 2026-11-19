@@ -100,7 +100,9 @@ export async function middleware(request: NextRequest) {
       pathname.startsWith("/login") ||
       pathname.startsWith("/register") ||
       pathname.startsWith("/portal") ||
-      secretaryAllowedPages.some((path) => pathname === path || pathname.startsWith(`${path}/`))
+      secretaryAllowedPages.some((path) =>
+        path === "/patients" ? pathname === "/patients" : pathname === path || pathname.startsWith(`${path}/`)
+      )
     ) {
       return NextResponse.next();
     }

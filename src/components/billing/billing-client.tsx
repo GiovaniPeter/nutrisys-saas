@@ -127,16 +127,20 @@ export function BillingClient() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ action })
     });
-    const data = (await response.json()) as { subscription?: Subscription; error?: string };
+    const data = (await response.json()) as {
+      subscription?: Subscription;
+      cancellationNotice?: string;
+      error?: string;
+    };
     setSavingAction(null);
 
     if (!response.ok || !data.subscription) {
-      setMessage(data.error || "Nao foi possivel atualizar assinatura.");
+      setMessage(data.error || "Não foi possível atualizar assinatura.");
       return;
     }
 
     setSubscription(data.subscription);
-    setMessage("Assinatura atualizada com sucesso.");
+    setMessage(data.cancellationNotice || "Assinatura atualizada com sucesso.");
   }
 
   async function startCheckout(planCode: string) {
@@ -258,7 +262,14 @@ export function BillingClient() {
         ) : null}
 
         <p className="billing-note">
-          Os pagamentos são processados com segurança pela InfinitePay (Pix ou Cartão de Crédito). A ativação ocorre automaticamente após a confirmação.
+          Os pagamentos são processados com segurança pela InfinitePay (Pix ou Cartão de Crédito). Você conta com{" "}
+          <strong>direito de arrependimento em até 7 dias corridos</strong> após a primeira contratação paga com
+          reembolso integral (Art. 49 do CDC), mediante solicitação pelo e-mail{" "}
+          <a href="mailto:contato@clinos.tec.br" style={{ textDecoration: "underline" }}>
+            contato@clinos.tec.br
+          </a>
+          . Em caso de cancelamento de plano com cobrança recorrente ativa na InfinitePay, nossa equipe também é
+          notificada para garantir a interrupção das cobranças futuras.
         </p>
       </div>
 

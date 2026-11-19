@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import { CookieBanner } from "@/components/cookie-banner";
+import { ConsentAnalytics } from "@/components/analytics/consent-analytics";
 import "./globals.css";
-import { GoogleAnalytics } from "@next/third-parties/google";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -79,9 +79,7 @@ export default function RootLayout({
       <body className="font-sans bg-sand-50 text-ink-900 antialiased selection:bg-terracotta-100 selection:text-terracotta-900">
         {children}
         <CookieBanner />
-        {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ? (
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
-        ) : null}
+        <ConsentAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
       </body>
     </html>
   );
